@@ -1,0 +1,13 @@
+# A sample Bowerfile
+# Check out https://github.com/42dev/bower-rails#ruby-dsl-configuration for more options
+
+asset 'jquery-ujs'
+asset 'bootstrap-sass'
+asset 'fontawesome'
+
+asset 'jquery-lazyload'
+
+asset 'bootstrap-select'
+asset 'bootstrap-fileinput'
+
+asset 'moment'

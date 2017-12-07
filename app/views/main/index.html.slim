@@ -1,0 +1,35 @@
+.main-container
+  .col-md-2
+    .panel.panel-default
+      .panel-heading マイ・オークション
+      ul.list-group
+        = link_to "ウォッチリスト", "myauction/mylists", class: "list-group-item"
+        = link_to "入札中", "myauction/bids", class: "list-group-item"
+        = link_to "落札分", "myauction/bids/end", class: "list-group-item"
+        - if current_user.try(:seller?)
+          = link_to "出品中", "myauction/products", class: "list-group-item"
+          = link_to "出品終了", "myauction/products/end", class: "list-group-item"
+
+    .panel.panel-default
+      .panel-heading
+        = link_to "categories" do
+          | カテゴリから探す
+          .pull-right
+            .glyphicon.glyphicon-menu-right
+      .panel-body
+
+  .col-md-6
+    .panel.panel-default
+      .panel-heading 最近チェックした商品
+      .panel-body
+
+    .panel.panel-default
+      .panel-heading チェックした商品の関連商品
+      .panel-body
+
+
+
+  .col-md-4
+    .panel.panel-default
+      .panel-heading ヘルプ
+      .panel-body
