@@ -12,7 +12,7 @@
  *
  *= require bootstrap-sass
  *= require devise_bootstrap_views
- *= require_tree .
+ * require_tree .
  *= require_self
  */
 
@@ -74,4 +74,34 @@
    position: fixed;
    bottom: 20px;
    right: 20px;
+ }
+
+ label.required:after {
+   content: "必須";
+   color: #D00;
+   vertical-align: top;
+   font-size: 80%;
+   font-weight: normal;
+   margin-left: 10px;
+ }
+
+ .product-title {
+   background: #EEE;
+   padding: 6px;
+ }
+
+ .product-table {
+   tr.img {
+     width: 120px;
+   }
+   
+   td.img {
+    width: 160px;
+    height: 120px;
+
+    img {
+      max-width: 160px;
+      max-height: 120px;
+    }
+   }
  }

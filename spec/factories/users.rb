@@ -7,8 +7,8 @@
 #  name                   :string
 #  zip                    :string
 #  birthday               :string
-#  allow_mail             :boolean
-#  seller                 :boolean
+#  allow_mail             :boolean          default(FALSE), not null
+#  seller                 :boolean          default(FALSE), not null
 #  company                :string
 #  contact_name           :string
 #  addr_1                 :string
@@ -44,7 +44,9 @@ FactoryBot.define do
     id       1
     name     "ユーザ名"
 
-    email    "test@test.com"
+    sequence :email do |i|
+      "test#{i}@test.com"
+    end
     password "testtest"
     password_confirmation "testtest"
     encrypted_password "testtest"

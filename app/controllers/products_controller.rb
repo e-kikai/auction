@@ -1,13 +1,14 @@
 class ProductsController < ApplicationController
   def index
-    @search    = @products.with_keywords(params[:keywords]).search(params[:q])
+    @search    = Product.finished(params[:finished]).with_keywords(params[:keywords]).search(params[:q])
 
     @products  = @search.result
     @pproducts = @products.page(params[:page])
   end
 
   def show
-    @product = @products.find(params[:id])
+    @product = Product.find(params[:id])
+    @bid     = @product.bids.new
   end
 
 end

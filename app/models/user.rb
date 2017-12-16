@@ -7,8 +7,8 @@
 #  name                   :string
 #  zip                    :string
 #  birthday               :string
-#  allow_mail             :boolean
-#  seller                 :boolean
+#  allow_mail             :boolean          default(FALSE), not null
+#  seller                 :boolean          default(FALSE), not null
 #  company                :string
 #  contact_name           :string
 #  addr_1                 :string
@@ -61,4 +61,12 @@ class User < ApplicationRecord
   has_many   :blacklist_users, through: :blacklists, source: :to_user
 
   accepts_nested_attributes_for :mylists
+
+  validates :bank_account_type, inclusion: {in: Product.states.keys}, allow_blank: true
+  validates :allow_mail, inclusion: {in: [true, false]}
+  validates :seller,     inclusion: {in: [true, false]}
+
+  enum bank_account_type: { "普通" => 100, "当座" => 200 }
+
+
 end

@@ -11,17 +11,19 @@
 #
 
 class ProductImage < ApplicationRecord
-  IMAGE_NUM = 5
+  IMAGE_NUM = 10
 
   mount_uploader :image, ProductImageUploader
 
   belongs_to :product
 
-  validate :product_images_number_of_product
+  # validate :product_images_number_of_product
 
-  def product_images_number_of_product
-    if product && product.product_images.count > IMAGE_NUM
-      errors.add(:product_image, " : 画像ファイルの数は1商品に#{IMAGE_NUM}枚までです")
-    end
-  end
+  private
+
+  # def product_images_number_of_product
+  #   if product && product.product_images.count > IMAGE_NUM
+  #     errors.add(:product_image, " : 画像ファイルの数は1商品に#{IMAGE_NUM}枚までです")
+  #   end
+  # end
 end

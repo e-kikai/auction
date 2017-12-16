@@ -1,0 +1,95 @@
+- set_meta_tags title: @product.name
+- breadcrumb    :products_show, @product
+
+h3.product-title = @product.name
+.row
+  .col-md-8
+    - if @product.product_images.first
+      #product-carousel.carousel.slide data-ride="carousel" data-interval="false"
+        .carousel-inner
+          - @product.product_images.each_with_index do |pi, i|
+            - if i == 0
+              .item.active = image_tag pi.image.view.url
+            - else
+              .item = image_tag pi.image.view.url
+        a.left.carousel-control href="#product-carousel" data-slide="prev"
+          span.glyphicon.glyphicon-chevron-left
+        a.right.carousel-control href="#product-carousel" data-slide="next"
+          span.glyphicon.glyphicon-chevron-right
+
+    div
+      - @product.product_images.each_with_index do |pi, i|
+        = link_to(image_tag(pi.image.thumb.url), "javascript:$('#product-carousel').carousel(#{i})")
+
+    .panel.panel-default
+      .panel-body
+        dl.dl-horizontal
+          dt 開始日時
+          dd = @product.created_at
+          dt 終了日時
+          dd = @product.dulation_end
+          dt 送料負担
+          dd = @product.shipping_user
+          dt 商品の状態
+          dd
+            = @product.state
+            = @product.state_comment
+          dt 返品の可否
+          dd
+            = @product.returns ? '可' : '不可'
+            = @product.returns_comment
+          dt 開始価格
+          dd = number_to_currency(@product.start_price)
+
+  .col-md-4
+    .panel.panel-default
+      .panel-body
+        dl.dl-horizontal
+          dt 入札件数
+          dd #{@product.bids.length} 件
+          dt 残り時間
+          dd #{@product.remaining_time}
+      .panel-body style="background:#EEE;"
+        h2 現在価格 #{number_to_currency @product.max_price}
+        = button_tag "入札する", class: "btn btn-warning btn-lg center-block", data: { toggle: :modal, target: "#bid-modal"}
+
+      - if @product.prompt_dicision_price
+        .panel-body style="background:#EEE;"
+          h2 即決価格 #{number_to_currency @product.prompt_dicision_price}
+          = button_tag "今すぐ落札する", class: "btn btn-danger btn-lg center-block", data: { toggle: :modal, target: "#prompt-modal"}
+
+      .panel-body
+        h4 出品者情報
+        . = @product.user.company
+        = link_to "この出品者のほかの商品", "/products/?q[company_id_eq]=1"
+
+.row
+  h4.product-description 商品説明
+  = simple_format(@product.description)
+
+
+.modal.fade#bid-modal
+  .modal-dialog
+    .modal-content
+      .modal-header
+        = button_tag "×", class: :close, data: { dismiss: :modal }
+        h4.modal-title 入札する
+      .modal-body
+        = form_for @bid, url: "/bids/conf", method: :post do |f|
+          = f.label :amount
+          = (f.text_field :amount, value: (@product.max_price + (@product.bids_count > 0 ? @product.bid_unit : 0)), class: "form-control price", required: "required") + " 円"
+
+          = f.button "入札する", class: "btn btn-warning btn-lg center-block"
+
+.modal.fade#prompt-modal
+  .modal-dialog
+    .modal-content
+      .modal-header
+        = button_tag "×", class: :close, data: { dismiss: :modal }
+        h4.modal-title 今すぐ落札
+      .modal-body
+        = form_for @bid, url: "/bids/prompt_conf", method: :post do |f|
+          = f.label "即決金額"
+          = number_to_currency(@product.prompt_dicision_price)
+
+          = f.button "確認する", class: "btn btn-danger btn-lg center-block"

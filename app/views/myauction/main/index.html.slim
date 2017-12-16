@@ -1,1 +1,12 @@
-h2 マイ・オークション
+- set_meta_tags title: "マイ・オークション"
+- breadcrumb    :myauction
+
+.navbar.navbar-default
+  ul.nav.navbar-nav
+    li = link_to "ウォッチリスト", "myauction/mylists"
+    li = link_to "入札中", "myauction/bids"
+    li = link_to "落札分", "myauction/bids/end"
+    - if current_user.try(:seller?)
+      li = link_to "出品する", "/myauction/products/new"
+      li = link_to "出品一覧", "/myauction/products/"
+    li = link_to "ログアウト", "/users/sign_out", method: :delete

@@ -16,7 +16,10 @@
           | カテゴリから探す
           .pull-right
             .glyphicon.glyphicon-menu-right
-      .panel-body
+      ul.list-group
+        - @root_categories.each do |ca|
+          = link_to ca.name, "categories/#{ca.id}", class: "list-group-item"
+
 
   .col-md-6
     .panel.panel-default

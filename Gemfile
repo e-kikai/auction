@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0'
+gem 'rails-i18n'
 
 # Use sqlite3 as the database for Active Record
 gem 'pg'
@@ -48,6 +49,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem "shoulda-matchers"
 end
 
 gem 'ransack'  # 検索
@@ -63,14 +65,17 @@ gem 'devise-i18n'
 gem 'devise-i18n-views'
 gem 'devise-encryptable'
 
+gem 'activeadmin', github: 'activeadmin' # 管理者ページ
+gem 'active_bootstrap_skin'
+
 gem 'gretel'         # パンくず
 gem 'charwidth'      # 全角半角自動変換
 gem 'kaminari'       # ページャ
 gem 'kakurenbo-puti' # 論理削除
 
+# フォーム関連
 gem 'nested_form'
-# gem 'simple_form'
-
+gem 'simple_form'
 
 group :development do
   # デプロイ

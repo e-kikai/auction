@@ -1,0 +1,26 @@
+h3 検索結果
+
+.row
+  .col-md-2
+    | 検索条件
+  .col-md-10
+    = paginate @pproducts
+
+    table.product-table.table.table-striped.table-hover.table-condensed _fixedhead='rows:1'
+      tr
+        th.img
+        th
+        th.num  = sort_link(@search, :max_price)
+        th.num  = sort_link(@search, :prompt_dicision_price)
+        th.num  = sort_link(@search, :bids_count)
+        th.num  = sort_link(@search, :dulation_end, "残り時間")
+      - @pproducts.each do |pr|
+        tr
+          td.img
+            - if pr.product_images.first.present?
+              = image_tag pr.product_images.first.image.thumb.url
+          td = link_to pr.name, "/products/#{pr.id}"
+          td.num = number_to_currency(pr.max_price)
+          td.num = (number_to_currency(pr.prompt_dicision_price))
+          td.num = (pr.bids_count)
+          td.num = pr.remaining_time

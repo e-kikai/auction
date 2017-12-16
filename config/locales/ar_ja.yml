@@ -6,3 +6,21 @@ ja:
         password: パスワード
         password_confirmation: パスワード確認
         email: メールアドレス
+      caegory:
+        name: カテゴリ名
+      product:
+        category_id: カテゴリ
+        name: 商品名
+        description: 説明
+        dulation_end: 終了日時
+        start_price: 開始価格
+        prompt_dicision_price: 即決価格
+        shipping_user: 送料負担
+        state: 商品の状態
+        state_comment: 商品の状態(備考)
+        returns: 返品の可否
+        returns_comment: 返品の可否(備考)
+        max_price: 現在価格
+        bids_count: 入札数
+      bid:
+        amount: 入札金額

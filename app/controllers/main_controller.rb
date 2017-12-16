@@ -1,6 +1,6 @@
 class MainController < ApplicationController
   def index
-    @categories = Category.all
+    @root_categories = Category.root_categories
 
     # 最近チェックした商品
 

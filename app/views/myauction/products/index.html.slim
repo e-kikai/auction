@@ -1,0 +1,20 @@
+- set_meta_tags title: "出品一覧"
+- breadcrumb    :myauction_products
+
+h3 出品一覧
+
+- if @products.length == 0
+  p 出品している商品はありません
+- else
+  table.table.table-hover.table-condensed.table-striped
+    tr
+      th 商品名
+      th 最高金額
+      th 入札数
+      th
+    - @products.each do |pr|
+      tr
+        td = link_to pr.name, "/products/#{pr.id}"
+        td = number_to_currency pr.start_price
+        td
+        td

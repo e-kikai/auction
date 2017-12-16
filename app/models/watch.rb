@@ -1,16 +1,16 @@
 # == Schema Information
 #
-# Table name: mylists
+# Table name: watches
 #
 #  id                :integer          not null, primary key
-#  user_id           :integer
-#  product_id        :integer
+#  user_id           :integer          not null
+#  product_id        :integer          not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  soft_destroyed_at :datetime
 #
 
-class Mylist < ApplicationRecord
+class Watch < ApplicationRecord
   soft_deletable
   default_scope { without_soft_destroyed }
 

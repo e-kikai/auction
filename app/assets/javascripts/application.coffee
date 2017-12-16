@@ -17,7 +17,7 @@
 #= require moment
 #= require moment/locale/ja
 #= require turbolinks
-#= require_tree .
+# require_tree .
 
 $(document).on 'ready, turbolinks:load', ->
   # # フォーム共通 : フォーム自動全選択
