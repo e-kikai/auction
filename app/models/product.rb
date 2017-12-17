@@ -48,13 +48,12 @@ class Product < ApplicationRecord
 
   belongs_to :user,     required: true
   belongs_to :category, required: true
+  belongs_to :max_bid,  class_name: "Bid", required: false
 
   # has_many   :product_images, -> { order(:order_no, :id) }
   has_many   :product_images
   # has_one    :top_image,      -> { order(:order_no, :id) }, class_name: "ProductImage"
   has_many   :bids
-  has_one    :top_bid,    -> { result_order }, class_name: "Bid"
-  has_one    :second_bid, -> { result_order.second }, class_name: "Bid"
   has_many   :mylists
   has_many   :mylist_users, through: :mylists, source: :user
 
@@ -100,25 +99,37 @@ class Product < ApplicationRecord
 
   before_create :default_max_price
 
-  def top_bid
-    bids.result_order.first
-  end
-
-  def second_bid
-    bids.result_order[1]
-  end
-
-  def set_max_price
-    self.max_price = if top_bid.blank?
-      start_price
-    elsif second_bid.blank?
-      start_price
+  ### 現在の最高入札と入札金額を比較 ###
+  def versus(bid)
+    if max_bid.blank?
+      # 入札なしの場合
+      self.max_price = start_price
+      self.max_bid   = bid
+    elsif max_bid.user == bid.user
+      # 再入札(入札金額の変更)
+      self.max_bid   = bid
+    elsif bid.amount > max_bid.amount + bid_unit
+      # 新しい入札の勝ち(入札単位以上)
+      self.max_price = max_bid.amount + bid_unit
+      self.max_bid   = bid
+    elsif bid.amount > max_bid.amount
+      # 新しい入札の勝ち(入札単位以下)
+      self.max_price = bid.amount
+      self.max_bid   = bid
+    elsif max_bid.amount > bid.amount + bid_unit
+      # 現在の入札の勝ち(入札単位以上)
+      self.max_price = bid.amount + bid_unit
     else
-
+      # その他(現在の入札の勝ち、入札単位以下)
+      self.max_price = max_bid.amount
     end
+
+    self.bids_count += 1
+
+    save
   end
 
-  # 残り時間を取得
+  ### 残り時間を取得 ###
   def remaining_time
     second = ((dulation_end.presence || Time.now) - Time.now).round
     if second >= (60 * 60 * 24)
@@ -134,7 +145,7 @@ class Product < ApplicationRecord
     end
   end
 
-  # 現在金額の入札単位を取得
+  ### 現在金額の入札単位を取得 ###
   def bid_unit
     case
     when max_price < 1000;    10
@@ -143,6 +154,11 @@ class Product < ApplicationRecord
     when max_price < 50000;  500
     else                    1000
     end
+  end
+
+  ### 開催中か ###
+  def finished?
+    dulation_end <= Time.now
   end
 
   private

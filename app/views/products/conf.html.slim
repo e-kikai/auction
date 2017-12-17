@@ -1,0 +1,16 @@
+- set_meta_tags title: "入札確認"
+- breadcrumb    :products_conf, @product
+
+h3.product-title = @product.name
+
+.row
+  .col-md-4.col-md-offset-4
+    h3 入札確認
+    h2 入札金額 #{number_to_currency(@bid.amount)}
+    p この金額で入札します。よろしいですか。
+    p ※ 入札はキャンセルできません
+
+    = form_for @bid, url: "/products/#{@product.id}/bid", method: :post do |f|
+      = f.hidden_field :amount
+
+      = f.button "規約に同意して入札する", class: "btn btn-warning btn-lg center-block"

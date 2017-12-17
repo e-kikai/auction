@@ -9,7 +9,7 @@ crumb :something do |title|
 end
 
 crumb :search do |q|
-  link   "検索結果", search_path(q: q)
+  link   "検索結果", "/products/"
   parent :root
 end
 
@@ -25,6 +25,11 @@ end
 crumb :products_show do |pr|
   link   pr.name, "/products/#{pr.id}"
   parent :category, pr.category
+end
+
+crumb :products_conf do |pr|
+  link   pr.name, "/products/#{pr.id}/conf"
+  parent :products_show, pr
 end
 
 ### マイ・オークション ###

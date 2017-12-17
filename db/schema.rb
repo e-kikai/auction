@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171215035136) do
+ActiveRecord::Schema.define(version: 20171216132953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -140,6 +140,8 @@ ActiveRecord::Schema.define(version: 20171215035136) do
     t.datetime "soft_destroyed_at"
     t.integer "max_price", default: 0
     t.integer "bids_count", default: 0
+    t.integer "max_bid_id"
+    t.integer "resale_count", default: 0
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["soft_destroyed_at"], name: "index_products_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_products_on_user_id"

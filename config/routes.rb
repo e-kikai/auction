@@ -6,15 +6,17 @@ Rails.application.routes.draw do
 
   root to: "main#index"
 
-  resources :products,   only: [:index, :show]
-  resources :categories, only: [:index, :show]
-  resources :bids,       only: [:create] do
+  resources :products,   only: [:index, :show] do
     member do
-      post :conf
-      post :prompt_conf
-      post :prompt_create
+      get  "bid" => :conf
+      post :bid
+      get  "prompt" => :prompt_conf
+      post :prompt
+      get  :result
     end
   end
+
+  resources :categories, only: [:index, :show]
 
 
   ### マイ・オークション ###

@@ -15,6 +15,8 @@ class Bid < ApplicationRecord
   soft_deletable
   default_scope { without_soft_destroyed }
 
+  after_save :versus
+
   belongs_to :user
   belongs_to :product
 
@@ -27,10 +29,17 @@ class Bid < ApplicationRecord
   private
 
   def validate_amount
-    if product.bids_count > 0 && amount.to_i < product.max_price + product.bid_unit
+    if product.finished?
+      errors[:base] << ("この商品は、入札期間は終了しています")
+    elsif product.bids_count > 0 && amount < product.max_price + product.bid_unit
       errors[:amount] << ("は、現在金額より#{product.bid_unit}円以上高値を入力してください")
-    elsif amount.to_i < product.max_price
+    elsif amount < product.start_price
       errors[:amount] << ("は、現在金額より高値を入力してください")
     end
+  end
+
+  ### 現在の最高入札と入札金額を比較 ###
+  def versus
+    product.versus(self)
   end
 end
