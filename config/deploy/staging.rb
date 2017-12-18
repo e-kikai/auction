@@ -6,6 +6,16 @@
 # server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
+role :app, %w{ec2-user@aws_auction_staging}
+role :web, %w{ec2-user@aws_auction_staging}
+role :db,  %w{ec2-user@aws_auction_staging}
+
+set :rails_env,        :staging
+set :unicorn_rack_env, :staging
+set :unicorn_options,  " -p 3000 "
+
+ask :branch, 'master'
+set :pty, false
 
 
 

@@ -84,7 +84,7 @@ group :development do
   gem "capistrano-bundler"
   gem "capistrano3-unicorn"
   # gem 'capistrano-sidekiq'
-  gem 'capistrano-bower'
+  # gem 'capistrano-bower'
 
   gem 'listen', '~> 3.0.5'
 
