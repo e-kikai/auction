@@ -16,6 +16,8 @@
  *= require_self
  */
 
+$icon-font-path: "bootstrap-sass/assets/fonts/bootstrap/"
+
  /// header ///
  header {
 
@@ -94,7 +96,7 @@
    tr.img {
      width: 120px;
    }
-   
+
    td.img {
     width: 160px;
     height: 120px;
