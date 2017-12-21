@@ -61,6 +61,17 @@ scss:
         . = f.text_field :returns_comment, class: "form-control"
         p.help-block 【任意】備考があれば記入してください
 
+    tr
+      th = f.label :early_termination
+      td
+        .form-inline
+          = f.check_box :early_termination, {}, true, false
+    tr
+      th = f.label :auto_extension
+      td
+        .form-inline
+          = f.check_box :auto_extension, {}, true, false
+
 
   = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
     span.glyphicon.glyphicon-save

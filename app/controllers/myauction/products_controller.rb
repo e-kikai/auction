@@ -56,5 +56,5 @@ end
 
 def product_params
   params.require(:product).permit(:category_id, :name, :description, :dulation_end, :start_price, :prompt_dicision_price,
-    :shipping_user, :state, :state_comment, :returns, :returns_comment, product_images_attributes: [:image])
+    :shipping_user, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, product_images_attributes: [:image])
 end

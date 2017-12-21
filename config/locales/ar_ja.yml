@@ -22,5 +22,9 @@ ja:
         returns_comment: 返品の可否(備考)
         max_price: 現在価格
         bids_count: 入札数
+        early_termination: 早期終了
+        auto_extension: 自動延長
+        addr_1: 発送元の都道府県
+        addr_2: 発送元の地域
       bid:
         amount: 入札金額

@@ -14,7 +14,7 @@ crumb :search do |q|
 end
 
 crumb :category do |ca|
-  link ca.name, "/products?q[category_id]=#{ca.id}"
+  link ca.name, "/products?category_id=#{ca.id}"
   if ca.root?
     parent :root
   else

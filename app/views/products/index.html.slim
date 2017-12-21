@@ -1,9 +1,13 @@
 - set_meta_tags title: "検索結果"
-- breadcrumb    :search
+- if @category.present?
+  - breadcrumb :category, @category
+- else
+  - breadcrumb :search
 
 .row
   .col-md-2
-    | 検索条件
+    .panel.panel-default
+      .panel-heading カテゴリ
   .col-md-10
     = paginate @pproducts
 

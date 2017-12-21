@@ -50,6 +50,10 @@ h3.product-title = @product.name
           dd
             = @product.returns ? '可' : '不可'
             = @product.returns_comment
+          dt 自動延長
+          dd = @product.auto_extension ? 'あり' : 'なし'
+          dt 早期終了
+          dd = @product.early_termination ? 'あり' : 'なし'
           dt 開始価格
           dd = number_to_currency(@product.start_price)
 

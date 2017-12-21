@@ -101,7 +101,13 @@ class Product < ApplicationRecord
 
   ### 現在の最高入札と入札金額を比較 ###
   def versus(bid)
-    if max_bid.blank?
+
+    if prompt_dicision_price.present? && prompt_dicision_price <= bid.amount
+      # 即決価格
+      self.max_price = prompt_dicision_price
+      self.max_bid   = bid
+      self.dulation_end = Time.now
+    elsif max_bid.blank?
       # 入札なしの場合
       self.max_price = start_price
       self.max_bid   = bid
@@ -124,7 +130,13 @@ class Product < ApplicationRecord
       self.max_price = max_bid.amount
     end
 
+    # 入札数インクリメント
     self.bids_count += 1
+
+    # 自動延長処理
+    if auto_extension && dulation_end <= (Time.now + 5.minute)
+      self.dulation_end + 5.minute
+    end
 
     save
   end
