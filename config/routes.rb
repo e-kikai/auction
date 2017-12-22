@@ -24,7 +24,8 @@ Rails.application.routes.draw do
 
     ### 共通ページ ###
     root to: "main#index"
-    resources :mylists,    only: [:index, :create, :destroy]
+    resources :bids,       only: [:index, :create]
+    resources :watches,    only: [:index, :create, :destroy]
     resources :follows,    only: [:index, :create, :destroy]
     resources :blacklists, only: [:index, :create, :destroy]
 

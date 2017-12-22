@@ -50,8 +50,8 @@ class User < ApplicationRecord
 
   has_many   :products
   has_many   :bids
-  has_many   :mylists
-  has_many   :mylist_products, :through => :mylists, source: :product
+  has_many   :watches
+  has_many   :watch_products, through: :watches, source: :product
   has_many   :follows
   has_many   :follow_users, through: :follows, source: :to_user
   has_many   :followers, foreign_key: :to_user_id, class_name: "Follow"
@@ -60,7 +60,7 @@ class User < ApplicationRecord
   has_many   :blacklists
   has_many   :blacklist_users, through: :blacklists, source: :to_user
 
-  accepts_nested_attributes_for :mylists
+  # accepts_nested_attributes_for :watches
 
   validates :bank_account_type, inclusion: {in: Product.states.keys}, allow_blank: true
   validates :allow_mail, inclusion: {in: [true, false]}

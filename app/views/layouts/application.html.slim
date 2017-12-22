@@ -34,7 +34,7 @@ html
           li = link_to "/myauction" do
             .glyphicon.glyphicon-user
             span.btn-content マイ・オークション
-          li = link_to "/myauction/watch" do
+          li = link_to "/myauction/watches" do
             .glyphicon.glyphicon-star
             span.btn-content ウォッチリスト
           - if current_user.try(:seller?)
@@ -43,6 +43,17 @@ html
               span.btn-content 出品する
 
     .container
+      .row
+        .col-md-6
+          .form-group.search-area
+            = form_tag "/products", method: :get, class: "form-inline" do
+              .input-group
+                = hidden_field_tag :category_id, params[:category_id]
+                = text_field_tag :keywords, params[:keywords], class: "form-control", placeholder: "キーワードから探す"
+                span.input-group-btn
+                  = button_tag "検索", class: "btn btn-default"
+
+
       = raw breadcrumbs style: :bootstrap, semantic: true
 
       - if notice.present?

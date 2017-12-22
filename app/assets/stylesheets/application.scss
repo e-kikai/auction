@@ -19,16 +19,21 @@
 // $icon-font-path: "bootstrap-sass/assets/fonts/bootstrap/";
 // @import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
- /// header ///
- header {
+/// header ///
+header {
 
- }
+}
 
- /// footer ///
- footer {
-   margin-top: 16px;
-   text-align: center;
- }
+//// キーワード検索
+.search-area .input-group {
+  width: 100%;
+}
+
+/// footer ///
+footer {
+  margin-top: 16px;
+  text-align: center;
+}
 
 /// ボタン ///
 .btn {
@@ -95,7 +100,7 @@
 
  .product-table {
    tr.img {
-     width: 120px;
+     width: 160px;
    }
 
    td.img {
@@ -107,4 +112,33 @@
       max-height: 120px;
     }
    }
+
+   tr.img_mini {
+     width: 100px;
+   }
+
+   td.img_mini {
+    width: 100px;
+    height: 75px;
+
+    img {
+      max-width: 100px;
+      max-height: 75px;
+    }
+   }
+ }
+
+ table {
+   td.num {
+     width: 80px;
+     text-align: right;
+   }
+
+   th.num {
+     width: 80px;
+   }
+ }
+
+ .watch-star {
+   color: #DD0;
  }

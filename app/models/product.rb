@@ -82,7 +82,7 @@ class Product < ApplicationRecord
 
   scope :with_keywords, -> keywords {
     if keywords.present?
-      columns = [:name, :description, :state, :state_comment, :returns_comment, :addr_1, :addr_2]
+      columns = [:name, :description, :state_comment, :returns_comment, :addr_1, :addr_2]
       where(keywords.split(/[[:space:]]/).reject(&:empty?).map {|keyword|
         columns.map { |a| arel_table[a].matches("%#{keyword}%") }.inject(:or)
       }.inject(:and))

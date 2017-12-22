@@ -1,4 +1,6 @@
 class Myauction::ProductsController < Myauction::ApplicationController
+  before_action :get_product,        only: [:edit, :update, :destroy]
+
   def index
     # respond_to do |format|
     #   format.html
@@ -41,20 +43,25 @@ class Myauction::ProductsController < Myauction::ApplicationController
       render :edit
     end
   end
-end
 
-private
+  def destroy
+    @product.soft_destroy!
+    redirect_to "/myauction/products/", notice: "#{@product.name}を削除しました"
+  end
 
-def products
-  @search   = @open_now.products.where(company_id: current_company.id).search(params[:q])
-  @products = @search.result.order(:app_no)
-end
+  private
 
-def get_product
-  @product = @products.find(params[:id])
-end
+  def products
+    @search   = @open_now.products.where(company_id: current_company.id).search(params[:q])
+    @products = @search.result.order(:app_no)
+  end
 
-def product_params
-  params.require(:product).permit(:category_id, :name, :description, :dulation_end, :start_price, :prompt_dicision_price,
-    :shipping_user, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, product_images_attributes: [:image])
+  def get_product
+    @product = current_user.products.find(params[:id])
+  end
+
+  def product_params
+    params.require(:product).permit(:category_id, :name, :description, :dulation_end, :start_price, :prompt_dicision_price,
+      :shipping_user, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, product_images_attributes: [:image])
+  end
 end

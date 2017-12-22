@@ -19,4 +19,7 @@ class Watch < ApplicationRecord
 
   validates :user_id,    presence: true
   validates :product_id, presence: true
+
+  validates :product_id, uniqueness: { message: "は、既にウォッチリストに登録されています。", scope: [:user_id, :soft_destroyed_at] }
+
 end

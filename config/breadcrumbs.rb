@@ -28,7 +28,7 @@ crumb :products_show do |pr|
 end
 
 crumb :products_conf do |pr|
-  link   pr.name, "/products/#{pr.id}/conf"
+  link   "入札確認", "/products/#{pr.id}/conf"
   parent :products_show, pr
 end
 
@@ -45,5 +45,10 @@ end
 
 crumb :myauction_products do
   link   "出品一覧", "/myauction/products"
+  parent :myauction
+end
+
+crumb :myauction_something do |title|
+  link   title
   parent :myauction
 end

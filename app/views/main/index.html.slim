@@ -18,7 +18,7 @@
             .glyphicon.glyphicon-menu-right
       ul.list-group
         - @root_categories.each do |ca|
-          = link_to ca.name, "products?cateogry_id=#{ca.id}", class: "list-group-item"
+          = link_to ca.name, "products?category_id=#{ca.id}", class: "list-group-item"
 
   .col-md-6
     .panel.panel-default

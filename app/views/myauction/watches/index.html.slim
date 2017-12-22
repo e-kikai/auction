@@ -1,13 +1,10 @@
+- set_meta_tags title: "ウォッチリスト"
+- breadcrumb    :myauction_products
 
-- title = params[:finished] ? "出品終了分" : "出品中"
-
-- set_meta_tags title: title
-- breadcrumb    :myauction_something, title
-
-h3 = title
+h3 ウォッチリスト
 
 - if @products.length == 0
-  p 出品している商品はありません
+  p ウォッチリストに登録している商品はありません
 - else
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
@@ -15,9 +12,9 @@ h3 = title
       th 商品名
       th.num 現在価格
       th.num 入札数
+      th 出品者
       th 最高入札者
-      - unless params[:finished]
-        th.num 残り時間
+      th.num 残り時間
       th
     - @products.each do |pr|
       tr
@@ -27,12 +24,11 @@ h3 = title
         td = link_to pr.name, "/products/#{pr.id}"
         td.num = number_to_currency pr.start_price
         td.num = pr.bids_count
+        td = pr.user.company
         td = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
-        - unless params[:finished]
-          td.num = pr.remaining_time
-          td
-            = link_to({ action: :destroy, id: pr.id }, method: :delete, data: { confirm: "#{pr.name}\n\nこの出品商品を削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
+        td.num = pr.remaining_time
+        td
+          - unless params[:finished]
+            = link_to({ action: :destroy, id: pr.id }, method: :delete, class: "btn btn-danger") do
               span.glyphicon.glyphicon-remove
-              =< "削除"
-        - else
-          td
+              =< "リストから削除"

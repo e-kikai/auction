@@ -5,9 +5,19 @@
   - breadcrumb :search
 
 .row
+  = @products.to_sql
   .col-md-2
     .panel.panel-default
       .panel-heading カテゴリ
+
+    .panel.panel-default
+      .panel-heading 商品の状態
+      .panel-body
+        = link_to "すべて", params.to_unsafe_h.merge(q: {state_eq: nil})
+        | |
+        = link_to "中古", params.to_unsafe_h.merge(q: {state_eq: Product.states["中古"]})
+        | |
+        = link_to "新品", params.to_unsafe_h.merge(q: {state_eq: Product.states["新品"]})
   .col-md-10
     = paginate @pproducts
 
@@ -19,13 +29,17 @@
         th.num  = sort_link(@search, :prompt_dicision_price)
         th.num  = sort_link(@search, :bids_count)
         th.num  = sort_link(@search, :dulation_end, "残り時間")
+        th
       - @pproducts.each do |pr|
         tr
           td.img
             - if pr.product_images.first.present?
-              = image_tag pr.product_images.first.image.thumb.url
+              = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
           td = link_to pr.name, "/products/#{pr.id}"
           td.num = number_to_currency(pr.max_price)
           td.num = (number_to_currency(pr.prompt_dicision_price))
           td.num = (pr.bids_count)
           td.num = pr.remaining_time
+          td = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
+            span.glyphicon.glyphicon-star.watch-star
+            span.btn-content ウォッチ

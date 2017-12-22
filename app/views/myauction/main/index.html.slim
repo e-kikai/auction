@@ -3,10 +3,11 @@
 
 .navbar.navbar-default
   ul.nav.navbar-nav
-    li = link_to "ウォッチリスト", "myauction/mylists"
-    li = link_to "入札中", "myauction/bids"
-    li = link_to "落札分", "myauction/bids/end"
+    li = link_to "ウォッチリスト", "/myauction/watches"
+    li = link_to "入札中", "/myauction/bids"
+    li = link_to "落札分", "/myauction/bids"
     - if current_user.try(:seller?)
       li = link_to "出品する", "/myauction/products/new"
-      li = link_to "出品一覧", "/myauction/products/"
+      li = link_to "出品中",     "/myauction/products/"
+      li = link_to "出品終了分", "/myauction/products?finished=1"
     li = link_to "ログアウト", "/users/sign_out", method: :delete
