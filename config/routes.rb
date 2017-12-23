@@ -6,15 +6,7 @@ Rails.application.routes.draw do
 
   root to: "main#index"
 
-  resources :products,   only: [:index, :show] do
-    member do
-      get  "bid" => :conf
-      post :bid
-      get  "prompt" => :prompt_conf
-      post :prompt
-      get  :result
-    end
-  end
+  resources :products,   only: [:index, :show] 
 
   resources :categories, only: [:index, :show]
 
@@ -24,7 +16,7 @@ Rails.application.routes.draw do
 
     ### 共通ページ ###
     root to: "main#index"
-    resources :bids,       only: [:index, :create]
+    resources :bids,       only: [:index, :new, :create, :show]
     resources :watches,    only: [:index, :create, :destroy]
     resources :follows,    only: [:index, :create, :destroy]
     resources :blacklists, only: [:index, :create, :destroy]

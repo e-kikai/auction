@@ -97,10 +97,10 @@ h3.product-title = @product.name
         = button_tag "×", class: :close, data: { dismiss: :modal }
         h4.modal-title 入札する
       .modal-body
-        = form_for @bid, url: "/products/#{@product.id}/bid", method: :get do |f|
-          h2
-            | 入札金額
-            = (f.text_field :amount, value: (@product.max_price + (@product.bids_count > 0 ? @product.bid_unit : 0)), class: "form-control price", required: "required") + " 円"
+        h2 入札金額
+        = form_for @bid, url: "/myauction/bids/new", method: :get, html: { class: "form-inline" }  do |f|
+          = hidden_field_tag :id, @product.id
+          .form-group = (f.text_field :amount, value: (@product.max_price + (@product.bids_count > 0 ? @product.bid_unit : 0)), class: "form-control price", required: "required") + " 円"
 
           = f.button "確認する", class: "btn btn-default btn-lg center-block"
 
@@ -112,7 +112,7 @@ h3.product-title = @product.name
         = button_tag "×", class: :close, data: { dismiss: :modal }
         h4.modal-title 今すぐ落札
       .modal-body
-        = form_for @bid, url: "/products/#{@product.id}/prompt", method: :get do |f|
+        = form_for @bid, url: "/myauction/bids/new?id=#{@product.id}", method: :get, html: { class: "form-inline" }  do |f|
           h2 即決価格 #{number_to_currency @product.prompt_dicision_price}
           p この金額で落札されます。
 

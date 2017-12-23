@@ -3,29 +3,38 @@ class Myauction::BidsController < Myauction::ApplicationController
     @search    = current_user.bid_products.finished(params[:finished]).search(params[:q])
 
     @products  = @search.result
-    @pproducts = @products.page(params[:page])
+    @pproducts = @products.page(params[:page]).includes(:product_images)
   end
 
   def new
     @product = Product.find(params[:id])
     @bid = @product.bids.new(bid_params)
     @bid.user = current_user
-
-    render :show unless @bid.valid?
   end
 
   def create
+    @product = Product.find(params[:id])
     @bid = @product.bids.new(bid_params)
     @bid.user = current_user
 
     if @bid.save
-      redirect_to "/myauction/#{@product.id}/result", notice: "#{@product.name}に入札を行いました"
+      if @product.max_bid.user == current_user
+        mes = if @product.finished?
+          "おめでとうございます。あなたが落札しました。"
+        else
+          "入札を行いました。現在あなたの入札が最高金額です。"
+        end
+        redirect_to "/myauction/bids/#{@bid.id}", notice: mes
+      else
+        render :new, alert: "あなたの入札より、自動入札が上回りました。"
+      end
     else
-      render :show
+      render :new
     end
   end
 
   def show
+    @bid = Bid.find(params[:id])
   end
 
   private

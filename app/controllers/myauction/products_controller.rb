@@ -15,7 +15,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
     @search    = current_user.products.finished(params[:finished]).search(params[:q])
 
     @products  = @search.result
-    @pproducts = @products.page(params[:page])
+    @pproducts = @products.page(params[:page]).includes(:product_images, max_bid: :user)
   end
 
   def new

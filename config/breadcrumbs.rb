@@ -27,15 +27,22 @@ crumb :products_show do |pr|
   parent :category, pr.category
 end
 
-crumb :products_conf do |pr|
-  link   "入札確認", "/products/#{pr.id}/conf"
-  parent :products_show, pr
-end
+
 
 ### マイ・オークション ###
 crumb :myauction do
   link   "マイ・オークション", "/myauction/"
   parent :root
+end
+
+crumb :myauction_bid_new do |pr|
+  link   "入札確認", "/products/bids/new?id=#{pr.id}"
+  parent :products_show, pr
+end
+
+crumb :myauction_bid_show do |bi|
+  link   "入札完了", "/products/bids/#{bi.id}"
+  parent :products_show, bi.product
 end
 
 crumb :myauction_products_new do

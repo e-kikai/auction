@@ -6,7 +6,9 @@
 
 h3 = title
 
-- if @products.length == 0
+= paginate @pproducts
+
+- if @pproducts.length == 0
   p 出品している商品はありません
 - else
   table.table.table-hover.table-condensed.table-striped.product-table
@@ -19,7 +21,7 @@ h3 = title
       - unless params[:finished]
         th.num 残り時間
       th
-    - @products.each do |pr|
+    - @pproducts.each do |pr|
       tr
         td.img_mini
           - if pr.product_images.first.present?
