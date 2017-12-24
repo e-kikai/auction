@@ -50,7 +50,7 @@ class User < ApplicationRecord
 
   has_many   :products
   has_many   :bids
-  has_many   :bid_products, through: :bids, source: :product
+  has_many   :bid_products, -> { distinct(:product_id) }, through: :bids, source: :product
   has_many   :watches
   has_many   :watch_products, through: :watches, source: :product
   has_many   :follows

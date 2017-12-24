@@ -1,9 +1,11 @@
 class Myauction::BidsController < Myauction::ApplicationController
   def index
     @search    = current_user.bid_products.finished(params[:finished]).search(params[:q])
+    # w = current_user.bids.pluck(:product_id)
+    # @search    = Product.where(id: w).finished(params[:finished]).search(params[:q])
 
     @products  = @search.result
-    @pproducts = @products.page(params[:page]).includes(:product_images)
+    @pproducts = @products.page(params[:page]).preload(:product_images, :user, max_bid: :user)
   end
 
   def new

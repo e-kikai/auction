@@ -17,7 +17,7 @@ h3 入札中
       th 出品者
       th 最高入札者
       th.num 残り時間
-    - @products.each do |pr|
+    - @pproducts.each do |pr|
       tr
         td.img_mini
           - if pr.product_images.first.present?

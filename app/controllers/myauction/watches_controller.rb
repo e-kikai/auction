@@ -3,7 +3,7 @@ class Myauction::WatchesController <  Myauction::ApplicationController
     @search    = current_user.watch_products.finished(params[:finished]).search(params[:q])
 
     @products  = @search.result
-    @pproducts = @products.page(params[:page]).preload(:product_images, :user, max_bid: :users)
+    @pproducts = @products.page(params[:page]).preload(:user, :product_images, max_bid: :user)
   end
 
   def create
