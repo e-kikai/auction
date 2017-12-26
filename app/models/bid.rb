@@ -31,6 +31,8 @@ class Bid < ApplicationRecord
   def validate_amount
     if product.finished?
       errors[:base] << ("この商品は、入札期間は終了しています")
+    elsif amount.blank?
+      errors[:amount] << ("を入力してください")
     elsif product.bids_count > 0 && amount < product.max_price + product.bid_unit
       errors[:amount] << ("は、現在金額より#{product.bid_unit}円以上高値を入力してください")
     elsif amount < product.start_price

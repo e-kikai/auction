@@ -28,7 +28,9 @@ class Myauction::BidsController < Myauction::ApplicationController
         end
         redirect_to "/myauction/bids/#{@bid.id}", notice: mes
       else
-        render :new, alert: "あなたの入札より、自動入札が上回りました。"
+        @bid.amount = nil # 一度金額をクリア
+        flash.now[:alert] = "あなたの入札より、自動入札が上回りました。"
+        render :new
       end
     else
       render :new

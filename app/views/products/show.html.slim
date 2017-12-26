@@ -54,6 +54,8 @@ h3.product-title = @product.name
           dd = @product.auto_extension ? 'あり' : 'なし'
           dt 早期終了
           dd = @product.early_termination ? 'あり' : 'なし'
+          dt 最高入札者
+          dd = @product.max_bid.present? ? @product.max_bid.user.account : "-"
           dt 開始価格
           dd = number_to_currency(@product.start_price)
 
@@ -112,8 +114,9 @@ h3.product-title = @product.name
         = button_tag "×", class: :close, data: { dismiss: :modal }
         h4.modal-title 今すぐ落札
       .modal-body
-        = form_for @bid, url: "/myauction/bids/new?id=#{@product.id}", method: :get, html: { class: "form-inline" }  do |f|
+        = form_for @bid, url: "/myauction/bids/new", method: :get, html: { class: "form-inline" }  do |f|
           h2 即決価格 #{number_to_currency @product.prompt_dicision_price}
           p この金額で落札されます。
-
+          = hidden_field_tag :id, @product.id
+          = f.hidden_field :amount, value: @product.prompt_dicision_price
           = f.button "確認する", class: "btn btn-default btn-lg center-block"
