@@ -10,8 +10,10 @@ ja:
         name: カテゴリ名
       product:
         category_id: カテゴリ
+        code: 管理番号
         name: 商品名
-        description: 説明
+        description: 商品説明
+        dulation_start: 開始日時
         dulation_end: 終了日時
         start_price: 開始価格
         prompt_dicision_price: 即決価格
@@ -26,5 +28,6 @@ ja:
         auto_extension: 自動延長
         addr_1: 発送元の都道府県
         addr_2: 発送元の地域
+        auto_resale: 自動再出品
       bid:
         amount: 入札金額

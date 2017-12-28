@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   root to: "main#index"
 
-  resources :products,   only: [:index, :show] 
+  resources :products,   only: [:index, :show]
 
   resources :categories, only: [:index, :show]
 
@@ -25,10 +25,7 @@ Rails.application.routes.draw do
 
     ### 出品関係 ###
     resources :categories, only: [:index]
-    resources :products,   only: [:index, :new, :create, :edit, :update, :destroy] do
-      collection do
-        get   :end
-      end
-    end
+    resources :products,   only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :templates,   only: [:index, :new, :create, :edit, :update, :destroy] 
   end
 end

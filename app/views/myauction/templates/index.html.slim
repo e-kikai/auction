@@ -1,0 +1,26 @@
+- set_meta_tags title: "テンプレート"
+- breadcrumb    :myauction_something, "テンプレート"
+
+h3 テンプレート
+
+= paginate @ptemplates
+
+- if @ptemplates.length == 0
+  p テンプレートはありません
+- else
+  table.table.table-hover.table-condensed.table-striped.product-table
+    tr
+      th テンプレート名
+      th
+      th
+    - @ptemplates.each do |pr|
+      tr
+        td = link_to pr.name, "/myauction/templates/#{pr.id}/edit"
+        td
+          = link_to("/myauction/products/new?id=#{pr.id}", class: "btn btn-success") do
+            span.glyphicon.glyphicon-paste
+            =< "利用"
+        td
+          = link_to({ action: :destroy, id: pr.id }, method: :delete, data: { confirm: "#{pr.name}\n\nこの出品商品を削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
+            span.glyphicon.glyphicon-remove
+            =< "削除"

@@ -19,9 +19,15 @@ class Myauction::ProductsController < Myauction::ApplicationController
   end
 
   def new
-    @product = current_user.products.new
-    ProductImage::IMAGE_NUM.times { @product.product_images.build }
+    if params[:id].present?
+      @product = Product.templates.find(params[:id])
+      @product.attributes = {name: "", start_price: nil, prompt_dicision_price: nil, dulation_start: nil, dulation_end: nil, category_id: nil}
+      @product.description = "\n\n" + @product.description
+    else
+      @product = current_user.products.new
+    end
 
+    ProductImage::IMAGE_NUM.times { @product.product_images.build }
   end
 
   def create
@@ -51,17 +57,14 @@ class Myauction::ProductsController < Myauction::ApplicationController
 
   private
 
-  def products
-    @search   = @open_now.products.where(company_id: current_company.id).search(params[:q])
-    @products = @search.result.order(:app_no)
-  end
-
   def get_product
     @product = current_user.products.find(params[:id])
   end
 
   def product_params
-    params.require(:product).permit(:category_id, :name, :description, :dulation_end, :start_price, :prompt_dicision_price,
-      :shipping_user, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, product_images_attributes: [:image])
+    params.require(:product).permit(:category_id, :code, :name, :description,
+      :dulation_start, :dulation_end, :start_price, :prompt_dicision_price,
+      :shipping_user, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, :auto_resale, :template,
+      product_images_attributes: [:image])
   end
 end

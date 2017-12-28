@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171216132953) do
+ActiveRecord::Schema.define(version: 20171228080721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -142,6 +142,8 @@ ActiveRecord::Schema.define(version: 20171216132953) do
     t.integer "bids_count", default: 0
     t.integer "max_bid_id"
     t.integer "resale_count", default: 0
+    t.string "code"
+    t.boolean "template", default: false, null: false
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["soft_destroyed_at"], name: "index_products_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_products_on_user_id"

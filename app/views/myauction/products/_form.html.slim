@@ -1,0 +1,99 @@
+- if f.object.errors.full_messages.present?
+  .col-md-offset-2.col-md-8
+    .alert.alert-danger
+      ul
+        - f.object.errors.full_messages.each do |msg|
+          li = msg
+
+table.table.table-hover.table-condensed.form-table
+  - if local_assigns[:template].present?
+    tr
+      th = f.label :name, "テンプレート名", class: :required
+      td = f.text_field :name, class: "form-control", required: "required"
+    tr
+      th = f.label :description, "共通コメント"
+      td
+        = f.text_area :description, class: "form-control"
+        p.help-block 商品詳細の下に共通に表示される部分です
+
+    = f.hidden_field :template,              value: true
+
+    = f.hidden_field :category_id,           value: 1
+    = f.hidden_field :dulation_start,        value: Time.at(0)
+    = f.hidden_field :dulation_end,          value: Time.at(0)
+    = f.hidden_field :start_price,           value: 1
+    = f.hidden_field :prompt_dicision_price, value: 1
+
+  - else
+    = f.hidden_field :template,              value: false
+
+    tr
+      th = f.label :category_id, class: :required
+      td = f.select :category_id, Category.pluck(:name, :id), {include_blank: "-- ジャンルを選択 --"}, class: "form-control", required: "required"
+    tr
+      th = f.label :code
+      td = f.text_field :code, class: "form-control short"
+    tr
+      th = f.label :name, class: :required
+      td = f.text_field :name, class: "form-control", required: "required"
+    tr
+      th = f.label :description
+      td = f.text_area :description, class: "form-control"
+
+    tr
+      th = f.label :dulation_start
+      td = f.datetime_select :dulation_start, :default => Time.now, minute_step: 5, class: "form-control"
+    tr
+      th = f.label :dulation_end
+      td = f.datetime_select :dulation_end, :default => Time.now + 7.day, minute_step: 5, class: "form-control"
+
+    tr.form-inline
+      th = f.label :start_price, class: :required
+      td = (f.text_field :start_price, class: "form-control price", required: "required") + " 円"
+    tr.form-inline
+      th = f.label :prompt_dicision_price
+      td = (f.text_field :prompt_dicision_price, class: "form-control price") + " 円"
+
+    tr
+      th 画像
+      td
+        = f.fields_for :product_images do |pi|
+          = pi.file_field :image
+
+  tr
+    th = f.label :shipping_user, class: :required
+    td.form-inline
+      - Product.shipping_users.each do |k, v|
+        label.radio-inline = f.radio_button(:shipping_user, k, inline: true) + k
+
+  tr
+    th = f.label :state, class: :required
+    td
+      .form-inline
+        - Product.states.each do |k, v|
+          label.radio-inline = f.radio_button(:state, k, inline: true) + k
+      . = f.text_field :state_comment, class: "form-control"
+      p.help-block 【任意】備考があれば記入してください 例) ジャンク品、開封後一度も使っていません、など
+
+  tr
+    th = f.label :returns, class: :required
+    td
+      .form-inline
+        = f.check_box :returns, {}, true, false
+      . = f.text_field :returns_comment, class: "form-control"
+      p.help-block 【任意】備考があれば記入してください
+
+  tr
+    th = f.label :early_termination
+    td = f.check_box :early_termination, {}, true, false
+  tr
+    th = f.label :auto_extension
+    td = f.check_box :auto_extension, {}, true, false
+
+  tr
+    th = f.label :auto_resale
+    td = f.select :auto_resale, 1..10, { prompt: "しない"} , { class: "form-control short" }
+
+= f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+  span.glyphicon.glyphicon-save
+  span.btn-content 保存

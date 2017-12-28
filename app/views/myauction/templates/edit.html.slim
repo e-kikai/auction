@@ -1,0 +1,5 @@
+- set_meta_tags title: "テンプレート変更"
+- breadcrumb    :myauction_something, "テンプレート変更"
+
+= form_for @template, url: "/myauction/templates/#{@template.id}", method: :patch, html: { class: 'form-horizontal' } do |f|
+  = render "/myauction/products/form", f: f, template: true

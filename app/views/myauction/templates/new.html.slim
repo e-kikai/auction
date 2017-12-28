@@ -1,0 +1,5 @@
+- set_meta_tags title: "テンプレート作成"
+- breadcrumb    :myauction_something, "テンプレート作成"
+
+= form_for @template, url: "/myauction/templates", method: :post, html: { class: 'form-horizontal' } do |f|
+  = render "/myauction/products/form", f: f, template: true

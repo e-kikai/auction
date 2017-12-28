@@ -1,4 +1,3 @@
-
 - title = params[:finished] ? "出品終了分" : "出品中"
 
 - set_meta_tags title: title
@@ -33,7 +32,7 @@ h3 = title
         - unless params[:finished]
           td.num = pr.remaining_time
           td
-            = link_to({ action: :destroy, id: pr.id }, method: :delete, data: { confirm: "#{pr.name}\n\nこの出品商品を削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
+            = link_to({ action: :destroy, id: pr.id }, method: :delete, data: { confirm: "#{pr.name}\n\nこのテンプレートを削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
               span.glyphicon.glyphicon-remove
               =< "削除"
         - else

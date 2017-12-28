@@ -137,6 +137,20 @@ footer {
    th.num {
      width: 80px;
    }
+
+   &.form-table {
+     input.short {
+       width: 200px;
+     }
+
+     select.short {
+       width: 120px;
+     }
+
+     textarea {
+       height: 300px;
+     }
+   }
  }
 
  .watch-star {

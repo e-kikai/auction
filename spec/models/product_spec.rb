@@ -40,6 +40,11 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  soft_destroyed_at      :datetime
+#  max_price              :integer          default(0)
+#  bids_count             :integer          default(0)
+#  max_bid_id             :integer
+#  resale_count           :integer          default(0)
+#  code                   :string
 #
 
 require 'rails_helper'

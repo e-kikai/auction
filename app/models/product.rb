@@ -40,6 +40,11 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  soft_destroyed_at      :datetime
+#  max_price              :integer          default(0)
+#  bids_count             :integer          default(0)
+#  max_bid_id             :integer
+#  resale_count           :integer          default(0)
+#  code                   :string
 #
 
 class Product < ApplicationRecord
@@ -63,7 +68,7 @@ class Product < ApplicationRecord
   enum state:         { "中古" => 0, "新品" => 100, "その他" => 200 }
 
   validates :name,        presence: true
-  validates :start_price, presence: true, numericality: { only_integer: true, greater_than: 1 }
+  validates :start_price, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :prompt_dicision_price, numericality: { only_integer: true }, allow_blank: true
 
   # validates :type,          presence: true, inclusion: {in: Product.types.keys}
@@ -91,10 +96,14 @@ class Product < ApplicationRecord
 
   scope :finished, -> finished {
     if finished.blank?
-      where("dulation_end > ?", Time.now)
+      where("dulation_end > ?", Time.now).where("template = ?", false)
     else
-      where("dulation_end BETWEEN ? AND ?", Time.now-120.day, Time.now)
+      where("dulation_end BETWEEN ? AND ?", Time.now-120.day, Time.now).where("template = ?", false)
     end
+  }
+
+  scope :templates, -> {
+    where("template = ?", true)
   }
 
   before_create :default_max_price
