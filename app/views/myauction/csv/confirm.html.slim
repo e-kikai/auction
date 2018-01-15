@@ -1,0 +1,76 @@
+- set_meta_tags title: "CSVインポート 確認"
+- breadcrumb    :myauction_csv_confirm
+
+coffee:
+  $ ->
+    ### プログレスバー処理 ###
+    $('form#confirm_submit').on 'submit', ->
+      timer = setInterval ->
+        $.ajax
+          type: 'GET'
+          url: '/myauction/csv/progress'
+          success: (res) ->
+            per = Math.round((res.progress - $('#max').val()) / $('#count').val() * 100) + '%'
+
+            $('#import_progress').text(per).css({width: per})
+      , 3000
+
+.col-md-offset-3.col-md-6
+  table.table.table-hover.table-condensed.form-table
+    tr
+      th = label_tag :category_id, "カテゴリ"
+      td = @category.name
+    tr
+      th = label_tag :template_id, "テンプレート"
+      td = @template.name
+
+.row
+  .help-block
+    . エラーがある商品は登録されません
+
+= hidden_field_tag "count", @res.count { |pr| pr.errors.blank? }
+= hidden_field_tag "max", current_user.products.count
+
+= form_tag({action: :create}, method: :post, class: 'form-horizontal', id: :confirm_submit) do
+  / = render "/bid/products/csv"
+  .scroll_div
+    table.table.table-striped.table-hover.table-condensed _fixedhead='rows:1;cols:1'
+      tr
+        th 管理番号
+        th 商品名
+        th エラー
+        th 商品説明
+        th 開始日時
+        th 終了日時
+        th 開始金額
+        th 即決金額
+        / th マシンライフID
+
+      - @res.each do |pr|
+        tr
+          td = pr.code
+          td = pr.name
+          td
+            - pr.errors.full_messages.each do |msg|
+              li = msg
+          td = simple_format(pr.description)
+          td = pr.dulation_start
+          td = pr.dulation_end
+          td.num = number_to_currency(pr.start_price)
+          td.num = number_to_currency(pr.prompt_dicision_price)
+          / td.njm = p.machinelife_id
+
+        - if pr.errors.blank?
+          - [:code, :name, :description, :dulation_start, :dulation_end, :start_price, :prompt_dicision_price, :machinelife_id, :machinelife_images].each do |k|
+            = hidden_field_tag "products[][#{k}]", pr[k]
+
+    = hidden_field_tag "category_id", params[:category_id]
+    = hidden_field_tag "template_id", params[:template_id]
+
+    .progress
+      #import_progress.progress-bar.progress-bar-striped.active role="progressbar" style="width:0%;"
+
+
+    = button_tag(data: { "disable-with" => "処理中..."}, class: "btn btn-default btn-square btn-submit center-block") do
+      span.glyphicon.glyphicon-save
+      =< "インポート開始"

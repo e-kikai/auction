@@ -1,0 +1,43 @@
+- set_meta_tags title: "CSVインポート"
+- breadcrumb    :myauction_csv_new
+
+coffee:
+  $ ->
+    $('.js-csv-upload').fileinput
+      showPreview: false
+      maxFileCount: 1
+      browseClass: 'btn btn-info fileinput-browse-button'
+      browseIcon: '<span class="glyphicon glyphicon-folder-open"></span>'
+      browseLabel: ' ファイル選択'
+      removeClass: 'btn btn-warning'
+      removeIcon: '<span class="glyphicon glyphicon-remove"></span>'
+      removeLabel: ' キャンセル'
+      uploadClass: 'btn btn-success fileinput-upload-button'
+      uploadIcon: '<i class="fa fa-upload"></i>'
+      uploadLabel: ' アップロード'
+      allowedFileExtensions: ['csv']
+      msgValidationError: '''
+        <span class="text-danger">
+          <span class="glyphicon glyphicon-alert"></span>アップロードできるファイル形式はCSVです。
+        </span>
+      '''
+
+= form_tag({action: :confirm}, multipart: true, method: :post, class: 'form-horizontal') do
+  .col-md-8.col-md-offset-2
+     .form-group
+       = label_tag :category_id, "カテゴリ"
+       = select_tag :category_id, options_for_select(Category.pluck(:name, :id)), prompt: "-- ジャンルを選択 --", class: "form-control", required: "required"
+
+     .form-group
+       = label_tag :template_id, "テンプレート"
+       = select_tag :template_id, options_for_select(@template_selectors), {prompt: "-- テンプレートを選択 --", class: "form-control", required: "required"}
+
+     .form-group
+       = label_tag :csv, "CSVファイル"
+       = file_field_tag :file, class: "js-csv-upload", required: "required"
+       .help-block
+         li 商品名、開始日時、終了日時、開始金額は必須です
+
+     = button_tag(data: { "disable-with" => "アップロード中..."}, class: "btn btn-default btn-square btn-submit center-block") do
+       span.glyphicon.glyphicon-upload
+       =< "アップロード"

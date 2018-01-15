@@ -51,6 +51,11 @@ class Product < ApplicationRecord
   soft_deletable
   default_scope { without_soft_destroyed }
 
+  ### クラス定数 ###
+  STATUS = { before: -1, start: 0, failure: 1, success: 2 }
+  MACHINELIFE_MEDIA_PASS = "http://www.zenkiren.net/media/machine/"
+
+  ### relations ###
   belongs_to :user,     required: true
   belongs_to :category, required: true
   belongs_to :max_bid,  class_name: "Bid", required: false
@@ -62,11 +67,14 @@ class Product < ApplicationRecord
   has_many   :mylists
   has_many   :mylist_users, through: :mylists, source: :user
 
+  ### enum ###
   enum type:          { "オークションで出品" => 0, "定額で出品" => 100 }
   enum shipping_user: { "落札者" => 0, "出品者" => 100 }
   enum delivery_date: { "1〜2で発送" => 0, "3〜7で発送" => 100, "8日以降に発送" => 200 }
   enum state:         { "中古" => 0, "新品" => 100, "その他" => 200 }
 
+
+  ### validates ###
   validates :name,        presence: true
   validates :start_price, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :prompt_dicision_price, numericality: { only_integer: true }, allow_blank: true
@@ -82,9 +90,16 @@ class Product < ApplicationRecord
   validates :special_featured,  inclusion: {in: [true, false]}
   validates :special_bold,      inclusion: {in: [true, false]}
   validates :special_bgcolor,   inclusion: {in: [true, false]}
+  validates :template,          inclusion: {in: [true, false]}
 
-  accepts_nested_attributes_for :product_images
+  validates :machinelife_id, uniqueness: { scope: [ :soft_destroyed_at ] }, allow_blank: true
 
+
+  ### nest ###
+  accepts_nested_attributes_for :product_images, allow_destroy: true
+
+
+  ### SCOPE ###
   scope :with_keywords, -> keywords {
     if keywords.present?
       columns = [:name, :description, :state_comment, :returns_comment, :addr_1, :addr_2]
@@ -102,10 +117,20 @@ class Product < ApplicationRecord
     end
   }
 
+  scope :status, -> cond {
+    case cond.to_i
+    when STATUS[:before];  where("dulation_start > ? ", Time.now) # 開始前
+    when STATUS[:failure]; where("dulation_end BETWEEN ? AND ? AND max_bid_id IS NULL", Time.now-120.day, Time.now) # 未落札
+    when STATUS[:success]; where("dulation_end BETWEEN ? AND ? AND max_bid_id IS NOT NULL", Time.now-120.day, Time.now) # 落札済み
+    else;                  where("dulation_start <= ? AND dulation_end > ?", Time.now, Time.now) # 公開中
+    end
+  }
+
   scope :templates, -> {
     where("template = ?", true)
   }
 
+  ### callback ###
   before_create :default_max_price
 
   ### 現在の最高入札と入札金額を比較 ###
@@ -180,6 +205,92 @@ class Product < ApplicationRecord
   ### 開催中か ###
   def finished?
     dulation_end <= Time.now
+  end
+
+  ### (テンプレートから)商品情報をコピー ###
+  def dup_init
+    product = dup
+    product.attributes = {name: "", start_price: nil, prompt_dicision_price: nil, dulation_start: nil, dulation_end: nil, category_id: nil, template: false, description: ("\n\n" + product.description)}
+
+    product
+  end
+
+  ### CSVインポート確認 ###
+  def self.import_conf(file, category_id, template)
+    res = []
+    CSV.foreach(file.path, { headers: true, encoding: Encoding::SJIS }) do |row|
+      product = template.dup_init # テンプレートコピー
+
+      product.attributes =  {
+        category_id:           category_id,
+        code:                  row[0],
+        name:                  row[1],
+        description:           row[2],
+        dulation_start:        row[3],
+        dulation_end:          row[4],
+        start_price:           row[5],
+        prompt_dicision_price: row[6],
+        machinelife_id:        row[7],
+        machinelife_images:    row[8],
+      }
+
+      product.valid?
+      res << product
+    end
+
+    res
+  end
+
+  def self.import(products, category_id, template, user_id)
+    # インポート開始
+    Importlog.create(user_id: user_id, status: "インポート開始")
+
+    products.each do |pr|
+      begin
+        # 商品情報
+        product = template.dup_init
+        product.attributes = (pr.merge(category_id: category_id, description: (pr[:description] + "\n\n" + template.description)))
+        product.save!
+      rescue => e
+        Importlog.create(
+          user_id: user_id,
+          product: product,
+          code:    product.code,
+          message: e.message,
+          status:  "商品登録エラー",
+        )
+      end
+
+      # 画像情報
+      product[:machinelife_images].split.each do |img_url|
+        begin
+          img = product.product_images.new
+          img.remote_image_url = MACHINELIFE_MEDIA_PASS + img_url
+          img.save!
+        rescue => e
+          Importlog.create(
+            user_id: user_id,
+            product: product,
+            code:    product.code,
+            url:     MACHINELIFE_MEDIA_PASS + img_url,
+            message: e.message,
+            status:  "画像登録エラー",
+          )
+        end
+      end
+    end
+
+    # インポート終了
+    Importlog.create(user_id: user_id, status: "インポート終了")
+  end
+
+  def self.status_label(cond)
+    case cond.to_i
+    when STATUS[:before];  "開始前の出品商品"
+    when STATUS[:failure]; "出品終了(未落札)"
+    when STATUS[:success]; "出品終了(落札済み)"
+    else;                  "出品中"
+    end
   end
 
   private

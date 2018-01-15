@@ -1,5 +1,5 @@
 - set_meta_tags title: "出品する"
 - breadcrumb    :myauction_products_new
 
-= form_for @product, url: "/myauction/products", method: :post, html: { class: 'form-horizontal' } do |f|
+= form_for @product, url: "/myauction/products/", html: { multipart: true, method: :post, class: 'form-horizontal' } do |f|
   = render "form", f: f

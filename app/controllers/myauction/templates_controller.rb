@@ -5,7 +5,7 @@ class Myauction::TemplatesController < Myauction::ApplicationController
     @search    = current_user.products.templates.search(params[:q])
 
     @templates  = @search.result
-    @ptemplates = @templates.page(params[:page]).includes(:product_images, max_bid: :user)
+    @ptemplates = @templates.page(params[:page])
   end
 
   def new

@@ -12,6 +12,7 @@
  *
  *= require bootstrap-sass
  *= require devise_bootstrap_views
+ *= require bootstrap-fileinput
  * require_tree .
  *= require_self
  */
@@ -156,3 +157,12 @@ footer {
  .watch-star {
    color: #DD0;
  }
+
+.fileinput-upload-button {
+  display: none;
+}
+
+.form_img {
+  display: inline-block;
+  margin: 4px 16px;
+}

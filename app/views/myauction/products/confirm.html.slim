@@ -1,0 +1,96 @@
+- set_meta_tags title: "確認"
+- breadcrumb    :myauction_products_confirm
+
+= form_for @product, url: "/myauction/products/", method: :post, html: { class: 'form-horizontal' } do |f|
+  - if f.object.errors.full_messages.present?
+    .col-md-offset-2.col-md-8
+      .alert.alert-danger
+        ul
+          - f.object.errors.full_messages.each do |msg|
+            li = msg
+
+  table.table.table-hover.table-condensed.form-table
+    = f.hidden_field :template, value: false
+
+    tr
+      th = f.label :category_id, class: :required
+      td = @product.category.name
+      = f.hidden_field :category_id
+
+    tr
+      th = f.label :code
+      td = @product.code
+      = f.hidden_field :code
+    tr
+      th = f.label :name, class: :required
+      td = @product.name
+      = f.hidden_field :name
+    tr
+      th = f.label :description
+      td = simple_format(@product.description)
+      = f.hidden_field :description
+
+    tr
+      th = f.label :dulation_start
+      td = @product.dulation_start
+      = f.hidden_field :dulation_start
+    tr
+      th = f.label :dulation_end
+      td = @product.dulation_end
+      = f.hidden_field :dulation_end
+
+    tr.form-inline
+      th = f.label :start_price, class: :required
+      td = number_to_currency(@product.start_price)
+      = f.hidden_field :start_price
+
+    tr.form-inline
+      th = f.label :prompt_dicision_price
+      td = number_to_currency(@product.prompt_dicision_price)
+      = f.hidden_field :prompt_dicision_price
+
+    tr
+      th 画像
+      td
+        = f.fields_for :product_images do |pi|
+          = pi.file_field :image
+
+    tr
+      th = f.label :shipping_user, class: :required
+      td.form-inline = @product.shipping_user
+      = f.hidden_field :shipping_user
+
+    tr
+      th = f.label :state, class: :required
+      td
+        .form-inline
+          = @product.state
+          = @product.state_comment
+          = f.hidden_field :state
+          = f.hidden_field :state_comment
+
+    tr
+      th = f.label :returns, class: :required
+      td
+        .form-inline
+          = @product.returns ? '可' : '不可'
+          = @product.returns_comment
+          = f.hidden_field :returns
+          = f.hidden_field :returns_comment
+    tr
+      th = f.label :early_termination
+      td = @product.early_termination ? 'あり' : 'なし'
+      = f.hidden_field :early_termination
+
+    tr
+      th = f.label :auto_extension
+      td = @product.auto_extension ? 'あり' : 'なし'
+      = f.hidden_field :auto_extension
+
+    tr
+      th = f.label :auto_resale
+      td = f.select :auto_resale, 1..10, { prompt: "しない"} , { class: "form-control short" }
+
+  = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+    span.glyphicon.glyphicon-save
+    span.btn-content 保存

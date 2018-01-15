@@ -1,15 +1,50 @@
 - set_meta_tags title: "マイ・オークション"
 - breadcrumb    :myauction
 
-.navbar.navbar-default
-  ul.nav.navbar-nav
-    li = link_to "ウォッチリスト", "/myauction/watches"
-    li = link_to "入札中", "/myauction/bids"
-    li = link_to "落札分", "/myauction/bids"
-    - if current_user.try(:seller?)
-      li = link_to "出品する", "/myauction/products/new"
-      li = link_to "出品中",     "/myauction/products/"
-      li = link_to "出品終了分", "/myauction/products?finished=1"
-      li = link_to "テンプレート一覧", "/myauction/templates/"
-      li = link_to "テンプレート作成", "/myauction/templates/new"
-    li = link_to "ログアウト", "/users/sign_out", method: :delete
+/ .navbar.navbar-default
+/   ul.nav.navbar-nav
+/     li = link_to "ウォッチリスト", "/myauction/watches"
+/     li = link_to "入札中", "/myauction/bids"
+/     li = link_to "落札分", "/myauction/bids"
+/     - if current_user.try(:seller?)
+/       li = link_to "出品する", "/myauction/products/new"
+/       li = link_to "出品中",     "/myauction/products/"
+/       li = link_to "出品終了分", "/myauction/products?finished=1"
+/       li = link_to "テンプレート一覧", "/myauction/templates/"
+/       li = link_to "テンプレート作成", "/myauction/templates/new"
+/     li = link_to "ログアウト", "/users/sign_out", method: :delete
+
+.row
+  .col-md-3
+    .panel.panel-default
+      .panel-heading 入札
+      ul.nav.nav-pills.nav-stacked
+        li = link_to "ウォッチリスト", "/myauction/watches"
+        li = link_to "入札中",         "/myauction/bids"
+        li = link_to "落札分",         "/myauction/bids"
+
+  - if current_user.try(:seller?)
+    .col-md-3
+      .panel.panel-default
+        .panel-heading 出品
+        ul.nav.nav-pills.nav-stacked
+          li = link_to "出品する",           "/myauction/products/new"
+          li = link_to "開始前の出品商品",   "/myauction/products?cond=-1"
+          li = link_to "出品中",             "/myauction/products/"
+          li = link_to "出品終了分(未落札)", "/myauction/products?cond=1"
+          li = link_to "出品終了分(落札済)", "/myauction/products?cond=2"
+          li = link_to "テンプレート一覧",   "/myauction/templates/"
+          li = link_to "テンプレート作成",   "/myauction/templates/new"
+
+    .col-md-3
+      .panel.panel-default
+        .panel-heading インポート
+        ul.nav.nav-pills.nav-stacked
+          li = link_to "CSVインポート",  "/myauction/csv/new"
+          li = link_to "インポートログ", "/myauction/importlog"
+
+  .col-md-3
+    .panel.panel-default
+      .panel-heading その他
+      ul.nav.nav-pills.nav-stacked
+        li = link_to "ログアウト", "/users/sign_out", method: :delete

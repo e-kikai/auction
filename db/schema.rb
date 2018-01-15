@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171228080721) do
+ActiveRecord::Schema.define(version: 20180114144919) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,19 @@ ActiveRecord::Schema.define(version: 20171228080721) do
     t.index ["user_id"], name: "index_follows_on_user_id"
   end
 
+  create_table "importlogs", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "product_id"
+    t.integer "status"
+    t.string "code"
+    t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "url"
+    t.index ["product_id"], name: "index_importlogs_on_product_id"
+    t.index ["user_id"], name: "index_importlogs_on_user_id"
+  end
+
   create_table "product_images", force: :cascade do |t|
     t.bigint "product_id", null: false
     t.text "image", null: false
@@ -144,6 +157,8 @@ ActiveRecord::Schema.define(version: 20171228080721) do
     t.integer "resale_count", default: 0
     t.string "code"
     t.boolean "template", default: false, null: false
+    t.integer "machinelife_id"
+    t.text "machinelife_images"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["soft_destroyed_at"], name: "index_products_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_products_on_user_id"

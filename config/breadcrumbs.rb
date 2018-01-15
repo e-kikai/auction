@@ -50,9 +50,24 @@ crumb :myauction_products_new do
   parent :myauction
 end
 
+crumb :myauction_products_confirm do
+  link   "確認", "/myauction/products/confirm"
+  parent :myauction_products_new
+end
+
 crumb :myauction_products do
   link   "出品一覧", "/myauction/products"
   parent :myauction
+end
+
+crumb :myauction_csv_new do
+  link   "CSVインポート", "/myauction/csv/new"
+  parent :myauction
+end
+
+crumb :myauction_csv_confirm do
+  link   "確認", "/myauction/csv/confirm"
+  parent :myauction_csv_new
 end
 
 crumb :myauction_something do |title|

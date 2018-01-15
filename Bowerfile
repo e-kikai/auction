@@ -11,3 +11,5 @@ asset 'bootstrap-select'
 asset 'bootstrap-fileinput'
 
 asset 'moment'
+
+# asset 'dropzone'

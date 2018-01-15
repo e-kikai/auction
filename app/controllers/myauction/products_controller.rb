@@ -12,26 +12,34 @@ class Myauction::ProductsController < Myauction::ApplicationController
     #     end
     #   }
     # end
-    @search    = current_user.products.finished(params[:finished]).search(params[:q])
+    @search    = current_user.products.status(params[:cond]).search(params[:q])
 
     @products  = @search.result
     @pproducts = @products.page(params[:page]).includes(:product_images, max_bid: :user)
   end
 
   def new
-    if params[:id].present?
-      @product = Product.templates.find(params[:id])
-      @product.attributes = {name: "", start_price: nil, prompt_dicision_price: nil, dulation_start: nil, dulation_end: nil, category_id: nil}
-      @product.description = "\n\n" + @product.description
+    @product = if params[:id].present?
+      Product.templates.find(params[:id]).dup_init
     else
-      @product = current_user.products.new
+      current_user.products.new
     end
 
-    ProductImage::IMAGE_NUM.times { @product.product_images.build }
+    # ProductImage::IMAGE_NUM.times { @product.product_images.build }
   end
+
+  # def confirm
+  #   @product = current_user.products.new(product_params)
+  #   render :new if @product.invalid?
+  # end
 
   def create
     @product = current_user.products.new(product_params)
+    params[:images].each { |img| @product.product_images.new(image: img) }
+
+    # if params[:back]
+    #   render :new
+    # elsif @product.save
     if @product.save
       redirect_to "/myauction/", notice: "#{@product.name}を登録しました"
     else
@@ -43,6 +51,8 @@ class Myauction::ProductsController < Myauction::ApplicationController
   end
 
   def update
+    params[:images].each { |img| @product.product_images.new(image: img) }
+
     if @product.update(product_params)
       redirect_to "/myauction/", notice: "#{@product.name}を変更しました"
     else
@@ -65,6 +75,6 @@ class Myauction::ProductsController < Myauction::ApplicationController
     params.require(:product).permit(:category_id, :code, :name, :description,
       :dulation_start, :dulation_end, :start_price, :prompt_dicision_price,
       :shipping_user, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, :auto_resale, :template,
-      product_images_attributes: [:image])
+      product_images_attributes: [:id, :image, :_destroy])
   end
 end

@@ -25,7 +25,20 @@ Rails.application.routes.draw do
 
     ### 出品関係 ###
     resources :categories, only: [:index]
-    resources :products,   only: [:index, :new, :create, :edit, :update, :destroy]
-    resources :templates,   only: [:index, :new, :create, :edit, :update, :destroy] 
+    resources :products,   only: [:index, :new, :create, :edit, :update, :destroy] do
+      collection do
+        post 'confirm'
+      end
+    end
+
+    resources :templates,  only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :importlog,  only: [:index,]
+
+    resources :csv,   only: [:new, :create] do
+      collection do
+        post 'confirm'
+        get  'progress'
+      end
+    end
   end
 end

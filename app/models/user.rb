@@ -61,6 +61,8 @@ class User < ApplicationRecord
   has_many   :blacklists
   has_many   :blacklist_users, through: :blacklists, source: :to_user
 
+  has_many   :importlogs
+
   # accepts_nested_attributes_for :watches
 
   validates :bank_account_type, inclusion: {in: Product.states.keys}, allow_blank: true
