@@ -226,12 +226,12 @@ class Product < ApplicationRecord
         code:                  row[0],
         name:                  row[1],
         description:           row[2],
-        dulation_start:        row[3],
-        dulation_end:          row[4],
-        start_price:           row[5],
-        prompt_dicision_price: row[6],
-        machinelife_id:        row[7],
-        machinelife_images:    row[8],
+        dulation_start:        "#{row[3]} #{row[4]}",
+        dulation_end:          "#{row[5]} #{row[6]}",
+        start_price:           row[7],
+        prompt_dicision_price: row[8],
+        machinelife_id:        row[9],
+        machinelife_images:    row[10],
       }
 
       product.valid?

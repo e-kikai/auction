@@ -52,8 +52,8 @@ h3.product-title = @product.name
             = @product.returns_comment
           dt 自動延長
           dd = @product.auto_extension ? 'あり' : 'なし'
-          dt 早期終了
-          dd = @product.early_termination ? 'あり' : 'なし'
+          / dt 早期終了
+          / dd = @product.early_termination ? 'あり' : 'なし'
           dt 最高入札者
           dd = @product.max_bid.present? ? @product.max_bid.user.account : "-"
           dt 開始価格

@@ -15,7 +15,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
     @search    = current_user.products.status(params[:cond]).search(params[:q])
 
     @products  = @search.result
-    @pproducts = @products.page(params[:page]).includes(:product_images, max_bid: :user)
+    @pproducts = @products.page(params[:page]).includes(:product_images, max_bid: :user).order(:dulation_start)
   end
 
   def new
@@ -35,7 +35,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
 
   def create
     @product = current_user.products.new(product_params)
-    params[:images].each { |img| @product.product_images.new(image: img) }
+    params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
 
     # if params[:back]
     #   render :new
@@ -51,7 +51,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
   end
 
   def update
-    params[:images].each { |img| @product.product_images.new(image: img) }
+    params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
 
     if @product.update(product_params)
       redirect_to "/myauction/", notice: "#{@product.name}を変更しました"
