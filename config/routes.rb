@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     resources :products,   only: [:index, :new, :create, :edit, :update, :destroy] do
       collection do
         post 'confirm'
+        post 'prompt'
       end
     end
 

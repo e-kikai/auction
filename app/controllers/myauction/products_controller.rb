@@ -1,5 +1,5 @@
 class Myauction::ProductsController < Myauction::ApplicationController
-  before_action :get_product,        only: [:edit, :update, :destroy]
+  before_action :get_product,        only: [:edit, :update, :destroy, :prompt]
 
   def index
     # respond_to do |format|
@@ -63,6 +63,17 @@ class Myauction::ProductsController < Myauction::ApplicationController
   def destroy
     @product.soft_destroy!
     redirect_to "/myauction/products/", notice: "#{@product.name}を削除しました"
+  end
+
+  # 自社即決
+  def prompt
+    @bid = @product.bids.new(user: current_user, amount: @product.prompt_dicision_price)
+
+    if @bid.save
+      redirect_to "/myauction/products", notice: "#{@product.name}を即決価格で自社入札しました"
+    else
+      redirect_to "/myauction/products", alert: "#{@product.name}を即決価格できませんでした"
+    end
   end
 
   private
