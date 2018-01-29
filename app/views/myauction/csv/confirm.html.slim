@@ -13,16 +13,16 @@ coffee:
             per = Math.round((res.progress - $('#max').val()) / $('#count').val() * 100) + '%'
 
             $('#import_progress').text(per).css({width: per})
-      , 3000
+      , 5000
 
 .col-md-offset-3.col-md-6
-  table.table.table-hover.table-condensed.form-table
-    tr
-      th = label_tag :category_id, "カテゴリ"
-      td = @category.name
-    tr
-      th = label_tag :template_id, "テンプレート"
-      td = @template.name
+  / table.table.table-hover.table-condensed.form-table
+  /   tr
+  /     th = label_tag :category_id, "カテゴリ"
+  /     td = @category.name
+  /   tr
+  /     th = label_tag :template_id, "テンプレート"
+  /     td = @template.name
 
 .row
   .help-block
@@ -39,7 +39,9 @@ coffee:
         th 管理番号
         th 商品名
         th エラー
-        th 商品説明
+        / th 商品説明
+        th ジャンル
+        th テンプレート
         th 開始日時
         th 終了日時
         th 開始金額
@@ -53,7 +55,9 @@ coffee:
           td
             - pr.errors.full_messages.each do |msg|
               li = msg
-          td = simple_format(pr.description)
+          / td = simple_format(pr.description)
+          td = pr.category.try(:name)
+          td = pr.template_name
           td = pr.dulation_start
           td = pr.dulation_end
           td.num = number_to_currency(pr.start_price)
@@ -61,15 +65,15 @@ coffee:
           / td.njm = p.machinelife_id
 
         - if pr.errors.blank?
-          - [:code, :name, :description, :dulation_start, :dulation_end, :start_price, :prompt_dicision_price, :machinelife_id, :machinelife_images].each do |k|
+          - [:code, :name, :description, :category_id, :dulation_start, :dulation_end, :start_price, :prompt_dicision_price, :template_id, :machinelife_id, :machinelife_images].each do |k|
             = hidden_field_tag "products[][#{k}]", pr[k]
 
-    = hidden_field_tag "category_id", params[:category_id]
-    = hidden_field_tag "template_id", params[:template_id]
+    / = hidden_field_tag "category_id", params[:category_id]
+    / = hidden_field_tag "template_id", params[:template_id]
 
+    . インポート進捗
     .progress
       #import_progress.progress-bar.progress-bar-striped.active role="progressbar" style="width:0%;"
-
 
     = button_tag(data: { "disable-with" => "処理中..."}, class: "btn btn-default btn-square btn-submit center-block") do
       span.glyphicon.glyphicon-save

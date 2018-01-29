@@ -52,8 +52,9 @@ class Product < ApplicationRecord
   default_scope { without_soft_destroyed }
 
   ### クラス定数 ###
-  STATUS = { before: -1, start: 0, failure: 1, success: 2 }
+  STATUS                 = { before: -1, start: 0, failure: 1, success: 2 }
   MACHINELIFE_MEDIA_PASS = "http://www.zenkiren.net/media/machine/"
+  CSV_MAX_COUNT          = 30
 
   ### relations ###
   belongs_to :user,     required: true
@@ -133,6 +134,9 @@ class Product < ApplicationRecord
   ### callback ###
   before_create :default_max_price
 
+  ### インポート用getter setter ###
+  attr_accessor :template_id, :template_name
+
   ### 現在の最高入札と入札金額を比較 ###
   def versus(bid)
 
@@ -210,50 +214,68 @@ class Product < ApplicationRecord
   ### (テンプレートから)商品情報をコピー ###
   def dup_init
     product = dup
-    product.attributes = {name: "", start_price: nil, prompt_dicision_price: nil, dulation_start: nil, dulation_end: nil, category_id: nil, template: false, description: ("\n\n" + product.description)}
+    product.attributes = {name: "", start_price: nil, prompt_dicision_price: nil, dulation_start: nil, dulation_end: nil, category_id: nil, template: false, description: ("\n\n" + description.to_s)}
 
     product
   end
 
   ### CSVインポート確認 ###
-  def self.import_conf(file, category_id, template)
+  # def self.import_conf(file, category_id, template)
+  def self.import_conf(file, user)
     res = []
     CSV.foreach(file.path, { headers: true, encoding: Encoding::SJIS }) do |row|
-      product = template.dup_init # テンプレートコピー
+      # product = template.dup_init # テンプレートコピー
+
+      template = user.products.templates.find_by(id: row[10]) || user.products.new
+      product  = template.dup_init
 
       product.attributes =  {
-        category_id:           category_id,
+        # category_id:           category_id,
         code:                  row[0],
         name:                  row[1],
         description:           row[2],
-        dulation_start:        "#{row[3]} #{row[4]}",
-        dulation_end:          "#{row[5]} #{row[6]}",
-        start_price:           row[7],
-        prompt_dicision_price: row[8],
-        machinelife_id:        row[9],
-        machinelife_images:    row[10],
+
+        category_id:           row[3],
+        template_id:           row[10],
+        template_name:         template.try(:name),
+
+        dulation_start:        "#{row[4]} #{row[5]}",
+        dulation_end:          "#{row[6]} #{row[7]}",
+        start_price:           row[8],
+        prompt_dicision_price: row[9],
+        machinelife_id:        row[11],
+        machinelife_images:    row[12],
       }
 
       product.valid?
+
       res << product
+
+      break if res.count > CSV_MAX_COUNT
     end
 
     res
   end
 
-  def self.import(products, category_id, template, user_id)
+  # def self.import(products, category_id, template, user_id)
+  def self.import(products, user)
     # インポート開始
-    Importlog.create(user_id: user_id, status: "インポート開始")
+    Importlog.create(user_id: user.id, status: "インポート開始")
 
     products.each do |pr|
       begin
         # 商品情報
-        product = template.dup_init
-        product.attributes = (pr.merge(category_id: category_id, description: (pr[:description] + "\n\n" + template.description)))
+        # product = template.dup_init
+        # product.attributes = (pr.merge(category_id: category_id, description: (pr[:description] + "\n\n" + template.description)))
+
+        template = user.products.templates.find_by(id: pr[:template_id]) || user.products.new
+        product  = template.dup_init
+        product.attributes = (pr.merge(description: (pr[:description] + "\n\n" + template.description.to_s)))
+
         product.save!
       rescue => e
         Importlog.create(
-          user_id: user_id,
+          user_id: user.id,
           product: product,
           code:    product.code,
           message: e.message,
@@ -269,7 +291,7 @@ class Product < ApplicationRecord
           img.save!
         rescue => e
           Importlog.create(
-            user_id: user_id,
+            user_id: user.id,
             product: product,
             code:    product.code,
             url:     MACHINELIFE_MEDIA_PASS + img_url,
@@ -281,7 +303,7 @@ class Product < ApplicationRecord
     end
 
     # インポート終了
-    Importlog.create(user_id: user_id, status: "インポート終了")
+    Importlog.create(user_id: user.id, status: "インポート終了")
   end
 
   def self.status_label(cond)

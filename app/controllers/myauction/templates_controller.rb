@@ -1,11 +1,18 @@
 class Myauction::TemplatesController < Myauction::ApplicationController
   before_action :get_template, only: [:edit, :update, :destroy]
 
+  include Exports
+
   def index
     @search    = current_user.products.templates.search(params[:q])
 
     @templates  = @search.result
     @ptemplates = @templates.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.csv { export_csv "templates.csv" }
+    end
   end
 
   def new

@@ -23,20 +23,31 @@ coffee:
       '''
 
 = form_tag({action: :confirm}, multipart: true, method: :post, class: 'form-horizontal') do
-  .col-md-8.col-md-offset-2
-     .form-group
-       = label_tag :category_id, "カテゴリ"
-       = select_tag :category_id, options_for_select(Category.pluck(:name, :id)), prompt: "-- ジャンルを選択 --", class: "form-control", required: "required"
+  ul.nav.nav-pills
+    li = link_to "/myauction/categories.csv", class: "btn btn-default btn-square" do
+      span.glyphicon.glyphicon-download-alt
+      span.btn-content カテゴリ一覧
 
-     .form-group
-       = label_tag :template_id, "テンプレート"
-       = select_tag :template_id, options_for_select(@template_selectors), {prompt: "-- テンプレートを選択 --", class: "form-control", required: "required"}
+    li = link_to "/myauction/templates.csv", class: "btn btn-default btn-square" do
+      span.glyphicon.glyphicon-download-alt
+      span.btn-content テンプレート一覧
+
+  .col-md-8.col-md-offset-2
+     / .form-group
+     /   = label_tag :category_id, "カテゴリ"
+     /   = select_tag :category_id, options_for_select(Category.pluck(:name, :id)), prompt: "-- ジャンルを選択 --", class: "form-control", required: "required"
+     /
+     / .form-group
+     /   = label_tag :template_id, "テンプレート"
+     /   = select_tag :template_id, options_for_select(@template_selectors), {prompt: "-- テンプレートを選択 --", class: "form-control", required: "required"}
 
      .form-group
        = label_tag :csv, "CSVファイル"
        = file_field_tag :file, class: "js-csv-upload", required: "required"
        .help-block
-         li 商品名、開始日時、終了日時、開始金額は必須です
+         li 同時に#{Product::CSV_MAX_COUNT}件まで登録できます
+         li カテゴリID、商品名、開始日時、終了日時、開始金額は必須です
+
 
      = button_tag(data: { "disable-with" => "アップロード中..."}, class: "btn btn-default btn-square btn-submit center-block") do
        span.glyphicon.glyphicon-upload
