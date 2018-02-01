@@ -29,5 +29,6 @@ ja:
         addr_1: 発送元の都道府県
         addr_2: 発送元の地域
         auto_resale: 自動再出品
+        shipping_no: 発送方法
       bid:
         amount: 入札金額

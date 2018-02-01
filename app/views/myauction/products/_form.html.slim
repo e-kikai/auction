@@ -98,6 +98,10 @@ table.table.table-hover.table-condensed.form-table
         label.radio-inline = f.radio_button(:shipping_user, k, inline: true) + k
 
   tr
+    th = f.label :shipping_no
+    td = f.select :shipping_no, ShippingLabel.where(user_id: current_user.id).pluck(:name, :shipping_no), { prompt: "設定しない"} , { class: "form-control short" }
+
+  tr
     th = f.label :state, class: :required
     td
       .form-inline

@@ -1,7 +1,7 @@
 class Myauction::CsvController < Myauction::ApplicationController
 
   def new
-    @template_selectors  = current_user.products.templates.pluck(:name, :id)
+    # @template_selectors  = current_user.products.templates.pluck(:name, :id)
   end
 
   def confirm

@@ -42,6 +42,15 @@ h3.product-title = @product.name
           dd = @product.dulation_end
           dt 送料負担
           dd = @product.shipping_user
+          - if @shipping_label
+            dt 発送方法
+            dd = @shipping_label.name
+          - if @shipping_fee
+            dt 送料
+            dd
+              . = number_to_currency(@shipping_fee.price)
+              . ※ 送料は目安です
+
           dt 商品の状態
           dd
             = @product.state

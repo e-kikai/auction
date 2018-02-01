@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180114144919) do
+ActiveRecord::Schema.define(version: 20180131054816) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(version: 20180114144919) do
     t.boolean "template", default: false, null: false
     t.integer "machinelife_id"
     t.text "machinelife_images"
+    t.integer "shipping_no"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["soft_destroyed_at"], name: "index_products_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_products_on_user_id"
@@ -171,6 +172,26 @@ ActiveRecord::Schema.define(version: 20180114144919) do
     t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
+  end
+
+  create_table "shipping_fees", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "shipping_no"
+    t.string "addr_1"
+    t.integer "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_shipping_fees_on_user_id"
+  end
+
+  create_table "shipping_labels", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "shipping_no"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.string "#<ActiveRecord::ConnectionAdapters::PostgreSQL::TableDefinition"
+    t.index ["user_id"], name: "index_shipping_labels_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

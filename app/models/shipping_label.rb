@@ -1,0 +1,2 @@
+class ShippingLabel < ApplicationRecord
+end

@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
     resources :templates,  only: [:index, :new, :create, :edit, :update, :destroy]
     resources :importlog,  only: [:index,]
+    resources :shipping,   only: [:index, :new, :create] 
 
     resources :csv,   only: [:new, :create] do
       collection do

@@ -1,0 +1,38 @@
+- set_meta_tags title: "送料設定インポート"
+- breadcrumb    :myauction_something, "送料設定インポート"
+
+coffee:
+  $ ->
+    $('.js-csv-upload').fileinput
+      showPreview: false
+      maxFileCount: 1
+      browseClass: 'btn btn-info fileinput-browse-button'
+      browseIcon: '<span class="glyphicon glyphicon-folder-open"></span>'
+      browseLabel: ' ファイル選択'
+      removeClass: 'btn btn-warning'
+      removeIcon: '<span class="glyphicon glyphicon-remove"></span>'
+      removeLabel: ' キャンセル'
+      uploadClass: 'btn btn-success fileinput-upload-button'
+      uploadIcon: '<i class="fa fa-upload"></i>'
+      uploadLabel: ' アップロード'
+      allowedFileExtensions: ['csv']
+      msgValidationError: '''
+        <span class="text-danger">
+          <span class="glyphicon glyphicon-alert"></span>アップロードできるファイル形式はCSVです。
+        </span>
+      '''
+
+= form_tag({action: :create}, multipart: true, method: :post, class: 'form-horizontal') do
+  ul.nav.nav-pills
+    li = link_to "/myauction/shipping.csv", class: "btn btn-default btn-square" do
+      span.glyphicon.glyphicon-download-alt
+      span.btn-content 送料一覧CSV
+
+  .col-md-8.col-md-offset-2
+     .form-group
+       = label_tag :csv, "送料一覧CSVファイル"
+       = file_field_tag :file, class: "js-csv-upload", required: "required"
+
+     = button_tag(data: { "disable-with" => "アップロード中..."}, class: "btn btn-default btn-square btn-submit center-block") do
+       span.glyphicon.glyphicon-upload
+       =< "アップロード"
