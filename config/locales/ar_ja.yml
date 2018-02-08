@@ -3,9 +3,18 @@ ja:
     attributes:
       user:
         name: 名前
+        company: 会社名
+        tel: 電話番号
+        zip: 〒
+        addr_1: 都道府県
+        addr_2: 市区町村
+        addr_3: 番地その他
+        account: 固有アカウント
+
         password: パスワード
         password_confirmation: パスワード確認
         email: メールアドレス
+
       caegory:
         name: カテゴリ名
       product:
