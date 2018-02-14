@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180131054816) do
+ActiveRecord::Schema.define(version: 20180213155633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,6 +192,18 @@ ActiveRecord::Schema.define(version: 20180131054816) do
     t.string "name"
     t.string "#<ActiveRecord::ConnectionAdapters::PostgreSQL::TableDefinition"
     t.index ["user_id"], name: "index_shipping_labels_on_user_id"
+  end
+
+  create_table "trades", force: :cascade do |t|
+    t.bigint "product_id"
+    t.bigint "user_id"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "soft_destroyed_at"
+    t.index ["product_id"], name: "index_trades_on_product_id"
+    t.index ["soft_destroyed_at"], name: "index_trades_on_soft_destroyed_at"
+    t.index ["user_id"], name: "index_trades_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

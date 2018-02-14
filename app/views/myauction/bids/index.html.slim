@@ -1,7 +1,9 @@
-- set_meta_tags title: "入札中"
-- breadcrumb    :myauction_something, "入札中"
+- title = params[:cond] == "2" ? "落札分" : "入札中"
 
-h3 入札中
+- set_meta_tags title: title
+- breadcrumb    :myauction_something, title
+
+h3 = title
 
 = paginate @pproducts
 
@@ -12,19 +14,32 @@ h3 入札中
     tr
       th.img_mini
       th 商品名
+      th 終了日時
       th.num 現在価格
       th.num 入札数
       th 出品者
-      th 最高入札者
-      th.num 残り時間
+      - if params[:cond] == "2"
+        th 取引
+      - else
+        th 最高入札者
+        th.num 残り時間
     - @pproducts.each do |pr|
       tr
         td.img_mini
-          - if pr.product_images.first.present?
+          - if pr.product_images.first.try(:image)
             = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
         td = link_to pr.name, "/products/#{pr.id}"
+        td = pr.dulation_end
         td.num = number_to_currency pr.start_price
         td.num = pr.bids_count
         td = pr.user.company
-        td = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
-        td.num = pr.remaining_time
+        - if params[:cond] == "2"
+          - if pr.max_bid.user_id != pr.user_id
+            td = link_to("/myauction/trades?product_id=#{pr.id}", class: "btn btn-success") do
+              span.glyphicon.glyphicon-transfer
+              =< "取引"
+          - else
+            td 自社落札
+        - else
+          td = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
+          td.num = pr.remaining_time

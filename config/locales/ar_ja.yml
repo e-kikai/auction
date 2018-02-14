@@ -41,3 +41,5 @@ ja:
         shipping_no: 発送方法
       bid:
         amount: 入札金額
+      trade:
+        comment: コメント

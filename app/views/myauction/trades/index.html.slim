@@ -1,0 +1,67 @@
+- set_meta_tags title: "#{@product.name} 取引"
+- if @product.user_id == current_user.id
+  - breadcrumb :myauction_products_trade, @product
+- else
+  - breadcrumb :myauction_bids_trade, @product
+
+.col-md-4
+  .panel.panel-default
+    .panel-heading 落札商品
+    .panel-body
+      dl.dl-horizontal
+        dt 商品名
+        dd #{@product.name}
+        dt 落札金額
+        dd = number_to_currency(@product.max_bid.amount)
+        - if @shipping_label
+          dt 発送方法
+          dd = @shipping_label.name
+        - if @shipping_fee
+          dt 送料(目安)
+          dd = number_to_currency(@shipping_fee.price)
+
+  .panel.panel-default
+    - if current_user.id == @product.user_id
+      .panel-heading 落札者情報
+      .panel-body
+        dl.dl-horizontal
+          dt 名前
+          dd = @product.max_bid.user.name
+          dt 会社名
+          dd = @product.max_bid.user.company
+          dt 電話番号
+          dd = @product.max_bid.user.tel
+          dt 〒
+          dd = @product.max_bid.user.zip
+          dt 住所
+          dd #{@product.max_bid.user.addr_1} #{@product.max_bid.user.addr_2} #{@product.max_bid.user.addr_3}
+
+    - else
+      .panel-heading 出品会社情報
+      .panel-body
+        dl.dl-horizontal
+          dt 会社名
+          dd = @product.max_bid.user.company
+          dt 〒
+          dd = @product.max_bid.user.zip
+          dt 住所
+          dd #{@product.max_bid.user.addr_1} #{@product.max_bid.user.addr_2} #{@product.max_bid.user.addr_3}
+
+.col-md-8
+  = form_for @trade, url: "/myauction/trades/?product_id=#{params[:product_id]}", html: { method: :post, class: 'form-horizontal' } do |f|
+    = f.label :comment
+    = f.text_area :comment, class: "form-control", style: "height: 100px;margin-bottom:4px;"
+
+    = f.button :button, data: { "disable-with" => "投稿中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+      span.glyphicon.glyphicon-send
+      span.btn-content 投稿する
+
+  - @trades.each do |tr|
+    - if tr.user_id == current_user.id
+      .col-md-10
+        . = tr.created_at
+        .trade.mine = simple_format(tr.comment)
+    - else
+      .col-md-offset-2.col-md-10
+        . = tr.created_at
+        .trade.other = simple_format(tr.comment)

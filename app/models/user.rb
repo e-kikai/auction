@@ -62,6 +62,7 @@ class User < ApplicationRecord
   has_many   :blacklist_users, through: :blacklists, source: :to_user
 
   has_many   :importlogs
+  has_many   :trades
 
   # accepts_nested_attributes_for :watches
 

@@ -1,0 +1,2 @@
+module Myauction::TradesHelper
+end

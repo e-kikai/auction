@@ -1,10 +1,14 @@
 class Myauction::BidsController < Myauction::ApplicationController
   def index
-    @search    = current_user.bid_products.finished(params[:finished]).search(params[:q])
-    # w = current_user.bids.pluck(:product_id)
-    # @search    = Product.where(id: w).finished(params[:finished]).search(params[:q])
-
+    @search    = current_user.bid_products.search(params[:q])
     @products  = @search.result
+
+    @products = if params[:cond] == '2'
+      @products.status(2).where(" products.max_bid_id = bids.id ").order(dulation_end: :desc)
+    else
+      @products.status(0).order(:dulation_end)
+    end
+
     @pproducts = @products.page(params[:page]).preload(:product_images, :user, max_bid: :user)
   end
 

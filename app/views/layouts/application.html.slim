@@ -48,16 +48,16 @@ html
               span.btn-content 入札に参加する
 
     .container
-      .row
-        .col-md-6
-          .form-group.search-area
-            = form_tag "/products", method: :get, class: "form-inline" do
-              .input-group
-                = hidden_field_tag :category_id, params[:category_id]
-                = text_field_tag :keywords, params[:keywords], class: "form-control", placeholder: "キーワードから探す"
-                span.input-group-btn
-                  = button_tag "検索", class: "btn btn-default"
-
+      - if request.fullpath !~ /myauction/
+        .row
+          .col-md-6
+            .form-group.search-area
+              = form_tag "/products", method: :get, class: "form-inline" do
+                .input-group
+                  = hidden_field_tag :category_id, params[:category_id]
+                  = text_field_tag :keywords, params[:keywords], class: "form-control", placeholder: "キーワードから探す"
+                  span.input-group-btn
+                    = button_tag "検索", class: "btn btn-default"
 
       = raw breadcrumbs style: :bootstrap, semantic: true
 

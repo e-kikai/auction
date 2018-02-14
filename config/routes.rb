@@ -42,5 +42,7 @@ Rails.application.routes.draw do
         get  'progress'
       end
     end
+
+    resources :trades, only: [:index, :create, :destroy]
   end
 end

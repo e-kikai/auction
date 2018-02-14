@@ -45,6 +45,10 @@
 #  max_bid_id             :integer
 #  resale_count           :integer          default(0)
 #  code                   :string
+#  template               :boolean          default(FALSE), not null
+#  machinelife_id         :integer
+#  machinelife_images     :text
+#  shipping_no            :integer
 #
 
 require 'rails_helper'

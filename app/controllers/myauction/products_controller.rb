@@ -2,26 +2,10 @@ class Myauction::ProductsController < Myauction::ApplicationController
   before_action :get_product,        only: [:edit, :update, :destroy, :prompt]
 
   def index
-    # respond_to do |format|
-    #   format.html
-    #   format.csv {
-    #     if params[:output] == "import"
-    #       export_csv "update_products.csv", "/bid/products/import.csv"
-    #     else
-    #       export_csv "products.csv", "/bid/products/index.csv"
-    #     end
-    #   }
-    # end
-    @search    = current_user.products.status(params[:cond]).search(params[:q])
+    @search    = current_user.products.search(params[:q])
 
-    sort = case params[:cond]
-    when -1; :dulation_start
-    when 0;  :dulation_end
-    else     { dulation_end: :desc }
-    end
-
-    @products  = @search.result
-    @pproducts = @products.page(params[:page]).includes(:product_images, max_bid: :user).order(sort)
+    @products  = @search.result.status(params[:cond])
+    @pproducts = @products.page(params[:page]).includes(:product_images, max_bid: :user)
   end
 
   def new

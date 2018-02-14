@@ -45,6 +45,10 @@
 #  max_bid_id             :integer
 #  resale_count           :integer          default(0)
 #  code                   :string
+#  template               :boolean          default(FALSE), not null
+#  machinelife_id         :integer
+#  machinelife_images     :text
+#  shipping_no            :integer
 #
 
 class Product < ApplicationRecord
@@ -67,6 +71,7 @@ class Product < ApplicationRecord
   has_many   :bids
   has_many   :mylists
   has_many   :mylist_users, through: :mylists, source: :user
+  has_many   :trades
 
   ### enum ###
   enum type:          { "オークションで出品" => 0, "定額で出品" => 100 }
@@ -120,10 +125,10 @@ class Product < ApplicationRecord
 
   scope :status, -> cond {
     case cond.to_i
-    when STATUS[:before];  where("dulation_start > ? ", Time.now) # 開始前
-    when STATUS[:failure]; where("dulation_end BETWEEN ? AND ? AND max_bid_id IS NULL", Time.now-120.day, Time.now) # 未落札
-    when STATUS[:success]; where("dulation_end BETWEEN ? AND ? AND max_bid_id IS NOT NULL", Time.now-120.day, Time.now) # 落札済み
-    else;                  where("dulation_start <= ? AND dulation_end > ?", Time.now, Time.now) # 公開中
+    when STATUS[:before];  where("dulation_start > ? ", Time.now).order(:dulation_start) # 開始前
+    when STATUS[:failure]; where("dulation_end BETWEEN ? AND ? AND max_bid_id IS NULL", Time.now-120.day, Time.now).order(dulation_end: :desc) # 未落札
+    when STATUS[:success]; where("dulation_end BETWEEN ? AND ? AND max_bid_id IS NOT NULL", Time.now-120.day, Time.now).order(dulation_end: :desc) # 落札済み
+    else;                  where("dulation_start <= ? AND dulation_end > ?", Time.now, Time.now).order(:dulation_end)  # 公開中
     end
   }
 

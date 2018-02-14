@@ -70,6 +70,26 @@ crumb :myauction_csv_confirm do
   parent :myauction_csv_new
 end
 
+crumb :myauction_bids_end do
+  link   "落札分", "/myauction/bids/?cond=2"
+  parent :myauction
+end
+
+crumb :myauction_bids_trade do |pr|
+  link   "#{pr.name} 取引", "/myauction/trade/?product_id=#{pr.id}"
+  parent :myauction_bids_end
+end
+
+crumb :myauction_products_end do
+  link   "出品終了分(落札済み)", "/myauction/products/?cond=2"
+  parent :myauction
+end
+
+crumb :myauction_products_trade do |pr|
+  link   "#{pr.name} 取引", "/myauction/trade/?product_id=#{pr.id}"
+  parent :myauction_products_end
+end
+
 crumb :myauction_something do |title|
   link   title
   parent :myauction
