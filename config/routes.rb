@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     resource  :user,       only: [:edit, :update]
 
     ### 出品関係 ###
-    resources :categories, only: [:index]
+    resources :categories, only: [:index, :new, :create, :edit, :update]
     resources :products,   only: [:index, :new, :create, :edit, :update, :destroy] do
       collection do
         post 'confirm'

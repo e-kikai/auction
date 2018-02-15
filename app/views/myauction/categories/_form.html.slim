@@ -1,0 +1,23 @@
+- if f.object.errors.full_messages.present?
+  .col-md-offset-2.col-md-8
+    .alert.alert-danger
+      ul
+        - f.object.errors.full_messages.each do |msg|
+          li = msg
+
+.col-md-offset-3.col-md-6
+  = hidden_field_tag :parent_id, f.object.parent_id
+  table.table.table-hover.table-condensed.form-table
+    tr
+      th = f.label "親カテゴリ"
+      td = "/" + f.object.ancestors.sum { |ca| ca.name + "/" }.to_s
+    tr
+      th = f.label :name, class: :required
+      td = f.text_field :name, class: "form-control", required: "required"
+    tr
+      th = f.label :order_no, class: :required
+      td = f.text_field :order_no, class: "form-control price", required: "required"
+
+  = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+    span.glyphicon.glyphicon-save
+    span.btn-content 保存

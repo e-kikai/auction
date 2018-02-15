@@ -1,0 +1,26 @@
+- set_meta_tags title: "カテゴリ管理 #{@parent.name}"
+- breadcrumb :myacution_categories, @parent
+
+.col-md-offset-3.col-md-6
+  p ※ カテゴリは各社共通です。
+  table.table.table-hover.table-condensed.table-striped.product-table
+    tr
+      th カテゴリ名(クリックで下階層へ)
+      th.num 並び順
+      th 変更
+    - @categories.each do |ca|
+      tr
+        td = link_to "/myauction/categories?parent_id=#{ca.id}" do
+          => ca.name
+          span.glyphicon.glyphicon-chevron-down
+
+        td.num = ca.order_no
+        td = link_to({ action: :edit, id: ca.id }, class: "btn btn-warning") do
+          span.glyphicon.glyphicon-edit
+          =< "変更"
+
+    tr
+      td
+      td colspan="2" = link_to "/myauction/categories/new?parent_id=#{@parent.id}", class: "btn btn-primary" do
+        span.glyphicon.glyphicon-edit
+        =< "新規カテゴリ追加"

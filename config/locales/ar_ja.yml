@@ -15,8 +15,9 @@ ja:
         password_confirmation: パスワード確認
         email: メールアドレス
 
-      caegory:
+      category:
         name: カテゴリ名
+        order_no: 並び順
       product:
         category_id: カテゴリ
         code: 管理番号

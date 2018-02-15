@@ -19,5 +19,7 @@ class Category < ApplicationRecord
 
   has_many :products
 
-  scope :root_categories, -> { where(ancestry: nil) }
+  ### validates ###
+  validates :name,     presence: true
+  validates :order_no, presence: true
 end

@@ -9,6 +9,9 @@
   .col-md-2
     .panel.panel-default
       .panel-heading カテゴリ
+      .panel-body
+        - @products.joins(:category).group(:category_id).group("categories.name").count().each do |i, count|
+          . = link_to "#{i[1]} (#{count})", params.to_unsafe_h.merge(q: {category_id: i[0]})
 
     .panel.panel-default
       .panel-heading 商品の状態

@@ -90,6 +90,29 @@ crumb :myauction_products_trade do |pr|
   parent :myauction_products_end
 end
 
+crumb :myacution_categories do |ca|
+  if ca.blank?
+    link "カテゴリ管理", "/myauction/categories"
+    parent :myauction
+  elsif ca.root?
+    link ca.name, "/myauction/categories"
+    parent :myacution_categories
+  else
+    link ca.name, "/myauction/categories?parent_id=#{ca.id}"
+    parent :myacution_categories, ca.parent
+  end
+end
+
+crumb :myauction_categories_edit do |ca|
+  if ca.name.blank?
+    link "新規カテゴリ追加", "/myauction/categories/new"
+  else
+    link ca.name, "/myauction/categories/#{ca.id}/edit"
+  end
+  
+  parent :myacution_categories, ca.parent
+end
+
 crumb :myauction_something do |title|
   link   title
   parent :myauction

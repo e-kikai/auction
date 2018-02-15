@@ -10,8 +10,8 @@ class ProductsController < ApplicationController
       @search = @search.result.search(category_id_in: @category.subtree_ids)
     end
 
-    @products  = @search.result
-    @pproducts = @products.page(params[:page]).includes(:product_images)
+    @products  = @search.result.includes(:product_images, :category)
+    @pproducts = @products.page(params[:page])
   end
 
   def show

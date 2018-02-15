@@ -1,0 +1,5 @@
+- set_meta_tags title: "新規カテゴリ追加"
+- breadcrumb    :myauction_categories_edit, @category
+
+= form_for @category, url: "/myauction/categories/", html: { method: :post, class: 'form-horizontal' } do |f|
+  = render "form", f: f
