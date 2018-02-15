@@ -1,0 +1,9 @@
+- set_meta_tags title: "ページがありません"
+
+.alert.alert-danger
+  span.glyphicon.glyphicon-alert
+  =< "ご指定のURLのページはありませんでした。"
+  
+= link_to "javascript:history.back();", class: "btn btn-default btn-square btn-submit center-block" do
+  span.glyphicon.glyphicon-backward
+  span.btn-content 前のページに戻る
