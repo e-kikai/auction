@@ -17,7 +17,9 @@ class ProductsController < ApplicationController
   def show
     @bid = @product.bids.new
     @shipping_label = ShippingLabel.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no)
-    @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: current_user.addr_1)
+    if user_signed_in?
+      @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: current_user.addr_1)
+    end
   end
 
   private

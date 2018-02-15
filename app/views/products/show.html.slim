@@ -29,7 +29,7 @@ h3.product-title = @product.name
         a.right.carousel-control href="#product-carousel" data-slide="next"
           span.glyphicon.glyphicon-chevron-right
 
-    div
+    div.carousel-select
       - @product.product_images.each_with_index do |pi, i|
         = link_to(image_tag(pi.image.thumb.url), "javascript:$('#product-carousel').carousel(#{i})")
 
