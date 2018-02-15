@@ -1,6 +1,6 @@
 class MainController < ApplicationController
   def index
-    @root_categories = Category.root_categories
+    @roots = Category.roots.order(:order_no)
 
     # 最近チェックした商品
 
