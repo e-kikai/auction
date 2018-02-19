@@ -48,7 +48,7 @@ html
               span.btn-content 入札に参加する
 
     .container
-      - if request.fullpath !~ /myauction/
+      - if request.fullpath !~ /(myauction|users)/
         .row
           .col-md-6
             .form-group.search-area

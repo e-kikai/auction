@@ -10,7 +10,7 @@
         li = link_to "入札中",         "/myauction/bids"
         li = link_to "落札分",         "/myauction/bids?cond=2"
 
-  - if current_user.try(:seller?)
+  - if current_user.seller?
     .col-md-3
       .panel.panel-default
         .panel-heading 出品

@@ -21,28 +21,38 @@
           = link_to ca.name, "products?category_id=#{ca.id}", class: "list-group-item"
 
   .col-md-7
-    .panel.panel-default
-      .panel-heading 最近チェックした商品
-      .panel-body style="overflow-x:scroll;overflow-y:hidden;height:220px;"
-        div style="white-space:nowrap;display: inline-block;"
-          - Product.status(0).limit(10).each do |pr|
-            .thumbnail style="width: 188px;height: 188px; margin:0 4px;white-space:normal;display: inline-block;vertical-align:top; "
-              - if pr.product_images.first.try(:image)
-                = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
-              . = link_to pr.name, "/products/#{pr.id}"
-              . 現在価格 #{number_to_currency(pr.max_price)}
+    / .panel.panel-default
+    /   .panel-heading 最近チェックした商品
+    /   .panel-body style="overflow-x:scroll;overflow-y:hidden;height:220px;"
+    /     div style="white-space:nowrap;display: inline-block;"
+    /       - Product.status(0).limit(10).each do |pr|
+    /         .thumbnail style="width: 188px;height: 188px; margin:0 4px;white-space:normal;display: inline-block;vertical-align:top; "
+    /           - if pr.product_images.first.try(:image)
+    /             = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
+    /           . = link_to pr.name, "/products/#{pr.id}"
+    /           . 現在価格 #{number_to_currency(pr.max_price)}
+    /
+    / .panel.panel-default
+    /   .panel-heading チェックした商品の関連商品
+    /   .panel-body style="overflow-x:scroll;overflow-y:hidden;height:220px;"
+    /     div style="white-space:nowrap;display: inline-block;"
+    /       - Product.status(0).limit(10).each do |pr|
+    /         .thumbnail style="width: 188px;height: 188px; margin:0 4px;white-space:normal;display: inline-block;vertical-align:top; "
+    /           - if pr.product_images.first.try(:image)
+    /             = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
+    /           . = link_to pr.name, "/products/#{pr.id}"
+    /           . 現在価格 #{number_to_currency(pr.max_price)}
 
     .panel.panel-default
-      .panel-heading チェックした商品の関連商品
-      .panel-body style="overflow-x:scroll;overflow-y:hidden;height:220px;"
-        div style="white-space:nowrap;display: inline-block;"
-          - Product.status(0).limit(10).each do |pr|
-            .thumbnail style="width: 188px;height: 188px; margin:0 4px;white-space:normal;display: inline-block;vertical-align:top; "
+      .panel-heading 新着商品
+      .panel-body.toppage-contents
+        .toppage-scroll
+          - @new_products.each do |pr|
+            .thumbnail
               - if pr.product_images.first.try(:image)
                 = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
-              . = link_to pr.name, "/products/#{pr.id}"
-              . 現在価格 #{number_to_currency(pr.max_price)}
-
+              .toppage-name = link_to pr.name, "/products/#{pr.id}"
+              .toppage-price 現在価格 #{number_to_currency(pr.max_price)}
 
 
   .col-md-3

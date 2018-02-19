@@ -15,6 +15,8 @@ ja:
         password_confirmation: パスワード確認
         email: メールアドレス
 
+        bank: 振込先情報
+
       category:
         name: カテゴリ名
         order_no: 並び順
@@ -25,8 +27,8 @@ ja:
         description: 商品説明
         dulation_start: 開始日時
         dulation_end: 終了日時
-        start_price: 開始価格
-        prompt_dicision_price: 即決価格
+        start_price: 開始価格(税抜)
+        prompt_dicision_price: 即決価格(税抜)
         shipping_user: 送料負担
         state: 商品の状態
         state_comment: 商品の状態(備考)

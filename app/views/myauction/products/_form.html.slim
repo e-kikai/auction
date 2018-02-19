@@ -34,7 +34,7 @@ table.table.table-hover.table-condensed.form-table
     tr
       th = f.label :description, "共通コメント"
       td
-        = f.text_area :description, class: "form-control"
+        = f.text_area :description, class: "form-control description"
         p.help-block 商品詳細の下に共通に表示される部分です
 
     = f.hidden_field :template,              value: true
@@ -59,7 +59,7 @@ table.table.table-hover.table-condensed.form-table
       td = f.text_field :name, class: "form-control", required: "required"
     tr
       th = f.label :description
-      td = f.text_area :description, class: "form-control"
+      td = f.text_area :description, class: "form-control description"
 
     tr
       th = f.label :dulation_start

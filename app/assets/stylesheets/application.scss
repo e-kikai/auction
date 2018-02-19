@@ -140,7 +140,11 @@ footer {
   }
 
   textarea {
-    height: 300px;
+    height: 120px;
+
+    &.description {
+      height: 300px;
+    }
   }
 }
 
@@ -168,7 +172,41 @@ table {
   margin: 4px 16px;
 }
 
-//// detail ////
+/// トップページ ///
+.toppage-contents {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 220px;
+
+  .toppage-scroll {
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  .thumbnail {
+    width: 188px;
+    height: 188px;
+    margin:0 4px;
+    white-space: normal;
+    display: inline-block;
+    vertical-align: top;
+
+    img {
+
+    }
+
+    .toppage-name {
+
+    }
+
+    .toppage-price {
+
+    }
+  }
+
+}
+
+/// detail ///
 .carousel-select a img {
   margin: 6px;
 }
@@ -183,5 +221,28 @@ table {
 
   &.other {
     background: #EEE;
+  }
+}
+
+/// マイ・オークション ///
+
+/// 取引 ///
+.trade-user {
+  dt {
+    width: 80px;
+  }
+
+  dd {
+    margin-left: 100px;
+  }
+}
+
+.trade-product {
+  dt {
+    width: 140px;
+  }
+
+  dd {
+    margin-left: 160px;
   }
 }

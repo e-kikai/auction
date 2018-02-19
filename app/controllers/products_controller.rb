@@ -3,7 +3,8 @@ class ProductsController < ApplicationController
   before_action :get_product,        only: [:show, :conf, :bid, :result]
 
   def index
-    @search    = Product.finished(params[:finished]).with_keywords(params[:keywords]).search(params[:q])
+    cond = params[:success].present? ? Product::STATUS[:success] : Product::STATUS[:start] # 終了した商品
+    @search    = Product.status(cond).with_keywords(params[:keywords]).search(params[:q])
 
     if params[:category_id].present?
       @category = Category.find(params[:category_id])

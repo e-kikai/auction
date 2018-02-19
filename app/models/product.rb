@@ -56,9 +56,12 @@ class Product < ApplicationRecord
   default_scope { without_soft_destroyed }
 
   ### クラス定数 ###
-  STATUS                 = { before: -1, start: 0, failure: 1, success: 2 }
+  STATUS                 = { before: -1, start: 0, failure: 1, success: 2, cancel: 3 }
   MACHINELIFE_MEDIA_PASS = "http://www.zenkiren.net/media/machine/"
   CSV_MAX_COUNT          = 30
+  NEW_MAX_COUNT          = 16 # 新着表示数
+
+  TAX_RATE               = 8
 
   ### relations ###
   belongs_to :user,     required: true
@@ -115,19 +118,20 @@ class Product < ApplicationRecord
     end
   }
 
-  scope :finished, -> finished {
-    if finished.blank?
-      where("dulation_end > ?", Time.now).where("template = ?", false)
-    else
-      where("dulation_end BETWEEN ? AND ?", Time.now-120.day, Time.now).where("template = ?", false)
-    end
-  }
+  # scope :finished, -> finished {
+  #   if finished.blank?
+  #     where("dulation_end > ?", Time.now).where("template = ?", false)
+  #   else
+  #     where("dulation_end BETWEEN ? AND ?", Time.now-120.day, Time.now).where("template = ?", false)
+  #   end
+  # }
 
   scope :status, -> cond {
     case cond.to_i
     when STATUS[:before];  where("dulation_start > ? ", Time.now).order(:dulation_start) # 開始前
     when STATUS[:failure]; where("dulation_end BETWEEN ? AND ? AND max_bid_id IS NULL", Time.now-120.day, Time.now).order(dulation_end: :desc) # 未落札
     when STATUS[:success]; where("dulation_end BETWEEN ? AND ? AND max_bid_id IS NOT NULL", Time.now-120.day, Time.now).order(dulation_end: :desc) # 落札済み
+
     else;                  where("dulation_start <= ? AND dulation_end > ?", Time.now, Time.now).order(:dulation_end)  # 公開中
     end
   }
@@ -318,6 +322,11 @@ class Product < ApplicationRecord
     when STATUS[:success]; "出品終了(落札済み)"
     else;                  "出品中"
     end
+  end
+
+  # 消費税計算
+  def self.tax_calc(price)
+    (price.to_i * TAX_RATE / 100).ceil
   end
 
   private

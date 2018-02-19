@@ -1,46 +1,52 @@
 - set_meta_tags title: "ユーザ情報変更"
 - breadcrumb    :myauction_something, "ユーザ情報変更"
 
-.panel.panel-default
-  .panel-heading
-    h4 ユーザ情報変更
-  .panel-body
-    = form_for @user, url: "/myauction/user/", html: { method: :patch } do |f|
+.col-md-offset-1.col-md-10
+  .panel.panel-default
+    .panel-heading
+      h4 ユーザ情報変更
+    .panel-body
+      = form_for @user, url: "/myauction/user/", html: { method: :patch } do |f|
 
-      - if f.object.errors.full_messages.present?
-        .alert.alert-danger
-          ul
-            - f.object.errors.full_messages.each do |msg|
-              li = msg
+        - if f.object.errors.full_messages.present?
+          .alert.alert-danger
+            ul
+              - f.object.errors.full_messages.each do |msg|
+                li = msg
 
-      .form-group
-        = f.label :name, class: :required
-        = f.text_field :name, autofocus: true, required: "required", class: 'form-control'
+        .form-group
+          = f.label :name, class: :required
+          = f.text_field :name, autofocus: true, required: "required", class: 'form-control'
 
-      .form-group
-        = f.label :company
-        = f.text_field :company, class: 'form-control'
+        .form-group
+          = f.label :company
+          = f.text_field :company, class: 'form-control'
 
-      .form-group
-        = f.label :tel, class: :required
-        = f.text_field :tel, required: "required", class: 'form-control short'
+        .form-group
+          = f.label :tel, class: :required
+          = f.text_field :tel, required: "required", class: 'form-control short'
 
-      .form-group
-        = f.label :zip, class: :required
-        = f.text_field :zip, required: "required", class: 'form-control short'
+        .form-group
+          = f.label :zip, class: :required
+          = f.text_field :zip, required: "required", class: 'form-control short'
 
-      .form-group
-        = f.label :addr_1, class: :required
-        = f.select :addr_1, ShippingFee::ADDRS, { prompt: "-- 都道府県を選択 --" }, { required: "required", class: 'form-control short' }
+        .form-group
+          = f.label :addr_1, class: :required
+          = f.select :addr_1, ShippingFee::ADDRS, { prompt: "-- 都道府県を選択 --" }, { required: "required", class: 'form-control short' }
 
-      .form-group
-        = f.label :addr_2, class: :required
-        = f.text_field :addr_2, required: "required", class: 'form-control'
+        .form-group
+          = f.label :addr_2, class: :required
+          = f.text_field :addr_2, required: "required", class: 'form-control'
 
-      .form-group
-        = f.label :addr_3, class: :required
-        = f.text_field :addr_3, required: "required", class: 'form-control'
+        .form-group
+          = f.label :addr_3, class: :required
+          = f.text_field :addr_3, required: "required", class: 'form-control'
 
-      = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
-        span.glyphicon.glyphicon-save
-        span.btn-content 保存
+        - if current_user.seller?
+          .form-group
+            = f.label :bank, class: :required
+            = f.text_area :bank, required: "required", class: 'form-control'
+
+        = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+          span.glyphicon.glyphicon-save
+          span.btn-content 保存

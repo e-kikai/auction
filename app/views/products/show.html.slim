@@ -46,7 +46,7 @@ h3.product-title = @product.name
             dt 発送方法
             dd = @shipping_label.name
           - if @shipping_fee
-            dt 送料
+            dt 送料(税込)
             dd
               . = number_to_currency(@shipping_fee.price)
               . ※ 送料は目安です
@@ -65,8 +65,8 @@ h3.product-title = @product.name
           / dd = @product.early_termination ? 'あり' : 'なし'
           dt 最高入札者
           dd = @product.max_bid.present? ? @product.max_bid.user.account : "-"
-          dt 開始価格
-          dd = number_to_currency(@product.start_price)
+          dt 開始価格(税抜)
+          dd #{number_to_currency(@product.start_price)}
 
   .col-md-4
     .panel.panel-default
@@ -80,14 +80,21 @@ h3.product-title = @product.name
             span.glyphicon.glyphicon-star.watch-star
             span.btn-content ウォッチ
       .panel-body style="background:#EEE;"
-        h2 現在価格 #{number_to_currency @product.max_price}
+        .product-price
+          label 現在価格
+          span.h2 #{number_to_currency @product.max_price}
+          span.product-tax + 消費税(#{Product::TAX_RATE}%) #{number_to_currency(Product::tax_calc(@product.max_price))}
         - unless @product.finished?
           = button_tag "入札する", class: "btn btn-warning btn-lg center-block", data: { toggle: :modal, target: "#bid-modal"}
 
       - unless @product.finished?
         - if @product.prompt_dicision_price
           .panel-body style="background:#EEE;"
-            h2 即決価格 #{number_to_currency @product.prompt_dicision_price}
+            .product-price
+              label 即決価格
+              span.h2 #{number_to_currency @product.prompt_dicision_price}
+              span.product-tax + 消費税(#{Product::TAX_RATE}%) #{number_to_currency(Product::tax_calc(@product.prompt_dicision_price))}
+
             = button_tag "今すぐ落札する", class: "btn btn-danger btn-lg center-block", data: { toggle: :modal, target: "#prompt-modal"}
 
       .panel-body
