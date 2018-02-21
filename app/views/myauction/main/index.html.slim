@@ -6,9 +6,10 @@
     .panel.panel-default
       .panel-heading 入札
       ul.nav.nav-pills.nav-stacked
-        li = link_to "ウォッチリスト", "/myauction/watches"
-        li = link_to "入札中",         "/myauction/bids"
-        li = link_to "落札分",         "/myauction/bids?cond=2"
+        li = link_to "ウォッチリスト",   "/myauction/watches"
+        li = link_to "保存した検索条件", "/myauction/searches"
+        li = link_to "入札中",           "/myauction/bids"
+        li = link_to "落札分",           "/myauction/bids?cond=2"
 
   - if current_user.seller?
     .col-md-3

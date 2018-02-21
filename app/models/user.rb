@@ -63,6 +63,7 @@ class User < ApplicationRecord
 
   has_many   :importlogs
   has_many   :trades
+  has_many   :searches
 
   # accepts_nested_attributes_for :watches
 

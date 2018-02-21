@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180220030247) do
+ActiveRecord::Schema.define(version: 20180221171812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -161,9 +161,27 @@ ActiveRecord::Schema.define(version: 20180220030247) do
     t.text "machinelife_images"
     t.integer "shipping_no"
     t.text "cancel"
+    t.text "hashtags"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["soft_destroyed_at"], name: "index_products_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_products_on_user_id"
+  end
+
+  create_table "searches", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "category_id"
+    t.bigint "product_image_id"
+    t.string "name"
+    t.text "keywords"
+    t.text "q"
+    t.boolean "publish"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "soft_destroyed_at"
+    t.index ["category_id"], name: "index_searches_on_category_id"
+    t.index ["product_image_id"], name: "index_searches_on_product_image_id"
+    t.index ["soft_destroyed_at"], name: "index_searches_on_soft_destroyed_at"
+    t.index ["user_id"], name: "index_searches_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|

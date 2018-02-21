@@ -47,3 +47,8 @@ ja:
         amount: 入札金額
       trade:
         comment: コメント
+      search:
+        name: 検索条件のタイトル
+        category: カテゴリ
+        keywords: 検索キーワード
+        publish: トップページに公開する

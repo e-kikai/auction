@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     resources :watches,    only: [:index, :create, :destroy]
     resources :follows,    only: [:index, :create, :destroy]
     resources :blacklists, only: [:index, :create, :destroy]
+    resources :searches,   only: [:index, :new, :create, :update, :destroy]
 
     resource  :user,       only: [:edit, :update]
 

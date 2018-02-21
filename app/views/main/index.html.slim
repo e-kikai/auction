@@ -1,4 +1,10 @@
-.main-container
+.main-container.toppage.clearfix
+  .row
+    - if user_signed_in?
+      label 保存した検索条件
+      - current_user.searches.each do |se|
+        =< link_to se.name, se.uri 
+
   .col-md-2
     .panel.panel-default
       .panel-heading マイ・オークション

@@ -49,6 +49,8 @@
 #  machinelife_id         :integer
 #  machinelife_images     :text
 #  shipping_no            :integer
+#  cancel                 :text
+#  hashtags               :text
 #
 
 class Product < ApplicationRecord
