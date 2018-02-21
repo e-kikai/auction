@@ -220,8 +220,22 @@ table {
   }
 
   &.other {
-    background: #EEE;
+    background: #ededec;
   }
+}
+
+.detail-price-area {
+  background-color: #ededec;
+  margin-top: -15px;
+}
+
+.detail-price-message {
+  margin: 16px 64px;
+}
+
+hr.detail-price-calc {
+  margin: 8px 0;
+  border-top: 1px dashed #BBB;
 }
 
 /// マイ・オークション ///

@@ -26,6 +26,15 @@ class Bid < ApplicationRecord
 
   validate :validate_amount
 
+  # 入札金額の消費税計算
+  def amount_tax
+    Product.calc_tax(amount)
+  end
+
+  def amount_with_tax
+    Product.calc_price_with_tax(amount)
+  end
+
   private
 
   def validate_amount

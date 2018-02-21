@@ -49,6 +49,7 @@
 #  machinelife_id         :integer
 #  machinelife_images     :text
 #  shipping_no            :integer
+#  cancel                 :text
 #
 
 require 'rails_helper'

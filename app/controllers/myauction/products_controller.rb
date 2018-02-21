@@ -1,5 +1,5 @@
 class Myauction::ProductsController < Myauction::ApplicationController
-  before_action :get_product,        only: [:edit, :update, :destroy, :prompt]
+  before_action :get_product,        only: [:edit, :update, :destroy, :prompt, :cancel]
 
   def index
     @search    = current_user.products.search(params[:q])
@@ -55,14 +55,25 @@ class Myauction::ProductsController < Myauction::ApplicationController
     redirect_to "/myauction/products/", notice: "#{@product.name}を削除しました"
   end
 
-  # 自社即決
-  def prompt
-    @bid = @product.bids.new(user: current_user, amount: @product.prompt_dicision_price)
+  # # 自社即決
+  # def prompt
+  #   @bid = @product.bids.new(user: current_user, amount: @product.prompt_dicision_price)
+  #
+  #   if @bid.save
+  #     redirect_to "/myauction/products", notice: "#{@product.name}を即決価格で自社入札しました"
+  #   else
+  #     redirect_to "/myauction/products", alert: "#{@product.name}を即決価格できませんでした"
+  #   end
+  # end
 
-    if @bid.save
-      redirect_to "/myauction/products", notice: "#{@product.name}を即決価格で自社入札しました"
+  # 出品キャンセル
+  def cancel
+    if params[:product][:cancel].blank?
+      redirect_to "/myauction/products", alert: "キャンセル理由を記入してください"
+    elsif @product.update(cancel: params[:product][:cancel], dulation_end: Time.now)
+      redirect_to "/myauction/products", notice: "#{@product.name}を出品キャンセルしました"
     else
-      redirect_to "/myauction/products", alert: "#{@product.name}を即決価格できませんでした"
+      redirect_to "/myauction/products", alert: "#{@product.name}を出品キャンセルできませんでした"
     end
   end
 

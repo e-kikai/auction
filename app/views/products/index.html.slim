@@ -10,7 +10,7 @@
     .panel.panel-default
       .panel-heading カテゴリ
       .panel-body
-        - @products.joins(:category).group(:category_id).group("categories.name").count().each do |i, count|
+        - @products.joins(:category).group(:category_id).group("categories.name").reorder("count_id DESC").count().each do |i, count|
           . = link_to "#{i[1]} (#{count})", params.to_unsafe_h.merge(q: {category_id: i[0]})
 
     .panel.panel-default
@@ -39,8 +39,8 @@
             - if pr.product_images.first.present?
               = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
           td = link_to pr.name, "/products/#{pr.id}"
-          td.num = number_to_currency(pr.max_price)
-          td.num = (number_to_currency(pr.prompt_dicision_price))
+          td.num = number_to_currency(pr.max_price_with_tax)
+          td.num = (number_to_currency(pr.prompt_dicision_price_with_tax))
           td.num = (pr.bids_count)
           td.num = pr.remaining_time
           td = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do

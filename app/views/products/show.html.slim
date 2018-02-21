@@ -3,7 +3,12 @@
 
 - if @product.finished?
   .row
-    .alert.alert-danger このオークションは終了しました
+    .alert.alert-danger
+      - if @product.cancel.present?
+        . このオークションは、以下の理由により出品キャンセルされました。
+        . = simple_format(@product.cancel)
+      - else
+        | このオークションは終了しました
 
 h3.product-title = @product.name
 
@@ -37,9 +42,9 @@ h3.product-title = @product.name
       .panel-body
         dl.dl-horizontal
           dt 開始日時
-          dd = @product.dulation_start
+          dd =  I18n.l(@product.dulation_start, format: :full_date)
           dt 終了日時
-          dd = @product.dulation_end
+          dd =  I18n.l(@product.dulation_end, format: :full_date)
           dt 送料負担
           dd = @product.shipping_user
           - if @shipping_label
@@ -79,21 +84,23 @@ h3.product-title = @product.name
           dd = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default" do
             span.glyphicon.glyphicon-star.watch-star
             span.btn-content ウォッチ
-      .panel-body style="background:#EEE;"
+      .panel-body.detail-price-area
+        h4 現在価格
         .product-price
-          label 現在価格
-          span.h2 #{number_to_currency @product.max_price}
-          span.product-tax + 消費税(#{Product::TAX_RATE}%) #{number_to_currency(Product::tax_calc(@product.max_price))}
+          span.h2> #{number_to_currency @product.max_price}
+          span.product-tax
+            | (税込 #{number_to_currency(@product.max_price_with_tax)})
         - unless @product.finished?
           = button_tag "入札する", class: "btn btn-warning btn-lg center-block", data: { toggle: :modal, target: "#bid-modal"}
 
       - unless @product.finished?
         - if @product.prompt_dicision_price
-          .panel-body style="background:#EEE;"
+          .panel-body.detail-price-area
+            h4 即決価格
             .product-price
-              label 即決価格
-              span.h2 #{number_to_currency @product.prompt_dicision_price}
-              span.product-tax + 消費税(#{Product::TAX_RATE}%) #{number_to_currency(Product::tax_calc(@product.prompt_dicision_price))}
+              span.h2> #{number_to_currency @product.prompt_dicision_price}
+              span.product-tax
+                | (税込 #{number_to_currency(@product.prompt_dicision_price_with_tax)})
 
             = button_tag "今すぐ落札する", class: "btn btn-danger btn-lg center-block", data: { toggle: :modal, target: "#prompt-modal"}
 
@@ -114,13 +121,16 @@ h3.product-title = @product.name
       .modal-header
         = button_tag "×", class: :close, data: { dismiss: :modal }
         h4.modal-title 入札する
-      .modal-body
-        h2 入札金額
+      .modal-body.clearfix
         = form_for @bid, url: "/myauction/bids/new", method: :get, html: { class: "form-inline" }  do |f|
           = hidden_field_tag :id, @product.id
-          .form-group = (f.text_field :amount, value: (@product.max_price + (@product.bids_count > 0 ? @product.bid_unit : 0)), class: "form-control price", required: "required") + " 円"
-
-          = f.button "確認する", class: "btn btn-default btn-lg center-block"
+          .row.detail-price-area
+            .col-md-offset-2.col-md-3.h4 入札金額(税抜)
+            .col-md-5.text-right
+              .form-group.form-group-lg = f.text_field :amount, value: (@product.max_price + (@product.bids_count > 0 ? @product.bid_unit : 0)), class: "form-control price", required: "required"
+            .col-md-1.h4 円
+          .row
+            = f.button "確認する", class: "btn btn-default btn-lg center-block"
 
 /// 即決ダイアログ ///
 .modal.fade#prompt-modal
@@ -129,10 +139,20 @@ h3.product-title = @product.name
       .modal-header
         = button_tag "×", class: :close, data: { dismiss: :modal }
         h4.modal-title 今すぐ落札
-      .modal-body
-        = form_for @bid, url: "/myauction/bids/new", method: :get, html: { class: "form-inline" }  do |f|
-          h2 即決価格 #{number_to_currency @product.prompt_dicision_price}
-          p この金額で落札されます。
-          = hidden_field_tag :id, @product.id
-          = f.hidden_field :amount, value: @product.prompt_dicision_price
-          = f.button "確認する", class: "btn btn-default btn-lg center-block"
+      .modal-body.clearfix
+        .row.detail-price-area
+          .detail-price-message この金額で今すぐ落札されます。
+          .col-md-offset-2.col-md-3.h4 即決価格
+          .col-md-5.text-right.h4 = number_to_currency(@product.prompt_dicision_price)
+        .row
+          .col-md-offset-2.col-md-3.h4 消費税
+          .col-md-5.text-right.h4 = number_to_currency(@product.prompt_dicision_price_tax)
+        hr.detail-price-calc
+        .row
+          .col-md-offset-2.col-md-3.h3 税込価格
+          .col-md-5.text-right.h3 = number_to_currency(@product.prompt_dicision_price_with_tax)
+        .row
+          = form_for @bid, url: "/myauction/bids/new", method: :get, html: { class: "form-inline" }  do |f|
+            = hidden_field_tag :id, @product.id
+            = f.hidden_field :amount, value: @product.prompt_dicision_price
+            = f.button "確認する", class: "btn btn-default btn-lg center-block"

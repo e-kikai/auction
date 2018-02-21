@@ -27,8 +27,8 @@ ja:
         description: 商品説明
         dulation_start: 開始日時
         dulation_end: 終了日時
-        start_price: 開始価格(税抜)
-        prompt_dicision_price: 即決価格(税抜)
+        start_price: 開始価格
+        prompt_dicision_price: 即決価格
         shipping_user: 送料負担
         state: 商品の状態
         state_comment: 商品の状態(備考)
@@ -42,6 +42,7 @@ ja:
         addr_2: 発送元の地域
         auto_resale: 自動再出品
         shipping_no: 発送方法
+        cancel: キャンセル理由
       bid:
         amount: 入札金額
       trade:

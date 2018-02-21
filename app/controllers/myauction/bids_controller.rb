@@ -1,4 +1,6 @@
 class Myauction::BidsController < Myauction::ApplicationController
+  before_action :get_product, only: [:new, :create]
+
   def index
     @search    = current_user.bid_products.search(params[:q])
     @products  = @search.result
@@ -13,13 +15,11 @@ class Myauction::BidsController < Myauction::ApplicationController
   end
 
   def new
-    @product = Product.find(params[:id])
     @bid = @product.bids.new(bid_params)
     @bid.user = current_user
   end
 
   def create
-    @product = Product.find(params[:id])
     @bid = @product.bids.new(bid_params)
     @bid.user = current_user
 
@@ -49,5 +49,14 @@ class Myauction::BidsController < Myauction::ApplicationController
 
   def bid_params
     params.require(:bid).permit(:amount)
+  end
+
+  def get_product
+    @product = Product.find(params[:id])
+
+    # 自社入札の禁止
+    if @product.user_id == current_user.id
+      redirect_to "/products/#{@product.id}", alert: "自社の商品への入札は行なえません"
+    end
   end
 end

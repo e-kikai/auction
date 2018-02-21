@@ -4,8 +4,18 @@
 h3.product-title = @bid.product.name
 
 .row
-  .col-md-4.col-md-offset-4
+  .col-md-6.col-md-offset-3
     h3 入札完了
-    h2 入札金額 #{number_to_currency(@bid.amount)}
+    .row
+      .col-md-offset-2.col-md-3.h4 入札金額
+      .col-md-5.text-right.h4 = number_to_currency(@bid.amount)
+    .row
+      .col-md-offset-2.col-md-3.h4 消費税
+      .col-md-5.text-right.h4 = number_to_currency(@bid.amount_tax)
+    hr.detail-price-calc
+    .row
+      .col-md-offset-2.col-md-3.h3 税込価格
+      .col-md-5.text-right.h3 = number_to_currency(@bid.amount_with_tax)
+
 
     = link_to "商品ページに戻る", "/products/#{@bid.product.id}", class: "btn btn-default btn-lg center-block"

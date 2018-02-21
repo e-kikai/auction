@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180213155633) do
+ActiveRecord::Schema.define(version: 20180220030247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(version: 20180213155633) do
     t.integer "machinelife_id"
     t.text "machinelife_images"
     t.integer "shipping_no"
+    t.text "cancel"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["soft_destroyed_at"], name: "index_products_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_products_on_user_id"
@@ -219,7 +220,7 @@ ActiveRecord::Schema.define(version: 20180213155633) do
     t.string "addr_2"
     t.string "addr_3"
     t.string "tel"
-    t.string "bank"
+    t.text "bank"
     t.string "bank_branch"
     t.integer "bank_account_type"
     t.string "bank_account_number"

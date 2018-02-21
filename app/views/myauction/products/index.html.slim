@@ -5,7 +5,6 @@
 
 h3 = title
 
-/ = @pproducts.to_sql
 = paginate @pproducts
 
 - if @pproducts.length == 0
@@ -14,6 +13,7 @@ h3 = title
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
       th.img_mini
+      th 管理番号
       th 商品名
       - if params[:cond].to_i == -1
         th 開始日時
@@ -37,12 +37,13 @@ h3 = title
         th 最高入札者
         th.num 残り時間
         / th 自社落札
-        th 出品取消
+        th 出品キャンセル
     - @pproducts.each do |pr|
       tr
         td.img_mini
           - if pr.product_images.first.try(:image)
             = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
+        td = pr.code
         td = link_to pr.name, "/products/#{pr.id}"
         - if params[:cond].to_i == -1
           td = pr.dulation_start
@@ -84,6 +85,32 @@ h3 = title
           /     = link_to({ action: :prompt, id: pr.id }, method: :post, data: { confirm: "#{pr.name}\n\nこの商品に即決価格で自社落札をおこないます。\n\nよろしいですか？", "disable-with" => "入札中..."}, class: "btn btn-success") do
           /       span.glyphicon.glyphicon-pencil
           /       =< "自社落札"
-          td = link_to({ action: :destroy, id: pr.id }, method: :delete, data: { confirm: "#{pr.name}\n\nこの商品の出品を取り消しますか？", "disable-with" => "取消中..."}, class: "btn btn-danger") do
-              span.glyphicon.glyphicon-remove
-              =< "取消"
+          / td = link_to({ action: :destroy, id: pr.id }, method: :delete, data: { confirm: "#{pr.name}\n\nこの商品の出品を取り消しますか？", "disable-with" => "取消中..."}, class: "btn btn-danger") do
+          /     span.glyphicon.glyphicon-remove
+          /     =< "取消"
+
+          td = button_tag class: "btn btn-danger btn-cancel", data: { toggle: :modal, target: "#cancel-modal-#{pr.id}"} do
+            span.glyphicon.glyphicon-remove
+            =< "キャンセル"
+
+          /// 出品キャンセルダイアログ ////
+          .modal.fade id="cancel-modal-#{pr.id}"
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  = button_tag "×", class: :close, data: { dismiss: :modal }
+                  h4.modal-title 出品キャンセル
+                .modal-body.clearfix
+                  = form_for pr,  url: "/myauction/products/#{pr.id}/cancel", method: :patch, html: { class: "form-inline" }  do |f|
+                    dl.dl-horizontal
+                      dt 管理番号
+                      dd = pr.code
+                      dt 商品名
+                      dd = pr.name
+                    .form-group
+                      = f.label :cancel
+                      = f.text_area :cancel, required: "required", class: 'form-control'
+
+                    = f.button :button, data: { "disable-with" => "処理中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+                      span.glyphicon.glyphicon-remove
+                      span.btn-content 出品キャンセル

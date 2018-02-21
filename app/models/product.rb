@@ -325,8 +325,24 @@ class Product < ApplicationRecord
   end
 
   # 消費税計算
-  def self.tax_calc(price)
+  def self.calc_tax(price)
     (price.to_i * TAX_RATE / 100).ceil
+  end
+
+  # 税込金額計算
+  def self.calc_price_with_tax(price)
+    price.to_i + self.calc_tax(price)
+  end
+
+  # 商品の消費税計算
+  %w|start_price prompt_dicision_price max_price|.each do |price|
+    define_method("#{price}_tax") do
+      Product.calc_tax(send(price))
+    end
+
+    define_method("#{price}_with_tax") do
+      Product.calc_price_with_tax(send(price))
+    end
   end
 
   private

@@ -1,6 +1,6 @@
 class Myauction::WatchesController <  Myauction::ApplicationController
   def index
-    @search    = current_user.watch_products.finished(params[:finished]).search(params[:q])
+    @search    = current_user.watch_products.search(params[:q])
 
     @products  = @search.result
     @pproducts = @products.page(params[:page]).preload(:user, :product_images, max_bid: :user)

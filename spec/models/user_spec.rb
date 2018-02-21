@@ -15,7 +15,7 @@
 #  addr_2                 :string
 #  addr_3                 :string
 #  tel                    :string
-#  bank                   :string
+#  bank                   :text
 #  bank_branch            :string
 #  bank_account_type      :integer
 #  bank_account_number    :string
