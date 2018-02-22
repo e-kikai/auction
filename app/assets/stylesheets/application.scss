@@ -173,6 +173,26 @@ table {
 }
 
 /// トップページ ///
+.toppage-searches {
+  .thumbnail {
+    width: 188px;
+    height: 188px;
+    margin:0 4px;
+    white-space: normal;
+    display: inline-block;
+    vertical-align: top;
+
+    img {
+
+    }
+
+    .toppage-name {
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+}
 .main-container.toppage {
 }
 

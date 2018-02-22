@@ -10,6 +10,7 @@
       = f.hidden_field :keywords
       = f.hidden_field :category_id
       = f.hidden_field :q
+      = f.hidden_field :product_image_id
 
       - if f.object.errors.full_messages.present?
         .alert.alert-danger
@@ -30,6 +31,11 @@
         td = @search.category_id ? @search.category.name : " - "
 
       - if current_user.seller?
+        tr
+          th = f.label "トップ公開用画像"
+          td
+            - if @search.product_image_id
+              = image_tag @search.product_image.image.thumb.url
         tr
           th = f.label :publish
           td = f.check_box :publish

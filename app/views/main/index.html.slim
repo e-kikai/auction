@@ -3,7 +3,7 @@
     - if user_signed_in?
       label 保存した検索条件
       - current_user.searches.each do |se|
-        =< link_to se.name, se.uri 
+        =< link_to se.name, se.uri
 
   .col-md-2
     .panel.panel-default
@@ -48,6 +48,13 @@
     /             = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
     /           . = link_to pr.name, "/products/#{pr.id}"
     /           . 現在価格 #{number_to_currency(pr.max_price)}
+
+    .toppage-searches
+      - @searches.each do |se|
+        .thumbnail
+          - if se.product_image_id
+            = link_to image_tag(se.product_image.image.thumb.url), se.uri
+          .toppage-name = link_to se.name, se.uri
 
     .panel.panel-default
       .panel-heading 新着商品

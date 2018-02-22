@@ -37,7 +37,7 @@ class Search < ApplicationRecord
 
   # 検索
   def products
-    search = Product.status(Product::STATUS[:start]).keywords(keywords).search(q)
+    search = Product.status(Product::STATUS[:start]).with_keywords(keywords).search(q)
 
     if category_id.present?
       category = Category.find(category_id)

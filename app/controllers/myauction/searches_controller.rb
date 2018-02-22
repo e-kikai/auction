@@ -7,12 +7,14 @@ class Myauction::SearchesController < Myauction::ApplicationController
   def new
     @search = current_user.searches.new(search_params)
 
-    # @serach.products.each do |pr|
-    #   if pr.images.present?
-    #     @serach.product_image_id = pr.images[0]
-    #     break
-    #   end
-    # end
+    if current_user.seller?
+      @search.products.each do |pr|
+        if pr.product_images.present?
+          @search.product_image_id = pr.product_images[0].id
+          break
+        end
+      end
+    end
   end
 
   def create
@@ -50,6 +52,6 @@ class Myauction::SearchesController < Myauction::ApplicationController
   private
 
   def search_params
-    params.require(:search).permit(:name, :keywords, :category_id, :q, :publish)
+    params.require(:search).permit(:name, :keywords, :category_id, :q, :publish, :product_image_id)
   end
 end
