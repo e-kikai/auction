@@ -70,8 +70,8 @@ class Product < ApplicationRecord
   belongs_to :category, required: true
   belongs_to :max_bid,  class_name: "Bid", required: false
 
-  # has_many   :product_images, -> { order(:order_no, :id) }
-  has_many   :product_images
+  has_many   :product_images, -> { order(:id) }
+  # has_many   :product_images
   # has_one    :top_image,      -> { order(:order_no, :id) }, class_name: "ProductImage"
   has_many   :bids
   has_many   :mylists
@@ -113,7 +113,7 @@ class Product < ApplicationRecord
   ### SCOPE ###
   scope :with_keywords, -> keywords {
     if keywords.present?
-      columns = [:name, :description, :state_comment, :returns_comment, :addr_1, :addr_2]
+      columns = [:name, :description, :state_comment, :returns_comment, :addr_1, :addr_2, :hashtags]
       where(keywords.split(/[[:space:]]/).reject(&:empty?).map {|keyword|
         columns.map { |a| arel_table[a].matches("%#{keyword}%") }.inject(:or)
       }.inject(:and))

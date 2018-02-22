@@ -91,6 +91,12 @@ table.table.table-hover.table-condensed.form-table
             = pi.check_box :_destroy, {}, 1, 0
             = pi.label :_destroy, "削除"
 
+    tr
+      th = f.label :hashtags
+      td
+        = f.text_area :hashtags, class: "form-control"
+        p.help-block 空白区切りで記述してください
+
   tr
     th = f.label :shipping_user, class: :required
     td.form-inline
