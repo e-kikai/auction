@@ -46,8 +46,8 @@ h3 = title
         td = pr.code
         td = link_to pr.name, "/products/#{pr.id}"
         - if params[:cond].to_i == -1
-          td = pr.dulation_start
-        td = pr.dulation_end
+          td = I18n.l(pr.dulation_end, format: :full_date)
+        td = I18n.l(pr.dulation_end, format: :full_date)
         td.num = number_to_currency(pr.start_price)
         td.num = number_to_currency(pr.prompt_dicision_price)
 
@@ -93,24 +93,25 @@ h3 = title
             span.glyphicon.glyphicon-remove
             =< "キャンセル"
 
-          /// 出品キャンセルダイアログ ////
-          .modal.fade id="cancel-modal-#{pr.id}"
-            .modal-dialog
-              .modal-content
-                .modal-header
-                  = button_tag "×", class: :close, data: { dismiss: :modal }
-                  h4.modal-title 出品キャンセル
-                .modal-body.clearfix
-                  = form_for pr,  url: "/myauction/products/#{pr.id}/cancel", method: :patch, html: { class: "form-inline" }  do |f|
-                    dl.dl-horizontal
-                      dt 管理番号
-                      dd = pr.code
-                      dt 商品名
-                      dd = pr.name
-                    .form-group
-                      = f.label :cancel
-                      = f.text_area :cancel, required: "required", class: 'form-control'
+- @pproducts.each do |pr|
+  /// 出品キャンセルダイアログ ////
+  .modal.fade id="cancel-modal-#{pr.id}"
+    .modal-dialog
+      .modal-content
+        .modal-header
+          = button_tag "×", class: :close, data: { dismiss: :modal }
+          h4.modal-title 出品キャンセル
+        .modal-body
+          = form_for pr, url: "/myauction/products/#{pr.id}/cancel", method: :patch do |f|
+            dl.dl-horizontal
+              dt 管理番号
+              dd = pr.code
+              dt 商品名
+              dd = pr.name
+            .form-group
+              = f.label :cancel
+              = f.text_area :cancel, required: "required", class: 'form-control'
 
-                    = f.button :button, data: { "disable-with" => "処理中..." }, class: "btn btn-default btn-square btn-submit center-block" do
-                      span.glyphicon.glyphicon-remove
-                      span.btn-content 出品キャンセル
+            = f.button :button, data: { "disable-with" => "処理中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+              span.glyphicon.glyphicon-remove
+              span.btn-content 出品キャンセル

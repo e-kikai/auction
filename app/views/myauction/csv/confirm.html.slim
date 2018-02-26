@@ -65,11 +65,8 @@ coffee:
           / td.njm = p.machinelife_id
 
         - if pr.errors.blank?
-          - [:code, :name, :description, :category_id, :dulation_start, :dulation_end, :start_price, :prompt_dicision_price, :template_id, :machinelife_id, :machinelife_images].each do |k|
+          - [:code, :name, :description, :category_id, :dulation_start, :dulation_end, :start_price, :prompt_dicision_price, :hashtags, :template_id, :machinelife_id, :machinelife_images].each do |k|
             = hidden_field_tag "products[][#{k}]", pr[k]
-
-    / = hidden_field_tag "category_id", params[:category_id]
-    / = hidden_field_tag "template_id", params[:template_id]
 
     . インポート進捗
     .progress

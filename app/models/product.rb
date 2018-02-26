@@ -95,6 +95,9 @@ class Product < ApplicationRecord
   # validates :delivery_date, presence: true, inclusion: {in: Product.delivery_dates.keys}
   validates :state,         presence: true, inclusion: {in: Product.states.keys}
 
+  validates :dulation_start,    presence: true
+  validates :dulation_end,      presence: true
+
   validates :returns,           inclusion: {in: [true, false]}
   validates :auto_extension,    inclusion: {in: [true, false]}
   validates :early_termination, inclusion: {in: [true, false]}
@@ -237,7 +240,7 @@ class Product < ApplicationRecord
     CSV.foreach(file.path, { headers: true, encoding: Encoding::SJIS }) do |row|
       # product = template.dup_init # テンプレートコピー
 
-      template = user.products.templates.find_by(id: row[10]) || user.products.new
+      template = user.products.templates.find_by(id: row[11]) || user.products.new
       product  = template.dup_init
 
       product.attributes =  {
@@ -247,15 +250,16 @@ class Product < ApplicationRecord
         description:           row[2],
 
         category_id:           row[3],
-        template_id:           row[10],
+        template_id:           row[11],
         template_name:         template.try(:name),
 
         dulation_start:        "#{row[4]} #{row[5]}",
         dulation_end:          "#{row[6]} #{row[7]}",
         start_price:           row[8],
         prompt_dicision_price: row[9],
-        machinelife_id:        row[11],
-        machinelife_images:    row[12],
+        hashtags:              row[10],
+        machinelife_id:        row[12],
+        machinelife_images:    row[13],
       }
 
       product.valid?

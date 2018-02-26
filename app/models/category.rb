@@ -22,4 +22,8 @@ class Category < ApplicationRecord
   ### validates ###
   validates :name,     presence: true
   validates :order_no, presence: true
+
+  def ancestor_names
+    "/" + ancestors.map{ |g| g.name }.join("/")
+  end
 end

@@ -10,6 +10,6 @@ class MainController < ApplicationController
     @new_products = Product.status(Product::STATUS[:start]).order(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
 
     # トップページ公開検索条件
-    @searches = Search.where(publish: true).order(id: :desc).limit(9)
+    @searches = Search.where(publish: true).order("RANDOM()").limit(9)
   end
 end

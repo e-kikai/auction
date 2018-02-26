@@ -44,9 +44,9 @@ h3.product-title = @product.name
       .panel-body
         dl.dl-horizontal
           dt 開始日時
-          dd =  I18n.l(@product.dulation_start, format: :full_date)
+          dd = I18n.l(@product.dulation_start, format: :full_date)
           dt 終了日時
-          dd =  I18n.l(@product.dulation_end, format: :full_date)
+          dd = I18n.l(@product.dulation_end, format: :full_date)
           dt 送料負担
           dd = @product.shipping_user
           - if @shipping_label

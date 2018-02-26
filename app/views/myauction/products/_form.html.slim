@@ -50,7 +50,7 @@ table.table.table-hover.table-condensed.form-table
 
     tr
       th = f.label :category_id, class: :required
-      td = f.select :category_id, Category.pluck(:name, :id), {include_blank: "-- ジャンルを選択 --"}, class: "form-control", required: "required"
+      td = f.select :category_id, Category.all.map { |ca| ["#{ca.ancestor_names}/#{ca.name}", ca.id] }, {include_blank: "-- ジャンルを選択 --"}, class: "form-control", required: "required"
     tr
       th = f.label :code
       td = f.text_field :code, class: "form-control short"

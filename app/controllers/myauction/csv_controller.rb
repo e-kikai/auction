@@ -37,6 +37,6 @@ class Myauction::CsvController < Myauction::ApplicationController
   private
 
   def csv_products_params
-    params.require(:products).map { |p| p.permit(:code, :category_id, :template_id, :name, :description, :dulation_start, :dulation_end, :start_price, :prompt_dicision_price, :machinelife_id, :machinelife_images)}
+    params.require(:products).map { |p| p.permit(:code, :category_id, :template_id, :name, :description, :dulation_start, :dulation_end, :start_price, :prompt_dicision_price, :hashtags, :machinelife_id, :machinelife_images)}
   end
 end

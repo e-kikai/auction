@@ -29,7 +29,7 @@ h3 = title
           - if pr.product_images.first.try(:image)
             = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
         td = link_to pr.name, "/products/#{pr.id}"
-        td = pr.dulation_end
+        td = I18n.l(pr.dulation_end, format: :full_date)
         td.num = number_to_currency(pr.max_price_with_tax)
         td.num = pr.bids_count
         td = pr.user.company

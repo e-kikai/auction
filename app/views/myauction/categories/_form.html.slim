@@ -10,7 +10,7 @@
   table.table.table-hover.table-condensed.form-table
     tr
       th = f.label "親カテゴリ"
-      td = "/" + f.object.ancestors.sum { |ca| ca.name + "/" }.to_s
+      td = f.object.ancestor_names
     tr
       th = f.label :name, class: :required
       td = f.text_field :name, class: "form-control", required: "required"
