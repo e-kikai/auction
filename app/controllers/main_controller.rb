@@ -6,6 +6,14 @@ class MainController < ApplicationController
 
     # チェックした商品の関連商品
 
+    # フォローした出品会社の新着
+    if user_signed_in?
+      if follows_user_ids = current_user.follows.pluck(:user_id)
+        @follows_new_products = Product.status(Product::STATUS[:start]).where(user_id: follows_user_ids).order(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
+      end
+    end
+
+
     # 新着
     @new_products = Product.status(Product::STATUS[:start]).order(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
 

@@ -54,18 +54,31 @@
         .thumbnail
           - if se.product_image_id
             = link_to image_tag(se.product_image.image.thumb.url), se.uri
-          .toppage-name = link_to se.name, se.uri
+          .name = link_to se.name, se.uri
+
+    - if @follows_new_products.present?
+      .panel.panel-default
+        .panel-heading フォローした出品会社の新着商品
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @follows_new_products.each do |pr|
+              .thumbnail.product-pannel
+                - if pr.product_images.first.try(:image)
+                  = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
+                .name = link_to pr.name, "/products/#{pr.id}"
+                .price 価格 #{number_to_currency(pr.max_price_with_tax)}
+
 
     .panel.panel-default
       .panel-heading 新着商品
       .panel-body.toppage-contents
         .toppage-scroll
           - @new_products.each do |pr|
-            .thumbnail
+            .thumbnail.product-pannel
               - if pr.product_images.first.try(:image)
                 = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
-              .toppage-name = link_to pr.name, "/products/#{pr.id}"
-              .toppage-price 現在価格 #{number_to_currency(pr.max_price_with_tax)}
+              .name = link_to pr.name, "/products/#{pr.id}"
+              .price 価格 #{number_to_currency(pr.max_price_with_tax)}
 
 
   .col-md-3

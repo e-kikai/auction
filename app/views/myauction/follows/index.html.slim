@@ -1,0 +1,32 @@
+- set_meta_tags title: "フォローリスト"
+- breadcrumb    :myauction_something, "フォローリスト"
+
+h3 フォローリスト
+
+= paginate @pfollows
+
+- if @pfollows.length == 0
+  p フォローリストに登録している商品はありません
+- else
+  table.table.table-hover.table-condensed.table-striped.product-table
+    tr
+      th 出品会社名
+      / th 評価
+      th 最新の出品商品
+      th
+    - @pfollows.each do |fo|
+      tr
+        td = link_to fo.user.company, "/products?q[company_id_eq]=#{fo.to_user_id}"
+        / td
+        td
+          - Product.status(Product::STATUS[:start]).where(user_id: fo.to_user_id).order(dulation_start: :desc).limit(Follow::PRODUCTS_NUM).each do |pr|
+            .thumbnail.product-pannel
+              - if pr.product_images.first.try(:image)
+                = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
+              .name = link_to pr.name, "/products/#{pr.id}"
+              .price 価格 #{number_to_currency(pr.max_price_with_tax)}
+        td
+          - unless params[:finished]
+            = link_to({ action: :destroy, id: fo.id }, method: :delete, class: "btn btn-danger") do
+              span.glyphicon.glyphicon-remove
+              =< "フォローをはずす"

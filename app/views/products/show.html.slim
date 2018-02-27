@@ -109,7 +109,10 @@ h3.product-title = @product.name
       .panel-body
         h4 出品者情報
         . = @product.user.company
-        = link_to "この出品者のほかの商品", "/products/?q[company_id_eq]=1"
+        . = link_to "この出品者のほかの商品", "/products/?q[company_id_eq]=1"
+        . = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
+          span.glyphicon.glyphicon-heart.follow-heart
+          span.btn-content フォローする
 
   /// ハッシュダグ ///
   h5 関連キーワード

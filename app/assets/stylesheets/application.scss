@@ -159,9 +159,13 @@ table {
   }
 }
 
- .watch-star {
-   color: #DD0;
- }
+.watch-star {
+  color: #DD0;
+}
+
+.follow-heart {
+  color: #D00;
+}
 
 .fileinput-upload-button {
   display: none;
@@ -176,8 +180,8 @@ table {
 .toppage-searches {
   .thumbnail {
     width: 188px;
-    height: 188px;
-    margin:0 4px;
+    height: 168px;
+    margin:0 4px 4px 0;
     white-space: normal;
     display: inline-block;
     vertical-align: top;
@@ -186,7 +190,7 @@ table {
 
     }
 
-    .toppage-name {
+    .name {
       text-align: center;
       font-size: 14px;
       font-weight: bold;
@@ -199,34 +203,35 @@ table {
 .toppage-contents {
   overflow-x: scroll;
   overflow-y: hidden;
-  height: 220px;
+  height: 210px;
 
   .toppage-scroll {
     white-space: nowrap;
     display: inline-block;
   }
+}
 
-  .thumbnail {
-    width: 188px;
-    height: 188px;
-    margin:0 4px;
-    white-space: normal;
-    display: inline-block;
-    vertical-align: top;
+.thumbnail.product-pannel {
+  width: 140px;
+  height: 168px;
+  margin:0 4px;
+  white-space: normal;
+  display: inline-block;
+  vertical-align: top;
 
-    img {
-
-    }
-
-    .toppage-name {
-
-    }
-
-    .toppage-price {
-
-    }
+  img {
+    max-width: 132px;
+    max-height: 98px;
   }
 
+  .name {
+    height: 42px;
+    overflow: hidden;
+  }
+
+  .price {
+
+  }
 }
 
 /// detail ///
