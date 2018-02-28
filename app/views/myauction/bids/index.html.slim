@@ -10,6 +10,13 @@ h3 = title
 - if @pproducts.blank?
   p 入札中の商品はありません
 - else
+
+  - if params[:cond] == "2"
+    p
+      | 落札した商品については、「取引」より出品会社と取引を行ってください。
+      br
+      | 商品受け取り後は、「受取確認・評価」より、商品の受取確認と出品会社の評価を行ってください
+
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
       th.img_mini
@@ -20,6 +27,7 @@ h3 = title
       th 出品者
       - if params[:cond] == "2"
         th 取引
+        th 受取確認・評価
       - else
         th 最高入札者
         th.num 残り時間
@@ -38,8 +46,27 @@ h3 = title
             td = link_to("/myauction/trades?product_id=#{pr.id}", class: "btn btn-success") do
               span.glyphicon.glyphicon-transfer
               =< "取引"
+
+            td
+              - case pr.star
+              - when 5
+                .star ★★★★★
+              - when 4
+                .star ★★★★
+              - when 3
+                .star ★★★
+              - when 2
+                .star ★★
+              - when 1
+                .star ★
+              - else
+                = link_to("/myauction/stars/#{pr.id}/edit", class: "btn btn-primary") do
+                  span.glyphicon.glyphicon-asterisk
+                  =< "受取確認・評価"
+
           - else
             td 自社落札
+            td
         - else
           td = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
           td.num = pr.remaining_time

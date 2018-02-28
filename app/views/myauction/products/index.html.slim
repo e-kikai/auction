@@ -26,11 +26,12 @@ h3 = title
       - elsif params[:cond].to_i == 1
         th 再出品
       - elsif params[:cond].to_i == 2
-        th.num 最高価格
+        th.num 落札価格
         th.num 入札数
-        th 最高入札者
+        th 落札者
         th 取引
         th 手数料
+        th 評価
       - else
         th.num 最高価格
         th.num 入札数
@@ -72,8 +73,21 @@ h3 = title
               span.glyphicon.glyphicon-transfer
               =< "取引"
             td = number_to_currency(pr.max_price * 0.1)
+            td
+              - case pr.star
+              - when 5
+                .star ★★★★★
+              - when 4
+                .star ★★★★
+              - when 3
+                .star ★★★
+              - when 2
+                .star ★★
+              - when 1
+                .star ★
           - else
             td 自社落札
+            td
             td
         - else
           td.num = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")

@@ -49,5 +49,7 @@ Rails.application.routes.draw do
     end
 
     resources :trades, only: [:index, :create, :destroy]
+    resources :stars,  only: [:edit, :update]
+
   end
 end

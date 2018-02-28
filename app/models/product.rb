@@ -107,7 +107,7 @@ class Product < ApplicationRecord
   validates :template,          inclusion: {in: [true, false]}
 
   validates :machinelife_id, uniqueness: { scope: [ :soft_destroyed_at ] }, allow_blank: true
-
+  validates :star,           numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 } , allow_blank: true
 
   ### nest ###
   accepts_nested_attributes_for :product_images, allow_destroy: true

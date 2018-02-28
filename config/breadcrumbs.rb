@@ -80,6 +80,11 @@ crumb :myauction_bids_trade do |pr|
   parent :myauction_bids_end
 end
 
+crumb :myauction_bids_star do |pr|
+  link   "#{pr.name} 受取確認・評価", "/myauction/star/#{pr.id}"
+  parent :myauction_bids_end
+end
+
 crumb :myauction_products_end do
   link   "出品終了分(落札済み)", "/myauction/products/?cond=2"
   parent :myauction
@@ -109,7 +114,7 @@ crumb :myauction_categories_edit do |ca|
   else
     link ca.name, "/myauction/categories/#{ca.id}/edit"
   end
-  
+
   parent :myacution_categories, ca.parent
 end
 

@@ -1,4 +1,4 @@
-class Myauction::TradesController < ApplicationController
+class Myauction::TradesController < Myauction::ApplicationController
   def index
     @product        = Product.find(params[:product_id])
     @shipping_label = ShippingLabel.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no)

@@ -11,13 +11,18 @@ h3 フォローリスト
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
       th 出品会社名
-      / th 評価
+      th 評価
       th 最新の出品商品
       th
     - @pfollows.each do |fo|
       tr
-        td = link_to fo.user.company, "/products?q[company_id_eq]=#{fo.to_user_id}"
-        / td
+        td = link_to fo.to_user.company, "/products?q[company_id_eq]=#{fo.to_user_id}"
+        td.h4
+          span.glyphicon.glyphicon-asterisk.star-good
+          =< number_with_delimiter fo.to_user.count_star_good
+          br
+          span.glyphicon.glyphicon-cloud.star-bad
+          =< number_with_delimiter fo.to_user.count_star_bad
         td
           - Product.status(Product::STATUS[:start]).where(user_id: fo.to_user_id).order(dulation_start: :desc).limit(Follow::PRODUCTS_NUM).each do |pr|
             .thumbnail.product-pannel

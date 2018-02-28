@@ -1,0 +1,39 @@
+- set_meta_tags title: "受取確認・評価 #{@product.name}"
+- breadcrumb    :myauction_bids_star, @product
+
+.col-md-offset-4.col-md-4
+  .panel.panel-default
+    .panel-heading
+      . = @product.name
+      . 受取確認・評価を選択してください
+    .panel-body
+      = form_for @product, url: "/myauction/stars/#{@product.id}", html: { method: :patch } do |f|
+        - if f.object.errors.full_messages.present?
+          .alert.alert-danger
+            ul
+              - f.object.errors.full_messages.each do |msg|
+                li = msg
+
+        . 良い
+
+        .
+          = f.radio_button :star, 5, checked: true
+          =< f.label :star, "★★★★★", value: 5, class: "star"
+        .
+          = f.radio_button :star, 4
+          =< f.label :star, "★★★★", value: 4, class: "star"
+        .
+          = f.radio_button :star, 3
+          =< f.label :star, "★★★", value: 3, class: "star"
+        .
+          = f.radio_button :star, 2
+          =< f.label :star, "★★", value: 2, class: "star"
+        .
+          = f.radio_button :star, 1
+          =< f.label :star, "★", value: 1, class: "star"
+
+        . 悪い
+
+        = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+          span.glyphicon.glyphicon-save
+          span.btn-content 評価する
