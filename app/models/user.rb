@@ -74,11 +74,10 @@ class User < ApplicationRecord
   enum bank_account_type: { "普通" => 100, "当座" => 200 }
 
   def count_star_good
-    products.count("star >= 4")
+    products.where("star >= 4").count()
   end
 
   def count_star_bad
-    products.count("star >= 2")
+    products.where("star <= 2").count()
   end
-
 end
