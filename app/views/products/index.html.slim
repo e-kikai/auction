@@ -52,7 +52,8 @@
             = link_to pr.name, "/products/#{pr.id}"
             .td-under
               . 出品会社 #{link_to pr.user.company, "/products/?q[company_id_eq]=#{pr.user_id}"}
-          td.num = number_to_currency(pr.max_price_with_tax)
+          td.num
+            strong = number_to_currency(pr.max_price_with_tax)
           td.num = (number_to_currency(pr.prompt_dicision_price_with_tax))
           td.num = number_with_delimiter(pr.bids_count)
           td.num.absolute
