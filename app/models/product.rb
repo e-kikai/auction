@@ -65,6 +65,8 @@ class Product < ApplicationRecord
 
   TAX_RATE               = 8
 
+  LIMIT_DAYS             = Time.now - 120.day
+
   ### relations ###
   belongs_to :user,     required: true
   belongs_to :category, required: true
@@ -123,21 +125,18 @@ class Product < ApplicationRecord
     end
   }
 
-  # scope :finished, -> finished {
-  #   if finished.blank?
-  #     where("dulation_end > ?", Time.now).where("template = ?", false)
-  #   else
-  #     where("dulation_end BETWEEN ? AND ?", Time.now-120.day, Time.now).where("template = ?", false)
-  #   end
-  # }
+  scope :finished, -> {
+    where("dulation_end BETWEEN ? AND ?", LIMIT_DAYS, Time.now).order(dulation_end: :desc)
+  }
 
   scope :status, -> cond {
     case cond.to_i
     when STATUS[:before];  where("dulation_start > ? ", Time.now).order(:dulation_start) # 開始前
-    when STATUS[:failure]; where("dulation_end BETWEEN ? AND ? AND max_bid_id IS NULL", Time.now-120.day, Time.now).order(dulation_end: :desc) # 未落札
-    when STATUS[:success]; where("dulation_end BETWEEN ? AND ? AND max_bid_id IS NOT NULL", Time.now-120.day, Time.now).order(dulation_end: :desc) # 落札済み
-
+    when STATUS[:failure]; finished.where.(max_bid_id: nil, cancel: nil) # 未落札
+    when STATUS[:success]; finished.where.not(max_bid_id: nil) # 落札済み
+    when STATUS[:cancel];  finished.where.not(cancel: nil) # 未落札
     else;                  where("dulation_start <= ? AND dulation_end > ?", Time.now, Time.now).order(:dulation_end)  # 公開中
+
     end
   }
 
@@ -226,12 +225,26 @@ class Product < ApplicationRecord
   end
 
   ### (テンプレートから)商品情報をコピー ###
-  def dup_init
+  def dup_init(template=false)
     product = dup
-    product.attributes = {name: "", start_price: nil, prompt_dicision_price: nil, dulation_start: nil, dulation_end: nil, category_id: nil, template: false, description: ("\n\n" + description.to_s)}
+    product.attributes = if template
+      {name: "", start_price: nil, prompt_dicision_price: nil, dulation_start: nil, dulation_end: nil, category_id: nil, template: false, description: ("\n\n" + description.to_s)}
+    else
+      product_images.each do |pi|
+        product.product_images << pi
+      end
+
+      {dulation_start: nil, dulation_end: nil, template: false}
+    end
 
     product
   end
+
+  ### 星評価表示 ###
+  def star_view
+    "★"  * star.to_i
+  end
+
 
   ### CSVインポート確認 ###
   # def self.import_conf(file, category_id, template)
@@ -323,9 +336,10 @@ class Product < ApplicationRecord
 
   def self.status_label(cond)
     case cond.to_i
-    when STATUS[:before];  "開始前の出品商品"
+    when STATUS[:before];  "開始前の商品"
     when STATUS[:failure]; "出品終了(未落札)"
-    when STATUS[:success]; "出品終了(落札済み)"
+    when STATUS[:success]; "出品終了(落札済)"
+    when STATUS[:cancel];  "出品キャンセル分"
     else;                  "出品中"
     end
   end

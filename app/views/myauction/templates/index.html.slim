@@ -19,7 +19,7 @@ h3 テンプレート
         td = link_to pr.name, "/myauction/templates/#{pr.id}/edit"
         td = pr.created_at
         td
-          = link_to("/myauction/products/new?id=#{pr.id}", class: "btn btn-success") do
+          = link_to("/myauction/products/new?template_id=#{pr.id}", class: "btn btn-success") do
             span.glyphicon.glyphicon-paste
             =< "テンプレートから商品出品"
         td

@@ -9,13 +9,13 @@ class Myauction::ProductsController < Myauction::ApplicationController
   end
 
   def new
-    @product = if params[:id].present?
-      Product.templates.find(params[:id]).dup_init
+    @product = if params[:template_id].present?
+      current_user.products.templates.find(params[:template_id]).dup_init(true)
+    elsif params[:id].present?
+      current_user.products.find(params[:id]).dup_init(false)
     else
       current_user.products.new
     end
-
-    # ProductImage::IMAGE_NUM.times { @product.product_images.build }
   end
 
   # def confirm
@@ -86,7 +86,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
   def product_params
     params.require(:product).permit(:category_id, :code, :name, :description,
       :dulation_start, :dulation_end, :start_price, :prompt_dicision_price,
-      :shipping_user, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, :auto_resale, :shipping_no, :template, :hashtags,
+      :shipping_user, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, :auto_resale, :shipping_no, :template_id, :hashtags,
       product_images_attributes: [:id, :image, :_destroy])
   end
 end

@@ -32,6 +32,8 @@ h3 = title
         th 取引
         th 手数料
         th 評価
+      - elsif params[:cond].to_i == 3
+        th 再出品
       - else
         th.num 最高価格
         th.num 入札数
@@ -73,22 +75,16 @@ h3 = title
               span.glyphicon.glyphicon-transfer
               =< "取引"
             td = number_to_currency(pr.max_price * 0.1)
-            td
-              - case pr.star
-              - when 5
-                .star ★★★★★
-              - when 4
-                .star ★★★★
-              - when 3
-                .star ★★★
-              - when 2
-                .star ★★
-              - when 1
-                .star ★
+            td.star = pr.star_view
           - else
             td 自社落札
             td
             td
+        - elsif params[:cond].to_i == 3
+          th = link_to("/myauction/products/new?id=#{pr.id}", class: "btn btn-success") do
+            span.glyphicon.glyphicon-refresh
+            =< "別の商品として再出品"
+
         - else
           td.num = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
           td.num = pr.bids_count

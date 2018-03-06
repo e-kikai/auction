@@ -18,10 +18,11 @@
         .panel-heading 出品
         ul.nav.nav-pills.nav-stacked
           li = link_to "出品する",           "/myauction/products/new"
-          li = link_to "開始前の出品商品",   "/myauction/products?cond=-1"
+          li = link_to "開始前の商品",       "/myauction/products?cond=-1"
           li = link_to "出品中",             "/myauction/products/"
           li = link_to "出品終了分(未落札)", "/myauction/products?cond=1"
           li = link_to "出品終了分(落札済)", "/myauction/products?cond=2"
+          li = link_to "出品キャンセル分",   "/myauction/products?cond=3"
           li = link_to "テンプレート一覧",   "/myauction/templates/"
           li = link_to "テンプレート作成",   "/myauction/templates/new"
 

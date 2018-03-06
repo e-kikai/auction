@@ -48,17 +48,8 @@ h3 = title
               =< "取引"
 
             td
-              - case pr.star
-              - when 5
-                .star ★★★★★
-              - when 4
-                .star ★★★★
-              - when 3
-                .star ★★★
-              - when 2
-                .star ★★
-              - when 1
-                .star ★
+              - if pr.star
+                .star = pr.star_view
               - else
                 = link_to("/myauction/stars/#{pr.id}/edit", class: "btn btn-primary") do
                   span.glyphicon.glyphicon-asterisk
