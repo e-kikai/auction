@@ -11,7 +11,7 @@ class ProductsController < ApplicationController
       @search = @search.result.search(category_id_in: @category.subtree_ids)
     end
 
-    @products  = @search.result.includes(:product_images, :category)
+    @products  = @search.result.includes(:product_images, :category, :user)
     @pproducts = @products.page(params[:page])
   end
 

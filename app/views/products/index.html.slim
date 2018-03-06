@@ -43,17 +43,20 @@
         th.num  = sort_link(@search, :prompt_dicision_price)
         th.num  = sort_link(@search, :bids_count)
         th.num  = sort_link(@search, :dulation_end, "残り時間")
-        th
       - @pproducts.each do |pr|
         tr
           td.img
             - if pr.product_images.first.present?
               = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
-          td = link_to pr.name, "/products/#{pr.id}"
+          td.absolute
+            = link_to pr.name, "/products/#{pr.id}"
+            .td-under
+              . 出品会社 #{link_to pr.user.company, "/products/?q[company_id_eq]=#{pr.user_id}"}
           td.num = number_to_currency(pr.max_price_with_tax)
           td.num = (number_to_currency(pr.prompt_dicision_price_with_tax))
-          td.num = (pr.bids_count)
-          td.num = pr.remaining_time
-          td = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
-            span.glyphicon.glyphicon-star.watch-star
-            span.btn-content ウォッチ
+          td.num = number_with_delimiter(pr.bids_count)
+          td.num.absolute
+            = pr.remaining_time
+            .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
+              span.glyphicon.glyphicon-star.watch-star
+              span.btn-content ウォッチ

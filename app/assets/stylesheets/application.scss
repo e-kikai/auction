@@ -307,3 +307,16 @@ hr.detail-price-calc {
 .star {
   color: #f9c934;
 }
+
+td.absolute {
+  position: relative;
+
+  .td-under {
+    position: absolute;
+    bottom: 0;
+
+    &.right {
+      right: 0;
+    }
+  }
+}

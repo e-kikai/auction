@@ -61,12 +61,12 @@ table.table.table-hover.table-condensed.form-table
       th = f.label :description
       td = f.text_area :description, class: "form-control description"
 
-    tr
+    tr.form-inline
       th = f.label :dulation_start
-      td = f.datetime_select :dulation_start, default: (Time.now + 7.day), minute_step: 5, class: "form-control"
-    tr
+      td = f.datetime_select :dulation_start, { default: (Time.now + 7.day), minute_step: 5 }, class: "form-control"
+    tr.form-inline
       th = f.label :dulation_end
-      td = f.datetime_select :dulation_end, default: (Time.now + 14.day), minute_step: 5, class: "form-control"
+      td = f.datetime_select :dulation_end, { default: (Time.now + 14.day), minute_step: 5 }, class: "form-control"
 
     tr.form-inline
       th = f.label :start_price, class: :required
@@ -77,25 +77,37 @@ table.table.table-hover.table-condensed.form-table
 
     tr
       th 画像
-      / td
-      /   = f.fields_for :product_images do |pi|
-      /     = pi.file_field :image
       td
-        / = f.file_field :image, multiple: true, name: "product[product_images_attributes][][image]", class: "js-csv-upload"
         = file_field_tag "images[]", multiple: true, class: "js-csv-upload"
 
+        / - if params[:id]
+        /   = f.fields_for :product_images do |pi|
+        /     .form_img
+        /       = image_tag pi.object.remote_image_url
+        /       = pi.hidden_field :remote_image_url
+        /
+        / - else
         = f.fields_for :product_images do |pi|
           .form_img
-            = image_tag pi.object.image.thumb.url
-            = pi.hidden_field :id
-            = pi.check_box :_destroy, {}, 1, 0
-            = pi.label :_destroy, "削除"
+            - if pi.object.remote_image_url
+              = image_tag pi.object.remote_image_url, style: "max-width:160px;max-height:120px;"
+              = pi.hidden_field :remote_image_url
+            - else
+              = image_tag pi.object.image.thumb.url
+              = pi.hidden_field :id
+              = pi.check_box :_destroy, {}, 1, 0
+              = pi.label :_destroy, "削除"
 
     tr
       th = f.label :hashtags
       td
         = f.text_area :hashtags, class: "form-control"
         p.help-block 空白区切りで記述してください
+  tr
+    th = f.label :addr_1, "発送元"
+    td.form-inline
+      = f.select :addr_1, ShippingFee::ADDRS, { prompt: "-- 都道府県を選択 --" }, { class: 'form-control short' }
+      = f.text_field :addr_2, class: "form-control"
 
   tr
     th = f.label :shipping_user, class: :required

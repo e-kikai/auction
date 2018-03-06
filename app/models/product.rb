@@ -72,7 +72,7 @@ class Product < ApplicationRecord
   belongs_to :category, required: true
   belongs_to :max_bid,  class_name: "Bid", required: false
 
-  has_many   :product_images, -> { order(:id) }
+  has_many   :product_images, -> { order(:id) }, inverse_of: :product
   # has_many   :product_images
   # has_one    :top_image,      -> { order(:order_no, :id) }, class_name: "ProductImage"
   has_many   :bids
@@ -231,7 +231,7 @@ class Product < ApplicationRecord
       {name: "", start_price: nil, prompt_dicision_price: nil, dulation_start: nil, dulation_end: nil, category_id: nil, template: false, description: ("\n\n" + description.to_s)}
     else
       product_images.each do |pi|
-        product.product_images << pi
+        product.product_images.new.remote_image_url = pi.image.url
       end
 
       {dulation_start: nil, dulation_end: nil, template: false}
