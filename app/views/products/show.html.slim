@@ -80,12 +80,18 @@ h3.product-title = @product.name
   .col-md-4
     .panel.panel-default
       .panel-body
-        dl.dl-horizontal
-          dt 入札件数
-          dd #{@product.bids_count} 件
-          dt 残り時間
-          dd #{@product.remaining_time}
-          dd = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default" do
+        .col-md-4
+          . 入札件数
+          .
+            span.h3 #{@product.bids_count}
+            | 件
+        .col-md-4
+          . 残り時間
+          .
+            span.h3 #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
+            | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
+        .col-md-4
+          dd = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
             span.glyphicon.glyphicon-star.watch-star
             span.btn-content ウォッチ
       .panel-body.detail-price-area
@@ -122,11 +128,11 @@ h3.product-title = @product.name
           span.glyphicon.glyphicon-heart.follow-heart
           span.btn-content フォローする
 
-  /// ハッシュダグ ///
-  h5 関連キーワード
-  .detail-hashtags
-    - @product.hashtags.split(/(?:\s|　)+/).each do |ta|
-      = link_to ta, "/products?keywords=#{ta}"
+    /// ハッシュダグ ///
+    h5 関連キーワード
+    .detail-hashtags
+      - @product.hashtags.split(/(?:\s|　)+/).each do |ta|
+        = link_to ta, "/products?keywords=#{ta}"
 
 .row
   h4.product-description 商品説明

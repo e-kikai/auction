@@ -20,6 +20,10 @@
 // $icon-font-path: "bootstrap-sass/assets/fonts/bootstrap/";
 // @import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
+.breadcrumb > li + li:before {
+  content: "> "
+}
+
 /// header ///
 header {
 
@@ -235,6 +239,11 @@ table {
 }
 
 /// detail ///
+#product-carousel {
+  .item img {
+    margin: auto;
+  }
+}
 .carousel-select a img {
   margin: 6px;
 }
@@ -319,4 +328,9 @@ td.absolute {
       right: 5px;
     }
   }
+}
+
+.inner-title {
+  color: #777;
+  margin-right: 8px;
 }

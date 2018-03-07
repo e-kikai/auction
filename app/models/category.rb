@@ -24,6 +24,14 @@ class Category < ApplicationRecord
   validates :order_no, presence: true
 
   def ancestor_names
-    "/" + ancestors.map{ |g| g.name }.join("/")
+    ancestors.map{ |g| g.name }.join(" > ")
+  end
+
+  def self.options
+    categories = Category.all.index_by(&:id)
+
+    categories.map do |i, ca|
+      [ca.ancestor_ids.map { |v| categories[v].name + " > " rescue "" }.join + ca.name, i]
+    end
   end
 end
