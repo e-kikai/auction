@@ -14,7 +14,7 @@
           => ca.name
           span.glyphicon.glyphicon-chevron-down
 
-        td.num = ca.order_no
+        td.num = number_with_delimiter(ca.order_no)
         td = link_to({ action: :edit, id: ca.id }, class: "btn btn-warning") do
           span.glyphicon.glyphicon-edit
           =< "変更"

@@ -1,4 +1,4 @@
-categories = Category.all.index_by(&:id)
+categories = Category.all.order(:ancestry, :order_no).index_by(&:id)
 
 ["ID", "カテゴリ名", "階層構造"].to_csv +
 @categories.sum do |ca|

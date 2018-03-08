@@ -100,7 +100,7 @@ crumb :myacution_categories do |ca|
     link "カテゴリ管理", "/myauction/categories"
     parent :myauction
   elsif ca.root?
-    link ca.name, "/myauction/categories"
+    link ca.name, "/myauction/categories?parent_id=#{ca.id}"
     parent :myacution_categories
   else
     link ca.name, "/myauction/categories?parent_id=#{ca.id}"

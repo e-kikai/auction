@@ -28,7 +28,7 @@ class Category < ApplicationRecord
   end
 
   def self.options
-    categories = Category.all.index_by(&:id)
+    categories = Category.all.order(:ancestry, :order_no).index_by(&:id)
 
     categories.map do |i, ca|
       [ca.ancestor_ids.map { |v| categories[v].name + " > " rescue "" }.join + ca.name, i]
