@@ -14,8 +14,8 @@ CarrierWave.configure do |config|
 
   case Rails.env
     when 'production'
-      config.fog_directory = 'auction'
-      config.asset_host = 'https://s3-ap-northeast-1.amazonaws.com/auction'
+      config.fog_directory = 'mnok'
+      config.asset_host = 'https://s3-ap-northeast-1.amazonaws.com/mnok'
     when 'staging'
       config.fog_directory = 'staging.auction'
       config.asset_host = 'https://s3-ap-northeast-1.amazonaws.com/staging.auction'
