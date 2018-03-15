@@ -1,0 +1,46 @@
+- set_meta_tags title: "#{@company.company} 出品会社情報"
+- breadcrumb    :something, @company.company
+
+.col-md-offset-3.col-md-6
+  h3 出品会社情報
+
+  = link_to "#{@company.company}の出品商品", "/products?company_id_eq=#{@company.id}"
+
+  table.table.table-striped.table-hover.table-condensed
+    tr
+      th 会社名
+      td = @company.company
+
+    tr
+      th 〒
+      td = @company.zip
+    tr
+      th 住所
+      td = "#{@company.addr_1} #{@company.addr_2} #{@company.addr_3}"
+
+    tr
+      th TEL
+      td = @company.tel
+    tr
+      th FAX
+      td = @company.fax
+    tr
+      th ウェブサイト
+      td
+        - if @company.url
+          = link_to @company.url, @company.url, target: "_blank"
+
+    tr
+      th 担当者
+      td = @company.charge
+
+
+    tr
+      th 営業日情報
+      td = @company.business_hours
+    tr
+      th 免許情報
+      td = @company.license
+    tr
+      th 備考欄
+      td = simple_format(@company.note)

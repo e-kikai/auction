@@ -115,8 +115,9 @@ h3.product-title = @product.name
             = button_tag "今すぐ落札する", class: "btn btn-danger btn-lg center-block", data: { toggle: :modal, target: "#prompt-modal"}
 
       .panel-body
-        h4 出品者情報
+        h4 出品会社情報
         . = @product.user.company
+        . = link_to "出品会社情報", "/companies/#{@product.user_id}"
         .h4
           span.glyphicon.glyphicon-asterisk.star-good
           =<> number_with_delimiter @product.user.count_star_good

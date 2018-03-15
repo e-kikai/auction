@@ -16,8 +16,8 @@ html
     header.navbar.navbar-default.container-fluid role="navigation"
       .navbar-header
         / = link_to image_tag("omdc_logo.gif", alt: "機械団地 電子入札システム2"), "/", class: "navbar-brand omdc-logo"
-        = link_to "ものづくりオークション", "/", class: "navbar-brand omdc-logo"
-
+        / = link_to "ものづくりオークション", "/", class: "navbar-brand omdc-logo"
+        = link_to( image_tag("logo_02.png", alt: "ものづくりオークション"), "/", class: "navbar-brand omdc-logo")
         button.navbar-toggle data-toggle="collapse" data-target="#navbar-collapse-1"
           span.sr-only Toggle navigation
           span.icon-bar

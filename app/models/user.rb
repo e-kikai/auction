@@ -73,6 +73,9 @@ class User < ApplicationRecord
   validates :allow_mail, inclusion: {in: [true, false]}
   validates :seller,     inclusion: {in: [true, false]}
 
+  ### SCOPE ###
+  scope :companies, -> { where(seller: true) }
+
   def count_star_good
     products.where("star >= 4").count()
   end

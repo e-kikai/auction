@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :products,   only: [:index, :show]
 
   resources :categories, only: [:index, :show]
-
+  resources :companies,  only: [:show]
 
   ### マイ・オークション ###
   namespace :myauction do

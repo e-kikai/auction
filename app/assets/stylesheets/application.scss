@@ -29,6 +29,13 @@ header {
 
 }
 
+.navbar-brand {
+  padding: 0 15px;
+
+  img {
+    height: 50px;
+  }
+}
 //// キーワード検索
 .search-area .input-group {
   width: 100%;
