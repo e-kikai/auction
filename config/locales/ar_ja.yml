@@ -51,6 +51,7 @@ ja:
         shipping_no: 発送方法
         cancel: キャンセル理由
         hashtags: ハッシュタグ(空白区切り)
+        note: 落札事項
       bid:
         amount: 入札金額
       trade:

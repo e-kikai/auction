@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180315032657) do
+ActiveRecord::Schema.define(version: 20180315154113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,10 +129,6 @@ ActiveRecord::Schema.define(version: 20180315032657) do
     t.integer "shipping_user", default: 0, null: false
     t.integer "shipping_type"
     t.string "delivery"
-    t.integer "shipping_cost"
-    t.integer "shipping_okinawa"
-    t.integer "shipping_hokkaido"
-    t.integer "shipping_island"
     t.string "international_shipping"
     t.integer "delivery_date", default: 0, null: false
     t.integer "state", default: 0, null: false
@@ -163,6 +159,7 @@ ActiveRecord::Schema.define(version: 20180315032657) do
     t.text "cancel"
     t.text "hashtags", default: "", null: false
     t.integer "star"
+    t.text "note"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["soft_destroyed_at"], name: "index_products_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_products_on_user_id"
@@ -240,7 +237,6 @@ ActiveRecord::Schema.define(version: 20180315032657) do
     t.string "addr_3"
     t.string "tel"
     t.text "bank"
-    t.string "bank_branch"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "soft_destroyed_at"

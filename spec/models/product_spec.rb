@@ -18,10 +18,6 @@
 #  shipping_user          :integer          default("落札者"), not null
 #  shipping_type          :integer
 #  delivery               :string
-#  shipping_cost          :integer
-#  shipping_okinawa       :integer
-#  shipping_hokkaido      :integer
-#  shipping_island        :integer
 #  international_shipping :string
 #  delivery_date          :integer          default("1〜2で発送"), not null
 #  state                  :integer          default("中古"), not null
@@ -52,6 +48,7 @@
 #  cancel                 :text
 #  hashtags               :text             default(""), not null
 #  star                   :integer
+#  note                   :text
 #
 
 require 'rails_helper'

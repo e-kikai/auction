@@ -138,7 +138,8 @@ h3.product-title = @product.name
 .row
   h4.product-description 商品説明
   = simple_format(@product.description)
-
+  h4.product-description 落札事項
+  = simple_format(@product.note)
 
 /// 入札ダイアログ ////
 .modal.fade#bid-modal

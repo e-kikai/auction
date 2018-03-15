@@ -18,10 +18,6 @@
 #  shipping_user          :integer          default("落札者"), not null
 #  shipping_type          :integer
 #  delivery               :string
-#  shipping_cost          :integer
-#  shipping_okinawa       :integer
-#  shipping_hokkaido      :integer
-#  shipping_island        :integer
 #  international_shipping :string
 #  delivery_date          :integer          default("1〜2で発送"), not null
 #  state                  :integer          default("中古"), not null
@@ -52,6 +48,7 @@
 #  cancel                 :text
 #  hashtags               :text             default(""), not null
 #  star                   :integer
+#  note                   :text
 #
 
 class Product < ApplicationRecord
@@ -229,7 +226,8 @@ class Product < ApplicationRecord
   def dup_init(template=false)
     product = dup
     product.attributes = if template
-      {name: "", start_price: nil, prompt_dicision_price: nil, dulation_start: nil, dulation_end: nil, category_id: nil, template: false, description: ("\n\n" + description.to_s)}
+      # {name: "", start_price: nil, prompt_dicision_price: nil, dulation_start: nil, dulation_end: nil, category_id: nil, template: false, description: ("\n\n" + description.to_s)}
+      {name: "", start_price: nil, prompt_dicision_price: nil, dulation_start: nil, dulation_end: nil, category_id: nil, template: false, description: ""}
     else
       product_images.each do |pi|
         product.product_images.new.remote_image_url = pi.image.url
@@ -294,12 +292,9 @@ class Product < ApplicationRecord
     products.each do |pr|
       begin
         # 商品情報
-        # product = template.dup_init
-        # product.attributes = (pr.merge(category_id: category_id, description: (pr[:description] + "\n\n" + template.description)))
-
         template = user.products.templates.find_by(id: pr[:template_id]) || user.products.new
         product  = template.dup_init
-        product.attributes = (pr.merge(description: (pr[:description] + "\n\n" + template.description.to_s)))
+        # product.attributes = (pr.merge(description: (pr[:description] + "\n\n" + template.description.to_s)))
 
         product.save!
       rescue => e

@@ -16,7 +16,6 @@
 #  addr_3                 :string
 #  tel                    :string
 #  bank                   :text
-#  bank_branch            :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  soft_destroyed_at      :datetime

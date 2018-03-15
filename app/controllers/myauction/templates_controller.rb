@@ -53,7 +53,7 @@ class Myauction::TemplatesController < Myauction::ApplicationController
   end
 
   def template_params
-    params.require(:product).permit(:category_id, :code, :name, :description,
+    params.require(:product).permit(:category_id, :code, :name, :note,
       :dulation_start, :dulation_end, :start_price, :prompt_dicision_price,
       :shipping_user, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, :auto_resale, :shipping_no, :addr_1, :addr_2,
       :template,
