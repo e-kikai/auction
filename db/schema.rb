@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180228081325) do
+ActiveRecord::Schema.define(version: 20180315032657) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -241,9 +241,6 @@ ActiveRecord::Schema.define(version: 20180228081325) do
     t.string "tel"
     t.text "bank"
     t.string "bank_branch"
-    t.integer "bank_account_type"
-    t.string "bank_account_number"
-    t.string "bank_account_hodler"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "soft_destroyed_at"
@@ -261,6 +258,12 @@ ActiveRecord::Schema.define(version: 20180228081325) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
+    t.string "charge"
+    t.string "fax"
+    t.string "url"
+    t.string "license"
+    t.string "business_hours"
+    t.text "note"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["soft_destroyed_at"], name: "index_users_on_soft_destroyed_at"

@@ -17,9 +17,6 @@
 #  tel                    :string
 #  bank                   :text
 #  bank_branch            :string
-#  bank_account_type      :integer
-#  bank_account_number    :string
-#  bank_account_hodler    :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  soft_destroyed_at      :datetime
@@ -37,6 +34,12 @@
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
+#  charge                 :string
+#  fax                    :string
+#  url                    :string
+#  license                :string
+#  business_hours         :string
+#  note                   :text
 #
 
 class User < ApplicationRecord
@@ -67,11 +70,8 @@ class User < ApplicationRecord
 
   # accepts_nested_attributes_for :watches
 
-  validates :bank_account_type, inclusion: {in: Product.states.keys}, allow_blank: true
   validates :allow_mail, inclusion: {in: [true, false]}
   validates :seller,     inclusion: {in: [true, false]}
-
-  enum bank_account_type: { "普通" => 100, "当座" => 200 }
 
   def count_star_good
     products.where("star >= 4").count()

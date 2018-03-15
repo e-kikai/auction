@@ -17,6 +17,13 @@ ja:
 
         bank: 振込先情報
 
+        charge: 担当者
+        license: 免許情報
+        fax: FAX
+        url: サイトURL
+        business_hours: 営業時間
+        note: 備考欄
+
       category:
         name: カテゴリ名
         order_no: 並び順

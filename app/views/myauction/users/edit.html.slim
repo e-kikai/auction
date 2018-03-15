@@ -43,9 +43,30 @@
           = f.text_field :addr_3, required: "required", class: 'form-control'
 
         - if current_user.seller?
+          hr
+          h4 出品会社追加情報
+          .form-group
+            = f.label :charge, class: :required
+            = f.text_field :charge, required: "required", class: 'form-control'
+          .form-group
+            = f.label :fax
+            = f.text_field :fax, class: 'form-control'
+          .form-group
+            = f.label :url
+            = f.text_field :url, class: 'form-control'
+          .form-group
+            = f.label :license
+            = f.text_field :license, class: 'form-control'
+          .form-group
+            = f.label :business_hours
+            = f.text_field :business_hours, class: 'form-control'
+
           .form-group
             = f.label :bank, class: :required
             = f.text_area :bank, required: "required", class: 'form-control'
+          .form-group
+            = f.label :note, class: :note
+            = f.text_area :note, class: 'form-control'
 
         = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
           span.glyphicon.glyphicon-save

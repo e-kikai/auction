@@ -91,4 +91,6 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # GA.tracker = "UA-2926798-2"
+
+  config.action_mailer.default_url_options = { host: 'www.mnok.net' }
 end

@@ -17,9 +17,6 @@
 #  tel                    :string
 #  bank                   :text
 #  bank_branch            :string
-#  bank_account_type      :integer
-#  bank_account_number    :string
-#  bank_account_hodler    :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  soft_destroyed_at      :datetime
@@ -37,6 +34,12 @@
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
 #  unconfirmed_email      :string
+#  charge                 :string
+#  fax                    :string
+#  url                    :string
+#  license                :string
+#  business_hours         :string
+#  note                   :text
 #
 
 require 'rails_helper'

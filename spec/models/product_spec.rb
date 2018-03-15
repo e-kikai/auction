@@ -50,7 +50,8 @@
 #  machinelife_images     :text
 #  shipping_no            :integer
 #  cancel                 :text
-#  hashtags               :text
+#  hashtags               :text             default(""), not null
+#  star                   :integer
 #
 
 require 'rails_helper'
