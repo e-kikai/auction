@@ -46,6 +46,10 @@ html
             li = link_to "/users/sign_in" do
               .glyphicon.glyphicon-log-in
               span.btn-content 入札に参加する
+            li = link_to "/users/sign_up" do
+              .glyphicon.glyphicon-thumbs-up
+              span.btn-content 初めての方はこちら
+
 
     .container
       - if request.fullpath !~ /(myauction|users)/

@@ -93,4 +93,6 @@ Rails.application.configure do
   # GA.tracker = "UA-2926798-2"
 
   config.action_mailer.default_url_options = { host: 'www.mnok.net' }
+
+  GA.tracker = "UA-115918166-1"
 end
