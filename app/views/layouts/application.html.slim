@@ -9,13 +9,23 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track' => :reload
     = csrf_meta_tags
 
-    = analytics_init if Rails.env.production?
+    / = analytics_init if Rails.env.production?
+
+    /// Analytics(turbolinks5対応) ///
+    - if Rails.env.production?
+      javascript:
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-115918166-1', 'auto');
+        ga('send', 'pageview');
 
   / body onLoad="FixedMidashi.create();"
   body
     header.navbar.navbar-default.container-fluid role="navigation"
       .navbar-header
-        / = link_to image_tag("omdc_logo.gif", alt: "機械団地 電子入札システム2"), "/", class: "navbar-brand omdc-logo"
         / = link_to "ものづくりオークション", "/", class: "navbar-brand omdc-logo"
         = link_to( image_tag("logo_02.png", alt: "ものづくりオークション"), "/", class: "navbar-brand omdc-logo")
         button.navbar-toggle data-toggle="collapse" data-target="#navbar-collapse-1"

@@ -119,8 +119,8 @@ gem 'rmagick'
 gem 'fog'
 
 # Google Analytics
-gem 'google-analytics-rails'
-gem 'google-analytics-turbolinks'
+# gem 'google-analytics-rails'
+# gem 'google-analytics-turbolinks'
 
 gem 'whenever', require: false # cron
 gem 'ancestry'                 # カテゴリ階層構造

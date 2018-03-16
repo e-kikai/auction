@@ -19,6 +19,13 @@
 #= require turbolinks
 # require_tree .
 
+### Google Analyticsの設定(turbolinks5対応) ###
+$ ->
+  $(document).on 'turbolinks:render', ->
+    if window.ga?
+      ga('set', 'location', location.href.split('#')[0])
+      ga('send', 'pageview')
+
 $(document).on 'ready, turbolinks:load', ->
   # # フォーム共通 : フォーム自動全選択
   # $('input.allselect').click ->
@@ -63,6 +70,7 @@ $(document).on 'ready, turbolinks:load', ->
   $("form").submit ->
     $(@).find("input.price").each ->
       $(this).triggerHandler "focus"
+
 
 priceUnformat = (str) ->
   num = new String(str).replace(/[^0-9]/g, "")
