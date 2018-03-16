@@ -95,6 +95,9 @@ group :development do
   gem 'annotate'  # DBスキーマ書き出し
 
   gem 'html2slim'
+
+  gem 'letter_opener' # メールテスト
+  gem 'letter_opener_web'
 end
 
 # assets

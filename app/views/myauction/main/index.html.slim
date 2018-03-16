@@ -32,8 +32,10 @@
         ul.nav.nav-pills.nav-stacked
           li = link_to "CSVインポート",      "/myauction/csv/new"
           li = link_to "インポートログ",     "/myauction/importlog"
+          li = link_to "http://www.zenkiren.net/admin/machine_auction.php", target: "_blank" do
+            | →マシンライフ<br />オークション用CSV出力
           li = link_to "送料設定インポート", "/myauction/shipping/new"
-          li = link_to "カテゴリ管理",       "/myauction/categories"
+          / li = link_to "カテゴリ管理",       "/myauction/categories"
 
   .col-md-3
     .panel.panel-default

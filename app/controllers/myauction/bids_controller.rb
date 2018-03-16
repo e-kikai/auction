@@ -28,6 +28,7 @@ class Myauction::BidsController < Myauction::ApplicationController
         mes = if @product.finished?
           "おめでとうございます。あなたが落札しました。"
         else
+          BidMailer.bid_user(current_user, @bid).deliver
           "入札を行いました。現在あなたの入札が最高金額です。"
         end
         redirect_to "/myauction/bids/#{@bid.id}", notice: mes
