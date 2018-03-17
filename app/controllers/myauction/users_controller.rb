@@ -16,6 +16,6 @@ class Myauction::UsersController < Myauction::ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(%w|name company tel zip addr_1 addr_2 addr_3 account bank charge fax url license business_hours note|)
+    params.require(:user).permit(%w|email name company tel zip addr_1 addr_2 addr_3 account bank charge fax url license business_hours note allow_mail|)
   end
 end

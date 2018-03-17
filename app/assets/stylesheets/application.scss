@@ -43,6 +43,16 @@ header {
   width: 100%;
 }
 
+.header-menu {
+  text-align: right;
+  line-height: 32px;
+
+  a {
+    padding: 10px 8px;
+    margin: 0 2px;
+  }
+}
+
 /// footer ///
 footer {
   margin-top: 16px;

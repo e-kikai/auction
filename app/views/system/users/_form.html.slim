@@ -1,0 +1,90 @@
+.col-md-offset-1.col-md-10
+  .panel.panel-default
+    .panel-heading
+      h4 ユーザ情報フォーム
+    .panel-body
+      - if f.object.errors.full_messages.present?
+        .alert.alert-danger
+          ul
+            - f.object.errors.full_messages.each do |msg|
+              li = msg
+
+      .form-group
+        = f.label :name, class: :required
+        = f.text_field :name, autofocus: true, required: "required", class: 'form-control'
+
+        .form-group
+          = f.label :email, class: :required
+          = f.text_field :email, required: "required", class: 'form-control'
+
+      - if isnew == true
+        .form-group
+          = f.label :password, class: :required
+          = f.text_field :password, required: "required", class: 'form-control'
+
+          = f.hidden_field :confirmed_at, value: Time.now
+
+      .form-group
+        = f.label :company
+        = f.text_field :company, class: 'form-control'
+
+      .form-group
+        = f.label :tel
+        = f.text_field :tel, class: 'form-control short'
+
+      .form-group
+        = f.label :zip
+        = f.text_field :zip, class: 'form-control short'
+
+      .form-group
+        = f.label :addr_1
+        = f.select :addr_1, ShippingFee::ADDRS, { prompt: "-- 都道府県を選択 --" }, { class: 'form-control short' }
+
+      .form-group
+        = f.label :addr_2
+        = f.text_field :addr_2, class: 'form-control'
+
+      .form-group
+        = f.label :addr_3
+        = f.text_field :addr_3, class: 'form-control'
+
+      .form-group
+        = f.label :allow_mail, "ものづくりオークションからの案内メール"
+        .
+          label.radio-inline = f.radio_button(:allow_mail, true) + " 送る"
+          label.radio-inline = f.radio_button(:allow_mail, false) + " 送らない"
+
+      hr
+
+      .form-group
+      = f.label :seller
+      .
+        label.radio-inline = f.radio_button(:seller, true) + " 出品会社"
+        label.radio-inline = f.radio_button(:seller, false) + " 入札ユーザ"
+
+      .form-group
+        = f.label :charge
+        = f.text_field :charge, class: 'form-control'
+      .form-group
+        = f.label :fax
+        = f.text_field :fax, class: 'form-control'
+      .form-group
+        = f.label :url
+        = f.text_field :url, class: 'form-control'
+      .form-group
+        = f.label :license
+        = f.text_field :license, class: 'form-control'
+      .form-group
+        = f.label :business_hours
+        = f.text_field :business_hours, class: 'form-control'
+
+      .form-group
+        = f.label :bank
+        = f.text_area :bank, class: 'form-control'
+      .form-group
+        = f.label :note, class: :note
+        = f.text_area :note, class: 'form-control'
+
+      = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+        span.glyphicon.glyphicon-save
+        span.btn-content 保存

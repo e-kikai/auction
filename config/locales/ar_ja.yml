@@ -15,6 +15,7 @@ ja:
         password_confirmation: パスワード確認
         email: メールアドレス
 
+        seller: 出品会社
         bank: 振込先情報
 
         charge: 担当者

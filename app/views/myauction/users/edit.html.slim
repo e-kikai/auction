@@ -19,6 +19,10 @@
           = f.text_field :name, autofocus: true, required: "required", class: 'form-control'
 
         .form-group
+          = f.label :email, class: :required
+          = f.text_field :email, required: "required", class: 'form-control'
+
+        .form-group
           = f.label :company
           = f.text_field :company, class: 'form-control'
 
@@ -41,6 +45,13 @@
         .form-group
           = f.label :addr_3, class: :required
           = f.text_field :addr_3, required: "required", class: 'form-control'
+
+        .form-group
+          = f.label :allow_mail, "ものづくりオークションからの案内メール"
+          .
+            label.radio-inline = f.radio_button(:allow_mail, true) + " 送る"
+            label.radio-inline = f.radio_button(:allow_mail, false) + " 送らない"
+
 
         - if current_user.seller?
           hr

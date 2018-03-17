@@ -28,41 +28,46 @@ html
       .navbar-header
         / = link_to "ものづくりオークション", "/", class: "navbar-brand omdc-logo"
         = link_to( image_tag("logo_02.png", alt: "ものづくりオークション"), "/", class: "navbar-brand omdc-logo")
-        button.navbar-toggle data-toggle="collapse" data-target="#navbar-collapse-1"
-          span.sr-only Toggle navigation
-          span.icon-bar
-          span.icon-bar
-          span.icon-bar
 
-      / - if current_user
-      /   div ようこそ #{current_user.name}
-      #navbar-collapse-1.navbar-collapse.collapse
-        ul.nav.navbar-nav.navbar-right
-          / li = link_to "javascript:window.print();" do
-          /   .glyphicon.glyphicon-print
-          /   span.btn-content ページを印刷
-          - if user_signed_in?
-            li = link_to "/myauction" do
-              .glyphicon.glyphicon-user
-              span.btn-content マイ・オークション
-            li = link_to "/myauction/watches" do
-              .glyphicon.glyphicon-star
-              span.btn-content ウォッチリスト
-            - if current_user.seller?
-              li = link_to "/myauction/products/new", target: "_blank" do
-                .glyphicon.glyphicon-plus
-                span.btn-content 出品する
-          - else
-            li = link_to "/users/sign_in" do
-              .glyphicon.glyphicon-log-in
-              span.btn-content 入札に参加する
-            li = link_to "/users/sign_up" do
-              .glyphicon.glyphicon-thumbs-up
-              span.btn-content 初めての方はこちら
+        - if user_signed_in?
+          p.navbar-text
+            span> ようこそ、
+            strong #{current_user.company} #{current_user.name}
+            span< さん [
+            = link_to "/users/sign_out", method: :delete
+              span.glyphicon.glyphicon-log-out
+              span.btn-content ログアウト
+            | ]
 
+      /   button.navbar-toggle data-toggle="collapse" data-target="#navbar-collapse-1"
+      /     span.sr-only Toggle navigation
+      /     span.icon-bar
+      /     span.icon-bar
+      /     span.icon-bar
+      /
+      / #navbar-collapse-1.navbar-collapse.collapse
+      /   ul.nav.navbar-nav.navbar-right
+      /     - if user_signed_in?
+      /       li = link_to "/myauction" do
+      /         .glyphicon.glyphicon-user
+      /         span.btn-content マイ・オークション
+      /       li = link_to "/myauction/watches" do
+      /         .glyphicon.glyphicon-star
+      /         span.btn-content ウォッチリスト
+      /       - if current_user.seller?
+      /         li = link_to "/myauction/products/new", target: "_blank" do
+      /           .glyphicon.glyphicon-plus
+      /           span.btn-content 出品する
+      /     - else
+      /       li = link_to "/users/sign_in" do
+      /         .glyphicon.glyphicon-log-in
+      /         span.btn-content 入札に参加する
+      /       li = link_to "/users/sign_up" do
+      /         .glyphicon.glyphicon-thumbs-up
+      /         span.btn-content 初めての方はこちら
 
     .container
-      - if request.fullpath !~ /(myauction|users)/
+      - if request.fullpath !~ /(myauction|users|system)/
         .row
           .col-md-6
             .form-group.search-area
@@ -72,6 +77,27 @@ html
                   = text_field_tag :keywords, params[:keywords], class: "form-control", placeholder: "キーワードから探す"
                   span.input-group-btn
                     = button_tag "検索", class: "btn btn-default"
+
+
+          .col-md-6.header-menu
+            - if user_signed_in?
+              = link_to "/myauction" do
+                .glyphicon.glyphicon-user
+                span.btn-content マイ・オークション
+              = link_to "/myauction/watches" do
+                .glyphicon.glyphicon-star
+                span.btn-content ウォッチリスト
+              - if current_user.seller?
+                = link_to "/myauction/products/new", target: "_blank" do
+                  .glyphicon.glyphicon-plus
+                  span.btn-content 出品する
+            - else
+              = link_to "/users/sign_in" do
+                .glyphicon.glyphicon-log-in
+                span.btn-content 入札に参加する
+              = link_to "/users/sign_up" do
+                .glyphicon.glyphicon-thumbs-up
+                span.btn-content 初めての方はこちら
 
       = raw breadcrumbs style: :bootstrap, semantic: true
 

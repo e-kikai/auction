@@ -61,8 +61,15 @@ Rails.application.routes.draw do
   ### 管理者ページ ###
   namespace :system do
     root to: "main#index"
-    
+
     resources :categories, only: [:index, :new, :create, :edit, :update]
+    resources :users,      only: [:index, :new, :create, :edit, :update, :destroy] do
+      member do
+        post  'sign_in'
+        get   'edit_password'
+        patch 'update_password'
+      end
+    end
 
   end
 end

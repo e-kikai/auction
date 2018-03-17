@@ -125,7 +125,7 @@ end
 
 ### 管理者ページ ###
 crumb :system do
-  link   "管理者ページ", "/myauction/"
+  link   "管理者ページ", "/system/"
   # parent :root
 end
 
@@ -150,6 +150,26 @@ crumb :system_categories_edit do |ca|
   end
 
   parent :system_categories, ca.parent
+end
+
+crumb :system_usres do
+  link   "ユーザ管理", "/system/users/"
+  parent :system
+end
+
+crumb :system_users_new do
+  link   "新規ユーザ登録", "/system/users/new"
+  parent :system_usres
+end
+
+crumb :system_users_edit do |user|
+  link   "ユーザ情報変更", "/system/users/#{user.id}/edit"
+  parent :system_usres
+end
+
+crumb :system_users_edit_password do |user|
+  link   "パスワード変更", "/system/users/#{user.id}/edit_password"
+  parent :system_usres
 end
 
 crumb :system_something do |title|

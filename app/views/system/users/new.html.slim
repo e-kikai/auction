@@ -1,0 +1,5 @@
+- set_meta_tags title: "新規ユーザ登録"
+- breadcrumb    :system_users_new
+
+= form_for @user, url: "/system/users/", html: { multipart: true, method: :post } do |f|
+  = render "form", f: f, isnew: true
