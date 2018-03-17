@@ -1,6 +1,18 @@
 - set_meta_tags title: @product.name
 - breadcrumb    :products_show, @product
 
+/// 基本 ///
+- set_meta_tags keywords: @product.hashtags, description: @product.description
+
+/// Twitterカード ///
+- set_meta_tags twitter: { card: "summary", site: "@username" }
+
+/// OGP ///
+- set_meta_tags og: { type: "article", title: @product.name, description: @product.description, url: "#{root_url}products/#{@product.id}", site_name: "ものづくりオークション" }
+
+- if @product.product_images.first
+  - set_meta_tags og: { image: @product.product_images.first.image.view.url }
+
 - if @product.finished?
   .row
     .alert.alert-danger

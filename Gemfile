@@ -112,6 +112,8 @@ end
 # end
 gem "bower-rails"
 
+### SEO ###
+gem 'sitemap_generator' # Googleサイトマップ
 gem 'meta-tags'
 
 gem 'activerecord-session_store' # セッションDB保存

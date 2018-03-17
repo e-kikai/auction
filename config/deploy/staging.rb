@@ -19,6 +19,8 @@ set :pty, false
 
 set :keep_releases, 10
 
+set :whenever_environment, :staging
+
 # role-based syntax
 # ==================
 

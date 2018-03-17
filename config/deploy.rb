@@ -89,3 +89,5 @@ namespace :bower do
 end
 
 before 'deploy:compile_assets', 'bower:install'
+
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }

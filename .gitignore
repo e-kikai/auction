@@ -35,3 +35,6 @@ bower.json
 public/uploads
 
 .powenv
+
+# sitemap
+public/sitemap.xml.gz
