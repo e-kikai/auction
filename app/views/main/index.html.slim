@@ -1,3 +1,12 @@
+/// 基本 ///
+- set_meta_tags keywords: "工具 機械 NC ものづくり オークション 販売", description: "ものづくりに特化したオークションサイト"
+
+/// Twitterカード ///
+- set_meta_tags twitter: { card: "summary", site: "@username" }
+
+/// OGP ///
+- set_meta_tags og: { type: "website", title: "ものづくりオークション", description: "ものづくりに特化したオークションサイト", url: root_url, site_name: "ものづくりオークション", image: asset_url("logo_02.png") }
+
 .main-container.toppage.clearfix
   .row
     - if user_signed_in?
