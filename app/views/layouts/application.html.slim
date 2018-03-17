@@ -1,12 +1,8 @@
 doctype html
 html
   head
-    meta charset="utf-8"
-    meta name="viewport" content="width=device-width, initial-scale=1"
-    = display_meta_tags site: "ものづくりオークション", reverse: true, separator: "｜", nofollow: true, noindex: true
-
-    - if Rails.env.production?
-      - set_meta_tags nofollow: false, noindex: false
+    - set_meta_tags nofollow: true, noindex: true unless Rails.env.production?
+    = display_meta_tags site: "ものづくりオークション", reverse: true, separator: "｜", charset: "utf-8", viewport: "width=device-width, initial-scale=1"
 
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => :reload
     = javascript_include_tag 'application', 'data-turbolinks-track' => :reload
