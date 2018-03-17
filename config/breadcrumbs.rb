@@ -122,3 +122,37 @@ crumb :myauction_something do |title|
   link   title
   parent :myauction
 end
+
+### 管理者ページ ###
+crumb :system do
+  link   "管理者ページ", "/myauction/"
+  # parent :root
+end
+
+crumb :system_categories do |ca|
+  if ca.blank?
+    link "カテゴリ管理", "/system/categories"
+    parent :system
+  elsif ca.root?
+    link ca.name, "/system/categories?parent_id=#{ca.id}"
+    parent :system_categories
+  else
+    link ca.name, "/system/categories?parent_id=#{ca.id}"
+    parent :system_categories, ca.parent
+  end
+end
+
+crumb :system_categories_edit do |ca|
+  if ca.name.blank?
+    link "新規カテゴリ追加", "/system/categories/new"
+  else
+    link ca.name, "/system/categories/#{ca.id}/edit"
+  end
+
+  parent :system_categories, ca.parent
+end
+
+crumb :system_something do |title|
+  link   title
+  parent :system
+end

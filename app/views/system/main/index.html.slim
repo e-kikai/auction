@@ -1,0 +1,12 @@
+- set_meta_tags title: "管理者ページ"
+- breadcrumb    :system
+
+.row
+  .col-md-3
+    .panel.panel-default
+      .panel-heading 各種管理
+      ul.nav.nav-pills.nav-stacked
+        li = link_to "カテゴリ管理",   "/system/categories"
+        - if Rails.env.development?
+          li = link_to "letter_opener", "/letter_opener", target: "_blank"
+        li = link_to "GoogleAnalytics", "https://analytics.google.com/analytics/web/#embed/report-home/a115918166w172183137p171747763/", target: "_blank"

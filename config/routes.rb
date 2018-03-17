@@ -57,4 +57,10 @@ Rails.application.routes.draw do
     resources :stars,  only: [:edit, :update]
 
   end
+
+  ### 管理者ページ ###
+  namespace :system do
+    root to: "main#index"
+
+  end
 end
