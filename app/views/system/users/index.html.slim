@@ -25,6 +25,7 @@ ul.nav.nav-pills
       tr
         th ユーザ名
         th 会社名
+        th ユニーク名
         th 出品
         th 案内
         th 変更
@@ -36,6 +37,7 @@ ul.nav.nav-pills
         tr
           td = us.name
           td = us.company
+          td = us.account
           td = us.seller? ? "◯" : "×"
           td = us.allow_mail? ? "◯" : "×"
 

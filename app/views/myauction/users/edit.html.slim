@@ -23,6 +23,10 @@
           = f.text_field :email, required: "required", class: 'form-control'
 
         .form-group
+          = f.label :account
+          = @user.account
+
+        .form-group
           = f.label :company
           = f.text_field :company, class: 'form-control'
 

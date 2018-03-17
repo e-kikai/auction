@@ -75,11 +75,20 @@ class User < ApplicationRecord
   ### SCOPE ###
   scope :companies, -> { where(seller: true) }
 
+  ### CALLBACK ###
+  before_save :init_account
+
   def count_star_good
     products.where("star >= 4").count()
   end
 
   def count_star_bad
     products.where("star <= 2").count()
+  end
+
+  private
+
+  def init_account
+    self.account = SecureRandom.urlsafe_base64(6) if self.account.blank?
   end
 end
