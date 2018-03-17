@@ -1,0 +1,5 @@
+- set_meta_tags title: "#{@category} 変更"
+- breadcrumb    :system_categories_edit, @category
+
+= form_for @category, url: "/system/categories/#{params[:id]}", html: { method: :patch, class: 'form-horizontal' } do |f|
+  = render "form", f: f

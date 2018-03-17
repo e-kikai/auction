@@ -61,6 +61,8 @@ Rails.application.routes.draw do
   ### 管理者ページ ###
   namespace :system do
     root to: "main#index"
+    
+    resources :categories, only: [:index, :new, :create, :edit, :update]
 
   end
 end
