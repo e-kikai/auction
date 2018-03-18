@@ -27,13 +27,15 @@
 
     .panel.panel-default
       .panel-heading
-        = link_to "categories" do
-          | カテゴリから探す
-          .pull-right
-            .glyphicon.glyphicon-menu-right
+        | カテゴリから探す
+        / = link_to "categories" do
+        /   | カテゴリから探す
+        /   .pull-right
+        /     .glyphicon.glyphicon-menu-right
       ul.list-group
         - @roots.each do |ca|
-          = link_to ca.name, "products?category_id=#{ca.id}", class: "list-group-item"
+          - ca.children.each do |ca2|
+            = link_to ca2.name, "products?category_id=#{ca2.id}", class: "list-group-item"
 
   .col-md-7
     / .panel.panel-default
