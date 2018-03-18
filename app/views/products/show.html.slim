@@ -140,7 +140,7 @@ h3.product-title = @product.name
           span.glyphicon.glyphicon-cloud.star-bad
           =< number_with_delimiter @product.user.count_star_bad
 
-        . = link_to "この出品者のほかの商品", "/products/?q[company_id_eq]=#{@product.user_id}"
+        . = link_to "#{@product.user.company}のその他の出品商品", "/products/?company_id=#{@product.user_id}"
         . = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
           span.glyphicon.glyphicon-heart.follow-heart
           span.btn-content フォローする

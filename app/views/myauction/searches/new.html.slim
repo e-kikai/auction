@@ -8,6 +8,7 @@
   = form_for @search, url: "/myauction/searches/", html: { method: :post } do |f|
     table.table.table-hover.table-condensed.form-table
       = f.hidden_field :keywords
+      = f.hidden_field :company_id
       = f.hidden_field :category_id
       = f.hidden_field :q
       = f.hidden_field :product_image_id
@@ -25,6 +26,10 @@
       tr
         th = f.label :keywords
         td = @search.keywords
+
+      tr
+        th = f.label "出品会社"
+        td = @search.company_id ? @search.company.company : " - "
 
       tr
         th = f.label :category

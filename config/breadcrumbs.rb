@@ -22,6 +22,11 @@ crumb :category do |ca|
   end
 end
 
+crumb :company do |us|
+  link   us.company, "/products?company_id=#{us.id}"
+  parent :root
+end
+
 crumb :products_show do |pr|
   link   pr.name, "/products/#{pr.id}"
   parent :category, pr.category

@@ -6,9 +6,16 @@ class ProductsController < ApplicationController
     cond = params[:success].present? ? Product::STATUS[:success] : Product::STATUS[:start] # 終了した商品
     @search = Product.status(cond).with_keywords(params[:keywords]).search(params[:q])
 
+    # カテゴリ
     if params[:category_id].present?
       @category = Category.find(params[:category_id])
       @search = @search.result.search(category_id_in: @category.subtree_ids)
+    end
+
+    # 出品会社
+    if params[:company_id].present?
+      @company = User.companies.find(params[:company_id])
+      @search = @search.result.search(user_id_eq: params[:company_id])
     end
 
     @products  = @search.result.includes(:product_images, :category, :user)

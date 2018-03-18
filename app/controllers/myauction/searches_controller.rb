@@ -52,6 +52,6 @@ class Myauction::SearchesController < Myauction::ApplicationController
   private
 
   def search_params
-    params.require(:search).permit(:name, :keywords, :category_id, :q, :publish, :product_image_id)
+    params.require(:search).permit(:name, :keywords, :category_id, :company_id, :q, :publish, :product_image_id)
   end
 end

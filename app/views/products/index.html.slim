@@ -1,5 +1,8 @@
 - set_meta_tags title: "検索結果"
-- if @category.present?
+
+- if @company.present?
+  - breadcrumb :company, @company
+- elsif @category.present?
   - breadcrumb :category, @category
 - else
   - breadcrumb :search
@@ -10,10 +13,9 @@
     = form_for Search.new, url: "/myauction/searches/new", method: :get do |f|
       = f.hidden_field :keywords,    value: params[:keywords]
       = f.hidden_field :category_id, value: params[:category_id]
+      = f.hidden_field :company_id, value: params[:company_id]
       = f.hidden_field :q, value: params[:q].to_json
-      / - if params[:q]
-      /   - params[:q].each do |k, v|
-      /     = f.hidden_field "q[#{k}]", value: v
+
       = f.button :button, class: "btn btn-info btn-sm" do
         span.glyphicon.glyphicon-pushpin
         span.btn-content この検索条件を保存
@@ -22,7 +24,7 @@
       .panel-heading カテゴリ
       .panel-body
         - @products.joins(:category).group(:category_id).group("categories.name").reorder("count_id DESC").count().each do |i, count|
-          . = link_to "#{i[1]} (#{count})", params.to_unsafe_h.merge(q: {category_id: i[0]})
+          . = link_to "#{i[1]} (#{count})", params.to_unsafe_h.merge(category_id: i[0])
 
     .panel.panel-default
       .panel-heading 商品の状態
@@ -53,7 +55,7 @@
             .td-under
               .
                 span.inner-title 出品会社
-                =< link_to pr.user.company, "/products/?q[company_id_eq]=#{pr.user_id}"
+                =< link_to pr.user.company, "/products?company_id=#{pr.user_id}"
               .
                 span.inner-title カテゴリ
                 - pr.category.path.each.with_index do |ca, i|
@@ -61,7 +63,7 @@
                   = link_to(ca.name, "products/?category_id=#{ca.id}")
           td.num
             strong = number_to_currency(pr.max_price_with_tax)
-          td.num = (number_to_currency(pr.prompt_dicision_price_with_tax))
+          td.num = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price_with_tax) : "-"
           td.num = number_with_delimiter(pr.bids_count)
           td.num.absolute
             = pr.remaining_time

@@ -13,7 +13,9 @@ h3 保存した検索条件
       / th.img_mini
       th 検索条件名
       th 検索キーワード
+      th 出品会社
       th カテゴリ
+      
       - if current_user.seller?
         th トップページに公開する
       th 削除
@@ -26,9 +28,9 @@ h3 保存した検索条件
         /     = link_to image_tag(se.product_image.thumb.url), se.uri
         td = link_to se.name, se.uri
         td = se.keywords
-        td
-          - if se.category_id
-            = se.category.name
+        td = se.company_id ? se.company.company : "-"
+        td = se.category_id ? se.category.name : "-"
+
         - if current_user.seller?
           td
             - if se.publish?

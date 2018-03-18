@@ -21,6 +21,7 @@ class Search < ApplicationRecord
 
   belongs_to :user
   belongs_to :category,      required: false
+  belongs_to :company,       class_name: "User", required: false
   belongs_to :product_image, required: false
 
   ### validates ###
@@ -32,7 +33,7 @@ class Search < ApplicationRecord
   end
 
   def uri
-    "/products?#{{ keywords: keywords, category_id: category_id, q: q_parse}.to_query}"
+    "/products?#{{ keywords: keywords, category_id: category_id, company_id: company_id, q: q_parse, search_id: id}.to_query}"
   end
 
   # 検索
