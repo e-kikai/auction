@@ -11,7 +11,11 @@ Rails.application.routes.draw do
 
   root to: "main#index"
 
-  resources :products,   only: [:index, :show]
+  resources :products,   only: [:index, :show] do
+    member do
+      get 'bids'
+    end
+  end
 
   resources :categories, only: [:index, :show]
   resources :companies,  only: [:show]

@@ -100,11 +100,11 @@ h3.product-title = @product.name
           . 入札件数
           .
             span.h3 #{@product.bids_count}
-            | 件
+          . =< link_to "入札履歴", "/products/#{@product.id}/bids"
         .col-md-4
           . 残り時間
           .
-            span.h3 #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
+            span.h3> #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
             | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
         .col-md-4
           dd = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do

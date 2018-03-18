@@ -130,7 +130,7 @@ class Product < ApplicationRecord
   scope :status, -> cond {
     case cond.to_i
     when STATUS[:before];  where("dulation_start > ? ", Time.now).order(:dulation_start) # 開始前
-    when STATUS[:failure]; finished.where.(max_bid_id: nil, cancel: nil) # 未落札
+    when STATUS[:failure]; finished.where(max_bid_id: nil, cancel: nil) # 未落札
     when STATUS[:success]; finished.where.not(max_bid_id: nil) # 落札済み
     when STATUS[:cancel];  finished.where.not(cancel: nil) # 未落札
     else;                  where("dulation_start <= ? AND dulation_end > ?", Time.now, Time.now).order(:dulation_end)  # 公開中

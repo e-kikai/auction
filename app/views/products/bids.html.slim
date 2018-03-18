@@ -1,0 +1,25 @@
+- set_meta_tags title: "#{@product.name} 入札履歴"
+- breadcrumb    :products_bids, @product
+
+h3.product-title = @product.name
+
+.col-md-offset-3.col-md-6
+  h3 入札履歴
+
+  table.table.table-striped.table-hover.table-condensed
+    tr
+      th 入札ユーザ
+      th 金額
+      th 手動入札日時
+
+    - @product.bids.order(created_at: :desc).each do |bi|
+      - if bi.id == @product.max_bid_id
+        tr
+          td = "#{bi.user.account.gsub(/^(.)(.)(.)(.)(.).*$/, '\1*\3*\5***')} (最高入札者)"
+          td.num = number_to_currency(@product.max_price_with_tax)
+          td = I18n.l(bi.created_at, format: :full_date)
+      - else
+        tr
+          td = bi.user.account.gsub(/^(.)(.)(.)(.)(.).*$/, '\1*\3*\5***')
+          td.num = number_to_currency(bi.amount_with_tax)
+          td = I18n.l(bi.created_at, format: :full_date)

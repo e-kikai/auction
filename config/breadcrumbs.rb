@@ -27,11 +27,20 @@ crumb :company do |us|
   parent :root
 end
 
+crumb :company_show do |us|
+  link   "出品会社情報", "/companeis/#{us.id}"
+  parent :company, us
+end
+
 crumb :products_show do |pr|
   link   pr.name, "/products/#{pr.id}"
   parent :category, pr.category
 end
 
+crumb :products_bids do |pr|
+  link   "入札履歴", "/products/#{pr.id}/bids"
+  parent :products_show, pr
+end
 
 
 ### マイ・オークション ###

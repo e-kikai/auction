@@ -52,7 +52,7 @@ h3 = title
           td = I18n.l(pr.dulation_end, format: :full_date)
         td = I18n.l(pr.dulation_end, format: :full_date)
         td.num = number_to_currency(pr.start_price)
-        td.num = number_to_currency(pr.prompt_dicision_price)
+        td.num = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price) : "-"
 
         - if params[:cond].to_i == -1
           td = link_to({ action: :edit, id: pr.id }, class: "btn btn-warning") do
@@ -67,7 +67,7 @@ h3 = title
             =< "再出品"
         - elsif params[:cond].to_i == 2
           td.num = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
-          td.num = pr.bids_count
+          td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
           td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
 
           - if pr.max_bid.user_id != current_user.id
@@ -87,7 +87,7 @@ h3 = title
 
         - else
           td.num = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
-          td.num = pr.bids_count
+          td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
           td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
           td.num = pr.remaining_time
           / td

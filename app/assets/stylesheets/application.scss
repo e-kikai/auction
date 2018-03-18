@@ -20,7 +20,7 @@
 // $icon-font-path: "bootstrap-sass/assets/fonts/bootstrap/";
 // @import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
-$main-color: #e3acff;
+$main-color: #edc9ff;
 
 .breadcrumb > li + li:before {
   content: "> "
@@ -122,7 +122,7 @@ footer {
  }
 
  .product-title {
-   background: #EEE;
+   background: $main-color;
    padding: 6px;
  }
 

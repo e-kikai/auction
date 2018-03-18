@@ -64,7 +64,7 @@
           td.num
             strong = number_to_currency(pr.max_price_with_tax)
           td.num = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price_with_tax) : "-"
-          td.num = number_with_delimiter(pr.bids_count)
+          td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
           td.num.absolute
             = pr.remaining_time
             .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do

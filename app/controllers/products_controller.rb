@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, only: [:conf, :bid, :result]
-  before_action :get_product,        only: [:show, :conf, :bid, :result]
+  before_action :get_product,        only: [:show, :conf, :bids]
 
   def index
     cond = params[:success].present? ? Product::STATUS[:success] : Product::STATUS[:start] # 終了した商品
@@ -28,6 +28,9 @@ class ProductsController < ApplicationController
     if user_signed_in?
       @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: current_user.addr_1)
     end
+  end
+
+  def bids
   end
 
   private
