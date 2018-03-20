@@ -7,7 +7,7 @@ class SearchLogsController < ApplicationController
       company_id:  params[:company_id],
       keywords:    params[:keywords],
       search_id:   params[:search_id],
-      user_id:     user_signed_in? ? current_user.id : nil,
+      host:       (Resolv.getname(ip) rescue ""),
       ip:          ip,
       host:        Socket.gethostname,
       referer:     request.referer,
