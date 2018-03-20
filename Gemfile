@@ -98,6 +98,8 @@ group :development do
 
   gem 'letter_opener' # メールテスト
   gem 'letter_opener_web'
+
+  gem 'rails_real_favicon' # favicon
 end
 
 # assets
