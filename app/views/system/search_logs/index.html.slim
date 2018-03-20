@@ -9,4 +9,4 @@
 
 .row
   - @psearch_logs.each do |lo|
-    .system-log #{lo.created_at} | #{lo.ip}(#{lo.host})<#{lo.user.try(:account)}> - #{lo.company.try(:company)} / #{lo.category.try(:name)} / #{lo.keywords} (#{lo.search_id})
+    .system-log #{lo.created_at} | #{lo.ip}(#{lo.host}) <#{lo.user.try(:account)}> - #{lo.company.try(:company)} / #{lo.category.try(:name)} / #{lo.keywords} (#{lo.search_id})
