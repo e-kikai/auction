@@ -1,4 +1,6 @@
 class DetailLogsController < ApplicationController
+  require 'resolv'
+
   def create
     ip = request.env["HTTP_X_FORWARDED_FOR"] || request.remote_ip
 
