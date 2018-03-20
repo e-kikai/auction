@@ -1,0 +1,47 @@
+- set_meta_tags title: "手数料集計"
+- breadcrumb :system_something, "手数料集計"
+
+- total_conunt  = 0
+- total_success = 0
+- total_price   = 0
+- total_fee     = 0
+
+.col-md-offset-2.col-md-8
+  = form_tag("/system/total", method: "get", class: "form-inline") do
+    = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+    = button_tag "日付変更",  class: "btn btn-info"
+
+  table.table.table-hover.table-condensed.table-striped.product-table
+    tr
+      th ID
+      th 出品会社名
+      th.num 出品件数
+      th.num 落札件数
+      th.num 落札総額
+      th.num 手数料
+    - @companies.each do |co|
+      - month_products = co.products.where(created_at: @date.beginning_of_month..@date.end_of_month)
+      - count          = month_products.count
+      - total_conunt   += count
+      - success        = month_products.where.not(max_bid_id: nil).count
+      - total_success  += success
+      - price          = month_products.where.not(max_bid_id: nil).sum(:max_price)
+      - total_price    += price
+      - fee            = price * Product::FEE_RATE / 100
+      - total_fee      += fee
+
+      tr
+        td = co.id
+        td = co.company
+        td.num = number_with_delimiter(count)
+        td.num = number_with_delimiter(success)
+        td.num = number_to_currency(price)
+        td.num = number_to_currency(fee)
+    tfooter
+      tr
+        td
+        th 合計
+        td.num = number_with_delimiter(total_conunt)
+        td.num = number_with_delimiter(total_success)
+        td.num = number_to_currency(total_price)
+        td.num = number_to_currency(total_fee)

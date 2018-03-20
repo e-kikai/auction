@@ -1,0 +1,2 @@
+module System::TotalHelper
+end

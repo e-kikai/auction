@@ -64,10 +64,10 @@ table.table.table-hover.table-condensed.form-table
 
     tr.form-inline
       th = f.label :dulation_start
-      td = f.datetime_select :dulation_start, { default: (Time.now + 7.day), minute_step: 5 }, class: "form-control"
+      td = f.datetime_select :dulation_start, { default: (Time.now + 7.day), minute_step: 5, start_year: 2018 }, class: "form-control"
     tr.form-inline
       th = f.label :dulation_end
-      td = f.datetime_select :dulation_end, { default: (Time.now + 14.day), minute_step: 5 }, class: "form-control"
+      td = f.datetime_select :dulation_end, { default: (Time.now + 14.day), minute_step: 5, start_year: 2018 }, class: "form-control"
 
     tr.form-inline
       th = f.label :start_price, class: :required

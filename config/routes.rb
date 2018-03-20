@@ -81,5 +81,7 @@ Rails.application.routes.draw do
     resources :bids, only: [:index]
     resources :detail_logs, only: [:index]
     resources :search_logs, only: [:index]
+    resources :total, only: [:index]
+
   end
 end
