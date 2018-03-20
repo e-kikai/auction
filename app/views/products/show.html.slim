@@ -114,9 +114,15 @@
             span.btn-content ウォッチ
       .panel-body.detail-price-area
         h4 現在価格
+          /// リッチスニペット ///
+          meta itemprop="sky" content="#{@product.id}"
         .product-price itemscope="" itemtype="http://schema.org/Offer"
           meta itemprop="price" content="#{@product.max_price}"
           meta itemprop="priceCurrency" content="JPY"
+          - if @product.state == "新品"
+            meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/NewCondition"
+          - elsif @product.state == "中古"
+            meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/UsedCondition"
 
           span.h2> #{number_to_currency @product.max_price}
           span.product-tax
@@ -158,7 +164,7 @@
 
 .row
   h4.product-description 商品説明
-   itemprop="description" = simple_format(@product.description)
+  . itemprop="description" = simple_format(@product.description)
   h4.product-description 落札事項
   = simple_format(@product.note)
 
