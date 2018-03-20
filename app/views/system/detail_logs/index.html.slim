@@ -9,4 +9,4 @@
 
 .row
   - @pdetail_logs.each do |lo|
-    .system-log #{lo.created_at} | #{lo.ip}(#{lo.host})<#{lo.user.try(:account)}> - #{lo.product_id} #{lo.product.name}
+    .system-log #{lo.created_at} | #{lo.ip}(#{lo.host})＜#{lo.user.try(:account)}＞ - #{lo.product_id} #{lo.product.name} - #{number_to_currency(lo.product.max_price)}
