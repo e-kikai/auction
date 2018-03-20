@@ -11,7 +11,6 @@ class SearchLogsController < ApplicationController
       search_id:   params[:search_id],
       host:       (Resolv.getname(ip) rescue ""),
       ip:          ip,
-      host:        Socket.gethostname,
       referer:     request.referer,
       ua:          request.user_agent,
     ) ? "success" : "error"
