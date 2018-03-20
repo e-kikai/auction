@@ -19,14 +19,50 @@
 #= require turbolinks
 # require_tree .
 
-### Google Analyticsの設定(turbolinks5対応) ###
-$ ->
-  $(document).on 'turbolinks:render', ->
-    if window.ga?
-      ga('set', 'location', location.href.split('#')[0])
-      ga('send', 'pageview')
+$(document).on 'turbolinks:load', ->
+  ### Google Analyticsの設定(turbolinks5対応) ###
 
-$(document).on 'ready, turbolinks:load', ->
+  if window.ga?
+    ga('set', 'location', location.href.split('#')[0])
+    ga('send', 'pageview')
+
+  ### 詳細ページログ取得 ###
+  if $("body").data("controller") == "products" && $("body").data("action") == "show"
+    $.ajax
+      async:    true
+      url:      "/detail_logs/"
+      type:     'POST',
+      dataType: 'json',
+      data :    { product_id : $('#product_id').val() },
+      timeout:  3000,
+      # success:  (data, status, xhr)   -> alert status
+      # error:    (xhr,  status, error) -> alert status
+
+  ### 検索ログ ###
+  if $("body").data("controller") == "products" && $("body").data("action") == "index"
+    $.ajax
+      async:    true
+      url:      "/search_logs/"
+      type:     'POST',
+      dataType: 'json',
+      data :    { category_id : $('#search_category_id').val(), company_id : $('#search_company_id').val(), keywords : $('#search_keywords').val(), search_id : $('#search_id').val() },
+      timeout:  3000,
+      # success:  (data, status, xhr)   -> alert status
+      # error:    (xhr,  status, error) -> alert status
+
+
+  ### トップページログ ###
+  if $("body").data("controller") == "main" && $("body").data("action") == "index"
+    $.ajax
+      async:    true
+      url:      "/toppage_logs/"
+      type:     'POST',
+      dataType: 'json',
+      data :    {},
+      timeout:  3000,
+      # success:  (data, status, xhr)   -> alert status
+      # error:    (xhr,  status, error) -> alert status
+
   # # フォーム共通 : フォーム自動全選択
   # $('input.allselect').click ->
   #   @.select()
@@ -70,7 +106,6 @@ $(document).on 'ready, turbolinks:load', ->
   $("form").submit ->
     $(@).find("input.price").each ->
       $(this).triggerHandler "focus"
-
 
 priceUnformat = (str) ->
   num = new String(str).replace(/[^0-9]/g, "")

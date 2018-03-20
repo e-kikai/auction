@@ -1,0 +1,12 @@
+- set_meta_tags title: "入札履歴"
+- breadcrumb :system_something, "入札履歴"
+
+= form_tag("/system/bids", method: "get", class: "form-inline") do
+  = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
+  = button_tag "日付変更",  class: "btn btn-info"
+
+= paginate @pbids
+
+.row
+  - @pbids.each do |bi|
+    .system-log #{bi.created_at} | #{bi.user.account} - #{bi.product_id} #{bi.product.name} - #{number_to_currency(bi.amount)}

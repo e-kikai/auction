@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180318044626) do
+ActiveRecord::Schema.define(version: 20180319142915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,19 @@ ActiveRecord::Schema.define(version: 20180318044626) do
     t.integer "order_no", default: 999999999, null: false
     t.index ["ancestry"], name: "index_categories_on_ancestry"
     t.index ["soft_destroyed_at"], name: "index_categories_on_soft_destroyed_at"
+  end
+
+  create_table "detail_logs", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "product_id"
+    t.string "ip"
+    t.string "host"
+    t.string "ua"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "referer"
+    t.index ["product_id"], name: "index_detail_logs_on_product_id"
+    t.index ["user_id"], name: "index_detail_logs_on_user_id"
   end
 
   create_table "follows", force: :cascade do |t|
@@ -160,9 +173,28 @@ ActiveRecord::Schema.define(version: 20180318044626) do
     t.text "hashtags", default: "", null: false
     t.integer "star"
     t.text "note"
+    t.integer "watches_count", default: 0, null: false
+    t.integer "detail_logs_count", default: 0, null: false
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["soft_destroyed_at"], name: "index_products_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_products_on_user_id"
+  end
+
+  create_table "search_logs", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "category_id"
+    t.integer "company_id"
+    t.string "keywords"
+    t.bigint "search_id"
+    t.string "ip"
+    t.string "host"
+    t.string "referer"
+    t.string "ua"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_search_logs_on_category_id"
+    t.index ["search_id"], name: "index_search_logs_on_search_id"
+    t.index ["user_id"], name: "index_search_logs_on_user_id"
   end
 
   create_table "searches", force: :cascade do |t|
@@ -210,6 +242,17 @@ ActiveRecord::Schema.define(version: 20180318044626) do
     t.string "name"
     t.string "#<ActiveRecord::ConnectionAdapters::PostgreSQL::TableDefinition"
     t.index ["user_id"], name: "index_shipping_labels_on_user_id"
+  end
+
+  create_table "toppage_logs", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "ip"
+    t.string "host"
+    t.string "referer"
+    t.string "ua"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_toppage_logs_on_user_id"
   end
 
   create_table "trades", force: :cascade do |t|

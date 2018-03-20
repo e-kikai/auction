@@ -24,19 +24,27 @@ h3 = title
         th 変更
         th 削除
       - elsif params[:cond].to_i == 1
+        th.num 閲覧数
+        th.num ウォッチ数
         th 再出品
       - elsif params[:cond].to_i == 2
         th.num 落札価格
         th.num 入札数
+        th.num 閲覧数
+        th.num ウォッチ数
         th 落札者
         th 取引
         th 手数料
         th 評価
       - elsif params[:cond].to_i == 3
+        th.num 閲覧数
+        th.num ウォッチ数
         th 再出品
       - else
         th.num 最高価格
         th.num 入札数
+        th.num 閲覧数
+        th.num ウォッチ数
         th 最高入札者
         th.num 残り時間
         / th 自社落札
@@ -62,12 +70,16 @@ h3 = title
             span.glyphicon.glyphicon-remove
             =< "削除"
         - elsif params[:cond].to_i == 1
-          th = link_to({ action: :edit, id: pr.id }, class: "btn btn-success") do
+          td.num = pr.detail_logs_count
+          td.num = pr.watches_count
+          td = link_to({ action: :edit, id: pr.id }, class: "btn btn-success") do
             span.glyphicon.glyphicon-refresh
             =< "再出品"
         - elsif params[:cond].to_i == 2
           td.num = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
           td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+          td.num = pr.detail_logs_count
+          td.num = pr.watches_count
           td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
 
           - if pr.max_bid.user_id != current_user.id
@@ -81,6 +93,8 @@ h3 = title
             td
             td
         - elsif params[:cond].to_i == 3
+          td.num = pr.detail_logs_count
+          td.num = pr.watches_count
           th = link_to("/myauction/products/new?id=#{pr.id}", class: "btn btn-success") do
             span.glyphicon.glyphicon-refresh
             =< "別の商品として再出品"
@@ -88,6 +102,8 @@ h3 = title
         - else
           td.num = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
           td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+          td.num = pr.detail_logs_count
+          td.num = pr.watches_count
           td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
           td.num = pr.remaining_time
           / td

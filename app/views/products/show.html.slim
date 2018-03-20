@@ -37,6 +37,7 @@ h3.product-title = @product.name
           li = msg
 
 .row
+  = hidden_field_tag :product_id, @product.id
   /// 画像枠 ///
   .col-md-8
     - if @product.product_images.first

@@ -9,13 +9,13 @@ class MainController < ApplicationController
     # フォローした出品会社の新着
     if user_signed_in?
       if follows_user_ids = current_user.follows.pluck(:user_id)
-        @follows_new_products = Product.status(Product::STATUS[:start]).where(user_id: follows_user_ids).order(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
+        @follows_new_products = Product.status(Product::STATUS[:start]).includes(:product_images).where(user_id: follows_user_ids).order(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
       end
     end
 
 
     # 新着
-    @new_products = Product.status(Product::STATUS[:start]).order(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
+    @new_products = Product.status(Product::STATUS[:start]).includes(:product_images).order(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
 
     # トップページ公開検索条件
     @searches = Search.where(publish: true).order("RANDOM()").limit(9)

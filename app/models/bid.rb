@@ -19,6 +19,7 @@ class Bid < ApplicationRecord
 
   belongs_to :user
   belongs_to :product
+  counter_culture :product
 
   scope :result_order, -> { order(amount: :desc, created_at: :asc) }
 

@@ -359,3 +359,16 @@ td.absolute {
   color: #777;
   margin-right: 8px;
 }
+
+/// system ///
+.system-log {
+  padding: 3px 6px;
+
+  &:nth-child(even) {
+    background: #EEE;
+  }
+
+  &:nth-child(odd) {
+
+  }
+}

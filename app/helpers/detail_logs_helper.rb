@@ -1,0 +1,2 @@
+module DetailLogsHelper
+end

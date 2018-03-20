@@ -129,3 +129,5 @@ gem 'fog'
 
 gem 'whenever', require: false # cron
 gem 'ancestry'                 # カテゴリ階層構造
+
+gem 'counter_culture' # 件数キャッシュ

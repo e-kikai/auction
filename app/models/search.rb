@@ -13,6 +13,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  soft_destroyed_at :datetime
+#  company_id        :integer
 #
 
 class Search < ApplicationRecord

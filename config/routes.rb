@@ -17,8 +17,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :categories, only: [:index, :show]
-  resources :companies,  only: [:show]
+  resources :categories,  only: [:index, :show]
+  resources :companies,   only: [:show]
+
+  resources :detail_logs,  only: [:create]
+  resources :search_logs,  only: [:create]
+  resources :toppage_logs, only: [:create]
 
   ### マイ・オークション ###
   namespace :myauction do
@@ -74,6 +78,8 @@ Rails.application.routes.draw do
         patch 'update_password'
       end
     end
-
+    resources :bids, only: [:index]
+    resources :detail_logs, only: [:index]
+    resources :search_logs, only: [:index]
   end
 end

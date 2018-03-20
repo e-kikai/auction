@@ -74,9 +74,10 @@ class Product < ApplicationRecord
   # has_many   :product_images
   # has_one    :top_image,      -> { order(:order_no, :id) }, class_name: "ProductImage"
   has_many   :bids
-  has_many   :mylists
-  has_many   :mylist_users, through: :mylists, source: :user
+  has_many   :watches
+  has_many   :watch_users, through: :mylists, source: :user
   has_many   :trades
+  has_many   :detail_logs
 
   ### enum ###
   enum type:          { "オークションで出品" => 0, "定額で出品" => 100 }
@@ -180,7 +181,7 @@ class Product < ApplicationRecord
     end
 
     # 入札数インクリメント
-    self.bids_count += 1
+    # self.bids_count += 1
 
     # 自動延長処理
     if auto_extension && dulation_end <= (Time.now + 5.minute)

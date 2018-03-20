@@ -1,0 +1,12 @@
+- set_meta_tags title: "商品詳細アクセス履歴"
+- breadcrumb :system_something, "商品詳細アクセス履歴"
+
+= form_tag("/system/detail_logs", method: "get", class: "form-inline") do
+  = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
+  = button_tag "日付変更",  class: "btn btn-info"
+
+= paginate @pdetail_logs
+
+.row
+  - @pdetail_logs.each do |lo|
+    .system-log #{lo.created_at} | #{lo.ip}(#{lo.host})<#{lo.user.try(:account)}> - #{lo.product_id} #{lo.product.name}

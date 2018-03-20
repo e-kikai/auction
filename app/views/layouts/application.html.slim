@@ -22,7 +22,7 @@ html
         ga('send', 'pageview');
 
   / body onLoad="FixedMidashi.create();"
-  body
+  body data-controller="#{controller.controller_path}" data-action="#{controller.action_name}"
     header.navbar.navbar-default.container-fluid role="navigation"
       .navbar-header
         / = link_to "ものづくりオークション", "/", class: "navbar-brand omdc-logo"
