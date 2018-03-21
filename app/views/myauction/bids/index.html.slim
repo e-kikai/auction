@@ -22,15 +22,15 @@ h3 = title
       th.img_mini
       th 商品名
       th 終了日時
-      th.num 現在価格
+      th.price 現在価格
       th.num 入札数
-      th 出品者
+      th 出品会社
       - if params[:cond] == "2"
         th 取引
         th 受取確認・評価
       - else
         th 最高入札者
-        th.num 残り時間
+        th.num 残り<br />時間
     - @pproducts.each do |pr|
       tr
         td.img_mini
@@ -38,7 +38,7 @@ h3 = title
             = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
         td = link_to pr.name, "/products/#{pr.id}"
         td = I18n.l(pr.dulation_end, format: :full_date)
-        td.num = number_to_currency(pr.max_price_with_tax)
+        td.price = number_to_currency(pr.max_price_with_tax)
         td.num = pr.bids_count
         td = pr.user.company
         - if params[:cond] == "2"

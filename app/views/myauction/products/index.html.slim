@@ -3,6 +3,25 @@
 - set_meta_tags title: title
 - breadcrumb    :myauction_something, title
 
+/// SNS初期化 ///
+/ facebook初期化
+<div id="fb-root"></div>
+javascript:
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.12';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+/ Twitter初期化
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+/ LINE初期化
+<script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+
+
 h3 = title
 
 = paginate @pproducts
@@ -18,8 +37,8 @@ h3 = title
       - if params[:cond].to_i == -1
         th 開始日時
       th 終了日時
-      th.num 開始金額
-      th.num 即決金額
+      th.price 開始金額
+      th.price 即決金額
       - if params[:cond].to_i == -1
         th 変更
         th 削除
@@ -28,27 +47,29 @@ h3 = title
         th.num ウォッチ数
         th 再出品
       - elsif params[:cond].to_i == 2
-        th.num 落札価格
+        th.price 落札価格
+        th 落札者
+        th 取引
         th.num 入札数
         th.num 閲覧数
         th.num ウォッチ数
-        th 落札者
-        th 取引
-        th 手数料
+        th.price 手数料
         th 評価
       - elsif params[:cond].to_i == 3
+        th.num 入札数
         th.num 閲覧数
         th.num ウォッチ数
         th 再出品
       - else
-        th.num 最高価格
+        th.price 最高価格
+        th 最高<br />入札者
         th.num 入札数
         th.num 閲覧数
         th.num ウォッチ数
-        th 最高入札者
-        th.num 残り時間
+        th.sns SNSシェア
+        th.num 残り<br />時間
         / th 自社落札
-        th 出品キャンセル
+        th 出品<br />キャンセル
     - @pproducts.each do |pr|
       tr
         td.img_mini
@@ -59,8 +80,8 @@ h3 = title
         - if params[:cond].to_i == -1
           td = I18n.l(pr.dulation_end, format: :full_date)
         td = I18n.l(pr.dulation_end, format: :full_date)
-        td.num = number_to_currency(pr.start_price)
-        td.num = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price) : "-"
+        td.price = number_to_currency(pr.start_price)
+        td.price = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price) : "-"
 
         - if params[:cond].to_i == -1
           td = link_to({ action: :edit, id: pr.id }, class: "btn btn-warning") do
@@ -76,23 +97,27 @@ h3 = title
             span.glyphicon.glyphicon-refresh
             =< "再出品"
         - elsif params[:cond].to_i == 2
-          td.num = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
-          td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
-          td.num = pr.detail_logs_count
-          td.num = pr.watches_count
+          td.price = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
           td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
 
           - if pr.max_bid.user_id != current_user.id
             td = link_to("/myauction/trades?product_id=#{pr.id}", class: "btn btn-success") do
               span.glyphicon.glyphicon-transfer
               =< "取引"
-            td = number_to_currency(pr.max_price * 0.1)
+            td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+            td.num = pr.detail_logs_count
+            td.num = pr.watches_count
+            td.price = number_to_currency(pr.max_price * Product::FEE_RATE / 100)
             td.star = pr.star_view
           - else
             td 自社落札
+            td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+            td.num = pr.detail_logs_count
+            td.num = pr.watches_count
             td
             td
         - elsif params[:cond].to_i == 3
+          td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
           td.num = pr.detail_logs_count
           td.num = pr.watches_count
           th = link_to("/myauction/products/new?id=#{pr.id}", class: "btn btn-success") do
@@ -100,12 +125,19 @@ h3 = title
             =< "別の商品として再出品"
 
         - else
-          td.num = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
+          td.price = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
+          td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
           td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
           td.num = pr.detail_logs_count
           td.num = pr.watches_count
-          td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
+          td.sns
+            <div class="fb-share-button" data-href="#{root_url}products/#{pr.id}" data-layout="button_count" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">シェア</a></div>
+
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" data-url="#{root_url}products/#{pr.id}" class="twitter-share-button" data-hashtags="ものオク" data-show-count="false">Tweet</a>
+
+            <div class="line-it-button" data-lang="ja" data-type="share-a" data-url="#{root_url}products/#{pr.id}" style="display: none;"></div>
           td.num = pr.remaining_time
+
           / td
           /   - if pr.prompt_dicision_price.present?
           /     = link_to({ action: :prompt, id: pr.id }, method: :post, data: { confirm: "#{pr.name}\n\nこの商品に即決価格で自社落札をおこないます。\n\nよろしいですか？", "disable-with" => "入札中..."}, class: "btn btn-success") do
@@ -117,7 +149,7 @@ h3 = title
 
           td = button_tag class: "btn btn-danger btn-cancel", data: { toggle: :modal, target: "#cancel-modal-#{pr.id}"} do
             span.glyphicon.glyphicon-remove
-            =< "キャンセル"
+            =< "cancle"
 
 - @pproducts.each do |pr|
   /// 出品キャンセルダイアログ ////

@@ -172,13 +172,41 @@ footer {
 }
 
 table {
-  td.num {
+  td.price {
     width: 80px;
     text-align: right;
   }
 
-  th.num {
+  th.price {
     width: 80px;
+  }
+
+  td.num {
+    width: 50px;
+    text-align: right;
+  }
+
+  th.num {
+    width: 50px;
+    font-size: 13px;
+  }
+
+  td.sns {
+    width: 90px;
+
+    .fb-share-button {
+      margin-bottom: 5px;
+    }
+
+    .twitter-share-button {
+    }
+
+    .line-it-button {
+    }
+  }
+
+  th.sns {
+    width: 90px;
   }
 }
 
@@ -305,6 +333,22 @@ hr.detail-price-calc {
   background: $main-color;
   padding: 4px 8px;
   margin: 16px 0 4px 0;
+}
+
+.sns-area {
+  .fb-share-button {
+    vertical-align: top;
+    margin-right: 4px;
+  }
+
+  .twitter-share-button {
+    margin-right: 4px;
+  }
+
+  .line-it-button {
+    vertical-align: top;
+    margin-top: 4px;
+  }
 }
 
 /// マイ・オークション ///
