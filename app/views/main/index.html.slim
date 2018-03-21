@@ -98,3 +98,15 @@
       .panel-body
         p 運営からのお知らせなど
         p 使い方案内など
+
+    //// SNSボタン ///
+    .sns-area
+      = link_to "http://www.facebook.com/sharer.php?u=#{root_url}", target: "_blank", class: "facebook-button" do
+        = image_tag "fb_icon.png"
+        span シェア
+
+      = link_to "http://twitter.com/share?hashtags=ものオク&text=ものづくりオークション〜ものづくりに特化したオークションサイト&url=#{root_url}", target: "_blank", class: "twitter-button" do
+        = image_tag "twitter_icon.png"
+        span Tweet
+
+      = link_to "LINEで送る", "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト #{root_url}p",target: "_blank", class: "line-button"
