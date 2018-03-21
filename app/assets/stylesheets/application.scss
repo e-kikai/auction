@@ -192,17 +192,45 @@ table {
   }
 
   td.sns {
-    width: 90px;
+    width: 86px;
+    a {
+      color: #FFF;
+      background: #A00;
+      border-radius: 4px;
+      padding: 2px 2px;
+      margin-bottom: 1px;
+      width: 86px;
+      display: block;
+      text-align: center;
 
-    .fb-share-button {
-      margin-bottom: 5px;
+      img {
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+      }
+
+      &.facebook-button {
+        background: #4266b2;
+      }
+
+      &.twitter-button {
+        background: #1ea1f2;
+      }
+
+      &.line-button {
+        background: #03b833;
+      }
     }
 
-    .twitter-share-button {
-    }
-
-    .line-it-button {
-    }
+    // .fb-share-button {
+    //   margin-bottom: 5px;
+    // }
+    //
+    // .twitter-share-button {
+    // }
+    //
+    // .line-it-button {
+    // }
   }
 
   th.sns {
@@ -336,19 +364,48 @@ hr.detail-price-calc {
 }
 
 .sns-area {
-  .fb-share-button {
-    vertical-align: top;
+  a {
+    color: #FFF;
+    background: #A00;
+    border-radius: 4px;
+    padding: 8px;
     margin-right: 4px;
+    width: 90px;
+    display: inline-block;
+    text-align: center;
+
+    img {
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+    }
+
+    &.facebook-button {
+      background: #4266b2;
+    }
+
+    &.twitter-button {
+      background: #1ea1f2;
+    }
+
+    &.line-button {
+      background: #03b833;
+    }
   }
 
-  .twitter-share-button {
-    margin-right: 4px;
-  }
-
-  .line-it-button {
-    vertical-align: top;
-    margin-top: 4px;
-  }
+  // .fb-share-button {
+  //   vertical-align: top;
+  //   margin-right: 4px;
+  // }
+  //
+  // .twitter-share-button {
+  //   margin-right: 4px;
+  // }
+  //
+  // .line-it-button {
+  //   vertical-align: top;
+  //   margin-top: 4px;
+  // }
 }
 
 /// マイ・オークション ///

@@ -42,10 +42,10 @@
       tr
         th.img
         th
-        th.num  = sort_link(@search, :max_price)
-        th.num  = sort_link(@search, :prompt_dicision_price)
-        th.num  = sort_link(@search, :bids_count)
-        th.num  = sort_link(@search, :dulation_end, "残り時間")
+        th.price = sort_link(@search, :max_price)
+        th.price = sort_link(@search, :prompt_dicision_price)
+        th.num   = sort_link(@search, :bids_count)
+        th.price   = sort_link(@search, :dulation_end, "残り時間")
       - @pproducts.each do |pr|
         tr
           td.img
@@ -62,11 +62,11 @@
                 - pr.category.path.each.with_index do |ca, i|
                   =<> ">" if i != 0
                   = link_to(ca.name, "products/?category_id=#{ca.id}")
-          td.num
+          td.price
             strong = number_to_currency(pr.max_price_with_tax)
-          td.num = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price_with_tax) : "-"
+          td.price = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price_with_tax) : "-"
           td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
-          td.num.absolute
+          td.price.absolute
             = pr.remaining_time
             .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
               span.glyphicon.glyphicon-star.watch-star

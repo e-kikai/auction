@@ -158,29 +158,22 @@
 
       //// SNSボタン ///
       .sns-area
-        / facebook初期化
-        <div id="fb-root"></div>
-        javascript:
-          (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = 'https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.12';
-            fjs.parentNode.insertBefore(js, fjs);
-          }(document, 'script', 'facebook-jssdk'));
-
-        / Twitter初期化
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-        / LINE初期化
-        <script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+        / <div class="fb-share-button" data-href="#{root_url}products/#{@product.id}" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">シェア</a></div>
+        /
+        / <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-hashtags="ものオク" data-show-count="false">Tweet</a>
+        /
+        / <div class="line-it-button" data-lang="ja" data-type="share-a" data-url="#{root_url}products/#{@product.id}" style="display: none;"></div>
 
 
-        <div class="fb-share-button" data-href="#{root_url}products/#{@product.id}" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">シェア</a></div>
+        = link_to "http://www.facebook.com/sharer.php?u=#{root_url}products/#{@product.id}", target: "_blank", class: "facebook-button" do
+          = image_tag "fb_icon.png"
+          span シェア
 
-        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-hashtags="ものオク" data-show-count="false">Tweet</a>
+        = link_to "http://twitter.com/share?hashtags=ものオク&text=#{@product.name}｜ものづくりオークション&url=#{root_url}products/#{@product.id}", target: "_blank", class: "twitter-button" do
+          = image_tag "twitter_icon.png"
+          span Tweet
 
-        <div class="line-it-button" data-lang="ja" data-type="share-a" data-url="#{root_url}products/#{@product.id}" style="display: none;"></div>
+        = link_to "LINEで送る", "http://line.me/R/msg/text/?#{@product.name}｜ものづくりオークション #{root_url}products/#{@product.id}",target: "_blank", class: "line-button"
 
 
       /// ハッシュダグ ///
