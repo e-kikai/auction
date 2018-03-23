@@ -8,7 +8,7 @@
 - total_price   = 0
 - total_fee     = 0
 
-.col-md-offset-2.col-md-8
+.col-md-offset-1.col-md-10
   = form_tag("/system/total", method: "get", class: "form-inline") do
     = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
     = button_tag "日付変更",  class: "btn btn-info"
@@ -21,8 +21,8 @@
       th.num 落札件数
       th.num アクセス<br />総数
       th.num ウォッチ<br />総数
-      th.num 落札総額
-      th.num 手数料<br />(#{Product::FEE_RATE}%)
+      th.price 落札総額
+      th.price 手数料<br />(#{Product::FEE_RATE}%)
     - @companies.each do |co|
       - month_products = co.products.where(created_at: @date.beginning_of_month..@date.end_of_month)
       - count          = month_products.count
@@ -46,8 +46,8 @@
         td.num = number_with_delimiter(success)
         td.num = number_with_delimiter(access)
         td.num = number_with_delimiter(watch)
-        td.num = number_to_currency(price)
-        td.num = number_to_currency(fee)
+        td.price = number_to_currency(price)
+        td.price = number_to_currency(fee)
     tfooter
       tr
         td

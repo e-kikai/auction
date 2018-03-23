@@ -62,7 +62,7 @@ class Product < ApplicationRecord
   NEW_MAX_COUNT          = 16 # 新着表示数
 
   TAX_RATE               = 8
-  FEE_RATE               = 15
+  FEE_RATE               = 10
 
   LIMIT_DAYS             = Time.now - 120.day
 
