@@ -34,7 +34,7 @@ h3 = title
         th.num 入札数
         th.num 閲覧数
         th.num ウォッチ数
-        th.price 手数料
+        th.price 手数料<br />(#{Product::FEE_RATE}%)
         th 評価
       - elsif params[:cond].to_i == 3
         th.num 入札数
