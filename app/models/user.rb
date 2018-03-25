@@ -78,12 +78,16 @@ class User < ApplicationRecord
   ### CALLBACK ###
   before_save :init_account
 
+  def count_star
+    products.where.not(star: nil).count
+  end
+
   def count_star_good
-    products.where("star >= 4").count()
+    products.where("star >= 4").count
   end
 
   def count_star_bad
-    products.where("star <= 2").count()
+    products.where("star <= 2").count
   end
 
   private

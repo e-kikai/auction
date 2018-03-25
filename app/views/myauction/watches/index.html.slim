@@ -20,13 +20,12 @@ h3 ウォッチリスト
       th
     - @pproducts.each do |pr|
       tr
-        td.img_mini
-          - if pr.product_images.first.present?
-            = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
+        td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
         td = link_to pr.name, "/products/#{pr.id}"
         td.num = number_to_currency pr.max_price_with_tax
-        td.num = pr.bids_count
-        td = pr.user.company
+        td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+        td = link_to pr.user.company, "/products?company_id=#{pr.user_id}"
+
         td = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
         td.num = pr.remaining_time
         td

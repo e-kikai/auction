@@ -25,6 +25,6 @@ class DetailLog < ApplicationRecord
   private
 
   def check_robot
-    host =~ ROBOTS || ip.blank? ? false : true
+    host !~ ROBOTS && ip.present?
   end
 end

@@ -30,17 +30,15 @@ h3 = title
         th 受取確認・評価
       - else
         th 最高入札者
-        th.num 残り<br />時間
+        th.num 残り時間
     - @pproducts.each do |pr|
       tr
-        td.img_mini
-          - if pr.product_images.first.try(:image)
-            = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
+        td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
         td = link_to pr.name, "/products/#{pr.id}"
         td = I18n.l(pr.dulation_end, format: :full_date)
         td.price = number_to_currency(pr.max_price_with_tax)
-        td.num = pr.bids_count
-        td = pr.user.company
+        td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+        td = link_to pr.user.company, "/products?company_id=#{pr.user_id}"
         - if params[:cond] == "2"
           - if pr.max_bid.user_id != pr.user_id
             td = link_to("/myauction/trades?product_id=#{pr.id}", class: "btn btn-success") do

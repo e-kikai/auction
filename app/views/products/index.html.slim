@@ -48,9 +48,7 @@
         th.price   = sort_link(@search, :dulation_end, "残り時間")
       - @pproducts.each do |pr|
         tr
-          td.img
-            - if pr.product_images.first.present?
-              = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
+          td.img = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
           td.absolute
             = link_to pr.name, "/products/#{pr.id}"
             .td-under

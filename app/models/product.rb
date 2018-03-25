@@ -60,7 +60,7 @@ class Product < ApplicationRecord
   MACHINELIFE_MEDIA_PASS = "http://www.zenkiren.net/media/machine/"
   CSV_MAX_COUNT          = 30
   NEW_MAX_COUNT          = 16 # 新着表示数
-
+  
   TAX_RATE               = 8
   FEE_RATE               = 10
 
@@ -150,6 +150,11 @@ class Product < ApplicationRecord
 
   ### インポート用getter setter ###
   attr_accessor :template_id, :template_name
+
+  ### サムネイル画像URL ###
+  def thumb_url
+    product_images.first.try(:image).try(:thumb).try(:url) || ProductImage::NOIMAGE_THUMB
+  end
 
   ### 現在の最高入札と入札金額を比較 ###
   def versus(bid)

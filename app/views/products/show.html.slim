@@ -141,15 +141,21 @@
 
               = button_tag "今すぐ落札する", class: "btn btn-danger btn-lg center-block", data: { toggle: :modal, target: "#prompt-modal"}
 
+        /// 出品会社 ///
         .panel-body
           h4 出品会社情報
           . = @product.user.company
           . = link_to "出品会社情報", "/companies/#{@product.user_id}"
-          .h4
-            span.glyphicon.glyphicon-asterisk.star-good
-            =<> number_with_delimiter @product.user.count_star_good
-            span.glyphicon.glyphicon-cloud.star-bad
-            =< number_with_delimiter @product.user.count_star_bad
+          .
+            span 評価 :
+            span.h4
+              =<> number_with_delimiter @product.user.count_star
+              | (
+              span.glyphicon.glyphicon-asterisk.star-good
+              =<> number_with_delimiter @product.user.count_star_good
+              span.glyphicon.glyphicon-cloud.star-bad
+              =< number_with_delimiter @product.user.count_star_bad
+              | )
 
           . = link_to "#{@product.user.company}のその他の出品商品", "/products/?company_id=#{@product.user_id}"
           . = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do

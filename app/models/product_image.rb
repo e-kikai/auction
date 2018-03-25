@@ -11,7 +11,8 @@
 #
 
 class ProductImage < ApplicationRecord
-  IMAGE_NUM = 10
+  IMAGE_NUM     = 10
+  NOIMAGE_THUMB = "noimage.png"
 
   mount_uploader :image, ProductImageUploader
 
