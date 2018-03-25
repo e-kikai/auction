@@ -78,6 +78,8 @@ Rails.application.routes.draw do
         patch 'update_password'
       end
     end
+
+    resources :products, only: [:index, :destroy]
     resources :bids, only: [:index]
     resources :detail_logs, only: [:index]
     resources :search_logs, only: [:index]

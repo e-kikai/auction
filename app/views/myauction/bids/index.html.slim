@@ -5,11 +5,11 @@
 
 h3 = title
 
-= paginate @pproducts
 
 - if @pproducts.blank?
   p 入札中の商品はありません
 - else
+  = paginate @pproducts
 
   - if params[:cond] == "2"
     p
@@ -59,3 +59,5 @@ h3 = title
         - else
           td = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
           td.num = pr.remaining_time
+
+  = paginate @pproducts

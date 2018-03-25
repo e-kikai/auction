@@ -21,7 +21,8 @@
     .panel.panel-default
       .panel-heading 履歴
       ul.nav.nav-pills.nav-stacked
+        li = link_to "出品商品履歴",         "/system/products"
+        li = link_to "入札履歴",             "/system/bids"
         li = link_to "商品詳細アクセス履歴", "/system/detail_logs"
         li = link_to "検索履歴",             "/system/search_logs"
-        li = link_to "入札履歴",             "/system/bids"
         li = link_to "GoogleAnalytics", "https://analytics.google.com/analytics/web/#embed/report-home/a115918166w172183137p171747763/", target: "_blank"

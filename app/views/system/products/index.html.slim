@@ -1,0 +1,51 @@
+- set_meta_tags title: "出品商品履歴"
+- breadcrumb :system_something, "出品商品履歴"
+
+= form_tag("/system/products", method: "get", class: "form-inline") do
+  = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+  = button_tag "月変更",  class: "btn btn-info"
+
+= paginate @pproducts
+
+table.table.table-hover.table-condensed.table-striped.product-table
+  tr
+    th ID
+    th.img_mini
+    / th 管理番号
+    th 商品名
+    th 出品会社
+    th 登録日時
+    th 開始日時<br />終了日時
+    th.price 開始金額
+    th.price 即決金額
+    th.price 最高価格<br />最高入札者
+
+    th 入札数/閲覧<br/>/ウォッチ数
+
+  - @pproducts.each do |pr|
+    tr
+      td = pr.id
+      td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
+      / td = pr.code
+      td = link_to pr.name, "/products/#{pr.id}"
+      td = pr.user.company
+      td = I18n.l(pr.created_at, format: :full_date)
+      td
+        = I18n.l(pr.dulation_start, format: :full_date)
+        br
+        = I18n.l(pr.dulation_end, format: :full_date)
+      td.price = number_to_currency(pr.start_price)
+      td.price = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price) : "-"
+
+      td.price
+        = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
+        br
+        = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
+      td
+        = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+        =<> "/"
+        = pr.detail_logs_count
+        =<> "/"
+        = pr.watches_count
+
+= paginate @pproducts
