@@ -41,7 +41,7 @@
   .col-md-7
     .toppage-searches
       - if @searches[0]
-        - @searches[0..3].each do |se|
+        - @searches[0..2].each do |se|
           = render "search_panel", search: se
 
     - if @follows_new_products.present?
@@ -53,8 +53,8 @@
               = render "product_panel", product: pr
 
     .toppage-searches
-      - if @searches[4]
-        - @searches[4..7].each do |se|
+      - if @searches[3]
+        - @searches[3..5].each do |se|
           = render "search_panel", search: se
 
 
@@ -67,8 +67,8 @@
               = render "product_panel", product: pr
 
     .toppage-searches
-      - if @searches[8]
-        - @searches[8..11].each do |se|
+      - if @searches[6]
+        - @searches[6..8].each do |se|
           = render "search_panel", search: se
 
     label 新着商品
@@ -79,8 +79,8 @@
             = render "product_panel", product: pr
 
     .toppage-searches
-      - if @searches[12]
-        - @searches[12..16].each do |se|
+      - if @searches[9]
+        - @searches[9..11].each do |se|
           = render "search_panel", search: se
 
 

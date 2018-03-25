@@ -268,17 +268,17 @@ label.top-search {
 
 .toppage-searches {
   .search-panel {
-    width: 24%;
+    width: 32%;
     height: auto;
     margin:0 4px 4px 0;
     white-space: normal;
     display: inline-block;
     vertical-align: top;
-    padding: 2px 0;
+    padding: 2px;
     border-radius: 0;
 
     img {
-
+      width: 100%;
     }
 
     .name {

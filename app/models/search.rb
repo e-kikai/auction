@@ -20,7 +20,7 @@ class Search < ApplicationRecord
   soft_deletable
   default_scope { without_soft_destroyed }
 
-  TOPPAGE_COUNT = 16 # 新着表示数
+  TOPPAGE_COUNT = 12 # 新着表示数
 
   belongs_to :user
   belongs_to :category,      required: false
