@@ -13,13 +13,16 @@ h3.product-title = @product.name
       th 手動入札日時
 
     - @product.bids.order(created_at: :desc).each do |bi|
-      - if bi.id == @product.max_bid_id
-        tr
-          td = "#{bi.user.account.gsub(/^(.)(.)(.)(.)(.).*$/, '\1*\3*\5***')} (最高入札者)"
-          td.price = number_to_currency(@product.max_price_with_tax)
-          td = I18n.l(bi.created_at, format: :full_date)
-      - else
-        tr
-          td = bi.user.account.gsub(/^(.)(.)(.)(.)(.).*$/, '\1*\3*\5***')
-          td.price = number_to_currency(bi.amount_with_tax)
-          td = I18n.l(bi.created_at, format: :full_date)
+      tr
+        td
+          = bi.user.account.gsub(/^(.)(.)(.)(.)(.).*$/, '\1*\3*\5***')
+          - if bi.id == @product.max_bid_id
+            => "(最高入札者)"
+        td.price
+          - if bi.id == @product.max_bid_id
+            = number_to_currency(@product.max_price_with_tax)
+          - elsif @product.max_bid.try(:user_id) == bi.user_id && @product.max_price < bi.amount
+            = number_to_currency(@product.max_price_with_tax)
+          - else
+            = number_to_currency(bi.amount_with_tax)
+        td = I18n.l(bi.created_at, format: :full_date)
