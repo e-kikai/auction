@@ -24,6 +24,9 @@ h3.product-title = @product.name
         .detail-price-message ※ 入札はキャンセルできません
         = f.hidden_field :amount
         = hidden_field_tag :id, params[:id]
+
+        p = link_to "ものづくりオークション利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
+
         .row
           = f.button "規約に同意して入札する", class: "btn btn-warning btn-lg center-block"
 
