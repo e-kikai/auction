@@ -43,7 +43,8 @@ table.table.table-hover.table-condensed.form-table
     = f.hidden_field :dulation_start,        value: Time.at(0)
     = f.hidden_field :dulation_end,          value: Time.at(0)
     = f.hidden_field :start_price,           value: 1
-    = f.hidden_field :prompt_dicision_price, value: 1
+    / = f.hidden_field :prompt_dicision_price, value: 1
+
     = f.hidden_field :description,           value: ""
 
   - else
@@ -73,6 +74,9 @@ table.table.table-hover.table-condensed.form-table
       th = f.label :start_price, "開始価格(税抜)", class: :required
       td = (f.text_field :start_price, class: "form-control price", required: "required") + " 円"
     tr.form-inline
+      th = f.label :lower_price, "最低入札価格(税抜)"
+      td = (f.text_field :lower_price, class: "form-control price") + " 円"
+    tr.form-inline
       th = f.label :prompt_dicision_price, "即決価格(税抜)"
       td = (f.text_field :prompt_dicision_price, class: "form-control price") + " 円"
 
@@ -81,13 +85,6 @@ table.table.table-hover.table-condensed.form-table
       td
         = file_field_tag "images[]", multiple: true, class: "js-csv-upload"
 
-        / - if params[:id]
-        /   = f.fields_for :product_images do |pi|
-        /     .form_img
-        /       = image_tag pi.object.remote_image_url
-        /       = pi.hidden_field :remote_image_url
-        /
-        / - else
         = f.fields_for :product_images do |pi|
           .form_img
             - if pi.object.remote_image_url

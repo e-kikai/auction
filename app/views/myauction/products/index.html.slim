@@ -19,6 +19,7 @@ h3 = title
         th 開始日時
       th 終了日時
       th.price 開始金額
+      th.price 最低落札
       th.price 即決金額
       - if params[:cond].to_i == -1
         th 変更
@@ -60,7 +61,8 @@ h3 = title
           td = I18n.l(pr.dulation_start, format: :full_date)
         td = I18n.l(pr.dulation_end, format: :full_date)
         td.price = number_to_currency(pr.start_price)
-        td.price = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price) : "-"
+        td.price = pr.lower_price.try { |price| number_to_currency(price) } || "-"
+        td.price = pr.prompt_dicision_price.try { |price| number_to_currency(price) } || "-"
 
         - if params[:cond].to_i == -1
           td = link_to({ action: :edit, id: pr.id }, class: "btn btn-warning") do

@@ -187,13 +187,21 @@ table {
   }
 
   td.num {
-    width: 66px;
+    width: 50px;
     text-align: right;
   }
 
   th.num {
     width: 50px;
     font-size: 13px;
+  }
+
+  .lower-label {
+    color: #999;
+    font-size: 80%;
+    font-weight: normal;
+    white-space: nowrap;
+    position: absolute;
   }
 
   td.sns {

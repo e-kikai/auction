@@ -60,7 +60,7 @@ class Product < ApplicationRecord
   MACHINELIFE_MEDIA_PASS = "http://www.zenkiren.net/media/machine/"
   CSV_MAX_COUNT          = 30
   NEW_MAX_COUNT          = 16 # 新着表示数
-  
+
   TAX_RATE               = 8
   FEE_RATE               = 10
 
@@ -164,6 +164,9 @@ class Product < ApplicationRecord
       self.max_price = prompt_dicision_price
       self.max_bid   = bid
       self.dulation_end = Time.now
+    elsif lower_price.present? && lower_price > bid.amount
+      # 最低落札価格(落札はされない)
+      self.max_price = bid.amount
     elsif max_bid.blank?
       # 入札なしの場合
       self.max_price = start_price
@@ -230,6 +233,19 @@ class Product < ApplicationRecord
     dulation_end <= Time.now
   end
 
+  def cancel?
+    finished? && cancel.present?
+  end
+
+  def status
+    case
+    when cancel?; "キャンセル"
+    when finish? && max_bid.present?; "終了(落札済)"
+    when finish? && max_bid.blank?;   "終了(未落札)"
+    else "出品中"
+    end
+  end
+
   ### (テンプレートから)商品情報をコピー ###
   def dup_init(template=false)
     product = dup
@@ -277,6 +293,7 @@ class Product < ApplicationRecord
         dulation_end:          "#{row[6]} #{row[7]}",
         start_price:           row[8],
         prompt_dicision_price: row[9],
+        lower_price:           nil,
         hashtags:              row[10],
         machinelife_id:        row[12],
         machinelife_images:    row[13],
@@ -302,6 +319,8 @@ class Product < ApplicationRecord
         # 商品情報
         template = user.products.templates.find_by(id: pr[:template_id]) || user.products.new
         product  = template.dup_init
+
+        product.attributes = pr
         # product.attributes = (pr.merge(description: (pr[:description] + "\n\n" + template.description.to_s)))
 
         product.save!
@@ -316,7 +335,7 @@ class Product < ApplicationRecord
       end
 
       # 画像情報
-      product[:machinelife_images].split.each do |img_url|
+      product[:machinelife_images].to_s.split.each do |img_url|
         begin
           img = product.product_images.new
           img.remote_image_url = MACHINELIFE_MEDIA_PASS + img_url

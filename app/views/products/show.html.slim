@@ -21,8 +21,9 @@
 - if @product.finished?
   .row
     .alert.alert-danger
-      - if @product.cancel.present?
+      - if @product.cancel?
         . このオークションは、以下の理由により出品キャンセルされました。
+        br
         . = simple_format(@product.cancel)
       - else
         | このオークションは終了しました
@@ -114,6 +115,7 @@
               span.btn-content ウォッチ
         .panel-body.detail-price-area
           h4 現在価格
+
           /// リッチスニペット ///
           meta itemprop="sku" content="#{@product.id}"
           .product-price itemscope="" itemtype="http://schema.org/Offer"
@@ -123,6 +125,9 @@
               meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/NewCondition"
             - elsif @product.state == "中古"
               meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/UsedCondition"
+
+            - if @product.lower_price.to_i > @product.max_price
+              p.lower_message #{link_to "最低落札価格", "/"}に達していません
 
             span.h2> #{number_to_currency @product.max_price}
             span.product-tax

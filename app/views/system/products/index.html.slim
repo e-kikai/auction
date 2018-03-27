@@ -15,12 +15,20 @@ table.table.table-hover.table-condensed.table-striped.product-table
     th 商品名
     th 出品会社
     th 登録日時
-    th 開始日時<br />終了日時
-    th.price 開始金額
-    th.price 即決金額
-    th.price 最高価格<br />最高入札者
+    th
+      . 開始日時
+      . 終了日時
+    th.price
+     . 開始価格
+     . 最低落札
+     . 即決価格
+    / th.price 即決価格
+    th.price 最高価格
+    th 最高<br />入札者
 
-    th 入札数/閲覧<br/>/ウォッチ数
+    th.num 入札数
+    th.num 閲覧数
+    th.num ウォッチ数
 
   - @pproducts.each do |pr|
     tr
@@ -31,21 +39,21 @@ table.table.table-hover.table-condensed.table-striped.product-table
       td = pr.user.company
       td = I18n.l(pr.created_at, format: :full_date)
       td
-        = I18n.l(pr.dulation_start, format: :full_date)
-        br
-        = I18n.l(pr.dulation_end, format: :full_date)
-      td.price = number_to_currency(pr.start_price)
-      td.price = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price) : "-"
-
+        . = I18n.l(pr.dulation_start, format: :full_date)
+        . = I18n.l(pr.dulation_end, format: :full_date)
+      / td.price = number_to_currency(pr.start_price)
+      / td.price = number_to_currency(pr.lower_price) || "-"
+      / td.price = number_to_currency(pr.prompt_dicision_price) || "-"
       td.price
-        = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
-        br
-        = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
-      td
-        = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
-        =<> "/"
-        = pr.detail_logs_count
-        =<> "/"
-        = pr.watches_count
+        . = number_to_currency(pr.start_price)
+        . = number_to_currency(pr.lower_price) || "-"
+        . = number_to_currency(pr.prompt_dicision_price) || "-"
+
+
+      td.price = number_to_currency(pr.max_price) || "-"
+      td = pr.max_bid.try(:user).try(:account) || "-"
+      td = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+      td = pr.detail_logs_count
+      td = pr.watches_count
 
 = paginate @pproducts

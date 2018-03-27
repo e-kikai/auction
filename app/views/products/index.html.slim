@@ -60,8 +60,11 @@
                 - pr.category.path.each.with_index do |ca, i|
                   =<> ">" if i != 0
                   = link_to(ca.name, "products/?category_id=#{ca.id}")
-          td.price
-            strong = number_to_currency(pr.max_price_with_tax)
+          td.price.absolute
+            strong
+              = number_to_currency(pr.max_price_with_tax)
+              - if pr.lower_price.present?
+                .lower-label 最低落札価格あり
           td.price = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price_with_tax) : "-"
           td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
           td.price.absolute
