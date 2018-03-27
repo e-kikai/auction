@@ -25,14 +25,21 @@ h3.product-title = @product.name
           .col-md-5.text-right.h3 = number_to_currency(@bid.amount_with_tax)
 
         .detail-price-message この金額で入札します。よろしいですか。
-        .detail-price-message ※ 入札はキャンセルできません
+
         = f.hidden_field :amount
         = hidden_field_tag :id, params[:id]
 
-        p = link_to "ものづくりオークション利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
+        p.text-center = link_to "ものづくりオークション利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
 
-        .row
-          = f.button "規約に同意して入札する", class: "btn btn-warning btn-lg center-block"
+        .row = f.button "規約に同意して入札する", class: "btn btn-warning btn-lg center-block"
+
+        ul.bid-message
+          - if @product.prompt_dicision_price.present? && @bid.amount >= @product.prompt_dicision_price
+            p.alert-message この金額で、今すぐ即決落札されます。
+          p 入札はキャンセルできません
+          p 購入前に、必ず商品説明・落札事項を確認してください。
+
+        p.text-center = link_to "商品詳細に戻る", "/products/#{@product.id}"
 
   - else
     .col-md-offset-2.col-md-8
@@ -55,5 +62,4 @@ h3.product-title = @product.name
           .col-md-5.text-right
             .form-group.form-group-lg = f.text_field :amount, value: (@product.max_price + (@product.bids_count > 0 ? @product.bid_unit : 0)), class: "form-control price", required: "required"
           .col-md-1.h4 円
-        .row
-          = f.button "確認する", class: "btn btn-default btn-lg center-block"
+        .row = f.button "確認する", class: "btn btn-default btn-lg center-block"

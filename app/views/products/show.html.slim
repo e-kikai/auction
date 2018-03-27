@@ -127,23 +127,26 @@
               meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/UsedCondition"
 
             - if @product.lower_price.to_i > @product.max_price
-              p.lower_message #{link_to "最低落札価格", "/helps/lower_price"}に達していません
+              p.alert-message #{link_to "最低落札価格", "/helps/lower_price"}に達していません
+            - elsif @product.max_bid.present? && @product.max_bid.user == current_user
+              p.success-message あなたが現在の最高入札者です
 
             span.h2> #{number_to_currency @product.max_price}
             span.product-tax
               | (税込 #{number_to_currency(@product.max_price_with_tax)})
-          - unless @product.finished?
+
+          - unless @product.finished? || @product.user_id == current_user.try(:id)
             = button_tag "入札する", class: "btn btn-warning btn-lg center-block", data: { toggle: :modal, target: "#bid-modal"}
 
-        - unless @product.finished?
-          - if @product.prompt_dicision_price
-            .panel-body.detail-price-area
-              h4 即決価格
-              .product-price
-                span.h2> #{number_to_currency @product.prompt_dicision_price}
-                span.product-tax
-                  | (税込 #{number_to_currency(@product.prompt_dicision_price_with_tax)})
+        - if @product.prompt_dicision_price
+          .panel-body.detail-price-area
+            h4 即決価格
+            .product-price
+              span.h2> #{number_to_currency @product.prompt_dicision_price}
+              span.product-tax
+                | (税込 #{number_to_currency(@product.prompt_dicision_price_with_tax)})
 
+            - unless @product.finished? || @product.user_id == current_user.try(:id)
               = button_tag "今すぐ落札する", class: "btn btn-danger btn-lg center-block", data: { toggle: :modal, target: "#prompt-modal"}
 
         /// 出品会社 ///

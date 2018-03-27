@@ -56,6 +56,7 @@ header {
 /// footer ///
 footer {
   margin-top: 16px;
+  margin-bottom: 8px;
   text-align: center;
 }
 
@@ -453,10 +454,29 @@ hr.detail-price-calc {
   // }
 }
 
-.lower_message {
+.alert-message {
   background: #f2dede;
   padding: 4px 8px;
   margin: 8px;
+}
+
+.success-message {
+  background: #dff0d8;
+  padding: 4px 8px;
+  margin: 8px;
+}
+
+.bid-message {
+  background: #FFF;
+  padding: 8px;
+  margin: 8px;
+  border: 1px solid #DDD;
+
+  p {
+    padding: 4px 8px;
+    margin: 8px;
+  }
+
 }
 
 /// マイ・オークション ///
