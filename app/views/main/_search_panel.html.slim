@@ -1,4 +1,4 @@
 .thumbnail.search-panel
-  = link_to image_tag(search.product_image.try(:image).try(:thumb).try(:url) || ProductImage::NOIMAGE_THUMB), search.uri
-
-  .name = link_to search.name, search.uri
+  = link_to search.uri do
+    = image_tag(search.product_image.try(:image).try(:thumb).try(:url) || ProductImage::NOIMAGE_THUMB)
+    .name = search.name

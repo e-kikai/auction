@@ -164,13 +164,16 @@ class Product < ApplicationRecord
       self.max_price = prompt_dicision_price
       self.max_bid   = bid
       self.dulation_end = Time.now
-    elsif lower_price.present? && lower_price > bid.amount
-      # 最低落札価格(落札はされない)
+    elsif lower_price.present? && lower_price > bid.amount # 最低落札価格(落札はされない)
       self.max_price = bid.amount
-    elsif max_bid.blank?
-      # 入札なしの場合
-      self.max_price = start_price
+    elsif max_bid.blank? # (有効)入札なしの場合
+      if lower_price.present?
+        self.max_price = lower_price
+      else
+        self.max_price = start_price
+      end
       self.max_bid   = bid
+
     elsif max_bid.user == bid.user
       # 再入札(入札金額の変更)
       self.max_bid   = bid

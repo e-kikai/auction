@@ -284,6 +284,17 @@ label.top-search {
     vertical-align: top;
     padding: 2px;
     border-radius: 0;
+    padding: 0;
+
+    a {
+      display: block;
+      padding: 4px;
+
+      &:hover {
+        background: #f5f5f5;
+        text-decoration: none;
+      }
+    }
 
     img {
       width: 100%;
@@ -315,6 +326,17 @@ label.top-search {
   white-space: normal;
   display: inline-block;
   vertical-align: top;
+  padding: 0;
+
+  a {
+    display: block;
+    padding: 4px;
+
+    &:hover {
+      background: #f5f5f5;
+      text-decoration: none;
+    }
+  }
 
   img {
     max-width: 132px;
@@ -327,7 +349,11 @@ label.top-search {
   }
 
   .price {
+    color: #333;
 
+    &:hover {
+      color: #333;
+    }
   }
 }
 
@@ -425,6 +451,12 @@ hr.detail-price-calc {
   //   vertical-align: top;
   //   margin-top: 4px;
   // }
+}
+
+.lower_message {
+  background: #f2dede;
+  padding: 4px 8px;
+  margin: 8px;
 }
 
 /// マイ・オークション ///

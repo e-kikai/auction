@@ -9,6 +9,10 @@ h3.product-title = @product.name
     .col-md-6.col-md-offset-3
       = form_for @bid, url: "/myauction/bids/", method: :post, class: "form-inline" do |f|
         h3 入札確認
+
+        - if @product.lower_price.present?
+          p.lower_message #{link_to "最低落札価格", "/helps/lower_price", target: "_blank"}が設定されています
+
         .row
           .col-md-offset-2.col-md-3.h4 入札金額
           .col-md-5.text-right.h4 = number_to_currency(@bid.amount)
@@ -42,6 +46,10 @@ h3.product-title = @product.name
       = form_for @bid, url: "/myauction/bids/new", method: :get, html: { class: "form-inline" }  do |f|
         = hidden_field_tag :id, @product.id
         h3 入札
+
+        - if @product.lower_price.present?
+          p.lower_message #{link_to "最低落札価格", "/helps/lower_price", target: "_blank"}が設定されています
+
         .row
           .col-md-offset-1.col-md-4.h4 入札金額(税抜)
           .col-md-5.text-right

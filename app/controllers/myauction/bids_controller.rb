@@ -24,7 +24,8 @@ class Myauction::BidsController < Myauction::ApplicationController
     @bid.user = current_user
 
     if @bid.save
-      if @product.max_bid.user == current_user
+      if @product.max_bid.try(:user) == current_user
+        # 入札成功
         mes = if @product.finished?
           "おめでとうございます。あなたが落札しました。"
         else
@@ -32,9 +33,18 @@ class Myauction::BidsController < Myauction::ApplicationController
           "入札を行いました。現在あなたの入札が最高金額です。"
         end
         redirect_to "/myauction/bids/#{@bid.id}", notice: mes
+
       else
+        # 入札失敗
+
+        flash.now[:alert] = if @product.lower_price.present? && @product.max_bid_id.blank?
+          # 最低落札価格に達していない
+          "入札金額が最低落札価格に達していませんでした。再度入札お願いいたします。"
+        else
+          "あなたの入札より、自動入札が上回りました。"
+        end
+
         @bid.amount = nil # 一度金額をクリア
-        flash.now[:alert] = "あなたの入札より、自動入札が上回りました。"
         render :new
       end
     else

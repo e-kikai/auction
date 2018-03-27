@@ -1,4 +1,5 @@
 .thumbnail.product-pannel
-  = link_to image_tag(product.thumb_url), "/products/#{product.id}"
-  .name = link_to product.name, "/products/#{product.id}"
-  .price 価格 #{number_to_currency(product.max_price_with_tax)}
+  = link_to "/products/#{product.id}" do
+    = image_tag(product.thumb_url)
+    .name = product.name
+    .price 価格 #{number_to_currency(product.max_price_with_tax)}
