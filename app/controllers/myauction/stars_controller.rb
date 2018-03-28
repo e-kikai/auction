@@ -6,6 +6,8 @@ class Myauction::StarsController < Myauction::ApplicationController
 
   def update
     if @product.update(star_params)
+      BidMailer.star_company(@product).deliver
+
       redirect_to "/myauction/bids?cond=2", notice: "#{@product.name}の受取確認と評価を行いました"
     else
       render :edit

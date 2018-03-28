@@ -2,14 +2,16 @@
 
 <%= @user.company %> <%= @user.name %> 様
 
-現時点で下記商品の最高額入札者です。
+現時点で下記の商品の最高額入札者です。
 
 <%= @bid.product.name %>
 
-入札金額 : <%= number_to_currency(@bid.amount_with_tax) %>
+入札金額(税込) : <%= number_to_currency(@bid.amount_with_tax) %>
 (※この金額まで自動入札が行われます)
 入札件数 : <%= @bid.product.bids_count %> 件
 終了日時 : <%= I18n.l(@bid.product.dulation_end, format: :full_date) %>
+
+============================
 
 商品詳細は、以下のリンクから確認できます。
 <%= root_url(only_path: false) %>products/<%= @bid.product_id %>

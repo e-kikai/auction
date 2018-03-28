@@ -71,6 +71,10 @@ class Myauction::ProductsController < Myauction::ApplicationController
     if params[:product][:cancel].blank?
       redirect_to "/myauction/products", alert: "キャンセル理由を記入してください"
     elsif @product.update(cancel: params[:product][:cancel], dulation_end: Time.now)
+
+      @product.bid_users.each do |us|
+        BidMailer.cancel_user(us, @product).deliver
+      end
       redirect_to "/myauction/products", notice: "#{@product.name}を出品キャンセルしました"
     else
       redirect_to "/myauction/products", alert: "#{@product.name}を出品キャンセルできませんでした"

@@ -1,0 +1,24 @@
+受取確認・評価のお知らせ
+
+<%= @product.user.company %> <%= @product.user.name %> 様
+
+あなたが出品した商品について、
+落札ユーザが受取確認・評価を行いました。
+
+管理番号 : <%= @product.code %>
+<%= @product.name %>
+
+評価 : <%= @product.star_view %>
+
+============================
+
+以下のリンクから、落札したユーザとの取引を行ってください。
+<%= root_url(only_path: false) %>myauction/trades?product_id=<%= @product.id %>
+
+商品情報は、以下のリンクから確認できます。
+<%= root_url(only_path: false) %>products/<%= @product.id %>
+
+
+
+ものづくりオークション
+<%= root_url(only_path: false) %>

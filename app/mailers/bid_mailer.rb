@@ -38,16 +38,18 @@ class BidMailer < ApplicationMailer
   end
 
   # ユーザ、取引
-  def trade_user(user, trade)
-    @user  = user
-    @trade = trade
+  def trade_user(trade)
+    @trade   = trade
+    @user    = trade.product.max_bid.user
+    @product = trade.product
 
-    mail(to: user.email, subject: "ものオク 出品会社からの取引メッセージ : #{@trade.product.name}")
+    mail(to: @user.email, subject: "ものオク 出品会社からの取引メッセージ : #{@trade.product.name}")
   end
 
   # 出品会社、取引
   def trade_company(trade)
     @trade = trade
+    @product = trade.product
 
     mail(to: trade.product.user.email, subject: "ものオク ユーザからの取引通知 : #{@trade.product.code} #{@trade.product.name}")
   end
@@ -60,11 +62,11 @@ class BidMailer < ApplicationMailer
   end
 
   # キャンセル
-  def cancel(user, product)
+  def cancel_user(user, product)
     @user    = user
     @product = product
 
-    mail(to: user.email, subject: "ものオク 出品キャンセル : #{@product.name}")
+    mail(to: user.email, subject: "ものオク 出品キャンセルのお知らせ : #{@product.name}")
   end
 
 end

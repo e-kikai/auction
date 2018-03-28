@@ -76,8 +76,9 @@ class Product < ApplicationRecord
   # has_many   :product_images
   # has_one    :top_image,      -> { order(:order_no, :id) }, class_name: "ProductImage"
   has_many   :bids
+  has_many   :bid_users, -> { distinct }, through: :bids, source: :user
   has_many   :watches
-  has_many   :watch_users, through: :mylists, source: :user
+  has_many   :watch_users, through: :watches, source: :user
   has_many   :trades
   has_many   :detail_logs
 

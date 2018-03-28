@@ -1,0 +1,25 @@
+取引メッセージの投稿のお知らせ
+
+<%= @product.user.company %> <%= @product.user.name %> 様
+
+あなたが出品した商品について、
+落札ユーザから取引メッセージの投稿がありました。
+
+管理番号 : <%= @product.code %>
+<%= @product.name %>
+
+<取引メッセージ>
+============================
+<%= @trade.comment %>
+============================
+
+以下のリンクから、落札したユーザとの取引を行ってください。
+<%= root_url(only_path: false) %>myauction/trades?product_id=<%= @product.id %>
+
+商品情報は、以下のリンクから確認できます。
+<%= root_url(only_path: false) %>products/<%= @product.id %>
+
+
+
+ものづくりオークション
+<%= root_url(only_path: false) %>

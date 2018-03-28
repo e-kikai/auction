@@ -1,0 +1,26 @@
+商品落札のお知らせ
+
+<%= @user.company %> <%= @user.name %> 様
+
+おめでとうございます。下記の商品を落札しました。
+
+<%= @product.name %>
+
+落札価格(税込) : <%= number_to_currency(@product.max_price_with_tax) %>
+入札件数 : <%= @product.bids_count %> 件
+終了日時 : <%= I18n.l(@product.dulation_end, format: :full_date) %>
+
+============================
+
+入金の方法、商品の受取方法などの出品会社との取引は、
+以下のリンクから行ってください。
+<%= root_url(only_path: false) %>myauction/trades?product_id=<%= @product.id %>
+
+商品詳細は、以下のリンクから確認できます。
+<%= root_url(only_path: false) %>products/<%= @product.id %>
+
+
+今後とも、ものづくりオークションをよろしくお願いいたします。
+
+ものづくりオークション
+<%= root_url(only_path: false) %>

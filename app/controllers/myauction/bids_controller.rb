@@ -28,12 +28,18 @@ class Myauction::BidsController < Myauction::ApplicationController
     if @bid.save
       if @product.max_bid.try(:user) == current_user
         # 入札成功
+
         mes = if @product.finished?
+          # 即決
+          BidMailer.success_user(current_user, @product).deliver
+          BidMailer.success_company(@product).deliver
+
           "おめでとうございます。あなたが落札しました。"
         else
-          BidMailer.bid_loser(loser, @product).deliver if loser.present?
+          BidMailer.bid_loser(loser, @product).deliver if loser.present? && loser.id != current_user.id
           BidMailer.bid_user(current_user, @bid).deliver
           BidMailer.bid_company(@product).deliver
+
           "入札を行いました。現在あなたの入札が最高金額です。"
         end
         redirect_to "/myauction/bids/#{@bid.id}", notice: mes

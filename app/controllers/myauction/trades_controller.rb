@@ -18,6 +18,12 @@ class Myauction::TradesController < Myauction::ApplicationController
 
     @trade = @product.trades.new(trade_params.merge(user_id: current_user.id))
     if @trade.save
+      if @product.user_id == current_user.id
+        BidMailer.trade_user(@trade).deliver
+      else
+        BidMailer.trade_company(@trade).deliver
+      end
+
       redirect_to "/myauction/trades?product_id=#{params[:product_id]}", notice: "取引投稿を行いました"
     else
       flash.now[:alert] = "取引投稿に失敗しました"
