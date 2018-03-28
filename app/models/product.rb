@@ -242,10 +242,11 @@ class Product < ApplicationRecord
 
   def status
     case
-    when cancel?; "キャンセル"
-    when finish? && max_bid.present?; "終了(落札済)"
-    when finish? && max_bid.blank?;   "終了(未落札)"
-    else "出品中"
+    when cancel?;                       "キャンセル"
+    when dulation_start > Time.now;     "開始前"
+    when finished? && max_bid.present?; "終了(落札済)"
+    when finished? && max_bid.blank?;   "終了(未落札)"
+    else                                "出品中"
     end
   end
 
@@ -279,7 +280,7 @@ class Product < ApplicationRecord
     CSV.foreach(file.path, { headers: true, encoding: Encoding::SJIS }) do |row|
       # product = template.dup_init # テンプレートコピー
 
-      template = user.products.templates.find_by(id: row[11]) || user.products.new
+      template = user.products.templates.find_by(id: row[12]) || user.products.new
       product  = template.dup_init
 
       product.attributes =  {
@@ -289,17 +290,17 @@ class Product < ApplicationRecord
         description:           row[2],
 
         category_id:           row[3],
-        template_id:           row[11],
+        template_id:           row[12],
         template_name:         template.try(:name),
 
         dulation_start:        "#{row[4]} #{row[5]}",
         dulation_end:          "#{row[6]} #{row[7]}",
         start_price:           row[8],
-        prompt_dicision_price: row[9],
-        lower_price:           nil,
-        hashtags:              row[10],
-        machinelife_id:        row[12],
-        machinelife_images:    row[13],
+        lower_price:           row[9],
+        prompt_dicision_price: row[10],
+        hashtags:              row[11],
+        machinelife_id:        row[13],
+        machinelife_images:    row[14],
       }
 
       product.valid?

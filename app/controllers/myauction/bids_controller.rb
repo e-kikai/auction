@@ -23,13 +23,17 @@ class Myauction::BidsController < Myauction::ApplicationController
     @bid = @product.bids.new(bid_params)
     @bid.user = current_user
 
+    loser = @product.max_bid.try(:user)
+
     if @bid.save
       if @product.max_bid.try(:user) == current_user
         # 入札成功
         mes = if @product.finished?
           "おめでとうございます。あなたが落札しました。"
         else
+          BidMailer.bid_loser(loser, @product).deliver if loser.present?
           BidMailer.bid_user(current_user, @bid).deliver
+          BidMailer.bid_company(@product).deliver
           "入札を行いました。現在あなたの入札が最高金額です。"
         end
         redirect_to "/myauction/bids/#{@bid.id}", notice: mes

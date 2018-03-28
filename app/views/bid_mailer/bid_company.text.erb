@@ -1,0 +1,21 @@
+出品された商品に入札がありました。
+
+<%= @product.user.company %> <%= @product.user.name %> 様
+
+以下の商品に入札がありました。
+
+管理番号 : <%= @product.code %>
+<%= @product.name %>
+
+入札ユーザアカウント : <%=@product.max_bid.user.account %>
+現在価格 : <%= number_to_currency(@product.max_price_with_tax) %>
+入札件数 : <%= @product.bids_count %> 件
+終了日時 : <%= I18n.l(@product.dulation_end, format: :full_date) %>
+
+商品情報は、以下のリンクから確認できます。
+<%= root_url(only_path: false) %>products/<%= @product.id %>
+
+
+
+ものづくりオークション
+<%= root_url(only_path: false) %>

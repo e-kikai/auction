@@ -15,7 +15,10 @@ h3.product-title = @product.name
     - @product.bids.order(created_at: :desc).each do |bi|
       tr
         td
-          = bi.user.account.gsub(/^(.)(.)(.)(.)(.).*$/, '\1*\3*\5***')
+          - if bi.user_id == current_user.try(:id)
+            | ★あなたの入札
+          - else
+            = bi.user.account.gsub(/^(.)(.)(.)(.)(.).*$/, '\1*\3*\5***')
           - if bi.id == @product.max_bid_id
             => "(最高入札者)"
         td.price

@@ -1,33 +1,70 @@
 class BidMailer < ApplicationMailer
+  # ユーザ、入札
   def bid_user(user, bid)
     @user = user
     @bid  = bid
 
-    # mailto = Rails.env.production? ? @machine.company.contact_mail : @contact.mail
-
-    mail(
-      to:       user.email,
-      subject:  "ものオク 入札確認 : #{@bid.product.name}"
-    )
+    mail(to: user.email, subject: "ものオク 入札確認 : #{@bid.product.name}")
   end
 
-  def bid_company(user, bid)
-    @user = user
-    @bid = bid
+  # 以前の最高入札者
+  def bid_loser(user, product)
+    @user    = user
+    @product = product
 
-    mail(
-      to:       user.email,
-      subject:  "ものオク 入札されました : #{@bid.product.name}"
-    )
+    mail(to: user.email, subject: "ものオク 高値更新 : #{@product.name}")
   end
 
-  def bid_rooser(user, bid)
-    @user = user
-    @bid = bid
+  # 出品会社、入札
+  def bid_company(product)
+    @product = product
 
-    mail(
-      to:       user.email,
-      subject:  "ものオク 高値更新 : #{@bid.product.name}"
-    )
+    mail(to: product.user.email, subject: "ものオク 入札通知 : #{@product.code} #{@product.name}")
   end
+
+  # ユーザ、落札
+  def success_user(user, product)
+    @user    = user
+    @product = product
+
+    mail(to: user.email, subject: "ものオク 落札できました : #{@product.name}")
+  end
+
+  # 出品会社、落札
+  def success_company(product)
+    @product = product
+
+    mail(to: product.user.email, subject: "ものオク 落札通知 : #{@product.code} #{@product.name}")
+  end
+
+  # ユーザ、取引
+  def trade_user(user, trade)
+    @user  = user
+    @trade = trade
+
+    mail(to: user.email, subject: "ものオク 出品会社からの取引メッセージ : #{@trade.product.name}")
+  end
+
+  # 出品会社、取引
+  def trade_company(trade)
+    @trade = trade
+
+    mail(to: trade.product.user.email, subject: "ものオク ユーザからの取引通知 : #{@trade.product.code} #{@trade.product.name}")
+  end
+
+  # 出品会社、評価
+  def star_company(product)
+    @product = product
+
+    mail(to: product.user.email, subject: "ものオク ユーザからの評価通知 : #{@product.code} #{@product.name}")
+  end
+
+  # キャンセル
+  def cancel(user, product)
+    @user    = user
+    @product = product
+
+    mail(to: user.email, subject: "ものオク 出品キャンセル : #{@product.name}")
+  end
+
 end

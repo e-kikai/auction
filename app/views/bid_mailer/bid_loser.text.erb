@@ -1,0 +1,24 @@
+高値更新のお知らせ
+
+<%= @user.company %> <%= @user.name %> 様
+
+ほかのユーザが、以下の商品に対してあなたの入札よりも高値で入札を行いました。
+落札するには、より高い金額で再入札を行ってください。
+現時点で下記商品の最高額入札者です。
+
+<%= @product.name %>
+
+現在価格 : <%= number_to_currency(@product.max_price_with_tax) %>
+入札件数 : <%= @product.bids_count %> 件
+終了日時 : <%= I18n.l(@product.dulation_end, format: :full_date) %>
+
+再入札は、以下のリンクから行えます。
+<%= root_url(only_path: false) %>myauction/bids/new?id=<%= @product.id %>&bid%5Bamount%5D=
+
+商品情報は、以下のリンクから確認できます。
+<%= root_url(only_path: false) %>products/<%= @product.id %>
+
+
+
+ものづくりオークション
+<%= root_url(only_path: false) %>

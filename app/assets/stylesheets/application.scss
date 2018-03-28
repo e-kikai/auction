@@ -532,6 +532,17 @@ td.absolute {
   margin-right: 8px;
 }
 
+dl.star-dl {
+  dt {
+    text-align: left;
+    width:120px;
+  }
+
+  dd {
+    margin-left: 128px;
+  }
+}
+
 /// system ///
 .system-log {
   padding: 3px 6px;

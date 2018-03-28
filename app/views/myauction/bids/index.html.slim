@@ -22,22 +22,24 @@ h3 = title
       th.img_mini
       th 商品名
       th 終了日時
-      th.price 現在価格
-      th.num 入札数
-      th 出品会社
+
       - if params[:cond] == "2"
+        th.price 落札価格
+        th 出品会社
         th 取引
         th 受取確認・評価
       - else
+        th.price 現在価格
+        th 出品会社
+        th.num 入札数
         th 最高入札者
-        th.num 残り時間
+        th.num 残り<br />時間
     - @pproducts.each do |pr|
       tr
         td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
         td = link_to pr.name, "/products/#{pr.id}"
         td = I18n.l(pr.dulation_end, format: :full_date)
         td.price = number_to_currency(pr.max_price_with_tax)
-        td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
         td = link_to pr.user.company, "/products?company_id=#{pr.user_id}"
         - if params[:cond] == "2"
           - if pr.max_bid.user_id != pr.user_id
@@ -57,7 +59,16 @@ h3 = title
             td 自社落札
             td
         - else
-          td = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
+          td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+          td
+            - if pr.max_bid.user_id == current_user.id
+              | ★あなたが最高入札者です
+            - elsif pr.max_bid.present?
+              . = pr.max_bid.user.account.gsub(/^(.)(.)(.)(.)(.).*$/, '\1*\3*\5***')
+              . = link_to "再入札する", "/myauction/bids/new?id=#{pr.id}&bid%5Bamount%5D="
+            - else
+              = "-"
+
           td.num = pr.remaining_time
 
   = paginate @pproducts
