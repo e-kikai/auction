@@ -24,7 +24,7 @@
       th.price 落札総額
       th.price 手数料<br />(#{Product::FEE_RATE}%)
     - @companies.each do |co|
-      - month_products = co.products.where(created_at: @date.beginning_of_month..@date.end_of_month)
+      - month_products = co.products.where(dulation_end: @date.beginning_of_month..@date.end_of_month)
       - count          = month_products.count
       - total_conunt   += count
       - success        = month_products.where.not(max_bid_id: nil).count
