@@ -64,8 +64,10 @@ class Product < ApplicationRecord
   TAX_RATE               = 8
   FEE_RATE               = 10
 
-  LIMIT_DAYS             = Time.now - 120.day
+  LIMIT_DAY              = Time.now - 120.day
 
+  AUTO_RESALE_DAY        = 3.day
+  AUTO_EXTENSION_MINUTE  = 5.minute
 
   ### relations ###
   belongs_to :user,     required: true
@@ -128,7 +130,7 @@ class Product < ApplicationRecord
   }
 
   scope :finished, -> {
-    where("dulation_end BETWEEN ? AND ?", LIMIT_DAYS, Time.now).order(dulation_end: :desc)
+    where("dulation_end BETWEEN ? AND ?", LIMIT_DAY, Time.now).order(dulation_end: :desc)
   }
 
   scope :status, -> cond {
@@ -198,8 +200,8 @@ class Product < ApplicationRecord
     # self.bids_count += 1
 
     # 自動延長処理
-    if auto_extension && dulation_end <= (Time.now + 5.minute)
-      self.dulation_end + 5.minute
+    if auto_extension && dulation_end <= (Time.now + AUTO_EXTENSION_MINUTE)
+      self.dulation_end + AUTO_EXTENSION_MINUTE
     end
 
     save
@@ -241,6 +243,7 @@ class Product < ApplicationRecord
     finished? && cancel.present?
   end
 
+  ### 現状の表示 ###
   def status
     case
     when cancel?;                       "キャンセル"
@@ -249,6 +252,11 @@ class Product < ApplicationRecord
     when finished? && max_bid.blank?;   "終了(未落札)"
     else                                "出品中"
     end
+  end
+
+  ## 手数料計算 ###
+  def fee_calc
+    (max_price * FEE_RATE / 100).floor
   end
 
   ### (テンプレートから)商品情報をコピー ###
@@ -383,7 +391,7 @@ class Product < ApplicationRecord
   end
 
   # 商品の消費税計算
-  %w|start_price prompt_dicision_price max_price|.each do |price|
+  %w|start_price prompt_dicision_price max_price lower_price fee|.each do |price|
     define_method("#{price}_tax") do
       Product.calc_tax(send(price))
     end
@@ -391,6 +399,29 @@ class Product < ApplicationRecord
     define_method("#{price}_with_tax") do
       Product.calc_price_with_tax(send(price))
     end
+  end
+
+  # 定期処理
+  def self.scheduling
+    # 落札確認
+    Product.status(STATUS[:success]).where(fee: nil).includes(max_bid: [:user]).each do |pr|
+      pr.update(fee: pr.fee_calc)
+
+      BidMailer.success_user(pr.max_bid.user, pr).deliver
+      BidMailer.success_company(pr).deliver
+    end
+
+    # 自動再出品
+    Product.status(STATUS[:failure]).where(auto_resale: 1..Float::INFINITY).each do |pr|
+      pr.update(
+        dulation_end: pr.dulation_end + AUTO_RESALE_DAY,
+        auto_resale:  pr.auto_resale - 1,
+      )
+    end
+
+    ### TODO ###
+    # ウォッチアラート
+    # 新着アラート
   end
 
   private

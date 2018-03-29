@@ -88,7 +88,7 @@ h3 = title
             td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
             td.num = pr.detail_logs_count
             td.num = pr.watches_count
-            td.price = number_to_currency(pr.max_price * Product::FEE_RATE / 100)
+            td.price = number_to_currency(pr.fee)
             td.star = pr.star_view
           - else
             td 自社落札

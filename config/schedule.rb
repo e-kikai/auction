@@ -30,3 +30,8 @@ set :environment, rails_env
 every 1.day, at: '5:00 am' do
   rake '-s sitemap:refresh'
 end
+
+# 落札確認処理
+every :minute do
+  runner "Product.scheduling"
+end

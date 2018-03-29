@@ -75,10 +75,15 @@ table.table.table-hover.table-condensed.form-table
       td = (f.text_field :start_price, class: "form-control price", required: "required") + " 円"
     tr.form-inline
       th = f.label :lower_price, "最低入札価格(税抜)"
-      td = (f.text_field :lower_price, class: "form-control price") + " 円"
+      td
+        . = (f.text_field :lower_price, class: "form-control price") + " 円"
+        p.help-block 【任意】設定すると、入札が最低入札価格に達しなかった場合に、落札されなくなります
+
     tr.form-inline
       th = f.label :prompt_dicision_price, "即決価格(税抜)"
-      td = (f.text_field :prompt_dicision_price, class: "form-control price") + " 円"
+      td
+        . = (f.text_field :prompt_dicision_price, class: "form-control price") + " 円"
+        p.help-block 【任意】設定すると、即決価格で入札された場合に、即入札終了・落札されます
 
     tr
       th 画像
@@ -148,7 +153,9 @@ table.table.table-hover.table-condensed.form-table
 
   tr
     th = f.label :auto_resale
-    td = f.select :auto_resale, 1..50, { prompt: "しない"} , { class: "form-control short" }
+    td.form-inline
+      . = (f.select :auto_resale, 0..9, {}, { class: "form-control short" }) + " 回"
+      p.help-block 落札されなかった場合、設定した回数だけ終了日時を3日延長します
 
 = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
   span.glyphicon.glyphicon-save

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180319142915) do
+ActiveRecord::Schema.define(version: 20180329064942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(version: 20180319142915) do
     t.string "returns_comment"
     t.boolean "auto_extension", default: false, null: false
     t.boolean "early_termination", default: false, null: false
-    t.integer "auto_resale"
+    t.integer "auto_resale", default: 0
     t.integer "resaled"
     t.integer "lower_price"
     t.boolean "special_featured", default: false, null: false
@@ -163,7 +163,7 @@ ActiveRecord::Schema.define(version: 20180319142915) do
     t.integer "max_price", default: 0
     t.integer "bids_count", default: 0
     t.integer "max_bid_id"
-    t.integer "resale_count", default: 0
+    t.integer "fee"
     t.string "code"
     t.boolean "template", default: false, null: false
     t.integer "machinelife_id"

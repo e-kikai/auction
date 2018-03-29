@@ -8,19 +8,19 @@
 - total_price   = 0
 - total_fee     = 0
 
-.col-md-offset-1.col-md-10
+.col-md-offset-2.col-md-8
   = form_tag("/system/total", method: "get", class: "form-inline") do
     = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
     = button_tag "月変更",  class: "btn btn-info"
 
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
-      th ID
+      th.num ID
       th 出品会社名
       th.num 出品<br />件数
       th.num 落札<br />件数
       th.num 閲覧<br />総数
-      th.num ウォッチ<br />総数
+      th.num ウォッ<br />チ総数
       th.price 落札総額
       th.price 手数料<br />(#{Product::FEE_RATE}%)
     - @companies.each do |co|
@@ -36,11 +36,13 @@
 
       - price          = month_products.where.not(max_bid_id: nil).sum(:max_price)
       - total_price    += price
-      - fee            = price * Product::FEE_RATE / 100
+      / - fee            = price * Product::FEE_RATE / 100
+      - fee            = month_products.where.not(max_bid_id: nil).sum(:fee)
+
       - total_fee      += fee
 
       tr
-        td = co.id
+        td.num = co.id
         td = co.company
         td.num = number_with_delimiter(count)
         td.num = number_with_delimiter(success)
