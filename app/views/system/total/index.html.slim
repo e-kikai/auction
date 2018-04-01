@@ -11,7 +11,11 @@
 .col-md-offset-2.col-md-8
   = form_tag("/system/total", method: "get", class: "form-inline") do
     = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
-    = button_tag "月変更",  class: "btn btn-info"
+    = button_tag "月変更",  class: "btn btn-info", style: "margin-right:8px;"
+
+    = button_tag :submit, name: :format, value: :pdf, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+      span.glyphicon.glyphicon-file
+      span.btn-content PDF出力
 
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
@@ -25,19 +29,21 @@
       th.price 手数料<br />(#{Product::FEE_RATE}%)
     - @companies.each do |co|
       - month_products = co.products.where(dulation_end: @date.beginning_of_month..@date.end_of_month)
+      - fee_products   = month_products.where.not(fee: nil)
+
       - count          = month_products.count
       - total_conunt   += count
-      - success        = month_products.where.not(max_bid_id: nil).count
+      - success        = fee_products.count
       - total_success  += success
       - access         = month_products.sum(:detail_logs_count)
       - total_access   += access
       - watch          = month_products.sum(:watches_count)
       - total_watch    += watch
 
-      - price          = month_products.where.not(max_bid_id: nil).sum(:max_price)
+      - price          = fee_products.sum(:max_price)
       - total_price    += price
       / - fee            = price * Product::FEE_RATE / 100
-      - fee            = month_products.where.not(max_bid_id: nil).sum(:fee)
+      - fee            = fee_products.sum(:fee)
 
       - total_fee      += fee
 
