@@ -6,7 +6,12 @@ class System::TotalController < System::ApplicationController
 
     respond_to do |format|
       format.html
-      format.pdf
+      format.pdf {
+        send_data render_to_string,
+          filename:     "total_#{@date.strftime('%Y%m')}",
+          content_type: "application/pdf",
+          disposition:  "inline"
+      }
       format.csv { export_csv "total.csv" }
     end
   end
