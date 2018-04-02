@@ -7,7 +7,7 @@
 #  name                   :string
 #  zip                    :string
 #  birthday               :string
-#  allow_mail             :boolean          default(FALSE), not null
+#  allow_mail             :boolean          default(TRUE), not null
 #  seller                 :boolean          default(FALSE), not null
 #  company                :string
 #  contact_name           :string

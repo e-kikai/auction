@@ -26,7 +26,7 @@
 #  returns_comment        :string
 #  auto_extension         :boolean          default(FALSE), not null
 #  early_termination      :boolean          default(FALSE), not null
-#  auto_resale            :integer
+#  auto_resale            :integer          default(0)
 #  resaled                :integer
 #  lower_price            :integer
 #  special_featured       :boolean          default(FALSE), not null
@@ -39,7 +39,7 @@
 #  max_price              :integer          default(0)
 #  bids_count             :integer          default(0)
 #  max_bid_id             :integer
-#  resale_count           :integer          default(0)
+#  fee                    :integer
 #  code                   :string
 #  template               :boolean          default(FALSE), not null
 #  machinelife_id         :integer
@@ -49,6 +49,8 @@
 #  hashtags               :text             default(""), not null
 #  star                   :integer
 #  note                   :text
+#  watches_count          :integer          default(0), not null
+#  detail_logs_count      :integer          default(0), not null
 #
 
 class Product < ApplicationRecord
