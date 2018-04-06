@@ -74,10 +74,10 @@ table.table.table-hover.table-condensed.form-table
       th = f.label :start_price, "開始価格(税抜)", class: :required
       td = (f.text_field :start_price, class: "form-control price", required: "required") + " 円"
     tr.form-inline
-      th = f.label :lower_price, "最低入札価格(税抜)"
+      th = f.label :lower_price, "最低落札価格(税抜)"
       td
         . = (f.text_field :lower_price, class: "form-control price") + " 円"
-        p.help-block 【任意】設定すると、最低入札価格に達しない入札金額では、落札されなくなります
+        p.help-block 【任意】設定すると、最低落札価格に達しない入札金額では、落札されなくなります
 
     tr.form-inline
       th = f.label :prompt_dicision_price, "即決価格(税抜)"
@@ -100,7 +100,9 @@ table.table.table-hover.table-condensed.form-table
               = pi.hidden_field :id
               = pi.check_box :_destroy, {}, 1, 0
               = pi.label :_destroy, "削除"
-
+    tr
+      th = f.label :youtube
+      td = f.text_field :youtube, class: "form-control"
     tr
       th = f.label :hashtags
       td
@@ -119,13 +121,26 @@ table.table.table-hover.table-condensed.form-table
 
   tr
     th = f.label :shipping_user, class: :required
+    td
+      .form-inline
+        - Product.shipping_users.each do |k, v|
+          label.radio-inline = f.radio_button(:shipping_user, k, inline: true) + k
+      . = f.text_field :shipping_comment, class: "form-control"
+      p.help-block 【任意】備考があれば記入してください
+
+  tr
+    th = f.label :international, class: :required
     td.form-inline
-      - Product.shipping_users.each do |k, v|
-        label.radio-inline = f.radio_button(:shipping_user, k, inline: true) + k
+      - Product.internationals.each do |k, v|
+        label.radio-inline = f.radio_button(:international, k, inline: true) + k
 
   tr
     th = f.label :shipping_no
     td = f.select :shipping_no, ShippingLabel.where(user_id: current_user.id).pluck(:name, :shipping_no), { prompt: "設定しない"} , { class: "form-control short" }
+
+  tr
+    th = f.label :packing, class: :required
+    td = f.text_field :packing, class: "form-control"
 
   tr
     th = f.label :state, class: :required
@@ -140,7 +155,8 @@ table.table.table-hover.table-condensed.form-table
     th = f.label :returns, class: :required
     td
       .form-inline
-        = f.check_box :returns, {}, true, false
+        - Product.returns.each do |k, v|
+          label.radio-inline = f.radio_button(:returns, k, inline: true) + k
       . = f.text_field :returns_comment, class: "form-control"
       p.help-block 【任意】備考があれば記入してください
 
@@ -149,12 +165,16 @@ table.table.table-hover.table-condensed.form-table
   /   td = f.check_box :early_termination, {}, true, false
   tr
     th = f.label :auto_extension
-    td = f.check_box :auto_extension, {}, true, false
+    td
+      .form-inline
+        - Product.auto_extensions.each do |k, v|
+          label.radio-inline = f.radio_button(:auto_extension, k, inline: true) + k
+      p.help-block 設定すると、終了日時の5分以内に入札されると、終了日時が自動的に5分間延長されるようになります
 
   tr
     th = f.label :auto_resale
     td.form-inline
-      . = (f.select :auto_resale, 0..9, {}, { class: "form-control short" }) + " 回"
+      . = (f.select :auto_resale, 0..20, {}, { class: "form-control short" }) + " 回"
       p.help-block 落札されなかった場合、設定した回数だけ終了日時を3日延長します
 
 = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do

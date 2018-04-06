@@ -33,7 +33,7 @@ h3.product-title = @product.name
 
         .row = f.button "規約に同意して入札する", class: "btn btn-warning btn-lg center-block"
 
-        ul.bid-message
+        .bid-message
           - if @product.prompt_dicision_price.present? && @bid.amount >= @product.prompt_dicision_price
             p.alert-message この金額で、今すぐ即決落札されます。
           p 一度行った入札は、キャンセルできません。

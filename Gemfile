@@ -138,3 +138,5 @@ gem 'counter_culture' # 件数キャッシュ
 gem 'prawn'
 gem 'prawn-table'
 gem 'prawn-rails'
+
+gem 'actionview-encoded_mail_to' # メールアドレスエンコード

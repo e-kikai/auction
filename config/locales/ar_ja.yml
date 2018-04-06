@@ -24,6 +24,9 @@ ja:
         url: サイトURL
         business_hours: 営業時間
         note: 備考欄
+        header_image: ヘッダ画像
+        result_message: 落札時の自動メッセージ
+        machinelife_id: マシンライフ連動ID
 
       category:
         name: カテゴリ名
@@ -53,6 +56,12 @@ ja:
         cancel: キャンセル理由
         hashtags: ハッシュタグ(空白区切り)
         note: 落札事項
+        youtube: YouTube ID
+        international: 海外発送
+        packing: 梱包について
+
+
+        additional: 追記事項
       bid:
         amount: 入札金額
       trade:

@@ -20,9 +20,11 @@
           li = link_to "出品する",           "/myauction/products/new"
           li = link_to "開始前の商品",       "/myauction/products?cond=-1"
           li = link_to "出品中",             "/myauction/products/"
+          hr
           li = link_to "出品終了分(未落札)", "/myauction/products?cond=1"
           li = link_to "出品終了分(落札済)", "/myauction/products?cond=2"
           li = link_to "出品キャンセル分",   "/myauction/products?cond=3"
+          hr
           li = link_to "テンプレート一覧",   "/myauction/templates/"
           li = link_to "テンプレート作成",   "/myauction/templates/new"
 
@@ -34,8 +36,10 @@
           li = link_to "インポートログ",     "/myauction/importlog"
           li = link_to "http://www.zenkiren.net/admin/machine_auction.php", target: "_blank" do
             | →マシンライフ<br />オークション用CSV出力
+          hr
           li = link_to "送料設定インポート", "/myauction/shipping/new"
           / li = link_to "カテゴリ管理",       "/myauction/categories"
+          li = mail_to "bata44883@gmail.com", "開発者メール問い合わせ", encode: "javascript"
 
   .col-md-3
     .panel.panel-default

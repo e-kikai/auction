@@ -69,7 +69,7 @@ class System::UsersController < System::ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(%w|email password name company tel zip addr_1 addr_2 addr_3 account bank seller charge fax url license business_hours note allow_mail confirmed_at|)
+    params.require(:user).permit(%w|email password name company tel zip addr_1 addr_2 addr_3 account bank seller charge fax url license business_hours note allow_mail confirmed_at result_message machinelife_id header_image|)
   end
 
   def password_params

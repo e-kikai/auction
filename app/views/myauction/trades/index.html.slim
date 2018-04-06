@@ -5,6 +5,7 @@
   - breadcrumb :myauction_bids_trade, @product
 
 .col-md-5
+  - if current_user.id != @product.user_id
   .panel.panel-default
     .panel-heading 落札商品
     .panel-body.trade-product
@@ -27,8 +28,10 @@
         dt = current_user.id == @product.user_id ? "合計金額" : "お支払い金額合計"
         dd = number_to_currency(@product.max_price_with_tax + (@shipping_fee.try(:price) || 0))
 
-  .panel.panel-default
-    - if current_user.id == @product.user_id
+        p.alert-message 発送方法、送料、梱包などの確認は必ず行ってください。<br />入金確認後に商品の発送します。
+
+  - if current_user.id == @product.user_id
+    .panel.panel-default
       .panel-heading 落札者情報
       .panel-body.trade-user
         dl.dl-horizontal
@@ -43,7 +46,8 @@
           dt 住所
           dd #{@product.max_bid.user.addr_1} #{@product.max_bid.user.addr_2} #{@product.max_bid.user.addr_3}
 
-    - else
+  - else
+    .panel.panel-default
       .panel-heading 出品会社情報
       .panel-body.trade-user
         dl.dl-horizontal
@@ -57,8 +61,10 @@
           dd = simple_format(@product.user.bank)
 
 .col-md-7
+  p.alert-message  取引開始は、落札後1週間以内にお願いいたします。
+
   = form_for @trade, url: "/myauction/trades/?product_id=#{params[:product_id]}", html: { method: :post, class: 'form-horizontal' } do |f|
-    = f.label :comment
+    = f.label :comment, "こちらで取引コメントを入力して「投稿する」をクリックしてください。"
     = f.text_area :comment, class: "form-control", style: "height: 100px;margin-bottom:4px;"
 
     = f.button :button, data: { "disable-with" => "投稿中..." }, class: "btn btn-default btn-square btn-submit center-block" do
@@ -67,10 +73,19 @@
 
   - @trades.each do |tr|
     - if tr.user_id == current_user.id
-      .col-md-10
-        . = tr.created_at
+      .col-md-offset-2.col-md-10
+        . = I18n.l(tr.created_at, format: :full_date)
         .trade.mine = simple_format(tr.comment)
     - else
-      .col-md-offset-2.col-md-10
-        . = tr.created_at
+      .col-md-10
+        . = I18n.l(tr.created_at, format: :full_date)
         .trade.other = simple_format(tr.comment)
+
+  - if current_user.id == @product.user_id
+    .col-md-offset-2.col-md-10
+      . = I18n.l(@product.dulation_end, format: :full_date)
+      .trade.mine = simple_format(@product.user.result_message)
+  - else
+    .col-md-10
+      . = I18n.l(@product.dulation_end, format: :full_date)
+      .trade.other = simple_format(@product.user.result_message)

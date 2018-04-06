@@ -67,6 +67,10 @@
         label.radio-inline = f.radio_button(:seller, false) + " 入札ユーザ"
 
       .form-group
+        = f.label :machinelife_id
+        = f.number_field :machinelife_id, class: 'form-control short'
+
+      .form-group
         = f.label :charge
         = f.text_field :charge, class: 'form-control'
       .form-group
@@ -85,6 +89,11 @@
       .form-group
         = f.label :bank
         = f.text_area :bank, class: 'form-control'
+
+      .form-group
+        = f.label :result_message, class: :note
+        = f.text_area :result_message, class: 'form-control'
+
       .form-group
         = f.label :note, class: :note
         = f.text_area :note, class: 'form-control'

@@ -10,6 +10,9 @@
 入札件数 : <%= @product.bids_count %> 件
 終了日時 : <%= I18n.l(@product.dulation_end, format: :full_date) %>
 
+出品会社からのメッセージ
+============================
+<%= @company.result_message %>
 ============================
 
 入金の方法、商品の受取方法などの出品会社との取引は、

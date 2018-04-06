@@ -79,6 +79,10 @@
           .form-group
             = f.label :bank, class: :required
             = f.text_area :bank, required: "required", class: 'form-control'
+
+          .form-group
+            = f.label :result_message, class: :required
+            = f.text_area :result_message, required: "required", class: 'form-control'
           .form-group
             = f.label :note, class: :note
             = f.text_area :note, class: 'form-control'

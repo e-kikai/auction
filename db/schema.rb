@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180402073946) do
+ActiveRecord::Schema.define(version: 20180406072338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,8 +141,7 @@ ActiveRecord::Schema.define(version: 20180402073946) do
     t.string "addr_2"
     t.integer "shipping_user", default: 0, null: false
     t.integer "shipping_type"
-    t.string "delivery"
-    t.string "international_shipping"
+    t.string "shipping_comment"
     t.integer "delivery_date", default: 0, null: false
     t.integer "state", default: 0, null: false
     t.string "state_comment"
@@ -153,10 +152,6 @@ ActiveRecord::Schema.define(version: 20180402073946) do
     t.integer "auto_resale", default: 0
     t.integer "resaled"
     t.integer "lower_price"
-    t.boolean "special_featured", default: false, null: false
-    t.boolean "special_bold", default: false, null: false
-    t.boolean "special_bgcolor", default: false, null: false
-    t.integer "special_icon"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "soft_destroyed_at"
@@ -175,6 +170,10 @@ ActiveRecord::Schema.define(version: 20180402073946) do
     t.text "note"
     t.integer "watches_count", default: 0, null: false
     t.integer "detail_logs_count", default: 0, null: false
+    t.text "additional", default: "", null: false
+    t.text "packing", default: "", null: false
+    t.string "youtube", default: "", null: false
+    t.boolean "international", default: false, null: false
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["soft_destroyed_at"], name: "index_products_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_products_on_user_id"
@@ -304,6 +303,9 @@ ActiveRecord::Schema.define(version: 20180402073946) do
     t.string "license"
     t.string "business_hours"
     t.text "note"
+    t.text "result_message", default: "", null: false
+    t.text "header_image"
+    t.integer "machinelife_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["soft_destroyed_at"], name: "index_users_on_soft_destroyed_at"

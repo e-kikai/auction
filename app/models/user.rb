@@ -39,6 +39,9 @@
 #  license                :string
 #  business_hours         :string
 #  note                   :text
+#  result_message         :text             default(""), not null
+#  header_image           :text
+#  machinelife_id         :integer
 #
 
 class User < ApplicationRecord

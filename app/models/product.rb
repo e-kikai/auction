@@ -2,55 +2,54 @@
 #
 # Table name: products
 #
-#  id                     :integer          not null, primary key
-#  user_id                :integer          not null
-#  category_id            :integer          not null
-#  name                   :string           default(""), not null
-#  description            :text
-#  dulation_start         :datetime
-#  dulation_end           :datetime
-#  sell_type              :integer          default(0), not null
-#  start_price            :integer
-#  prompt_dicision_price  :integer
-#  ended_at               :datetime
-#  addr_1                 :string
-#  addr_2                 :string
-#  shipping_user          :integer          default("落札者"), not null
-#  shipping_type          :integer
-#  delivery               :string
-#  international_shipping :string
-#  delivery_date          :integer          default("1〜2で発送"), not null
-#  state                  :integer          default("中古"), not null
-#  state_comment          :string
-#  returns                :boolean          default(FALSE), not null
-#  returns_comment        :string
-#  auto_extension         :boolean          default(FALSE), not null
-#  early_termination      :boolean          default(FALSE), not null
-#  auto_resale            :integer          default(0)
-#  resaled                :integer
-#  lower_price            :integer
-#  special_featured       :boolean          default(FALSE), not null
-#  special_bold           :boolean          default(FALSE), not null
-#  special_bgcolor        :boolean          default(FALSE), not null
-#  special_icon           :integer
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  soft_destroyed_at      :datetime
-#  max_price              :integer          default(0)
-#  bids_count             :integer          default(0)
-#  max_bid_id             :integer
-#  fee                    :integer
-#  code                   :string
-#  template               :boolean          default(FALSE), not null
-#  machinelife_id         :integer
-#  machinelife_images     :text
-#  shipping_no            :integer
-#  cancel                 :text
-#  hashtags               :text             default(""), not null
-#  star                   :integer
-#  note                   :text
-#  watches_count          :integer          default(0), not null
-#  detail_logs_count      :integer          default(0), not null
+#  id                    :integer          not null, primary key
+#  user_id               :integer          not null
+#  category_id           :integer          not null
+#  name                  :string           default(""), not null
+#  description           :text
+#  dulation_start        :datetime
+#  dulation_end          :datetime
+#  sell_type             :integer          default(0), not null
+#  start_price           :integer
+#  prompt_dicision_price :integer
+#  ended_at              :datetime
+#  addr_1                :string
+#  addr_2                :string
+#  shipping_user         :integer          default("落札者"), not null
+#  shipping_type         :integer
+#  shipping_comment      :string
+#  delivery_date         :integer          default("1〜2で発送"), not null
+#  state                 :integer          default("中古"), not null
+#  state_comment         :string
+#  returns               :boolean          default(FALSE), not null
+#  returns_comment       :string
+#  auto_extension        :boolean          default(FALSE), not null
+#  early_termination     :boolean          default(FALSE), not null
+#  auto_resale           :integer          default(0)
+#  resaled               :integer
+#  lower_price           :integer
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  soft_destroyed_at     :datetime
+#  max_price             :integer          default(0)
+#  bids_count            :integer          default(0)
+#  max_bid_id            :integer
+#  fee                   :integer
+#  code                  :string
+#  template              :boolean          default(FALSE), not null
+#  machinelife_id        :integer
+#  machinelife_images    :text
+#  shipping_no           :integer
+#  cancel                :text
+#  hashtags              :text             default(""), not null
+#  star                  :integer
+#  note                  :text
+#  watches_count         :integer          default(0), not null
+#  detail_logs_count     :integer          default(0), not null
+#  additional            :text             default(""), not null
+#  packing               :text             default(""), not null
+#  youtube               :string           default(""), not null
+#  international         :boolean          default("不可"), not null
 #
 
 class Product < ApplicationRecord
@@ -87,11 +86,13 @@ class Product < ApplicationRecord
   has_many   :detail_logs
 
   ### enum ###
-  enum type:          { "オークションで出品" => 0, "定額で出品" => 100 }
-  enum shipping_user: { "落札者" => 0, "出品者" => 100 }
-  enum delivery_date: { "1〜2で発送" => 0, "3〜7で発送" => 100, "8日以降に発送" => 200 }
-  enum state:         { "中古" => 0, "新品" => 100, "その他" => 200 }
-
+  enum type:           { "オークションで出品" => 0, "定額で出品" => 100 }
+  enum shipping_user:  { "落札者" => 0, "出品者" => 100, "店頭引取り" => 500 }
+  enum delivery_date:  { "1〜2で発送" => 0, "3〜7で発送" => 100, "8日以降に発送" => 200 }
+  enum state:          { "中古" => 0, "新品" => 100, "その他" => 200 }
+  enum international:  { "海外発送不可" => false, "海外発送可" => true }
+  enum returns:        { "返品不可" => false, "返品可" => true }
+  enum auto_extension: { "自動延長しない" => false, "自動延長する" => true }
 
   ### validates ###
   validates :name,        presence: true
@@ -100,18 +101,15 @@ class Product < ApplicationRecord
 
   # validates :type,          presence: true, inclusion: {in: Product.types.keys}
   # validates :shipping_user, presence: true, inclusion: {in: Product.shipping_users.keys}
-  # validates :delivery_date, presence: true, inclusion: {in: Product.delivery_dates.keys}
+  validates :delivery_date, presence: true, inclusion: {in: Product.delivery_dates.keys}
   validates :state,         presence: true, inclusion: {in: Product.states.keys}
 
   validates :dulation_start,    presence: true
   validates :dulation_end,      presence: true
 
-  validates :returns,           inclusion: {in: [true, false]}
-  validates :auto_extension,    inclusion: {in: [true, false]}
+  # validates :returns,           inclusion: {in: [true, false]}
+  # validates :auto_extension,    inclusion: {in: [true, false]}
   validates :early_termination, inclusion: {in: [true, false]}
-  validates :special_featured,  inclusion: {in: [true, false]}
-  validates :special_bold,      inclusion: {in: [true, false]}
-  validates :special_bgcolor,   inclusion: {in: [true, false]}
   validates :template,          inclusion: {in: [true, false]}
 
   validates :machinelife_id, uniqueness: { scope: [ :soft_destroyed_at ] }, allow_blank: true
@@ -152,6 +150,7 @@ class Product < ApplicationRecord
 
   ### callback ###
   before_create :default_max_price
+  before_save :youtube_id
 
   ### インポート用getter setter ###
   attr_accessor :template_id, :template_name
@@ -430,6 +429,12 @@ class Product < ApplicationRecord
 
   def default_max_price
     self.max_price = start_price
+  end
+
+  def youtube_id
+    if youtube =~ /([\w\-]{11})/
+      self.youtube = $1
+    end
   end
 
 end

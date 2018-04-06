@@ -42,6 +42,8 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
+    actionview-encoded_mail_to (1.0.9)
+      rails
     active_bootstrap_skin (0.1.4)
       bootstrap-sass (~> 3.3.6)
     activejob (5.1.5)
@@ -588,6 +590,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionview-encoded_mail_to
   active_bootstrap_skin
   activeadmin!
   activerecord-session_store

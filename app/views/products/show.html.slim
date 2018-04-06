@@ -59,6 +59,9 @@
         - @product.product_images.each_with_index do |pi, i|
           = link_to(image_tag(pi.image.thumb.url), "javascript:$('#product-carousel').carousel(#{i})")
 
+      - if @product.youtube.present?
+        iframe width="640" height="382" src="https://www.youtube.com/embed/#{@product.youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="true"
+
       .panel.panel-default
         .panel-body
           dl.dl-horizontal
@@ -69,7 +72,11 @@
             dt 発送元
             dd #{@product.addr_1} #{@product.addr_2}
             dt 送料負担
-            dd = @product.shipping_user
+            dd
+              = @product.shipping_user
+              = @product.shipping_comment
+            dt 海外発送
+            dd = @product.international
             - if @shipping_label
               dt 発送方法
               dd = @shipping_label.name
@@ -77,18 +84,19 @@
               dt 送料(税込)
               dd
                 . = number_to_currency(@shipping_fee.price)
-                . ※ 送料は目安です
-
+                . ※ 送料は目安です。落札後に必ず「取引」でご確認お願いいたします。
+            dt 梱包について
+            dd = @product.packing
             dt 商品の状態
             dd
               = @product.state
               = @product.state_comment
             dt 返品の可否
             dd
-              = @product.returns ? '可' : '不可'
+              = @product.returns
               = @product.returns_comment
             dt 自動延長
-            dd = @product.auto_extension ? 'あり' : 'なし'
+            dd = @product.auto_extension
             / dt 早期終了
             / dd = @product.early_termination ? 'あり' : 'なし'
             dt 最高入札者
