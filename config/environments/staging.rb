@@ -91,5 +91,5 @@ Rails.application.configure do
 
   # GA.tracker = "UA-2926798-2"
 
-  config.action_mailer.default_url_options = { host: '54.64.160.222' }
+  config.action_mailer.default_url_options = { host: '52.198.119.255' }
 end
