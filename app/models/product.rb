@@ -88,7 +88,7 @@ class Product < ApplicationRecord
   ### enum ###
   enum type:           { "オークションで出品" => 0, "定額で出品" => 100 }
   enum shipping_user:  { "落札者" => 0, "出品者" => 100, "店頭引取り" => 500 }
-  enum delivery_date:  { "1〜2で発送" => 0, "3〜7で発送" => 100, "8日以降に発送" => 200 }
+  enum delivery_date:  { "未設定" => 0, "1〜2日で発送" => 100, "3〜7日で発送" => 200, "8日以降に発送" => 300 }
   enum state:          { "中古" => 0, "新品" => 100, "その他" => 200 }
   enum international:  { "海外発送不可" => false, "海外発送可" => true }
   enum returns:        { "返品不可" => false, "返品可" => true }

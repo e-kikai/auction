@@ -129,7 +129,7 @@ table.table.table-hover.table-condensed.form-table
       p.help-block 【任意】備考があれば記入してください
 
   tr
-    th = f.label :international, class: :required
+    th = f.label :international
     td.form-inline
       - Product.internationals.each do |k, v|
         label.radio-inline = f.radio_button(:international, k, inline: true) + k
@@ -139,11 +139,18 @@ table.table.table-hover.table-condensed.form-table
     td = f.select :shipping_no, ShippingLabel.where(user_id: current_user.id).pluck(:name, :shipping_no), { prompt: "設定しない"} , { class: "form-control short" }
 
   tr
-    th = f.label :packing, class: :required
+    th = f.label :packing
     td = f.text_field :packing, class: "form-control"
 
   tr
-    th = f.label :state, class: :required
+    th = f.label :delivery_date
+    td.form-inline
+      - Product.delivery_dates.each do |k, v|
+        label.radio-inline = f.radio_button(:delivery_date, k, inline: true) + k
+
+
+  tr
+    th = f.label :state
     td
       .form-inline
         - Product.states.each do |k, v|
@@ -152,7 +159,7 @@ table.table.table-hover.table-condensed.form-table
       p.help-block 【任意】備考があれば記入してください 例) ジャンク品、開封後一度も使っていません、など
 
   tr
-    th = f.label :returns, class: :required
+    th = f.label :returns
     td
       .form-inline
         - Product.returns.each do |k, v|

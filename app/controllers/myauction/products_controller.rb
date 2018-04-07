@@ -90,7 +90,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
   def product_params
     params.require(:product).permit(:category_id, :code, :name, :description, :note,
       :dulation_start, :dulation_end, :start_price, :prompt_dicision_price, :lower_price, :youtube,
-      :shipping_user, :shipping_comment, :international, :packing, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, :auto_resale, :shipping_no, :template_id, :hashtags,:addr_1, :addr_2,
+      :shipping_user, :shipping_comment, :international, :packing, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, :auto_resale, :shipping_no, :template_id, :hashtags,:addr_1, :addr_2, :delivery_date,
       product_images_attributes: [:id, :image, :remote_image_url, :_destroy])
   end
 end
