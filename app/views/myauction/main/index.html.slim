@@ -17,7 +17,9 @@
       .panel.panel-default
         .panel-heading 出品
         ul.nav.nav-pills.nav-stacked
-          li = link_to "出品する",           "/myauction/products/new"
+          li = link_to "出品する",             "/myauction/products/new"
+          li = link_to "マシンライフから出品", "/myauction/products/m2a"
+          hr
           li = link_to "開始前の商品",       "/myauction/products?cond=-1"
           li = link_to "出品中",             "/myauction/products/"
           hr

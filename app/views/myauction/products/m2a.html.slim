@@ -1,0 +1,35 @@
+- set_meta_tags title: "マシンライフから出品"
+- breadcrumb    :myauction_something, "マシンライフから出品"
+
+h3 マシンライフから出品
+
+= form_tag("/myauction/products/m2a", method: "get", class: "form-inline") do
+  = select_date @date, {prefix: :date, start_year: 2011, discard_day: true}, {class: "form-control"}
+  = button_tag "月変更",  class: "btn btn-info"
+
+- if @datas.blank? || !@datas[0].include?("id")
+  .alert.alert-danger マシンライフからデータを取得できませんでした
+- else
+  = form_tag("/myauction/products/new", method: "get", class: "form-inline") do
+    .col-md-8.col-md-offset-2
+       .form-group
+         = label_tag :template_id, "テンプレート"
+         = session[:template_id]
+         = select_tag :template_id, options_for_select(@template_selectors, selected: session[:m2a_template_id]), {prompt: "使用しない", class: "form-control"}
+
+    table.table.table-hover.table-condensed.table-striped.product-table
+      tr
+        th.img_mini
+        th 管理番号
+        th 商品名(機械名、メーカー、型式、年式)
+        th 登録日時
+        th
+      - @datas.each do |pr|
+        tr
+          td = image_tag((pr["top_img"].present? ? "#{Product::MACHINELIFE_MEDIA_PASS}thumb_#{pr["top_img"] }" : ProductImage::NOIMAGE_THUMB), style: "max-width:120px;max-height:90px;")
+          td = pr["no"]
+          td #{pr["name"]}
+          td = DateTime.parse(pr["created_at"])
+          th = button_tag name: :machinelife_id, value: pr["id"], class: "btn btn-success" do
+            span.glyphicon.glyphicon-refresh
+            =< "マシンライフから出品"

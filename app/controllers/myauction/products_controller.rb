@@ -16,6 +16,30 @@ class Myauction::ProductsController < Myauction::ApplicationController
     else
       current_user.products.new
     end
+
+    # マシンライフから出品
+    if params[:machinelife_id].present?
+      begin
+        @url   = "#{Product::MACHINELIFE_CRAWL_URL}?t=auction_machine&id=#{params[:machinelife_id].to_i}"
+        json   = open(@url).read
+        @data = ActiveSupport::JSON.decode json
+
+        @product.attributes = {
+          code:        @data["no"],
+          name:        @data["name"],
+          description: @data["spec"],
+          youtube:     @data["youtube"],
+        }
+
+        @data["images"].split.each do |img|
+          @product.product_images.new.remote_image_url = "#{Product::MACHINELIFE_MEDIA_PASS}#{img}"
+        end
+
+        session[:m2a_template_id] = params[:template_id]
+      rescue
+        redirect_to "/myauction/", alert: "マシンライフから商品情報を取得できませんでした"
+      end
+    end
   end
 
   # def confirm
@@ -79,6 +103,32 @@ class Myauction::ProductsController < Myauction::ApplicationController
     else
       redirect_to "/myauction/products", alert: "#{@product.name}を出品キャンセルできませんでした"
     end
+  end
+
+  # マシンライフからオークションへ
+  def m2a
+    @date = case
+    when params[:date];      Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1)
+    when session[:m2a_date]; session[:m2a_date]
+    else;                    Time.now
+    end
+
+    start_date = @date.beginning_of_month.strftime("%Y-%m-%d")
+    end_date   = @date.end_of_month.strftime("%Y-%m-%d")
+
+    session[:m2a_date] = @date
+
+    # マシンライフからJSONデータを取得
+    if current_user.machinelife_company_id.blank?
+      redirect_to "/myauction/", alert: "マシンライフ連動IDが設定されていません"
+      return
+    end
+
+    @url   = "#{Product::MACHINELIFE_CRAWL_URL}?t=auction_machines&c=#{current_user.machinelife_company_id}&start_date=#{start_date}&end_date=#{end_date}"
+    json   = open(@url).read
+    @datas = ActiveSupport::JSON.decode json rescue raise json
+
+    @template_selectors  = current_user.products.templates.pluck(:name, :id)
   end
 
   private

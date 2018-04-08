@@ -40,10 +40,9 @@ Rails.application.routes.draw do
     ### 出品関係 ###
     resources :categories, only: [:index, :new, :create, :edit, :update]
     resources :products,   only: [:index, :new, :create, :edit, :update, :destroy] do
-      # collection do
-      #   post  'confirm'
-      #   post  'prompt'
-      # end
+      collection do
+        get  'm2a'
+      end
 
       member do
         patch 'cancel'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180406072338) do
+ActiveRecord::Schema.define(version: 20180408134944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -305,7 +305,7 @@ ActiveRecord::Schema.define(version: 20180406072338) do
     t.text "note"
     t.text "result_message", default: "", null: false
     t.text "header_image"
-    t.integer "machinelife_id"
+    t.integer "machinelife_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["soft_destroyed_at"], name: "index_users_on_soft_destroyed_at"

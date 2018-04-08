@@ -58,7 +58,10 @@ class Product < ApplicationRecord
 
   ### クラス定数 ###
   STATUS                 = { before: -1, start: 0, failure: 1, success: 2, cancel: 3 }
-  MACHINELIFE_MEDIA_PASS = "http://www.zenkiren.net/media/machine/"
+  MACHINELIFE_URL        = "http://www.zenkiren.net"
+  MACHINELIFE_CRAWL_URL  = "#{MACHINELIFE_URL}/system/ajax/e-kikai_crawled_get.php"  
+  MACHINELIFE_MEDIA_PASS = "#{MACHINELIFE_URL}/media/machine/"
+
   CSV_MAX_COUNT          = 30
   NEW_MAX_COUNT          = 16 # 新着表示数
 

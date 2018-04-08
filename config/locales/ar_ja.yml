@@ -26,7 +26,7 @@ ja:
         note: 備考欄
         header_image: ヘッダ画像
         result_message: 落札時の自動メッセージ
-        machinelife_id: マシンライフ連動ID
+        machinelife_company_id: マシンライフ連動ID
 
       category:
         name: カテゴリ名
