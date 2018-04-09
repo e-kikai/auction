@@ -25,10 +25,11 @@ class Myauction::ProductsController < Myauction::ApplicationController
         @data = ActiveSupport::JSON.decode json
 
         @product.attributes = {
-          code:        @data["no"],
-          name:        @data["name"],
-          description: @data["spec"],
-          youtube:     @data["youtube"],
+          machinelife_id: @data["id"],
+          code:           @data["no"],
+          name:           @data["name"],
+          description:    @data["spec"],
+          youtube:        @data["youtube"],
         }
 
         @data["images"].split.each do |img|
@@ -129,6 +130,8 @@ class Myauction::ProductsController < Myauction::ApplicationController
     @datas = ActiveSupport::JSON.decode json rescue raise json
 
     @template_selectors  = current_user.products.templates.pluck(:name, :id)
+
+    @current_machinelife_ids = current_user.products.where.not(machinelife_id: nil).pluck(:machinelife_id)
   end
 
   private
@@ -140,7 +143,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
   def product_params
     params.require(:product).permit(:category_id, :code, :name, :description, :note,
       :dulation_start, :dulation_end, :start_price, :prompt_dicision_price, :lower_price, :youtube,
-      :shipping_user, :shipping_comment, :international, :packing, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, :auto_resale, :shipping_no, :template_id, :hashtags,:addr_1, :addr_2, :delivery_date,
+      :shipping_user, :shipping_comment, :international, :packing, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, :auto_resale, :shipping_no, :template_id, :hashtags,:addr_1, :addr_2, :delivery_date, :machinelife_id,
       product_images_attributes: [:id, :image, :remote_image_url, :_destroy])
   end
 end

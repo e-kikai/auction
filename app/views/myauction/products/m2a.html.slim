@@ -29,7 +29,11 @@ h3 マシンライフから出品
           td = image_tag((pr["top_img"].present? ? "#{Product::MACHINELIFE_MEDIA_PASS}thumb_#{pr["top_img"] }" : ProductImage::NOIMAGE_THUMB), style: "max-width:120px;max-height:90px;")
           td = pr["no"]
           td #{pr["name"]}
-          td = DateTime.parse(pr["created_at"])
-          th = button_tag name: :machinelife_id, value: pr["id"], class: "btn btn-success" do
-            span.glyphicon.glyphicon-refresh
-            =< "マシンライフから出品"
+          td = I18n.l(DateTime.parse(pr["created_at"]), format: :full_date)
+          td
+            - if pr["id"].in?(@current_machinelife_ids)
+              | 出品済み
+            - else
+              = button_tag name: :machinelife_id, value: pr["id"], class: "btn btn-success" do
+                span.glyphicon.glyphicon-refresh
+                =< "マシンライフから出品"
