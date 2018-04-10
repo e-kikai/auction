@@ -1,0 +1,2 @@
+module Myauction::HelpsHelper
+end

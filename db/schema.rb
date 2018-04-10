@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180408134944) do
+ActiveRecord::Schema.define(version: 20180409152133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,17 @@ ActiveRecord::Schema.define(version: 20180408134944) do
     t.index ["soft_destroyed_at"], name: "index_follows_on_soft_destroyed_at"
     t.index ["to_user_id"], name: "index_follows_on_to_user_id"
     t.index ["user_id"], name: "index_follows_on_user_id"
+  end
+
+  create_table "helps", force: :cascade do |t|
+    t.string "title", default: "", null: false
+    t.text "content", default: "", null: false
+    t.integer "target", default: 0, null: false
+    t.integer "order_no", default: 999999999, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "soft_destroyed_at"
+    t.index ["soft_destroyed_at"], name: "index_helps_on_soft_destroyed_at"
   end
 
   create_table "importlogs", force: :cascade do |t|
@@ -306,7 +317,7 @@ ActiveRecord::Schema.define(version: 20180408134944) do
     t.text "result_message", default: "", null: false
     t.text "header_image"
     t.integer "machinelife_company_id"
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["email", "soft_destroyed_at"], name: "index_users_on_email_and_soft_destroyed_at", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["soft_destroyed_at"], name: "index_users_on_soft_destroyed_at"
   end

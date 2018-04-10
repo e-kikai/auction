@@ -18,12 +18,12 @@
 #  shipping_user         :integer          default("落札者"), not null
 #  shipping_type         :integer
 #  shipping_comment      :string
-#  delivery_date         :integer          default("1〜2で発送"), not null
+#  delivery_date         :integer          default("未設定"), not null
 #  state                 :integer          default("中古"), not null
 #  state_comment         :string
-#  returns               :boolean          default(FALSE), not null
+#  returns               :boolean          default("返品不可"), not null
 #  returns_comment       :string
-#  auto_extension        :boolean          default(FALSE), not null
+#  auto_extension        :boolean          default("自動延長しない"), not null
 #  early_termination     :boolean          default(FALSE), not null
 #  auto_resale           :integer          default(0)
 #  resaled               :integer
@@ -49,7 +49,7 @@
 #  additional            :text             default(""), not null
 #  packing               :text             default(""), not null
 #  youtube               :string           default(""), not null
-#  international         :boolean          default("不可"), not null
+#  international         :boolean          default("海外発送不可"), not null
 #
 
 class Product < ApplicationRecord

@@ -1,0 +1,10 @@
+- set_meta_tags title: "ヘルプ一覧"
+- breadcrumb    :helps
+
+h3.product-title itemprop="name" ヘルプ一覧
+
+
+ul.col-md-offset-2.col-md-8
+  - @helps.each do |he|
+    li = link_to he.title, "/helps/#{he.id}"
+  li = link_to "利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"

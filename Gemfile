@@ -140,3 +140,5 @@ gem 'prawn-table'
 gem 'prawn-rails'
 
 gem 'actionview-encoded_mail_to' # メールアドレスエンコード
+
+gem 'redcarpet' # Markdown

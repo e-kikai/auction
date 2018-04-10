@@ -42,6 +42,15 @@ crumb :products_bids do |pr|
   parent :products_show, pr
 end
 
+crumb :helps do
+  link   "ヘルプ一覧", "/helps"
+  parent :root
+end
+
+crumb :helps_show do |he|
+  link   he.title, "/helps/#{he.id}"
+  parent :helps
+end
 
 ### マイ・オークション ###
 crumb :myauction do
@@ -132,6 +141,16 @@ crumb :myauction_categories_edit do |ca|
   parent :myacution_categories, ca.parent
 end
 
+crumb :myauction_helps do
+  link   "出品者向けヘルプ一覧", "/myauction/helps"
+  parent :myauction
+end
+
+crumb :myauction_helps_show do |he|
+  link   he.title, "/myauction/helps/#{he.id}"
+  parent :myauction_helps
+end
+
 crumb :myauction_something do |title|
   link   title
   parent :myauction
@@ -166,24 +185,39 @@ crumb :system_categories_edit do |ca|
   parent :system_categories, ca.parent
 end
 
-crumb :system_usres do
+crumb :system_users do
   link   "ユーザ管理", "/system/users/"
   parent :system
 end
 
 crumb :system_users_new do
   link   "新規ユーザ登録", "/system/users/new"
-  parent :system_usres
+  parent :system_users
 end
 
 crumb :system_users_edit do |user|
   link   "ユーザ情報変更", "/system/users/#{user.id}/edit"
-  parent :system_usres
+  parent :system_users
 end
 
 crumb :system_users_edit_password do |user|
   link   "パスワード変更", "/system/users/#{user.id}/edit_password"
-  parent :system_usres
+  parent :system_users
+end
+
+crumb :system_helps do
+  link   "ヘルプ管理", "/system/helps/"
+  parent :system
+end
+
+crumb :system_helps_new do
+  link   "新規ヘルプ登録", "/system/helps/new"
+  parent :system_helps
+end
+
+crumb :system_helps_edit do |help|
+  link   "ヘルプ変更", "/system/helps/#{help.id}/edit"
+  parent :system_helps
 end
 
 crumb :system_something do |title|

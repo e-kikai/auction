@@ -51,7 +51,7 @@
          dt 総合評価
          dd = number_with_delimiter(@company.count_star)
          dt 良い評価の割合
-         dd #{@company.count_star_good / @company.count_star * 100} %
+         dd #{@company.count_star_good * 100 / @company.count_star rescue 0} %
          dt.star ★★★★★
          dd = number_with_delimiter @company.products.where(star: 5).count
          dt.star ★★★★

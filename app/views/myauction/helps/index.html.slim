@@ -1,0 +1,10 @@
+- set_meta_tags title: "出品者向けヘルプ一覧"
+- breadcrumb    :myauction_helps
+
+h3.product-title itemprop="name" 出品者向けヘルプ一覧
+
+
+ul.col-md-offset-2.col-md-8
+  - @helps.each do |he|
+    li = link_to he.title, "/myauction/helps/#{he.id}"
+  li = link_to "利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"

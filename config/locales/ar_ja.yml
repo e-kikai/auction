@@ -71,3 +71,8 @@ ja:
         category: カテゴリ
         keywords: 検索キーワード
         publish: トップページに公開する
+      help:
+        title: ページタイトル
+        content: 内容(Markdown)
+        target: 表示対象
+        order_no: 並び順

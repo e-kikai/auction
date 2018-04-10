@@ -41,7 +41,7 @@
 #  note                   :text
 #  result_message         :text             default(""), not null
 #  header_image           :text
-#  machinelife_id         :integer
+#  machinelife_company_id :integer
 #
 
 require 'rails_helper'

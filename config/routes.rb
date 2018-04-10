@@ -17,8 +17,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :categories,  only: [:index, :show]
-  resources :companies,   only: [:show]
+  resources :categories, only: [:index, :show]
+  resources :companies,  only: [:show]
+  resources :helps,      only: [:index, :show]
 
   resources :detail_logs,  only: [:create]
   resources :search_logs,  only: [:create]
@@ -62,6 +63,7 @@ Rails.application.routes.draw do
 
     resources :trades, only: [:index, :create, :destroy]
     resources :stars,  only: [:edit, :update]
+    resources :helps,  only: [:index, :show]
 
   end
 
@@ -77,12 +79,12 @@ Rails.application.routes.draw do
         patch 'update_password'
       end
     end
-
-    resources :products, only: [:index, :destroy]
-    resources :bids, only: [:index]
+    resources :helps,       only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :products,    only: [:index, :destroy]
+    resources :bids,        only: [:index]
     resources :detail_logs, only: [:index]
     resources :search_logs, only: [:index]
-    resources :total, only: [:index]
+    resources :total,       only: [:index]
 
   end
 end

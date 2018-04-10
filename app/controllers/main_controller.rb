@@ -23,5 +23,8 @@ class MainController < ApplicationController
 
     # トップページ公開検索条件
     @searches = Search.where(publish: true).order("RANDOM()").limit(Search::TOPPAGE_COUNT)
+
+    # ヘルプ
+    @helps = Help.where(target: 0).order(:order_no).limit(10)
   end
 end

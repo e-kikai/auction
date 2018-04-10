@@ -41,7 +41,7 @@
 #  note                   :text
 #  result_message         :text             default(""), not null
 #  header_image           :text
-#  machinelife_id         :integer
+#  machinelife_company_id :integer
 #
 
 class User < ApplicationRecord
@@ -75,6 +75,18 @@ class User < ApplicationRecord
   validates :allow_mail, inclusion: {in: [true, false]}
   validates :seller,     inclusion: {in: [true, false]}
 
+  _validators.delete(:email)
+  _validate_callbacks.each do |callback|
+    if callback.raw_filter.respond_to? :attributes
+      callback.raw_filter.attributes.delete :email
+    end
+  end
+
+  # emailのバリデーションを定義し直す
+  validates :email, presence: true
+  validates_format_of :email, with: Devise.email_regexp, if: :email_changed?
+  validates_uniqueness_of :email, scope: :deleted_at, if: :email_changed?
+
   ### SCOPE ###
   scope :companies, -> { where(seller: true) }
 
@@ -91,6 +103,10 @@ class User < ApplicationRecord
 
   def count_star_bad
     products.where("star <= 2").count
+  end
+
+  def self.find_for_authentication(warden_conditions)
+    without_soft_destroyed.where(email: warden_conditions[:email]).first
   end
 
   private

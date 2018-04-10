@@ -88,9 +88,10 @@
     .panel.panel-default
       .panel-heading ヘルプ
       .panel-body
-        p 運営からのお知らせなど
-        p 使い方案内など
+        - @helps.each do |he|
+          p = link_to he.title, "/helps/#{he.id}"
         p = link_to "利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
+        p = link_to ">> ヘルプ一覧", "/helps"
 
     //// SNSボタン ///
     .sns-area

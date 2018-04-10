@@ -1,0 +1,5 @@
+- set_meta_tags title: "ヘルプ変更 #{@help.title}"
+- breadcrumb    :system_helps_edit, @help
+
+= form_for @help, url: "/system/helps/#{params[:id]}", html: { multipart: true, method: :patch } do |f|
+  = render "form", f: f, isnew: false

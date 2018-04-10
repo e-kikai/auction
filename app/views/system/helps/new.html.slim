@@ -1,0 +1,5 @@
+- set_meta_tags title: "新規ヘルプ登録"
+- breadcrumb    :system_helps_new
+
+= form_for @help, url: "/system/helps/", html: { multipart: true, method: :post } do |f|
+  = render "form", f: f, isnew: true
