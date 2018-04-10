@@ -1,4 +1,6 @@
 module ApplicationHelper
+  require "redcarpet"
+  
   def markdown(text)
     render_options = {
       filter_html: false,

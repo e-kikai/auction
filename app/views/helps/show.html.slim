@@ -8,7 +8,7 @@
       .panel-body
         - @helps.each do |he|
           p = link_to he.title, "/helps/#{he.id}"
-        p = link_to "利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
+        p = link_to "利用規約(PDF)", asset_path("terms_of_service_01.pdf"), target: "_blank"
 
 
   .col-md-9
