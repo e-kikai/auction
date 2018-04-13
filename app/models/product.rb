@@ -59,7 +59,7 @@ class Product < ApplicationRecord
   ### クラス定数 ###
   STATUS                 = { before: -1, start: 0, failure: 1, success: 2, cancel: 3 }
   MACHINELIFE_URL        = "http://www.zenkiren.net"
-  MACHINELIFE_CRAWL_URL  = "#{MACHINELIFE_URL}/system/ajax/e-kikai_crawled_get.php"  
+  MACHINELIFE_CRAWL_URL  = "#{MACHINELIFE_URL}/system/ajax/e-kikai_crawled_get.php"
   MACHINELIFE_MEDIA_PASS = "#{MACHINELIFE_URL}/media/machine/"
 
   CSV_MAX_COUNT          = 30
@@ -133,7 +133,8 @@ class Product < ApplicationRecord
   }
 
   scope :finished, -> {
-    where("dulation_end BETWEEN ? AND ?", LIMIT_DAY, Time.now).order(dulation_end: :desc)
+    # where("dulation_end BETWEEN ? AND ?", LIMIT_DAY, Time.now).order(dulation_end: :desc)
+    where("dulation_end < ?", Time.now).order(dulation_end: :desc)
   }
 
   scope :status, -> cond {
