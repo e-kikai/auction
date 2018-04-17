@@ -1,0 +1,14 @@
+- set_meta_tags title: @info.title
+- breadcrumb    :infos_show, @info
+
+.row
+  .col-md-3
+    .panel.panel-default
+      .panel-heading お知らせ一覧
+      .panel-body
+        - @infos.each do |inf|
+          p = link_to inf.title, "/infos/#{inf.id}"
+
+  .col-md-9
+    h3.product-title itemprop="name" = @info.title
+    .help-field = markdown(@info.content)

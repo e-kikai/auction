@@ -40,7 +40,7 @@
 
         br
         = form_tag request.fullpath, method: :get, class: "form-inline" do
-          label 現在金額
+          label 現在価格
           .
             = number_field_tag("q[max_price_gteq]", params.dig(:q, :max_price_gteq), class: "form-control filter-price", placeholder: "最低額") + "円"
             = " 〜 "

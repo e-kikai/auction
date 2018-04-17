@@ -1,0 +1,32 @@
+.col-md-offset-2.col-md-8
+  .panel.panel-default
+    .panel-heading
+      h4 お知らせフォーム
+    .panel-body
+      - if f.object.errors.full_messages.present?
+        .alert.alert-danger
+          ul
+            - f.object.errors.full_messages.each do |msg|
+              li = msg
+
+      .form-group
+        = f.label :title, class: :required
+        = f.text_field :title, autofocus: true, required: "required", class: 'form-control'
+
+      .form-group
+        = f.label :content, class: :required
+        = f.text_area :content, required: "required", class: 'form-control description'
+
+      .form-group
+        = f.label :target
+        .
+          - Info.targets.each do |k, v|
+            label.radio-inline = f.radio_button(:target, k, inline: true) + k
+
+      .form-group.form-inline
+        = f.label :start_at, class: :required
+        = f.datetime_select :start_at, { default: Time.now, minute_step: 5, start_year: 2018 }, class: "form-control"
+
+      = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+        span.glyphicon.glyphicon-save
+        span.btn-content 保存

@@ -1,0 +1,11 @@
+- set_meta_tags title: "お知らせ一覧"
+- breadcrumb    :infos
+
+h3.product-title itemprop="name" お知らせ一覧
+
+
+ul.col-md-offset-2.col-md-8
+  - @infos.each do |inf|
+    li
+      = "#{I18n.l(inf.start_at, format: :full_date)} "
+      = link_to(inf.title, "/myauction/infos/#{inf.id}")

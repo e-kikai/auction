@@ -45,6 +45,14 @@
           li = mail_to "bata44883@gmail.com", "開発者メール問い合わせ", encode: "javascript"
 
   .col-md-3
+    - if current_user.seller?
+      .panel.panel-default
+        .panel-heading 出品者向けお知らせ
+        .panel-body
+          - @infos.each do |inf|
+            p = link_to inf.title, "/myauction/infos/#{inf.id}"
+          p = link_to ">> お知らせ一覧", "/myauction/infos"
+
     .panel.panel-default
       .panel-heading その他
       ul.nav.nav-pills.nav-stacked

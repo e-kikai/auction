@@ -52,6 +52,16 @@ crumb :helps_show do |he|
   parent :helps
 end
 
+crumb :infos do
+  link   "お知らせ一覧", "/infos"
+  parent :root
+end
+
+crumb :infos_show do |inf|
+  link   inf.title, "/infos/#{inf.id}"
+  parent :infos
+end
+
 ### マイ・オークション ###
 crumb :myauction do
   link   "マイ・オークション", "/myauction/"
@@ -151,6 +161,16 @@ crumb :myauction_helps_show do |he|
   parent :myauction_helps
 end
 
+crumb :myauction_infos do
+  link   "出品者向けヘルプ一覧", "/myauction/infos"
+  parent :myauction
+end
+
+crumb :myauction_infos_show do |inf|
+  link   inf.title, "/myauction/infos/#{inf.id}"
+  parent :myauction_infos
+end
+
 crumb :myauction_something do |title|
   link   title
   parent :myauction
@@ -218,6 +238,21 @@ end
 crumb :system_helps_edit do |help|
   link   "ヘルプ変更", "/system/helps/#{help.id}/edit"
   parent :system_helps
+end
+
+crumb :system_infos do
+  link   "お知らせ管理", "/system/infos/"
+  parent :system
+end
+
+crumb :system_infos_new do
+  link   "新規お知らせ登録", "/system/infos/new"
+  parent :system_infos
+end
+
+crumb :system_infos_edit do |info|
+  link   "お知らせ変更", "/system/infos/#{info.id}/edit"
+  parent :system_infos
 end
 
 crumb :system_something do |title|

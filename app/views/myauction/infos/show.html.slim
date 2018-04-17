@@ -1,0 +1,15 @@
+- set_meta_tags title: @info.title
+- breadcrumb    :myauction_infos_show, @info
+
+.row
+  .col-md-3
+    .panel.panel-default
+      .panel-heading お知らせ一覧
+      .panel-body
+        - @infos.each do |he|
+          p = link_to he.title, "/myauction/infos/#{he.id}"
+
+
+  .col-md-9
+    h3.product-title itemprop="name" = @info.title
+    .info-field = markdown(@info.content)

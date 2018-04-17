@@ -1,0 +1,5 @@
+- set_meta_tags title: "お知らせ変更 #{@info.title}"
+- breadcrumb    :system_infos_edit, @info
+
+= form_for @info, url: "/system/infos/#{params[:id]}", html: { multipart: true, method: :patch } do |f|
+  = render "form", f: f, isnew: false

@@ -19,7 +19,10 @@ Rails.application.routes.draw do
 
   resources :categories, only: [:index, :show]
   resources :companies,  only: [:show]
+  resources :companies,  only: [:show]
+  resources :companies,  only: [:show]
   resources :helps,      only: [:index, :show]
+  resources :infos,      only: [:index, :show]
 
   resources :detail_logs,  only: [:create]
   resources :search_logs,  only: [:create]
@@ -64,6 +67,7 @@ Rails.application.routes.draw do
     resources :trades, only: [:index, :create, :destroy]
     resources :stars,  only: [:edit, :update]
     resources :helps,  only: [:index, :show]
+    resources :infos,  only: [:index, :show]
 
   end
 
@@ -80,6 +84,7 @@ Rails.application.routes.draw do
       end
     end
     resources :helps,       only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :infos,       only: [:index, :new, :create, :edit, :update, :destroy]
     resources :products,    only: [:index, :destroy]
     resources :bids,        only: [:index]
     resources :detail_logs, only: [:index]

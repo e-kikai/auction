@@ -26,5 +26,7 @@ class MainController < ApplicationController
 
     # ヘルプ
     @helps = Help.where(target: 0).order(:order_no).limit(10)
+    @infos = Info.where(target: 0).order(start_at: :desc).limit(10)
+
   end
 end
