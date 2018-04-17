@@ -53,6 +53,11 @@ header {
   }
 }
 
+.btn-search-save {
+  width: 100%;
+  margin-bottom: 4px;
+}
+
 /// footer ///
 footer {
   margin-top: 16px;
@@ -109,7 +114,7 @@ footer {
 
 /// 共通レイアウト ///
 .main-container {
-  margin: 0 4px;
+  margin: 0 8px;
 }
 
  #page-top {
@@ -356,6 +361,11 @@ label.top-search {
       color: #333;
     }
   }
+}
+
+/// search ///
+.form-inline .filter-price {
+  width: 90%;
 }
 
 /// detail ///

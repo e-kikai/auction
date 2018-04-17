@@ -14,27 +14,52 @@
       = f.hidden_field :keywords,    value: params[:keywords]
       = f.hidden_field :category_id, value: params[:category_id]
       = f.hidden_field :company_id,  value: params[:company_id]
-      = f.hidden_field :q, value: params[:q].to_json
+      = f.hidden_field :q,           value: params[:q].to_json
 
-      = f.button :button, class: "btn btn-info btn-sm" do
+      = f.button :button, class: "btn btn-info btn-sm btn-search-save" do
         span.glyphicon.glyphicon-pushpin
         span.btn-content この検索条件を保存
     = hidden_field_tag :search_id, params[:search_id]
 
     .panel.panel-default
-      .panel-heading カテゴリ
+      .panel-heading
+        span.glyphicon.glyphicon-filter
+        =< "フィルタリング"
       .panel-body
-        - @products.joins(:category).group(:category_id).group("categories.name").reorder("count_id DESC").count().each do |i, count|
+        label カテゴリ
+        . = link_to "すべて", params.to_unsafe_h.deep_merge(category_id: nil)
+        - @select_categories.each do |i, count|
           . = link_to "#{i[1]} (#{count})", params.to_unsafe_h.merge(category_id: i[0])
 
-    .panel.panel-default
-      .panel-heading 商品の状態
-      .panel-body
-        = link_to "すべて", params.to_unsafe_h.merge(q: {state_eq: nil})
-        | |
-        = link_to "中古", params.to_unsafe_h.merge(q: {state_eq: Product.states["中古"]})
-        | |
-        = link_to "新品", params.to_unsafe_h.merge(q: {state_eq: Product.states["新品"]})
+        br
+        label 発送元
+        . = link_to "すべて", params.to_unsafe_h.deep_merge(q: {addr_1_eq: nil})
+        - @select_addr1.each do |i, count|
+          - next if i.blank?
+          . = link_to "#{i} (#{count})", params.to_unsafe_h.deep_merge(q: {addr_1_eq: i})
+
+        br
+        = form_tag request.fullpath, method: :get, class: "form-inline" do
+          label 現在金額
+          .
+            = number_field_tag("q[max_price_gteq]", params.dig(:q, :max_price_gteq), class: "form-control filter-price", placeholder: "最低額") + "円"
+            = " 〜 "
+            = number_field_tag("q[max_price_lteq]", params.dig(:q, :max_price_lteq), class: "form-control filter-price", placeholder: "最高額") + "円"
+            = button_tag "フィルタリング", class: "btn btn-default"
+
+          br
+          label 即決価格
+          .
+            = number_field_tag("q[prompt_dicision_price_gteq]", params.dig(:q, :prompt_dicision_price_gteq), class: "form-control filter-price", placeholder: "最低額") + "円"
+            = " 〜 "
+            = number_field_tag("q[prompt_dicision_price_lteq]", params.dig(:q, :prompt_dicision_price_lteq), class: "form-control filter-price", placeholder: "最高額") + "円"
+            = button_tag "フィルタリング", class: "btn btn-default"
+        br
+        label 商品の状態
+        .
+          = link_to("すべて", params.to_unsafe_h.deep_merge(q: {state_eq: nil})) + " | "
+          = link_to("中古", params.to_unsafe_h.deep_merge(q: {state_eq: Product.states["中古"]})) + " | "
+          = link_to "新品", params.to_unsafe_h.deep_merge(q: {state_eq: Product.states["新品"]})
   .col-md-10
     = paginate @pproducts
 

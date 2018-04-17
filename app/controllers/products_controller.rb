@@ -9,17 +9,21 @@ class ProductsController < ApplicationController
     # カテゴリ
     if params[:category_id].present?
       @category = Category.find(params[:category_id])
-      @search = @search.result.search(category_id_in: @category.subtree_ids)
+      @search   = @search.result.search(category_id_in: @category.subtree_ids)
     end
 
     # 出品会社
     if params[:company_id].present?
       @company = User.companies.find(params[:company_id])
-      @search = @search.result.search(user_id_eq: params[:company_id])
+      @search  = @search.result.search(user_id_eq: params[:company_id])
     end
 
     @products  = @search.result.includes(:product_images, :category, :user)
     @pproducts = @products.page(params[:page])
+
+    # フィルタリング
+    @select_categories = @products.joins(:category).group(:category_id).group("categories.name").reorder("count_id DESC").count
+    @select_addr1      = @products.group(:addr_1).reorder(:addr_1).count
   end
 
   def show
