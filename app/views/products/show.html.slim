@@ -73,8 +73,8 @@
             dd #{@product.addr_1} #{@product.addr_2}
             dt 送料負担
             dd
-              = @product.shipping_user
-              = @product.shipping_comment
+              . = @product.shipping_user
+              . = @product.shipping_comment
             dt 海外発送
             dd = @product.international
             - if @shipping_label
@@ -93,12 +93,12 @@
 
             dt 商品の状態
             dd
-              = @product.state
-              = @product.state_comment
+              . = @product.state
+              . = @product.state_comment
             dt 返品の可否
             dd
-              = @product.returns
-              = @product.returns_comment
+              . = @product.returns
+              . = @product.returns_comment
             dt 自動延長
             dd = @product.auto_extension
             / dt 早期終了
@@ -210,9 +210,9 @@
 
   .row
     h4.product-description 商品説明
-    . itemprop="description" = simple_format(@product.description)
+    . itemprop="description" = markdown(@product.description)
     h4.product-description 落札事項
-    = simple_format(@product.note)
+    . = markdown(@product.note)
 
 /// 入札ダイアログ ////
 .modal.fade#bid-modal
