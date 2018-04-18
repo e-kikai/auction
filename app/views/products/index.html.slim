@@ -7,6 +7,11 @@
 - else
   - breadcrumb :search
 
+- if @company.present?
+  - if @company.header_image.url.present?
+    .row.header-image
+      = image_tag @company.header_image.url
+
 .row
   / = @products.to_sql
   .col-md-2
@@ -70,16 +75,17 @@
         th.price = sort_link(@search, :max_price)
         th.price = sort_link(@search, :prompt_dicision_price)
         th.num   = sort_link(@search, :bids_count)
-        th.price   = sort_link(@search, :dulation_end, "残り時間")
+        th.price = sort_link(@search, :dulation_end, "残り時間")
       - @pproducts.each do |pr|
         tr
           td.img = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
           td.absolute
             = link_to pr.name, "/products/#{pr.id}"
             .td-under
-              .
-                span.inner-title 出品会社
-                =< link_to pr.user.company, "/products?company_id=#{pr.user_id}"
+              - if @company.blank?
+                .
+                  span.inner-title 出品会社
+                  =< link_to pr.user.company, "/products?company_id=#{pr.user_id}"
               .
                 span.inner-title カテゴリ
                 - pr.category.path.each.with_index do |ca, i|

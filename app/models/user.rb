@@ -50,6 +50,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
+  mount_uploader :header_image, HeaderImageUploader
+
   soft_deletable
   default_scope { without_soft_destroyed }
 

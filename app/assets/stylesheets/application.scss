@@ -364,6 +364,16 @@ label.top-search {
 }
 
 /// search ///
+.header-image {
+  margin-bottom: 4px;
+
+  img {
+    margin: auto;
+    display: block;
+    width: 100%;
+  }
+}
+
 .form-inline .filter-price {
   width: 90%;
 }

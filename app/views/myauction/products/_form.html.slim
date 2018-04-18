@@ -2,7 +2,7 @@ coffee:
   $ ->
     $('.js-csv-upload').fileinput
       showPreview: false
-      maxFileCount: 10
+      maxFileCount: 20
       browseClass: 'btn btn-info fileinput-browse-button'
       browseIcon: '<span class="glyphicon glyphicon-folder-open"></span>'
       browseLabel: ' ファイル選択'
@@ -12,10 +12,10 @@ coffee:
       uploadClass: 'btn btn-success fileinput-upload-button'
       uploadIcon: '<i class="fa fa-upload"></i>'
       uploadLabel: ' アップロード'
-      allowedFileExtensions: ['jpeg', 'jpg']
+      allowedFileExtensions: ['jpeg', 'jpg', 'png', 'gif']
       msgValidationError: '''
         <span class="text-danger">
-          <span class="glyphicon glyphicon-alert"></span>アップロードできるファイル形式はJPEGです。
+          <span class="glyphicon glyphicon-alert"></span>アップロードできるファイル形式はJPEG,GIF,PNGです。
         </span>
       '''
 
@@ -89,8 +89,9 @@ table.table.table-hover.table-condensed.form-table
     tr
       th 画像
       td
-        = file_field_tag "images[]", multiple: true, class: "js-csv-upload"
-
+        . = file_field_tag "images[]", multiple: true, class: "js-csv-upload"
+        p.help-block 20枚まで複数選択可。JPEG、GIF、PNGファイル
+        
         = f.fields_for :product_images do |pi|
           .form_img
             - if pi.object.remote_image_url

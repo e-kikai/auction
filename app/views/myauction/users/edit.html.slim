@@ -1,12 +1,32 @@
 - set_meta_tags title: "ユーザ情報変更"
 - breadcrumb    :myauction_something, "ユーザ情報変更"
 
+coffee:
+  $ ->
+    $('.js-csv-upload').fileinput
+      showPreview: false
+      browseClass: 'btn btn-info fileinput-browse-button'
+      browseIcon: '<span class="glyphicon glyphicon-folder-open"></span>'
+      browseLabel: ' ファイル選択'
+      removeClass: 'btn btn-warning'
+      removeIcon: '<span class="glyphicon glyphicon-remove"></span>'
+      removeLabel: ' キャンセル'
+      uploadClass: 'btn btn-success fileinput-upload-button'
+      uploadIcon: '<i class="fa fa-upload"></i>'
+      uploadLabel: ' アップロード'
+      allowedFileExtensions: ['jpeg', 'jpg', 'png', 'gif']
+      msgValidationError: '''
+        <span class="text-danger">
+          <span class="glyphicon glyphicon-alert"></span>アップロードできるファイル形式はJPEG,GIF,PNGです。
+        </span>
+      '''
+
 .col-md-offset-1.col-md-10
   .panel.panel-default
     .panel-heading
       h4 ユーザ情報変更
     .panel-body
-      = form_for @user, url: "/myauction/user/", html: { method: :patch } do |f|
+      = form_for @user, url: "/myauction/user/", html: { multipart: true, method: :patch } do |f|
 
         - if f.object.errors.full_messages.present?
           .alert.alert-danger
@@ -63,6 +83,18 @@
           .form-group
             = f.label :charge, class: :required
             = f.text_field :charge, required: "required", class: 'form-control'
+
+          .form-group
+            = f.label :header_image
+            = f.file_field :header_image, class: "js-csv-upload"
+            p.help-block 会社ごとの商品一覧、会社概要のヘッダに表示する横長画像。JPEG、GIF、PNGファイル。
+
+            - if f.object.header_image.url
+              .header-image
+                = image_tag f.object.header_image.url
+                = f.check_box :remove_header_image
+                = f.label     :remove_header_image, "ヘッダ画像を削除"
+
           .form-group
             = f.label :fax
             = f.text_field :fax, class: 'form-control'
