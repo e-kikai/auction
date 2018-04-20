@@ -204,7 +204,7 @@
   .row
     h4.product-description 商品説明
     . itemprop="description" = markdown(@product.description)
-    - if @product.additional
+    - if @product.additional.present?
       .additional-label <追記事項>
       .additional = markdown(@product.additional)
     h4.product-description 落札事項
