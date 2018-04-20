@@ -50,6 +50,8 @@ Rails.application.routes.draw do
 
       member do
         patch 'cancel'
+        get   'additional'
+        patch 'additional_update'
       end
     end
 

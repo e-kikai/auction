@@ -1,5 +1,5 @@
 class Myauction::ProductsController < Myauction::ApplicationController
-  before_action :get_product,        only: [:edit, :update, :destroy, :prompt, :cancel]
+  before_action :get_product,        only: [:edit, :update, :destroy, :prompt, :cancel, :additional, :additional_update]
 
   def index
     @search    = current_user.products.search(params[:q])
@@ -134,6 +134,17 @@ class Myauction::ProductsController < Myauction::ApplicationController
     @current_machinelife_ids = current_user.products.where.not(machinelife_id: nil).pluck(:machinelife_id)
   end
 
+  def additional
+  end
+
+  def additional_update
+    if @product.update(additional_params)
+      redirect_to "/myauction/", notice: "#{@product.name}の追記を変更しました"
+    else
+      render :edit
+    end
+  end
+
   private
 
   def get_product
@@ -145,5 +156,9 @@ class Myauction::ProductsController < Myauction::ApplicationController
       :dulation_start, :dulation_end, :start_price, :prompt_dicision_price, :lower_price, :youtube,
       :shipping_user, :shipping_comment, :international, :packing, :state, :state_comment, :returns, :returns_comment, :early_termination, :auto_extension, :auto_resale, :shipping_no, :template_id, :hashtags,:addr_1, :addr_2, :delivery_date, :machinelife_id,
       product_images_attributes: [:id, :image, :remote_image_url, :_destroy])
+  end
+
+  def additional_params
+    params.require(:product).permit(:additional)
   end
 end

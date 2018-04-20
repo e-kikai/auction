@@ -184,13 +184,6 @@
 
       //// SNSボタン ///
       .sns-area
-        / <div class="fb-share-button" data-href="#{root_url}products/#{@product.id}" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">シェア</a></div>
-        /
-        / <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-hashtags="ものオク" data-show-count="false">Tweet</a>
-        /
-        / <div class="line-it-button" data-lang="ja" data-type="share-a" data-url="#{root_url}products/#{@product.id}" style="display: none;"></div>
-
-
         = link_to "http://www.facebook.com/sharer.php?u=#{root_url}products/#{@product.id}", target: "_blank", class: "facebook-button" do
           = image_tag "fb_icon.png"
           span シェア
@@ -211,6 +204,9 @@
   .row
     h4.product-description 商品説明
     . itemprop="description" = markdown(@product.description)
+    - if @product.additional
+      .additional-label <追記事項>
+      .additional = markdown(@product.additional)
     h4.product-description 落札事項
     . = markdown(@product.note)
 

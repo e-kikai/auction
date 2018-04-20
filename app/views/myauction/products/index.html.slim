@@ -49,6 +49,7 @@ h3 = title
         th.num 閲覧数
         th.num ウォッチ数
         th.sns SNSシェア
+        th 追記
         th.num 残り<br />時間
         / th 自社落札
         th 出品<br />キャンセル
@@ -122,6 +123,10 @@ h3 = title
               span Tweet
 
             = link_to "LINEで送る", "http://line.me/R/msg/text/?#{pr.name}｜ものづくりオークション #{root_url}products/#{pr.id}",target: "_blank", class: "line-button"
+
+          td = link_to({ action: :additional, id: pr.id }, class: "btn btn-success") do
+            span.glyphicon.glyphicon-edit
+            =< "追記"
           td.num = pr.remaining_time
 
           / td
