@@ -87,7 +87,7 @@ class User < ApplicationRecord
   # emailのバリデーションを定義し直す
   validates :email, presence: true
   validates_format_of :email, with: Devise.email_regexp, if: :email_changed?
-  validates_uniqueness_of :email, scope: :deleted_at, if: :email_changed?
+  validates_uniqueness_of :email, scope: :soft_destroyed_at, if: :email_changed?
 
   ### SCOPE ###
   scope :companies, -> { where(seller: true) }
