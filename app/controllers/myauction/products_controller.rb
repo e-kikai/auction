@@ -108,16 +108,16 @@ class Myauction::ProductsController < Myauction::ApplicationController
 
   # マシンライフからオークションへ
   def m2a
-    @date = case
-    when params[:date];      Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1)
-    when session[:m2a_date]; session[:m2a_date]
-    else;                    Time.now
-    end
-
-    start_date = @date.beginning_of_month.strftime("%Y-%m-%d")
-    end_date   = @date.end_of_month.strftime("%Y-%m-%d")
-
-    session[:m2a_date] = @date
+    # @date = case
+    # when params[:date];      Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1)
+    # when session[:m2a_date]; session[:m2a_date]
+    # else;                    Time.now
+    # end
+    #
+    # start_date = @date.beginning_of_month.strftime("%Y-%m-%d")
+    # end_date   = @date.end_of_month.strftime("%Y-%m-%d")
+    #
+    # session[:m2a_date] = @date
 
     # マシンライフからJSONデータを取得
     if current_user.machinelife_company_id.blank?
@@ -125,8 +125,24 @@ class Myauction::ProductsController < Myauction::ApplicationController
       return
     end
 
-    @url   = "#{Product::MACHINELIFE_CRAWL_URL}?t=auction_machines&c=#{current_user.machinelife_company_id}&start_date=#{start_date}&end_date=#{end_date}"
-    json   = open(@url).read
+    # ジャンルJSON
+    @genre= case
+    when params[:genre];      params[:genre]
+    when session[:m2a_genre]; session[:m2a_genre]
+    else;                     1
+    end
+
+    session[:m2a_genre] = @genre
+
+
+    url     = "#{Product::MACHINELIFE_CRAWL_URL}?t=auction_genres&c=#{current_user.machinelife_company_id}"
+    json    = open(url).read
+    @genres = ActiveSupport::JSON.decode json rescue raise json
+    @genre_selectors = @genres.map { |ge| ["#{ge["large_genre"]} (#{ge["count"]})", ge["id"]] }
+
+    # 機械情報JSON
+    url    = "#{Product::MACHINELIFE_CRAWL_URL}?t=auction_machines&c=#{current_user.machinelife_company_id}&large_genre_id=#{@genre}"
+    json   = open(url).read
     @datas = ActiveSupport::JSON.decode json rescue raise json
 
     @template_selectors  = current_user.products.templates.pluck(:name, :id)
