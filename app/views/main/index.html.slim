@@ -18,7 +18,7 @@
     .panel.panel-default
       .panel-heading マイ・オークション
       ul.list-group
-        = link_to "ウォッチリスト", "myauction/mylists", class: "list-group-item"
+        = link_to "ウォッチリスト", "myauction/watches", class: "list-group-item"
         = link_to "入札中", "myauction/bids", class: "list-group-item"
         = link_to "落札分", "myauction/bids?cond=2", class: "list-group-item"
         - if current_user.try(:seller?)
