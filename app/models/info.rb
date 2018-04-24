@@ -10,6 +10,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  soft_destroyed_at :datetime
+#  uid               :string           default(""), not null
 #
 
 class Info < ApplicationRecord

@@ -53,7 +53,7 @@ table.table.table-hover.table-condensed.form-table
 
     tr
       th = f.label :category_id, class: :required
-      td = f.select :category_id, Category.options, {include_blank: "-- ジャンルを選択 --"}, class: "form-control", required: "required"
+      td = f.select :category_id, Category.options, {include_blank: "-- カテゴリ選択 --"}, class: "form-control", required: "required"
     tr
       th = f.label :code
       td = f.text_field :code, class: "form-control short"
@@ -91,7 +91,7 @@ table.table.table-hover.table-condensed.form-table
       td
         . = file_field_tag "images[]", multiple: true, class: "js-csv-upload"
         p.help-block 20枚まで複数選択可。JPEG、GIF、PNGファイル
-        
+
         = f.fields_for :product_images do |pi|
           .form_img
             - if pi.object.remote_image_url

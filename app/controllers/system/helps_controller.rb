@@ -44,6 +44,6 @@ class System::HelpsController < System::ApplicationController
   private
 
   def help_params
-    params.require(:help).permit(:title, :content, :target, :order_no)
+    params.require(:help).permit(:title, :content, :target, :order_no, :uid)
   end
 end

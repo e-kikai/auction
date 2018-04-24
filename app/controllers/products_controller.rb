@@ -21,6 +21,9 @@ class ProductsController < ApplicationController
     @products  = @search.result.includes(:product_images, :category, :user)
     @pproducts = @products.page(params[:page])
 
+    raise @products.to_sql
+
+
     # フィルタリング
     @select_categories = @products.joins(:category).group(:category_id).group("categories.name").reorder("count_id DESC").count
     @select_addr1      = @products.group(:addr_1).reorder(:addr_1).count

@@ -50,6 +50,7 @@
 #  packing               :text             default(""), not null
 #  youtube               :string           default(""), not null
 #  international         :boolean          default("海外発送不可"), not null
+#  search_keywords       :text             default(""), not null
 #
 
 class Product < ApplicationRecord
@@ -89,7 +90,6 @@ class Product < ApplicationRecord
   has_many   :detail_logs
 
   ### enum ###
-  enum type:           { "オークションで出品" => 0, "定額で出品" => 100 }
   enum shipping_user:  { "落札者" => 0, "出品者" => 100, "店頭引取り" => 500 }
   enum delivery_date:  { "未設定" => 0, "1〜2日で発送" => 100, "3〜7日で発送" => 200, "8日以降に発送" => 300 }
   enum state:          { "中古" => 0, "新品" => 100, "その他" => 200 }
@@ -102,7 +102,6 @@ class Product < ApplicationRecord
   validates :start_price, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :prompt_dicision_price, numericality: { only_integer: true }, allow_blank: true
 
-  # validates :type,          presence: true, inclusion: {in: Product.types.keys}
   # validates :shipping_user, presence: true, inclusion: {in: Product.shipping_users.keys}
   validates :delivery_date, presence: true, inclusion: {in: Product.delivery_dates.keys}
   validates :state,         presence: true, inclusion: {in: Product.states.keys}
@@ -125,10 +124,16 @@ class Product < ApplicationRecord
   ### SCOPE ###
   scope :with_keywords, -> keywords {
     if keywords.present?
-      columns = [:name, :description, :state_comment, :returns_comment, :addr_1, :addr_2, :hashtags]
-      where(keywords.split(/[[:space:]]/).reject(&:empty?).map {|keyword|
-        columns.map { |a| arel_table[a].matches("%#{keyword}%") }.inject(:or)
-      }.inject(:and))
+      # columns = [:name, :description, :state_comment, :returns_comment, :addr_1, :addr_2, :hashtags]
+      # where(keywords.split(/[[:space:]]/).reject(&:empty?).map {|keyword|
+      #   columns.map { |a| arel_table[a].matches("%#{keyword}%") }.inject(:or)
+      # }.inject(:and))
+      res = self
+      keywords.split(/[[:space:]]/).reject(&:empty?).each do |keyword|
+        res = res.where("search_keywords LIKE ?", "%#{keyword}%")
+      end
+
+      res
     end
   }
 
@@ -153,8 +158,9 @@ class Product < ApplicationRecord
   }
 
   ### callback ###
-  before_create :default_max_price
+  before_save :default_max_price
   before_save :youtube_id
+  before_save :make_search_keywords
 
   ### インポート用getter setter ###
   attr_accessor :template_id, :template_name
@@ -429,10 +435,15 @@ class Product < ApplicationRecord
     # 新着アラート
   end
 
+  def make_search_keywords
+    self.search_keywords = "#{name} #{category.name} #{user.name} #{state} #{addr_1} #{addr_2} #{hashtags}"
+    self
+  end
+
   private
 
   def default_max_price
-    self.max_price = start_price
+    self.max_price = start_price if max_bid_id.blank?
   end
 
   def youtube_id

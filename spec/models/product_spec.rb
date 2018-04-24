@@ -50,6 +50,7 @@
 #  packing               :text             default(""), not null
 #  youtube               :string           default(""), not null
 #  international         :boolean          default("海外発送不可"), not null
+#  search_keywords       :text             default(""), not null
 #
 
 require 'rails_helper'

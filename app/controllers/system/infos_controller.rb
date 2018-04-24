@@ -44,6 +44,6 @@ class System::InfosController < System::ApplicationController
   private
 
   def info_params
-    params.require(:info).permit(:title, :content, :target, :start_at)
+    params.require(:info).permit(:title, :content, :target, :start_at, :uid)
   end
 end
