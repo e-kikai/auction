@@ -10,25 +10,40 @@
 .toppage.clearfix
   .row
     - if user_signed_in?
-      label.top-search 保存した検索条件
+      label.top-search
+        span.glyphicon.glyphicon-search
+        span.btn-content 保存した検索条件
       - current_user.searches.each do |se|
         =< link_to se.name, se.uri
 
   .col-md-2
     .panel.panel-default
-      .panel-heading マイ・オークション
+      .panel-heading = link_to "マイ・オークション", "/myauction"
       ul.list-group
-        = link_to "ウォッチリスト", "myauction/watches", class: "list-group-item"
-        = link_to "入札中", "myauction/bids", class: "list-group-item"
-        = link_to "落札分", "myauction/bids?cond=2", class: "list-group-item"
+        = link_to "myauction/watches", class: "list-group-item" do
+          span.glyphicon.glyphicon-star
+          span.btn-content ウォッチリスト
+        = link_to "myauction/bids", class: "list-group-item" do
+          span.glyphicon.glyphicon-pencil
+          span.btn-content 入札中
+        = link_to "myauction/bids?cond=2", class: "list-group-item" do
+          span.glyphicon.glyphicon-transfer
+          span.btn-content 落札分(取引)
         - if current_user.try(:seller?)
-          = link_to "出品中", "myauction/products", class: "list-group-item"
-          = link_to "出品終了(未落札)", "myauction/products?cond=1", class: "list-group-item"
-          = link_to "出品終了(落札済)", "myauction/products?cond=2", class: "list-group-item"
+          = link_to "myauction/products", class: "list-group-item" do
+            span.glyphicon.glyphicon-gift
+            span.btn-content 出品中
+          = link_to "myauction/products?cond=1", class: "list-group-item" do
+            span.glyphicon.glyphicon-refresh
+            span.btn-content 出品終了 - 未落札
+          = link_to "myauction/products?cond=2", class: "list-group-item" do
+            span.glyphicon.glyphicon-transfer
+            span.btn-content 出品終了 - 落札済
 
     .panel.panel-default
       .panel-heading
-        | カテゴリから探す
+        span.glyphicon.glyphicon-search
+        span.btn-content カテゴリから探す
         / = link_to "categories" do
         /   | カテゴリから探す
         /   .pull-right
@@ -45,7 +60,9 @@
           = render "search_panel", search: se
 
     - if @follows_new_products.present?
-      label フォローした出品会社の新着商品
+      label
+        span.glyphicon.glyphicon-heart.follow-heart
+        span.btn-content フォローした出品会社の新着商品
       .panel.panel-default
         .panel-body.toppage-contents
           .toppage-scroll
@@ -59,7 +76,9 @@
 
 
     - if @detaillog_products.present?
-      label 最近チェックした商品
+      label
+        span.glyphicon.glyphicon-ok.check-icon
+        span.btn-content 最近チェックした商品
       .panel.panel-default
         .panel-body.toppage-contents
           .toppage-scroll
@@ -71,7 +90,9 @@
         - @searches[6..8].each do |se|
           = render "search_panel", search: se
 
-    label 新着商品
+    label
+      span.new-icon NEW
+      span.btn-content 新着商品
     .panel.panel-default
       .panel-body.toppage-contents
         .toppage-scroll
@@ -86,7 +107,9 @@
 
   .col-md-3
     .panel.panel-default
-      .panel-heading ヘルプ
+      .panel-heading
+        span.glyphicon.glyphicon-question-sign
+        span.btn-content ヘルプ
       .panel-body
         - @helps.each do |he|
           p = link_to he.title, "/helps/#{he.id}"

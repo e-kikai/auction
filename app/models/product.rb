@@ -436,7 +436,7 @@ class Product < ApplicationRecord
   end
 
   def make_search_keywords
-    self.search_keywords = "#{name} #{category.name} #{user.name} #{state} #{addr_1} #{addr_2} #{hashtags}"
+    self.search_keywords = "#{name} #{category.name} #{user.company} #{state} #{addr_1} #{addr_2} #{hashtags}".strip
     self
   end
 

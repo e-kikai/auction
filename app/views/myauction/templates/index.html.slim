@@ -10,18 +10,25 @@ h3 テンプレート
 - else
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
+      th.num ID
       th テンプレート名
+      th 出品
+      th 編集
       th 作成日時
-      th
       th
     - @ptemplates.each do |pr|
       tr
-        td = link_to pr.name, "/myauction/templates/#{pr.id}/edit"
-        td = pr.created_at
+        td.num = pr.id
+        td = pr.name
         td
           = link_to("/myauction/products/new?template_id=#{pr.id}", class: "btn btn-success") do
             span.glyphicon.glyphicon-paste
             =< "テンプレートから商品出品"
+        td
+          = link_to("/myauction/templates/#{pr.id}/edit", class: "btn btn-warning") do
+            span.glyphicon.glyphicon-edit
+            =< "テンプレート編集"
+        td = pr.created_at
         td
           = link_to({ action: :destroy, id: pr.id }, method: :delete, data: { confirm: "#{pr.name}\n\nこのテンプレートを削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
             span.glyphicon.glyphicon-remove

@@ -11,7 +11,6 @@ html
 
     / = analytics_init if Rails.env.production?
 
-
     /// Analytics(turbolinks5対応) ///
     - if Rails.env.production?
       javascript:
@@ -70,16 +69,19 @@ html
     .main-container.container-fluid
       - if request.fullpath !~ /(myauction|users|system)/
         .row
+          /// キーワード検索フォーム ///
           .col-md-6
             .form-group.search-area
               = form_tag "/products", method: :get, class: "form-inline" do
                 .input-group
                   = hidden_field_tag :category_id, params[:category_id]
-                  = text_field_tag :keywords, params[:keywords], class: "form-control", placeholder: "キーワードから探す"
+                  = text_field_tag :keywords, params[:keywords], class: "form-control", placeholder: "キーワードから探す - 空白区切りでAND検索できます"
                   span.input-group-btn
-                    = button_tag "検索", class: "btn btn-default"
+                    = button_tag class: "btn btn-default" do
+                      span.glyphicon.glyphicon-search
+                      span.btn-content 検索
 
-
+          /// ヘッダメニュー ///
           .col-md-6.header-menu
             - if user_signed_in?
               = link_to "/myauction" do
@@ -96,12 +98,14 @@ html
               = link_to "/users/sign_in" do
                 span.glyphicon.glyphicon-log-in
                 span.btn-content オークションに参加する
-              = link_to "/users/sign_up" do
+              = link_to "/users/sign_up", class: "bg-success" do
                 span.glyphicon.glyphicon-thumbs-up
                 span.btn-content 初めての方はこちら
 
+      /// パンくずリスト ///
       = raw breadcrumbs style: :bootstrap, semantic: true
 
+      /// アラート表示 ///
       - if notice.present?
         .alert.alert-success
           span.glyphicon.glyphicon-info-sign
@@ -113,27 +117,14 @@ html
 
       - if content_for?(:page_title)
         h1.hidden-xs.hidden-sm = yield(:page_title)
+
+      /// コンテンツ ///
       = yield
 
+    /// フッタ ///
     footer.container-fluid Copyright &copy; #{Time.now.year} 任意団体ものづくりオークション委員会, All Rights reserved.
 
+    /// 一番上に戻るボタン ///
     = button_tag "", class: "btn btn-default btn-square", id: "page-top" do
       span.glyphicon.glyphicon-arrow-up
       span.btn-content 一番上に戻る
-
-/ / facebook初期化
-/ <div id="fb-root"></div>
-/ javascript:
-/   (function(d, s, id) {
-/     var js, fjs = d.getElementsByTagName(s)[0];
-/     if (d.getElementById(id)) return;
-/     js = d.createElement(s); js.id = id;
-/     js.src = 'https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.12';
-/     fjs.parentNode.insertBefore(js, fjs);
-/   }(document, 'script', 'facebook-jssdk'));
-/
-/ / Twitter初期化
-/ <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-/
-/ / LINE初期化
-/ <script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>

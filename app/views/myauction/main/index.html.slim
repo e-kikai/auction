@@ -4,58 +4,116 @@
 .row
   .col-md-3
     .panel.panel-default
-      .panel-heading 入札
+      .panel-heading
+        span.glyphicon.glyphicon-pencil
+        span.btn-content 入札メニュー
       ul.nav.nav-pills.nav-stacked
-        li = link_to "ウォッチリスト",   "/myauction/watches"
-        li = link_to "保存した検索条件", "/myauction/searches"
-        li = link_to "フォローリスト",   "/myauction/follows"
-        li = link_to "入札中",           "/myauction/bids"
-        li = link_to "落札分",           "/myauction/bids?cond=2"
+        li = link_to "/myauction/watches" do
+          span.glyphicon.glyphicon-star
+          span.btn-content ウォッチリスト
+        li = link_to "/myauction/searches" do
+          span.glyphicon.glyphicon-search
+          span.btn-content 保存した検索条件
+        li = link_to "/myauction/follows" do
+          span.glyphicon.glyphicon-heart
+          span.btn-content フォローリスト
+        hr
+        li = link_to "/myauction/bids" do
+          span.glyphicon.glyphicon-pencil
+          span.btn-content 入札中
+        li = link_to "/myauction/bids?cond=2" do
+          span.glyphicon.glyphicon-transfer
+          span.btn-content 落札した商品(取引)
+
 
   - if current_user.seller?
     .col-md-3
       .panel.panel-default
-        .panel-heading 出品
+        .panel-heading
+          span.glyphicon.glyphicon-gift
+          span.btn-content 出品メニュー
         ul.nav.nav-pills.nav-stacked
-          li = link_to "出品する",             "/myauction/products/new"
-          li = link_to "マシンライフから出品", "/myauction/products/m2a"
+          li = link_to "/myauction/products/new" do
+            span.glyphicon.glyphicon-plus
+            span.btn-content 出品する
+          li = link_to "/myauction/products/m2a" do
+            span.glyphicon.glyphicon-cloud-download
+            span.btn-content マシンライフから出品
           hr
-          li = link_to "開始前の商品",       "/myauction/products?cond=-1"
-          li = link_to "出品中",             "/myauction/products/"
+          li = link_to "/myauction/products?cond=-1" do
+            span.glyphicon.glyphicon-pause
+            span.btn-content 開始前の商品
+          li = link_to "/myauction/products/" do
+            span.glyphicon.glyphicon-gift
+            span.btn-content 出品中
           hr
-          li = link_to "出品終了分(未落札)", "/myauction/products?cond=1"
-          li = link_to "出品終了分(落札済)", "/myauction/products?cond=2"
-          li = link_to "出品キャンセル分",   "/myauction/products?cond=3"
+          li = link_to "/myauction/products?cond=1" do
+            span.glyphicon.glyphicon-refresh
+            span.btn-content 出品終了分 - 未落札(再出品)
+          li = link_to "/myauction/products?cond=2" do
+            span.glyphicon.glyphicon-transfer
+            span.btn-content 出品終了分 - 落札済
+          li = link_to "/myauction/products?cond=3" do
+            span.glyphicon.glyphicon-remove
+            span.btn-content 出品キャンセル分
           hr
-          li = link_to "テンプレート一覧",   "/myauction/templates/"
-          li = link_to "テンプレート作成",   "/myauction/templates/new"
+          li = link_to "/myauction/templates/" do
+            span.glyphicon.glyphicon-paste
+            span.btn-content テンプレート一覧
+          li = link_to "/myauction/templates/new" do
+            span.glyphicon.glyphicon-plus
+            span.btn-content テンプレート作成
 
     .col-md-3
       .panel.panel-default
-        .panel-heading インポートその他
+        .panel-heading
+          span.glyphicon.glyphicon-briefcase
+          span.btn-content インポート・その他
         ul.nav.nav-pills.nav-stacked
-          li = link_to "CSVインポート",      "/myauction/csv/new"
-          li = link_to "インポートログ",     "/myauction/importlog"
+          li = link_to "/myauction/csv/new" do
+            span.glyphicon.glyphicon-import
+            span.btn-content CSVインポート
+          li = link_to "/myauction/importlog" do
+            span.glyphicon.glyphicon-list
+            span.btn-content インポートログ
           li = link_to "http://www.zenkiren.net/admin/machine_auction.php", target: "_blank" do
-            | →マシンライフ<br />オークション用CSV出力
+            span.glyphicon.glyphicon-new-window
+            span.btn-content マシンライフ・インポートCSV出力
           hr
-          li = link_to "送料設定インポート", "/myauction/shipping/new"
+          li = link_to "/myauction/shipping/new" do
+            span.glyphicon.glyphicon-import
+            span.btn-content 送料設定インポート
           / li = link_to "カテゴリ管理",       "/myauction/categories"
-          li = link_to "出品者向けヘルプ", "/myauction/helps"
-          li = mail_to "bata44883@gmail.com", "開発者メール問い合わせ", encode: "javascript"
+          hr
+          li = link_to "/myauction/helps" do
+            span.glyphicon.glyphicon-question-sign
+            span.btn-content 出品者向けヘルプ
+          li = mail_to "bata44883@gmail.com", encode: "javascript" do
+            span.glyphicon.glyphicon-send
+            span.btn-content 開発者メール問い合わせ
 
   .col-md-3
     - if current_user.seller?
       .panel.panel-default
-        .panel-heading 出品者向けお知らせ
+        .panel-heading
+          span.glyphicon.glyphicon-info-sign
+          span.btn-content 出品者向けお知らせ
         .panel-body
           - @infos.each do |inf|
             p = link_to inf.title, "/myauction/infos/#{inf.id}"
           p = link_to ">> お知らせ一覧", "/myauction/infos"
 
     .panel.panel-default
-      .panel-heading その他
+      .panel-heading
+        span.glyphicon.glyphicon-cog
+        span.btn-content 設定変更・ログアウト
       ul.nav.nav-pills.nav-stacked
-        li = link_to "ユーザ情報変更", "/myauction/user/edit"
-        li = link_to "パスワード変更", "/users/edit"
-        li = link_to "ログアウト",     "/users/sign_out", method: :delete
+        li = link_to "/myauction/user/edit" do
+          span.glyphicon.glyphicon-edit
+          span.btn-content ユーザ情報変更
+        li = link_to "/users/edit" do
+          span.glyphicon.glyphicon-cog
+          span.btn-content パスワード変更
+        li = link_to "/users/sign_out", method: :delete do
+          span.glyphicon.glyphicon-log-out
+          span.btn-content ログアウト

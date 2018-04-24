@@ -9,7 +9,7 @@
 
 table.table.table-hover.table-condensed.table-striped.product-table
   tr
-    th ID
+    th.num ID
     th.img_mini
     / th 管理番号
     th 商品名
@@ -33,7 +33,7 @@ table.table.table-hover.table-condensed.table-striped.product-table
 
   - @pproducts.each do |pr|
     tr
-      td = pr.id
+      td.num = pr.id
       td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
       / td = pr.code
       td = link_to pr.name, "/products/#{pr.id}"

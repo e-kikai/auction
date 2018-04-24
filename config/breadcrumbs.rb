@@ -1,6 +1,6 @@
 ### ユーザ画面 ###
 crumb :root do
-  link "TOP", "/"
+  link "ものオク", "/"
 end
 
 crumb :something do |title|
