@@ -30,35 +30,35 @@
 
         p.alert-message 発送方法、送料、梱包などの確認は必ず行ってください。<br />入金確認後に商品の発送します。
 
-  - if current_user.id == @product.user_id
-    .panel.panel-default
-      .panel-heading 落札者情報
-      .panel-body.trade-user
-        dl.dl-horizontal
-          dt 名前
-          dd = @product.max_bid.user.name
-          dt 会社名
-          dd = @product.max_bid.user.company
-          dt 電話番号
-          dd = @product.max_bid.user.tel
-          dt 〒
-          dd = @product.max_bid.user.zip
-          dt 住所
-          dd #{@product.max_bid.user.addr_1} #{@product.max_bid.user.addr_2} #{@product.max_bid.user.addr_3}
+  .panel.panel-default
+    .panel-heading 出品会社情報
+    .panel-body.trade-user
+      dl.dl-horizontal
+        dt 会社名
+        dd = @product.user.company
+        dt 〒
+        dd = @product.user.zip
+        dt 住所
+        dd #{@product.user.addr_1} #{@product.user.addr_2} #{@product.user.addr_3}
+        dt 振込先情報
+        dd = simple_format(@product.user.bank)
+              
+  .panel.panel-default
+    .panel-heading 落札者情報
+    .panel-body.trade-user
+      dl.dl-horizontal
+        dt 名前
+        dd = @product.max_bid.user.name
+        dt 会社名
+        dd = @product.max_bid.user.company
+        dt 電話番号
+        dd = @product.max_bid.user.tel
+        dt 〒
+        dd = @product.max_bid.user.zip
+        dt 住所
+        dd #{@product.max_bid.user.addr_1} #{@product.max_bid.user.addr_2} #{@product.max_bid.user.addr_3}
 
-  - else
-    .panel.panel-default
-      .panel-heading 出品会社情報
-      .panel-body.trade-user
-        dl.dl-horizontal
-          dt 会社名
-          dd = @product.user.company
-          dt 〒
-          dd = @product.user.zip
-          dt 住所
-          dd #{@product.user.addr_1} #{@product.user.addr_2} #{@product.user.addr_3}
-          dt 振込先情報
-          dd = simple_format(@product.user.bank)
+
 
 .col-md-7
   p.alert-message  取引開始は、落札後1週間以内にお願いいたします。
