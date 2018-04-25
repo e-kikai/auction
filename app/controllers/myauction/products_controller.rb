@@ -108,16 +108,34 @@ class Myauction::ProductsController < Myauction::ApplicationController
 
   # マシンライフからオークションへ
   def m2a
+    # 日付
     # @date = case
     # when params[:date];      Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1)
     # when session[:m2a_date]; session[:m2a_date]
     # else;                    Time.now
     # end
-    #
-    # start_date = @date.beginning_of_month.strftime("%Y-%m-%d")
-    # end_date   = @date.end_of_month.strftime("%Y-%m-%d")
-    #
-    # session[:m2a_date] = @date
+
+    @date = case
+    when params[:date].present?;                  params[:date]
+    when session[:m2a_date] && params[:s].blank?; session[:m2a_date]
+    else;                                         nil
+    end
+    session[:m2a_date] = @date
+
+    if @date.present?
+      date       = DateTime.parse("#{@date}/1")
+      start_date = date.beginning_of_month.strftime("%Y-%m-%d")
+      end_date   = date.end_of_month.strftime("%Y-%m-%d")
+    end
+
+    # ジャンル
+    @genre = case
+    when params[:genre].present?;                  params[:genre]
+    when session[:m2a_genre] && params[:s].blank?; session[:m2a_genre]
+    else;                                          nil
+    end
+
+    session[:m2a_genre] = @genre
 
     # マシンライフからJSONデータを取得
     if current_user.machinelife_company_id.blank?
@@ -126,24 +144,19 @@ class Myauction::ProductsController < Myauction::ApplicationController
     end
 
     # ジャンルJSON
-    @genre= case
-    when params[:genre];      params[:genre]
-    when session[:m2a_genre]; session[:m2a_genre]
-    else;                     1
-    end
-
-    session[:m2a_genre] = @genre
-
-
     url     = "#{Product::MACHINELIFE_CRAWL_URL}?t=auction_genres&c=#{current_user.machinelife_company_id}"
     json    = open(url).read
     @genres = ActiveSupport::JSON.decode json rescue raise json
     @genre_selectors = @genres.map { |ge| ["#{ge["large_genre"]} (#{ge["count"]})", ge["id"]] }
 
     # 機械情報JSON
-    url    = "#{Product::MACHINELIFE_CRAWL_URL}?t=auction_machines&c=#{current_user.machinelife_company_id}&large_genre_id=#{@genre}"
-    json   = open(url).read
-    @datas = ActiveSupport::JSON.decode json rescue raise json
+    if @date.present? || @genre.present?
+      url    = "#{Product::MACHINELIFE_CRAWL_URL}?t=auction_machines&c=#{current_user.machinelife_company_id}&large_genre_id=#{@genre}&start_date=#{start_date}&end_date=#{end_date}"
+      json   = open(url).read
+      @datas = ActiveSupport::JSON.decode json rescue raise json
+    end
+
+    @date_selector = Time.now.year.downto(2011).sum { |y| 12.downto(1).map { |m| "#{y}/#{m}" } }
 
     @template_selectors  = current_user.products.templates.pluck(:name, :id)
 

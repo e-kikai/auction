@@ -10,6 +10,10 @@
               li = msg
 
       .form-group
+        = f.label :uid, class: :required
+        = f.text_field :uid, autofocus: true, required: "required", class: 'form-control'
+
+      .form-group
         = f.label :title, class: :required
         = f.text_field :title, autofocus: true, required: "required", class: 'form-control'
 

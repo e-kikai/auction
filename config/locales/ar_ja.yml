@@ -76,8 +76,10 @@ ja:
         content: 内容(Markdown)
         target: 表示対象
         order_no: 並び順
+        uid: UID
       info:
         title: ページタイトル
         content: 内容(Markdown)
         target: 表示対象
-        order_no: 表示開始日時
+        start_at: 表示開始日時
+        uid: UID

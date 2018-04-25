@@ -80,6 +80,8 @@
         tr
           td.img = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
           td.absolute
+            - if pr.dulation_start > Time.now.yesterday
+              span.new-icon
             = link_to pr.name, "/products/#{pr.id}"
             .td-under
               - if @company.blank?
