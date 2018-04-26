@@ -59,7 +59,7 @@
 
       div.carousel-select
         - @product.product_images.each_with_index do |pi, i|
-          = link_to(image_tag(pi.image.thumb.url), "javascript:$('#product-carousel').carousel(#{i})")
+          = link_to(image_tag(pi.image.thumb.url), 'javascript:void(0);', onclick: "$('#product-carousel').carousel(#{i});")
 
       - if @product.youtube.present?
         iframe width="640" height="382" src="https://www.youtube.com/embed/#{@product.youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="true"
