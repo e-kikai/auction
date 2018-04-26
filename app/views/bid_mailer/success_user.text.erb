@@ -19,6 +19,12 @@
 以下のリンクから行ってください。
 <%= root_url(only_path: false) %>myauction/trades?product_id=<%= @product.id %>
 
+!!! 取引に関する注意事項 - 必ずお読みください !!!
+ ・ 取引開始は、落札後1週間以内にお願いいたします。
+ ・ 発送方法、送料、梱包などの確認は必ず行ってください。入金確認後に商品の発送します。
+ ・ 商品到着後、左のボタンから受取確認・評価を行ってください。
+
+
 商品詳細は、以下のリンクから確認できます。
 <%= root_url(only_path: false) %>products/<%= @product.id %>
 
@@ -27,3 +33,6 @@
 
 ものづくりオークション
 <%= root_url(only_path: false) %>
+
+
+Copyright (C) <%= Time.now.year %> 任意団体ものづくりオークション委員会, All Rights reserved.

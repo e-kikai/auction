@@ -4,45 +4,64 @@
 - else
   - breadcrumb :myauction_bids_trade, @product
 
-.col-md-5
+.col-md-5.trade-left
   - if current_user.id != @product.user_id
   .panel.panel-default
     .panel-heading 落札商品
     .panel-body.trade-product
-      dl.dl-horizontal
-        dt 商品名
-        dd #{@product.name}
-        dt 落札金額(税抜)
-        dd = number_to_currency(@product.max_price)
-        dt 消費税(#{Product::TAX_RATE}%)
-        dd = number_to_currency(@product.max_price_tax)
+      .trade-product = link_to @product.name, "/products/#{@product.id}", target: "_blank"
+      .col-md-5
+        = link_to image_tag(@product.thumb_url), "/products/#{@product.id}", alt: @product.name, target: "_blank"
+      .col-md-7
+        dl.dl-horizontal
+          dt 落札金額(税抜)
+          dd = number_to_currency(@product.max_price)
+          dt 消費税(#{Product::TAX_RATE}%)
+          dd = number_to_currency(@product.max_price_tax)
 
-        - if @shipping_label
-          dt 発送方法
-          dd = @shipping_label.name
-        - if @shipping_fee
-          dt 送料(税込、目安)
-          dd = number_to_currency(@shipping_fee.price)
+          - if @shipping_label
+            dt 発送方法
+            dd = @shipping_label.name
+          - if @shipping_fee
+            dt 送料(税込、目安)
+            dd = number_to_currency(@shipping_fee.price)
 
-        hr.detail-price-calc
-        dt = current_user.id == @product.user_id ? "合計金額" : "お支払い金額合計"
-        dd = number_to_currency(@product.max_price_with_tax + (@shipping_fee.try(:price) || 0))
-
-        p.alert-message 発送方法、送料、梱包などの確認は必ず行ってください。<br />入金確認後に商品の発送します。
+          hr.detail-price-calc
+          dt 合計金額
+          dd = number_to_currency(@product.max_price_with_tax + (@shipping_fee.try(:price) || 0))
+        .trade-button-area
+          = link_to("/myauction/stars/#{@product.id}/edit", class: "btn btn-primary") do
+            span.glyphicon.glyphicon-asterisk
+            =< "受取確認・評価"
 
   .panel.panel-default
     .panel-heading 出品会社情報
     .panel-body.trade-user
       dl.dl-horizontal
         dt 会社名
-        dd = @product.user.company
+        dd
+          = @product.user.company
+          = " ("
+          = link_to "/companies/#{@product.user_id}", target: "_blank" do
+            span.glyphicon.glyphicon-home
+            span.btn-content 出品会社情報
+          = ")"
         dt 〒
         dd = @product.user.zip
         dt 住所
         dd #{@product.user.addr_1} #{@product.user.addr_2} #{@product.user.addr_3}
         dt 振込先情報
         dd = simple_format(@product.user.bank)
-              
+
+        = link_to "/products?company_id=#{@product.user_id}", target: "_blank" do
+          span.glyphicon.glyphicon-list
+          span.btn-content = "#{@product.user.company}のそのほかの出品商品を見る"
+
+      .trade-button-area
+        = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
+          span.glyphicon.glyphicon-heart.follow-heart
+          span.btn-content フォローする
+
   .panel.panel-default
     .panel-heading 落札者情報
     .panel-body.trade-user
@@ -58,10 +77,32 @@
         dt 住所
         dd #{@product.max_bid.user.addr_1} #{@product.max_bid.user.addr_2} #{@product.max_bid.user.addr_3}
 
-
+    / table.table.table-hover.table-condensed.trade-user
+    /   tr
+    /     th 名前
+    /     td = @product.max_bid.user.name
+    /   tr
+    /     th 会社名
+    /     td = @product.max_bid.user.company
+    /   tr
+    /     th 電話番号
+    /     td = @product.max_bid.user.tel
+    /   tr
+    /     th 〒 郵便番号
+    /     td = @product.max_bid.user.zip
+    /   tr
+    /     th 住所
+    /     td #{@product.max_bid.user.addr_1} #{@product.max_bid.user.addr_2} #{@product.max_bid.user.addr_3}
 
 .col-md-7
-  p.alert-message  取引開始は、落札後1週間以内にお願いいたします。
+  .alert.alert-danger
+    .
+      span.glyphicon.glyphicon-alert
+      span.btn-content 取引に関する注意事項 - 必ずお読みください
+    ul
+      li 取引開始は、落札後1週間以内にお願いいたします。
+      li 発送方法、送料、梱包などの確認は必ず行ってください。入金確認後に商品の発送します。
+      li 商品到着後、左のボタンから受取確認・評価を行ってください。
 
   = form_for @trade, url: "/myauction/trades/?product_id=#{params[:product_id]}", html: { method: :post, class: 'form-horizontal' } do |f|
     = f.label :comment, "こちらで取引コメントを入力して「投稿する」をクリックしてください。"

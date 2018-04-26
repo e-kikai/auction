@@ -1,6 +1,6 @@
 module ApplicationHelper
   require "redcarpet"
-  
+
   def markdown(text)
     render_options = {
       filter_html: false,
@@ -17,6 +17,6 @@ module ApplicationHelper
       superscript:        true,
       tables:             true,
     }
-    Redcarpet::Markdown.new(renderer, extensions).render(text).html_safe
+    Redcarpet::Markdown.new(renderer, extensions).render(text.to_s).html_safe
   end
 end

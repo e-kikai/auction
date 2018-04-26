@@ -429,6 +429,12 @@ label.top-search {
   }
 }
 
+.detail-company-area {
+  div {
+    line-height: 2;
+  }
+}
+
 .detail-price-area {
   background-color: #ededec;
   margin-top: -15px;
@@ -531,23 +537,50 @@ hr.detail-price-calc {
 }
 
 /// 取引 ///
+.trade-product {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.trade-left {
+  dl {
+    margin-bottom: 0;
+  }
+}
+
+.trade-button-area {
+  margin: 8px 0 0 0;
+  text-align: right;
+}
+
 .trade-user {
   dt {
-    width: 80px;
+    width: 90px;
+    text-align: right;
+    margin-bottom: 3px;
   }
 
   dd {
-    margin-left: 100px;
+    margin-left: 110px;
   }
+
+  th {
+    width: 120px;
+    text-align: left;
+  }
+
+
 }
 
 .trade-product {
   dt {
-    width: 140px;
+    width: 100px;
+    text-align: left;
   }
 
   dd {
-    margin-left: 160px;
+    margin-left: 120px;
+    text-align: right;
   }
 }
 

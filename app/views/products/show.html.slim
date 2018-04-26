@@ -112,12 +112,16 @@
       .panel.panel-default
         .panel-body
           .col-md-4
-            . 入札件数
+            span.glyphicon.glyphicon-tags
+            span.btn-content 入札件数
             .
               span.h3 #{@product.bids_count}
-            . =< link_to "入札履歴", "/products/#{@product.id}/bids"
+            . =< link_to "/products/#{@product.id}/bids" do
+              span.glyphicon.glyphicon-align-justify
+              span.btn-content 入札履歴
           .col-md-4
-            . 残り時間
+            span.glyphicon.glyphicon-time
+            span.btn-content 残り時間
             .
               span.h3> #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
               | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
@@ -148,7 +152,9 @@
               | (税込 #{number_to_currency(@product.max_price_with_tax)})
 
           - unless @product.finished? || @product.user_id == current_user.try(:id)
-            = button_tag "入札する", class: "btn btn-warning btn-lg center-block", data: { toggle: :modal, target: "#bid-modal"}
+            = button_tag class: "btn btn-warning btn-lg center-block", data: { toggle: :modal, target: "#bid-modal"} do
+              span.glyphicon.glyphicon-pencil
+              span.btn-content 入札する
 
         - if @product.prompt_dicision_price
           .panel-body.detail-price-area
@@ -159,28 +165,51 @@
                 | (税込 #{number_to_currency(@product.prompt_dicision_price_with_tax)})
 
             - unless @product.finished? || @product.user_id == current_user.try(:id)
-              = button_tag "今すぐ落札する", class: "btn btn-danger btn-lg center-block", data: { toggle: :modal, target: "#prompt-modal"}
+              = button_tag class: "btn btn-danger btn-lg center-block", data: { toggle: :modal, target: "#prompt-modal"} do
+                span.glyphicon.glyphicon-jpy
+                span.btn-content 今すぐ落札する
 
         /// 出品会社 ///
         .panel-body
-          h4 出品会社情報
-          . = @product.user.company
-          . = link_to "出品会社情報", "/companies/#{@product.user_id}"
-          .
-            span 評価 :
-            span.h4
-              =<> number_with_delimiter @product.user.count_star
-              | (
-              span.glyphicon.glyphicon-asterisk.star-good
-              =<> number_with_delimiter @product.user.count_star_good
-              span.glyphicon.glyphicon-cloud.star-bad
-              =< number_with_delimiter @product.user.count_star_bad
-              | )
+          h4
+            span.glyphicon.glyphicon-home
+            span.btn-content 出品会社
+          .detail-company-area
+            .
+              span.h4 = @product.user.company
+              = " ("
+              = link_to "/companies/#{@product.user_id}" do
+                span.glyphicon.glyphicon-home
+                span.btn-content 出品会社情報
+              = ")"
 
-          . = link_to "#{@product.user.company}のその他の出品商品", "/products/?company_id=#{@product.user_id}"
-          . = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
-            span.glyphicon.glyphicon-heart.follow-heart
-            span.btn-content フォローする
+            .
+              span.glyphicon.glyphicon-star
+              span.btn-content 評価 :
+              span.h4
+                =<> number_with_delimiter @product.user.count_star
+                | (
+                span.glyphicon.glyphicon-certificate.star-good
+                =<> number_with_delimiter @product.user.count_star_good
+                span.glyphicon.glyphicon-cloud.star-bad
+                =< number_with_delimiter @product.user.count_star_bad
+                | )
+
+            . = link_to "/products/?company_id=#{@product.user_id}" do
+              span.glyphicon.glyphicon-list
+              span.btn-content = "#{@product.user.company}のそのほかの出品商品を見る"
+
+            .
+              span.glyphicon.glyphicon-map-marker
+              span.btn-content = "出品地域 : #{@product.user.addr_1} #{@product.user.addr_2}"
+            .
+              span.glyphicon.glyphicon-file
+              span.btn-content = "免許情報 : #{@product.user.license}"
+
+          .trade-button-area
+            = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
+              span.glyphicon.glyphicon-heart.follow-heart
+              span.btn-content フォローする
 
       //// SNSボタン ///
       .sns-area

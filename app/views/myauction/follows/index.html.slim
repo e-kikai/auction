@@ -18,7 +18,7 @@ h3 フォローリスト
       tr
         td = link_to fo.to_user.company, "/products?q[company_id_eq]=#{fo.to_user_id}"
         td.h4
-          span.glyphicon.glyphicon-asterisk.star-good
+          span.glyphicon.glyphicon-certificate.star-good
           =< number_with_delimiter fo.to_user.count_star_good
           br
           span.glyphicon.glyphicon-cloud.star-bad
