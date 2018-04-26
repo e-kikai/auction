@@ -17,6 +17,8 @@ module ApplicationHelper
       superscript:        true,
       tables:             true,
     }
-    Redcarpet::Markdown.new(renderer, extensions).render(text.to_s).html_safe
+    content_tag(:div, class: "markdown-area") do
+      Redcarpet::Markdown.new(renderer, extensions).render(text.to_s).html_safe
+    end
   end
 end

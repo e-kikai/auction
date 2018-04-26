@@ -528,6 +528,39 @@ hr.detail-price-calc {
   color: #dc143c;
 }
 
+/// 会社情報 ///
+.company-table {
+  th {
+    width: 172px;
+  }
+}
+
+.product-dl {
+  width: 50%;
+  padding: 4px;
+  float: left;
+  margin: 0;
+
+  dt {
+    width: 110px;
+    margin-bottom: 3px;
+  }
+
+  dd {
+    margin-left: 130px;
+  }
+}
+
+.product-dl-first {
+  border-right: 1px dotted #AAA;
+}
+
+/// markdown(ヘルプ・お知らせ) ///
+.markdown-area {
+  margin: 8px;
+  
+}
+
 /// マイ・オークション ///
 
 .nav-pills.nav-stacked {

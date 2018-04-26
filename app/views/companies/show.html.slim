@@ -5,14 +5,14 @@
   .row.header-image
     = image_tag @company.header_image.url
 
-.col-md-offset-3.col-md-6
+.col-md-offset-2.col-md-8
   h3 出品会社情報
 
   = link_to "/products?company_id=#{@company.id}"
     span.glyphicon.glyphicon-list
     span.btn-content = "#{@company.company}の出品商品を見る"
 
-  table.table.table-striped.table-hover.table-condensed
+  table.table.table-striped.table-hover.table-condensed.company-table
     tr
       th
         span.glyphicon.glyphicon-home
