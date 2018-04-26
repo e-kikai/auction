@@ -8,4 +8,4 @@ ul.col-md-offset-2.col-md-8
   - @infos.each do |inf|
     li
       = "#{I18n.l(inf.start_at, format: :full_date)} "
-      = link_to(inf.title, "/myauction/infos/#{inf.id}")
+      = link_to(inf.title, "/myauction/infos/#{inf.uid}")

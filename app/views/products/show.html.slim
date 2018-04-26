@@ -22,11 +22,13 @@
   .row
     .alert.alert-danger
       - if @product.cancel?
-        . このオークションは、以下の理由により出品キャンセルされました。
-        br
-        . = simple_format(@product.cancel)
+        .
+          span.glyphicon.glyphicon-remove
+          span.btn-content このオークションは、以下の理由により出品キャンセルされました。
+        = markdown(@product.cancel)
       - else
-        | このオークションは終了しました
+        span.glyphicon.glyphicon-ok
+        span.btn-content  このオークションは終了しました。
 
 . itemscope="" itemtype="http://schema.org/Product"
   .row
@@ -64,7 +66,7 @@
 
       .panel.panel-default
         .panel-body
-          dl.dl-horizontal.product-dl.product-dl-first
+          dl.dl-horizontal.product-dl
             dt 開始日時
             dd = I18n.l(@product.dulation_start, format: :full_date)
             dt 終了日時
@@ -82,7 +84,7 @@
             dt 開始価格(税抜)
             dd #{number_to_currency(@product.start_price)}
 
-          dl.dl-horizontal.product-dl
+          dl.dl-horizontal.product-dl.product-dl-border
             dt 発送元
             dd #{@product.addr_1} #{@product.addr_2}
             dt 送料負担

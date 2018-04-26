@@ -7,7 +7,7 @@
       .panel-heading お知らせ一覧
       .panel-body
         - @infos.each do |inf|
-          p = link_to inf.title, "/infos/#{inf.id}"
+          p = link_to inf.title, "/infos/#{inf.uid}"
 
   .col-md-9
     h3.product-title itemprop="name" = @info.title

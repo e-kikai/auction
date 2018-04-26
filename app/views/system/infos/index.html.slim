@@ -20,6 +20,7 @@ ul.nav.nav-pills
     table.table.table-hover.table-condensed.table-striped.product-table
       tr
         th タイトル
+        th UID
         th 対象
         th 表示日時
         th 変更
@@ -27,7 +28,8 @@ ul.nav.nav-pills
         th 削除
       - @infos.each do |he|
         tr
-          td = he.title
+          td = link_to he.title, "/#{he.target == "出品会社" ? "myauction/" : ""}infos/#{he.uid}"
+          td = he.uid
           td = he.target
           td = he.start_at
           td = link_to({ action: :edit, id: he.id }, class: "btn btn-warning") do

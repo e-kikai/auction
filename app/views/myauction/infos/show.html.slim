@@ -7,7 +7,7 @@
       .panel-heading お知らせ一覧
       .panel-body
         - @infos.each do |he|
-          p = link_to he.title, "/myauction/infos/#{he.id}"
+          p = link_to he.title, "/myauction/infos/#{he.uid}"
 
 
   .col-md-9
