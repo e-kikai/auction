@@ -9,6 +9,7 @@
 #  updated_at        :datetime         not null
 #  soft_destroyed_at :datetime
 #  order_no          :integer          default(999999999), not null
+#  search_order_no   :string           default(""), not null
 #
 
 FactoryBot.define do

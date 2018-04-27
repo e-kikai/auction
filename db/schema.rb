@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180423160831) do
+ActiveRecord::Schema.define(version: 20180427160248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 20180423160831) do
     t.datetime "updated_at", null: false
     t.datetime "soft_destroyed_at"
     t.integer "order_no", default: 999999999, null: false
+    t.string "search_order_no", default: "", null: false
     t.index ["ancestry"], name: "index_categories_on_ancestry"
     t.index ["soft_destroyed_at"], name: "index_categories_on_soft_destroyed_at"
   end
@@ -114,6 +115,7 @@ ActiveRecord::Schema.define(version: 20180423160831) do
     t.datetime "soft_destroyed_at"
     t.string "uid", default: "", null: false
     t.index ["soft_destroyed_at"], name: "index_helps_on_soft_destroyed_at"
+    t.index ["uid"], name: "index_helps_on_uid", unique: true
   end
 
   create_table "importlogs", force: :cascade do |t|
@@ -139,6 +141,7 @@ ActiveRecord::Schema.define(version: 20180423160831) do
     t.datetime "soft_destroyed_at"
     t.string "uid", default: "", null: false
     t.index ["soft_destroyed_at"], name: "index_infos_on_soft_destroyed_at"
+    t.index ["uid"], name: "index_infos_on_uid", unique: true
   end
 
   create_table "product_images", force: :cascade do |t|

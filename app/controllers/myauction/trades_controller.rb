@@ -1,6 +1,7 @@
 class Myauction::TradesController < Myauction::ApplicationController
+  before_action :check_product, only: [ :index, :create, :destroy ]
+
   def index
-    @product        = Product.find(params[:product_id])
     @shipping_label = ShippingLabel.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no)
     @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: @product.max_bid.user.addr_1)
 
@@ -9,13 +10,6 @@ class Myauction::TradesController < Myauction::ApplicationController
   end
 
   def create
-    @product = Product.find(params[:product_id])
-
-    if @product.user_id != current_user.id && @product.max_bid.user_id != current_user.id
-      flash.now[:alert] = "この商品に投稿できませんでした"
-      render :index
-    end
-
     @trade = @product.trades.new(trade_params.merge(user_id: current_user.id))
     if @trade.save
       if @product.user_id == current_user.id
@@ -39,6 +33,14 @@ class Myauction::TradesController < Myauction::ApplicationController
   end
 
   private
+
+  def check_product
+    @product = Product.status(Product::STATUS[:success]).find(params[:product_id])
+
+    if @product.user_id != current_user.id && @product.max_bid.user_id != current_user.id
+      redirect_to "/myauction/bids?cond=2", notice: "#{@product.name}はあなたが落札した商品ではありません"
+    end
+  end
 
   def trade_params
     params.require(:trade).permit(:comment)

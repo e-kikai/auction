@@ -32,9 +32,13 @@
           dt 合計金額
           dd = number_to_currency(@product.max_price_with_tax + (@shipping_fee.try(:price) || 0))
         .trade-button-area
-          = link_to("/myauction/stars/#{@product.id}/edit", class: "btn btn-primary") do
-            span.glyphicon.glyphicon-asterisk
-            =< "受取確認・評価"
+          - if @product.star
+            . 受取確認・評価しました。
+            .star = @product.star_view
+          - else
+            = link_to("/myauction/stars/#{@product.id}/edit", class: "btn btn-primary") do
+              span.glyphicon.glyphicon-certificate
+              =< "受取確認・評価"
 
   .panel.panel-default
     .panel-heading
