@@ -41,7 +41,7 @@ class Category < ApplicationRecord
   end
 
   def make_path_order_no
-    self.search_order_no = path.map { |c| sprintf("%010d", c.order_no) }.join("/") + "0"
+    self.search_order_no = path.map { |c| sprintf("%010d", c.order_no) }.join("/")
     self
   end
 end
