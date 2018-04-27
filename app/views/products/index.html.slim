@@ -91,7 +91,11 @@
               .
                 span.inner-title カテゴリ
                 - pr.category.path.each.with_index do |ca, i|
-                  =<> ">" if i != 0
+                  / =<> ">" if i != 0
+
+                  /// 工具のみの仮処理
+                  - next if i == 0
+                  = " > " if i != 1
                   = link_to(ca.name, "products/?category_id=#{ca.id}")
           td.price.absolute
             strong
