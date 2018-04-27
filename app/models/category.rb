@@ -36,12 +36,12 @@ class Category < ApplicationRecord
     categories = Category.all.order(:search_order_no).select(:id, :name, :ancestry).index_by(&:id)
 
     categories.map do |i, ca|
-      [ca.path_ids.map { |v| categories[v].name rescue "" }.join(" > ") + "0", i]
+      [ca.path_ids.map { |v| categories[v].name rescue "" }.join(" > "), i]
     end
   end
 
   def make_path_order_no
-    self.search_order_no = path.map { |c| sprintf("%010d", c.order_no) }.join("/")
+    self.search_order_no = path.map { |c| sprintf("%010d", c.order_no) }.join("/") + "0"
     self
   end
 end
