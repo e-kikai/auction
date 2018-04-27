@@ -36,7 +36,7 @@ class Category < ApplicationRecord
     categories = Category.all.order(:search_order_no).select(:id, :name, :ancestry).index_by(&:id)
 
     categories.map do |i, ca|
-      [ca.path_ids.map { |v| categories[v].name rescue "" }.join(" > "), i]
+      [ca.path_ids.map { |v| categories[v].name rescue "" }.join(" > ") + "0", i]
     end
   end
 
