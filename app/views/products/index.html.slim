@@ -47,17 +47,17 @@
         = form_tag request.fullpath, method: :get, class: "form-inline" do
           label 現在価格
           .
-            = number_field_tag("q[max_price_gteq]", params.dig(:q, :max_price_gteq), class: "form-control filter-price", placeholder: "最低額") + "円"
+            = number_field_tag("q[max_price_gteq]", (params[:q][:max_price_gteq] rescue nil), class: "form-control filter-price", placeholder: "最低額") + "円"
             = " 〜 "
-            = number_field_tag("q[max_price_lteq]", params.dig(:q, :max_price_lteq), class: "form-control filter-price", placeholder: "最高額") + "円"
+            = number_field_tag("q[max_price_lteq]", (params[:q][:max_price_lteq] rescue nil), class: "form-control filter-price", placeholder: "最高額") + "円"
             = button_tag "フィルタリング", class: "btn btn-default"
 
           br
           label 即決価格
           .
-            = number_field_tag("q[prompt_dicision_price_gteq]", params.dig(:q, :prompt_dicision_price_gteq), class: "form-control filter-price", placeholder: "最低額") + "円"
+            = number_field_tag("q[prompt_dicision_price_gteq]", (params[:q][:prompt_dicision_price_gteq] rescue nil), class: "form-control filter-price", placeholder: "最低額") + "円"
             = " 〜 "
-            = number_field_tag("q[prompt_dicision_price_lteq]", params.dig(:q, :prompt_dicision_price_lteq), class: "form-control filter-price", placeholder: "最高額") + "円"
+            = number_field_tag("q[prompt_dicision_price_lteq]", (params[:q][:prompt_dicision_price_lteq] rescue nil), class: "form-control filter-price", placeholder: "最高額") + "円"
             = button_tag "フィルタリング", class: "btn btn-default"
         br
         label 商品の状態
