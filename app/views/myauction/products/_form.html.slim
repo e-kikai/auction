@@ -138,7 +138,7 @@ table.table.table-hover.table-condensed.form-table
 
   tr
     th = f.label :shipping_no
-    td = f.select :shipping_no, ShippingLabel.where(user_id: current_user.id).pluck(:name, :shipping_no), { prompt: "設定しない"} , { class: "form-control short" }
+    td = f.select :shipping_no, ShippingLabel.where(user_id: current_user.id).pluck(:name, :shipping_no), { include_blank: "設定しない"} , { class: "form-control short" }
 
   tr
     th = f.label :packing
