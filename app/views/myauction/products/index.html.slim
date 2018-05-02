@@ -3,7 +3,7 @@
 - set_meta_tags title: title
 - breadcrumb    :myauction_something, title
 
-h3 = title
+h4 #{title} : #{number_with_delimiter(@products.count)} 件
 
 = paginate @pproducts
 
@@ -13,41 +13,41 @@ h3 = title
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
       th.img_mini
-      th 管理番号
-      th 商品名
+      th = sort_link(@search, :code)
+      th = sort_link(@search, :name)
       - if params[:cond].to_i == -1
-        th 開始日時
-      th 終了日時
-      th.price 開始金額
-      th.price 最低落札
-      th.price 即決金額
+        th = sort_link(@search, :dulation_start,  "開始日時")
+      th = sort_link(@search, :dulation_end, "終了日時")
+      th.price = sort_link(@search, :start_price)
+      th.price = sort_link(@search, :lower_price)
+      th.price = sort_link(@search, :prompt_dicision_price)
       - if params[:cond].to_i == -1
         th 変更
         th 削除
       - elsif params[:cond].to_i == 1
-        th.num 閲覧数
-        th.num ウォッチ数
+        th.num = sort_link(@search, :detail_logs_count)
+        th.num = sort_link(@search, :watches_count)
         th 再出品
       - elsif params[:cond].to_i == 2
-        th.price 落札価格
+        th.price = sort_link(@search, :max_price)
         th 落札者
         th 取引
-        th.num 入札数
-        th.num 閲覧数
-        th.num ウォッチ数
+        th.num = sort_link(@search, :bids_count)
+        th.num = sort_link(@search, :detail_logs_count)
+        th.num = sort_link(@search, :watches_count)
         th.price 手数料<br />(#{Product::FEE_RATE}%)
         th 評価
       - elsif params[:cond].to_i == 3
-        th.num 入札数
-        th.num 閲覧数
-        th.num ウォッチ数
+        th.num = sort_link(@search, :bids_count)
+        th.num = sort_link(@search, :detail_logs_count)
+        th.num = sort_link(@search, :watches_count)
         th 再出品
       - else
-        th.price 最高価格
+        th.price = sort_link(@search, :max_price)
         th 最高<br />入札者
-        th.num 入札数
-        th.num 閲覧数
-        th.num ウォッチ数
+        th.num = sort_link(@search, :bids_count)
+        th.num = sort_link(@search, :detail_logs_count)
+        th.num = sort_link(@search, :watches_count)
         th.sns SNSシェア
         th 追記
         th.num 残り<br />時間

@@ -68,8 +68,13 @@ class Myauction::ProductsController < Myauction::ApplicationController
   def update
     params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
 
+    cond = @product.dulation_start > Time.now ? 0 : 1
     if @product.update(product_params)
-      redirect_to "/myauction/", notice: "#{@product.name}を変更しました"
+      if cond < 1
+        redirect_to "/myauction/products?cond=-1", notice: "#{@product.name}を変更しました"
+      else
+        redirect_to "/myauction/products?cond=1", notice: "#{@product.name}を再出品しました"
+      end
     else
       render :edit
     end
@@ -168,7 +173,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
 
   def additional_update
     if @product.update(additional_params)
-      redirect_to "/myauction/", notice: "#{@product.name}の追記を変更しました"
+      redirect_to "/myauction/products", notice: "#{@product.name}の追記を変更しました"
     else
       render :edit
     end

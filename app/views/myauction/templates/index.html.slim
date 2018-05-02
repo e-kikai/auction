@@ -1,7 +1,7 @@
 - set_meta_tags title: "テンプレート"
 - breadcrumb    :myauction_something, "テンプレート"
 
-h3 テンプレート
+h4 テンプレート
 
 = paginate @ptemplates
 
@@ -10,11 +10,11 @@ h3 テンプレート
 - else
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
-      th.num ID
-      th テンプレート名
+      th.num = sort_link(@search, :id、"ID")
+      th = sort_link(@search, :name, "テンプレート名")
       th 出品
       th 編集
-      th 作成日時
+      th = sort_link(@search, :created_at, "作成日時")
       th
     - @ptemplates.each do |pr|
       tr

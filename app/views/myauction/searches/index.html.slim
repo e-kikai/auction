@@ -1,7 +1,7 @@
 - set_meta_tags title: "保存した検索条件"
 - breadcrumb    :myauction_something, "保存した検索条件"
 
-h3 保存した検索条件
+h4 保存した検索条件
 
 = paginate @psearches
 
@@ -15,7 +15,7 @@ h3 保存した検索条件
       th 検索キーワード
       th 出品会社
       th カテゴリ
-      
+
       - if current_user.seller?
         th トップページに公開する
       th 削除

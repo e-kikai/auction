@@ -384,8 +384,8 @@ class Product < ApplicationRecord
   def self.status_label(cond)
     case cond.to_i
     when STATUS[:before];  "開始前の商品"
-    when STATUS[:failure]; "出品終了(未落札)"
-    when STATUS[:success]; "出品終了(落札済)"
+    when STATUS[:failure]; "出品終了分 - 未落札 (再出品)"
+    when STATUS[:success]; "出品終了分 - 落札済"
     when STATUS[:cancel];  "出品キャンセル分"
     else;                  "出品中"
     end

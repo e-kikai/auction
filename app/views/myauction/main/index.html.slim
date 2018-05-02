@@ -23,7 +23,7 @@
           span.btn-content 入札中
         li = link_to "/myauction/bids?cond=2" do
           span.glyphicon.glyphicon-transfer
-          span.btn-content 落札した商品(取引)
+          span.btn-content 落札した商品 (取引)
 
 
   - if current_user.seller?
@@ -49,7 +49,7 @@
           hr
           li = link_to "/myauction/products?cond=1" do
             span.glyphicon.glyphicon-refresh
-            span.btn-content 出品終了分 - 未落札(再出品)
+            span.btn-content 出品終了分 - 未落札 (再出品)
           li = link_to "/myauction/products?cond=2" do
             span.glyphicon.glyphicon-transfer
             span.btn-content 出品終了分 - 落札済
