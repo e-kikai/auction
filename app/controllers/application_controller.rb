@@ -7,4 +7,8 @@ class ApplicationController < ActionController::Base
   class IpAddressRejected < ActionController::ActionControllerError; end
 
   include ErrorHandlers if Rails.env.production? or Rails.env.staging?
+
+  def after_sign_in_path_for(resource)
+    "/myauction/"
+  end
 end
