@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0014)about:internet -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ものづくりオークション</title>
+<meta name="description" content="2018年5月15日、ものづくりオークションがOPENします！" />
+<meta name="keywords" content="ものづくりオークション,中古,機械" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link href="css/css.css?3" rel="stylesheet" type="text/css" media="all"/>
+
+<script type="text/javascript" src="scripts/jquery.js"></script>
+<script type="text/javascript" src="scripts/slider.js"></script>
+<link rel="stylesheet" href="css/slider.css"  type="text/css" media="all" />
+<script type="text/javascript" src="scripts/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="scripts/smart-crossfade.js"></script><!--スマートクロス -->
+<script type="text/javascript">
+$(function(){
+ $('a[href^=#]').click(function(){
+  var speed = 500;
+  var href= $(this).attr("href");
+  var target = $(href == "#" || href == "" ? 'html' : href);
+  var position = target.offset().top;
+  $("html, body").animate({scrollTop:position}, speed, "swing");
+  return false;
+ });
+});
+</script>
+<link href="css/component.css" rel="stylesheet" type="text/css" />
+<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+<script type="text/javascript">
+if((navigator.userAgent.indexOf('Android') > 0 && navigator.userAgent.indexOf('Mobile') == -1) || navigator.userAgent.indexOf('A1_07') > 0 || navigator.userAgent.indexOf('SC-01C') > 0 || navigator.userAgent.indexOf('iPad') > 0){
+document.write('<meta name="viewport" content="width=980px,user-scalable=yes">');
+}else{
+document.write('<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no" />');
+}
+</script>
+<!--[if lt IE 9]>
+<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+   var pagetop = $('.pagetop_sp');
+   $(window).scroll(function () {
+       if ($(this).scrollTop() > 100) {
+           pagetop.fadeIn();
+       } else {
+           pagetop.fadeOut();
+       }
+   });
+   pagetop.click(function () {
+       $('body, html').animate({ scrollTop: 0 }, 500);
+       return false;
+   });
+});
+</script>
+</head>
+<body id="home">
+<div class="anc100"><a name="top" id="top"></a></div>
+<div style="text-align:right;">
+  <a href="/users/sign_in" target="_blank" style="margin:8px 32px 8px 0;">ログインはこちら</a>
+  <a class="bg-success" href="/users/sign_up" target="_blank" style="margin:8px 16px 8px 0;">事前登録はこちら</a>
+</div>
+<div class="wrapper one bgi001 bgc001">
+<div class="container">
+<div class="contents">
+<div class="c_img"><img src="img/s001.png" alt="ものづくりのための機械・工具専門オークション。2018年5月15日、ものづくりオークションがOPENします！"/></div>
+</div>
+</div>
+</div>
+<!------------------------------------------------------------------------------------------------------->
+<div class="wrapper one">
+<div class="container">
+<div class="contents">
+<div id="page_main">
+<div class="section">
+
+<h2>ものづくりオークションとは</h2>
+<div class="c_body">
+<h3 class="msbox_txt">新品も中古も！<br / class="forsp">欲しかったあの工具が格安で手に入るかも！<br />
+現場で活躍する機械・工具を安心安全な業者から<br / class="forsp">ネットオークションで購入！</h3>
+
+<p class="t_center">「ものづくり」に必要な機械・工具専門の、インターネット・オークションサイトです。<br />現場で役立つ機械や工具を、安心できるプロの業者からオークションで手に入れることができます！<br />欲しかった機械や工具が、格安で購入できるチャンスです！</p>
+<div class="c_img mb30"><img src="img/002.jpg" alt="ものづくりオークションの仕組み"/></div>
+
+<div class="gbox lbr">
+<h3><span class="tkc">特長1</span>だれでも無料で参加できます！</h3>
+<p><img src="img/p01.jpg" alt="" class="rimg"/>どなたでも、ユーザー登録を行えば、ものづくりオークションに参加することができます！<br /><br />
+もちろんユーザー登録は無料！<br />
+オークションで落札した場合も、商品への支払金額（消費税・送料含む）以外の料金は発生しませんので安心です。
+</p>
+</div>
+
+<div class="gbox lbr">
+<h3><span class="tkc">特長2</span>出品者は全て安心安全な「機械のプロ」です！</h3>
+<p><img src="img/p02.jpg" alt="" class="rimg"/>ネットオークションで購入時のトラブルといえば・・・<br />
+「お金を払ったのに、落札した商品が届かない」「商品が説明内容と違う」ではないでしょうか。<br />
+誰でも出品できるネットオークションの場合、知識のない個人や悪質な業者も出品できるため、トラブルの心配があります。<br /><br />
+「ものづくりオークション」なら大丈夫！<br />
+出品者は全て※全日本機械業連合会（略称：全機連）の会員ですので、安心して購入できます！
+</p>
+</div>
+
+<div class="btn"><a href="/users/sign_up" target="_blank" class="square_btn">ものづくりオークション 事前登録はこちら</a></div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!------------------------------------------------------------------------------------------------------->
+<div class="wrapper one">
+<div class="container">
+<div class="contents">
+<div id="page_main">
+<div class="section">
+
+<h2>ものづくりオークションを利用するには</h2>
+<div class="c_body">
+<p class="t_center">メールアドレス、パスワード・商品送付先情報を登録するだけで、誰でもものづくりオークションに参加できます！<br />
+欲しい商品を探し出して、入札してみましょう！</p>
+
+
+<div class="gbox lbr">
+<h3>1　まずはユーザー登録！</h3>
+<p class="bd_img"><a href="/users/sign_up" target="_blank"><img src="img/m11.jpg" alt="事前登録受付中"></a></p>
+<p>トップページの「<a href="/users/sign_up" target="_blank">初めての方はこちら</a>」をクリックすると、<a href="/users/sign_up" target="_blank">アカウント登録画面</a>が表示されます。<br />
+メールアドレスとパスワードを登録しましょう。
+</p>
+<p class="bd_img"><img src="img/m01.jpg" alt=""></p>
+
+<p class="arw"><img src="img/arw.png" alt="">
+</p>
+
+<p>登録したメールアドレスに確認メールが届きますので、リンクをクリックして登録確認を行ってください。
+</p>
+
+<p class="bd_img"><img src="img/m02.jpg" alt=""></p>
+
+<p class="arw"><img src="img/arw.png" alt="">
+</p>
+
+<p>登録したメールアドレス、パスワードでログインします。<br />
+氏名・商品発送先住所などの必要な情報を入力すれば、オークションに参加できるようになります！
+</p>
+
+<p class="bd_img"><img src="img/m03.jpg" alt=""></p>
+</div>
+
+<div class="gbox lbr">
+<h3>2　商品検索で宝探し！</h3>
+<p>トップページから、 キーワード・カテゴリで商品を検索することができます。<br />
+あなたの欲しい商品を探しましょう！<br /><br />
+トップページには他にも、新着商品や出品会社が登録したおすすめ商品などが表示されます。<br />
+掘り出し物がみつかるチャンス！<br />
+宝探しの気分で、商品検索を楽しんでみてください。
+</p>
+<p class="bd_img"><img src="img/m04.jpg" alt=""></p>
+</div>
+
+<div class="gbox lbr">
+<h3>3　入札してみましょう！</h3>
+<p>欲しい商品が見つかったら、詳細ページを開きます。<br />
+入札するをクリックして、「商品購入のために、この金額までなら出してもいい！」という予算の上限（最高入札額）を入力しましょう。<br /><br />
+自動入札方式なので、自分が入力した最高入札金額ではなく、現在価格より少し高い金額で入札され、ほかのユーザが入札すると、最高入札金額まで自動的に入札されます。</p>
+<p class="bd_img"><img src="img/m05.jpg" alt=""></p>
+<p>即決価格があるものは、 即決価格ですぐに落札することもできます！<br />(その時点で入札が終了します)</p>
+<p class="bd_img"><img src="img/m06.jpg" alt=""></p>
+
+<p class="arw"><img src="img/arw.png" alt="">
+</p>
+
+<p class="bd_img"><img src="img/p03.jpg" alt="落札！商品ゲット！"></p>
+</div>
+
+<div class="gbox lbr">
+<h3>4　落札できたら</h3>
+<p>商品を落札すると、 商品の出品会社と取引ができるようになります。<br />マイ・オークションの落札分をクリック、落札した商品名と支払金額の他に出品会社の情報を確認し、取引を成立させましょう！</p>
+<p class="bd_img"><img src="img/m07.jpg" alt=""></p>
+<p>取引はチャット形式で行い、書き込んだ取引は、出品会社にメールで通知されます。(ユーザのメールアドレスは出品会社公開されません)</p>
+
+<p class="arw"><img src="img/arw.png" alt="">
+</p>
+
+<p class="bd_img"><img src="img/p04.jpg" alt="取引成立！"></p>
+<p>※商品受け取り後、受取確認・評価画面から取引の評価(5段階評価)を行うことができます。
+</p>
+</div>
+
+<div class="btn"><a href="/users/sign_up" target="_blank" class="square_btn">ものづくりオークション 事前登録はこちら</a></div>
+
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<!------------------------------------------------------------------------------------------------------->
+<div class="wrapper one">
+<div class="container">
+<div class="contents">
+<div id="page_main">
+<div class="section">
+
+<h2>マイ・オークション機能で簡単・便利に！</h2>
+<div class="c_body">
+<p class="t_center">マイ・オークションでは、欲しい商品をオークションで手に入れるための、お役立ち情報を見ることができます。<br />
+上手に利用して、欲しい商品を手に入れましょう！</p>
+
+<div class="gbox lbr">
+<h3>ウオッチリスト</h3>
+<p>気になる商品をウォッチリストにお気に入りとして登録すると、いちいち検索しなくても、ウォッチリストからすぐにその商品を見ることができるようになります。<br />
+入札はためらうけど、オークションの行方が気になる・・・そんなときはウォッチリストに登録すれば、簡単にチェックできるようになります！</p>
+<p class="bd_img"><img src="img/m08.jpg" alt=""></p>
+</div>
+
+<div class="gbox lbr">
+<h3>保存した検索条件で簡単検索！</h3>
+<p>同じ検索条件で商品を探すことが多い場合、その検索条件（希望の工具名やメーカーなど）を登録すれば、検索キーワード入力なしでも簡単に検索結果を表示できるようになります！</p>
+<p class="bd_img"><img src="img/m09.jpg" alt=""></p>
+</div>
+
+<div class="gbox lbr">
+<h3>フォローリスト</h3>
+<p>お気に入りの出品会社をフォローリストに登録すると、その会社の新着商品を表示できるようになります。<br />
+次回の取引の参考にしましょう！</p>
+<p class="bd_img"><img src="img/m10.jpg" alt=""></p>
+</div>
+
+<div class="btn"><a href="/users/sign_up" target="_blank" class="square_btn">ものづくりオークション 事前登録はこちら</a></div>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="wrapper">
+<div class="container">
+<div class="contents">
+<div id="page_up" class="forpc">
+<a href="#top"><img src="img/page_top.png" alt="PAGE TOP" width="50" height="50" /></a>
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="wrapper">
+<div class="container">
+<div class="contents">
+<p id="copy">
+Copyright © ものづくりオークション. All Rights Reserved.
+</div>
+</div>
+</div>
+</div>
+
+<div class="forsp">
+<p style="display: block;" class="pagetop_sp"><a href="#top"><img src="img/pagetop-sp.png" alt="ページの先頭へ" height="45" width="45"></a></p>
+</div>
+
+</body>
+</html>
