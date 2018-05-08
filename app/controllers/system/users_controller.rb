@@ -1,9 +1,9 @@
 class System::UsersController < System::ApplicationController
   def index
-    @search    = User.search(params[:q])
+    @search = User.search(params[:q])
 
     @users  = @search.result.order(created_at: :desc)
-    @pusers = @users.page(params[:page])
+    @pusers = @users.page(params[:page]).per(100)
   end
 
   def new

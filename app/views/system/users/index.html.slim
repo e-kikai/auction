@@ -6,14 +6,19 @@ ul.nav.nav-pills
     span.glyphicon.glyphicon-plus
     span.btn-content 新規登録
 
-  - if params.dig(:q, :seller_eq)
-    = link_to "/system/users/", class: "btn btn-info" do
-      span.glyphicon.glyphicon-filter
-      span.btn-content すべて表示
-  - else
-    = link_to "/system/users/?q[seller_eq]=true", class: "btn btn-info" do
-      span.glyphicon.glyphicon-filter
-      span.btn-content 出品会社のみ表示
+  / - if params.dig(:q, :seller_eq)
+  /   = link_to "/system/users/", class: "btn btn-info" do
+  /     span.glyphicon.glyphicon-filter
+  /     span.btn-content すべて表示
+  / - else
+  /   = link_to "/system/users/?q[seller_eq]=true", class: "btn btn-info" do
+  /     span.glyphicon.glyphicon-filter
+  /     span.btn-content 出品会社のみ表示
+
+  .btn-group role="group"
+    = link_to "すべて表示",       "/system/users/",                  class: "btn btn-info"
+    = link_to "ユーザのみ表示",   "/system/users/?q[seller_eq]=false",   class: "btn btn-info"
+    = link_to "出品会社のみ表示", "/system/users/?q[seller_eq]=true", class: "btn btn-info"
 
 = paginate @pusers
 
@@ -33,7 +38,7 @@ ul.nav.nav-pills
         th パスワード変更
         th 登録日時
         th 削除
-      - @users.each do |us|
+      - @pusers.each do |us|
         tr
           td = us.name
           td = us.company
