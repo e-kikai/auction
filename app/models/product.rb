@@ -54,6 +54,8 @@
 #
 
 class Product < ApplicationRecord
+  require 'csv'
+  
   soft_deletable
   default_scope { without_soft_destroyed }
 
