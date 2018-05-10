@@ -7,9 +7,9 @@ ul.nav.nav-pills
     span.btn-content 新規登録
 
   .btn-group role="group"
-    = link_to "すべて表示",       "/system/helps/",                  class: "btn btn-info"
-    = link_to "ユーザのみ表示",   "/system/helps/?q[target_eq]=0",   class: "btn btn-info"
-    = link_to "出品会社のみ表示", "/system/helps/?q[target_eq]=100", class: "btn btn-info"
+    = link_to "すべて",       "/system/helps/",                  class: "btn btn-info"
+    = link_to "ユーザのみ",   "/system/helps/?q[target_eq]=0",   class: "btn btn-info"
+    = link_to "出品会社のみ", "/system/helps/?q[target_eq]=100", class: "btn btn-info"
 
 = paginate @phelps
 

@@ -16,9 +16,9 @@ ul.nav.nav-pills
   /     span.btn-content 出品会社のみ表示
 
   .btn-group role="group"
-    = link_to "すべて表示",       "/system/users/",                  class: "btn btn-info"
-    = link_to "ユーザのみ表示",   "/system/users/?q[seller_eq]=false",   class: "btn btn-info"
-    = link_to "出品会社のみ表示", "/system/users/?q[seller_eq]=true", class: "btn btn-info"
+    = link_to "すべて",       "/system/users/",                    class: "btn btn-info"
+    = link_to "ユーザのみ",   "/system/users/?q[seller_eq]=false", class: "btn btn-info"
+    = link_to "出品会社のみ", "/system/users/?q[seller_eq]=true",  class: "btn btn-info"
 
 = paginate @pusers
 
