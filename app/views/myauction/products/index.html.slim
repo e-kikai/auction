@@ -49,7 +49,7 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
         th.num = sort_link(@search, :detail_logs_count)
         th.num = sort_link(@search, :watches_count)
         th.sns SNSシェア
-        th 追記
+        th 追記<br />変更
         th.num 残り<br />時間
         / th 自社落札
         th 出品<br />キャンセル
@@ -126,7 +126,7 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
 
           td = link_to({ action: :additional, id: pr.id }, class: "btn btn-success") do
             span.glyphicon.glyphicon-edit
-            =< "追記"
+            =< "変更"
           td.num = pr.remaining_time
 
           / td

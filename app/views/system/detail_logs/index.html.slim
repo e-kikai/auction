@@ -23,5 +23,5 @@ table.table.table-hover.table-condensed.table-striped
       td = lo.host
       td = lo.user.try(:account)
       td.num = lo.product_id
-      td = lo.product ? lo.product.name : "× (削除された商品)"
+      td = lo.product ? (link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank") : "× (削除された商品)"
       td.price = lo.product ? number_to_currency(lo.product.max_price) : ""

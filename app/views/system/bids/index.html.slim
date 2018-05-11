@@ -19,5 +19,5 @@ table.table.table-hover.table-condensed.table-striped
       td = bi.created_at
       td = bi.user.try(:account)
       td.num = bi.product_id
-      td = bi.product ? lo.product.name : "× (削除された商品)"
+      td = bi.product ? (link_to bi.product.name, "/products/#{bi.product_id}", target: "_blank") : "× (削除された商品)"
       td.price = number_to_currency(bi.amount)

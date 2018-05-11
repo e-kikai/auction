@@ -46,6 +46,24 @@
       th = f.label :additional, class: :additional
       td = f.text_area :additional, class: "form-control description additional"
 
+
+    tr
+      th = f.label :youtube
+      td = f.text_field :youtube, class: "form-control"
+    tr
+      th = f.label :hashtags
+      td
+        = f.text_area :hashtags, class: "form-control"
+        p.help-block 空白区切りで記述してください
+
+    tr
+      th = f.label :auto_resale
+      td.form-inline
+        .
+          = (f.select :auto_resale_date, ((1..14).map { |i| ["#{i}日", i] }.to_h), {}, { class: "form-control short" }) + " × "
+          = (f.select :auto_resale, ({"再出品しない" => 0, "無制限" => 999}.merge((1..30).map { |i| ["#{i}回", i] }.to_h)), {}, { class: "form-control short" })
+        p.help-block 落札されなかった場合、設定した回数だけ終了日時を延長します
+        
   = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
     span.glyphicon.glyphicon-save
     span.btn-content 保存

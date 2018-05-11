@@ -36,7 +36,7 @@ table.table.table-hover.table-condensed.table-striped.product-table
       td.num = pr.id
       td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
       / td = pr.code
-      td = link_to pr.name, "/products/#{pr.id}"
+      td = link_to pr.name, "/products/#{pr.id}", target: "_blank"
       td = pr.user.company
       td = I18n.l(pr.created_at, format: :full_date)
       td

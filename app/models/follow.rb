@@ -2,8 +2,8 @@
 #
 # Table name: follows
 #
-#  id                :integer          not null, primary key
-#  user_id           :integer          not null
+#  id                :bigint(8)        not null, primary key
+#  user_id           :bigint(8)        not null
 #  to_user_id        :integer          not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
