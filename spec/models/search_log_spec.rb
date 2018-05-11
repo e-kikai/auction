@@ -2,12 +2,12 @@
 #
 # Table name: search_logs
 #
-#  id          :integer          not null, primary key
-#  user_id     :integer
-#  category_id :integer
+#  id          :bigint(8)        not null, primary key
+#  user_id     :bigint(8)
+#  category_id :bigint(8)
 #  company_id  :integer
 #  keywords    :string
-#  search_id   :integer
+#  search_id   :bigint(8)
 #  ip          :string
 #  host        :string
 #  referer     :string

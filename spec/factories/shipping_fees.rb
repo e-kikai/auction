@@ -2,8 +2,8 @@
 #
 # Table name: shipping_fees
 #
-#  id          :integer          not null, primary key
-#  user_id     :integer
+#  id          :bigint(8)        not null, primary key
+#  user_id     :bigint(8)
 #  shipping_no :integer
 #  addr_1      :string
 #  price       :integer

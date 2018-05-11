@@ -2,7 +2,7 @@
 #
 # Table name: helps
 #
-#  id                :integer          not null, primary key
+#  id                :bigint(8)        not null, primary key
 #  title             :string           default(""), not null
 #  content           :text             default(""), not null
 #  target            :integer          default("ユーザ"), not null

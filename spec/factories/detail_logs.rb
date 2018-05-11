@@ -2,9 +2,9 @@
 #
 # Table name: detail_logs
 #
-#  id         :integer          not null, primary key
-#  user_id    :integer
-#  product_id :integer
+#  id         :bigint(8)        not null, primary key
+#  user_id    :bigint(8)
+#  product_id :bigint(8)
 #  ip         :string
 #  host       :string
 #  ua         :string

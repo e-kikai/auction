@@ -2,9 +2,9 @@
 #
 # Table name: products
 #
-#  id                    :integer          not null, primary key
-#  user_id               :integer          not null
-#  category_id           :integer          not null
+#  id                    :bigint(8)        not null, primary key
+#  user_id               :bigint(8)        not null
+#  category_id           :bigint(8)        not null
 #  name                  :string           default(""), not null
 #  description           :text
 #  dulation_start        :datetime
@@ -25,7 +25,7 @@
 #  returns_comment       :string
 #  auto_extension        :boolean          default("自動延長しない"), not null
 #  early_termination     :boolean          default(FALSE), not null
-#  auto_resale           :integer          default(0)
+#  auto_resale           :integer          default(8)
 #  resaled               :integer
 #  lower_price           :integer
 #  created_at            :datetime         not null
@@ -51,6 +51,7 @@
 #  youtube               :string           default(""), not null
 #  international         :boolean          default("海外発送不可"), not null
 #  search_keywords       :text             default(""), not null
+#  auto_resale_date      :integer          default(7), not null
 #
 
 require 'rails_helper'

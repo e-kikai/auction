@@ -90,7 +90,10 @@
             span.btn-content 宣伝用チラシPDF
           li = link_to asset_path("auction_01.jpg"), target: "_blank" do
             span.glyphicon.glyphicon-picture
-            span.btn-content 宣伝用リンクバナーJPEG
+            span.btn-content 宣伝用リンクバナーJPEG(横長大)
+          li = link_to asset_path("auction_02.jpg"), target: "_blank" do
+            span.glyphicon.glyphicon-picture
+            span.btn-content 宣伝用リンクバナーJPEG(正方形)
 
           li = link_to "/myauction/helps" do
             span.glyphicon.glyphicon-question-sign

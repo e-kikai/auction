@@ -2,10 +2,10 @@
 #
 # Table name: searches
 #
-#  id                :integer          not null, primary key
-#  user_id           :integer
-#  category_id       :integer
-#  product_image_id  :integer
+#  id                :bigint(8)        not null, primary key
+#  user_id           :bigint(8)
+#  category_id       :bigint(8)
+#  product_image_id  :bigint(8)
 #  name              :string
 #  keywords          :text
 #  q                 :text
