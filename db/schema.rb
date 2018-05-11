@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180427160248) do
+ActiveRecord::Schema.define(version: 2018_05_11_052959) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -176,7 +176,7 @@ ActiveRecord::Schema.define(version: 20180427160248) do
     t.string "returns_comment"
     t.boolean "auto_extension", default: false, null: false
     t.boolean "early_termination", default: false, null: false
-    t.integer "auto_resale", default: 0
+    t.integer "auto_resale", default: 8
     t.integer "resaled"
     t.integer "lower_price"
     t.datetime "created_at", null: false
@@ -202,6 +202,7 @@ ActiveRecord::Schema.define(version: 20180427160248) do
     t.string "youtube", default: "", null: false
     t.boolean "international", default: false, null: false
     t.text "search_keywords", default: "", null: false
+    t.integer "auto_resale_date", default: 7, null: false
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["soft_destroyed_at"], name: "index_products_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_products_on_user_id"

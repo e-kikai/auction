@@ -7,6 +7,21 @@
 
 = paginate @pdetail_logs
 
-.row
+table.table.table-hover.table-condensed.table-striped
+  tr
+    th アクセス日時
+    th IP
+    th ホスト名
+    th アカウント
+    th.num 商品ID
+    th 商品名
+    th.price 最高金額
   - @pdetail_logs.each do |lo|
-    .system-log #{lo.created_at} | #{lo.ip}(#{lo.host})＜#{lo.user.try(:account)}＞ - #{lo.product_id} #{lo.product.name} - #{number_to_currency(lo.product.max_price)}
+    tr
+      td = lo.created_at
+      td = lo.ip
+      td = lo.host
+      td = lo.user.try(:account)
+      td.num = lo.product_id
+      td = lo.product ? lo.product.name : "× (削除された商品)"
+      td.price = lo.product ? number_to_currency(lo.product.max_price) : ""

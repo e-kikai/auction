@@ -7,6 +7,19 @@
 
 = paginate @psearch_logs
 
-.row
+table.table.table-hover.table-condensed.table-striped
+  tr
+    th アクセス日時
+    th IP
+    th ホスト名
+    th アカウント
+    th 検索条件
+    th.num 保存<br />ID
   - @psearch_logs.each do |lo|
-    .system-log #{lo.created_at} | #{lo.ip}(#{lo.host})＜#{lo.user.try(:account)}＞ - #{lo.company.try(:company)} / #{lo.category.try(:name)} / #{lo.keywords} (#{lo.search_id})
+    tr
+      td = lo.created_at
+      td = lo.ip
+      td = lo.host
+      td = lo.user.try(:account)
+      td #{lo.company.try(:company)} / #{lo.category.try(:name)} / #{lo.keywords}
+      td.num #{lo.search_id}

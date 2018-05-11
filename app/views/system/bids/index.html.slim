@@ -7,6 +7,17 @@
 
 = paginate @pbids
 
-.row
+table.table.table-hover.table-condensed.table-striped
+  tr
+    th 入札日時
+    th アカウント
+    th.num 商品ID
+    th 商品名
+    th.price 入札金額
   - @pbids.each do |bi|
-    .system-log #{bi.created_at} | #{bi.user.account} - #{bi.product_id} #{bi.product.name} - #{number_to_currency(bi.amount)}
+    tr
+      td = bi.created_at
+      td = bi.user.try(:account)
+      td.num = bi.product_id
+      td = bi.product ? lo.product.name : "× (削除された商品)"
+      td.price = number_to_currency(bi.amount)

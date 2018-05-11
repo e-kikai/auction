@@ -451,8 +451,6 @@ GEM
       activesupport (>= 3.2)
       choice (~> 0.2.0)
       ruby-graphviz (~> 1.2)
-    rails-footnotes (4.1.8)
-      rails (>= 3.2)
     rails-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
     rails-i18n (5.1.1)
@@ -647,7 +645,6 @@ DEPENDENCIES
   pry-rails
   rails (~> 5.0)
   rails-erd
-  rails-footnotes
   rails-i18n
   rails_real_favicon
   ransack
