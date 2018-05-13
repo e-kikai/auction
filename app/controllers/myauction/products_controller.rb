@@ -193,6 +193,6 @@ class Myauction::ProductsController < Myauction::ApplicationController
   end
 
   def additional_params
-    params.require(:product).permit(:additional, :hashtags, :youtube, :auto_resale, :auto_resale_date)
+    params.require(:product).permit(:category_id, :code, :additional, :hashtags, :youtube, :auto_resale, :auto_resale_date)
   end
 end

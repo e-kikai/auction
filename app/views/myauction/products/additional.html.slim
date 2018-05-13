@@ -11,11 +11,12 @@
 
   table.table.table-hover.table-condensed.form-table
     tr
-      th = f.label :category_id
-      td = @product.category.name
+      th = f.label :category_id, class: :required
+      td = f.select :category_id, Category.options, {include_blank: "-- カテゴリ選択 --"}, class: "form-control", required: "required"
     tr
       th = f.label :code
-      td = @product.code
+      td = f.text_field :code, class: "form-control short"
+
     tr
       th = f.label :name
       td = @product.name
@@ -25,11 +26,8 @@
       td = markdown(@product.description)
 
     tr.form-inline
-      th = f.label :dulation_start
-      td = I18n.l(@product.dulation_start, format: :full_date)
-    tr.form-inline
-      th = f.label :dulation_end
-      td = I18n.l(@product.dulation_end, format: :full_date)
+      th = f.label "出品期間"
+      td = "#{I18n.l(@product.dulation_start, format: :full_date)} 〜 #{I18n.l(@product.dulation_end, format: :full_date)}"
 
     tr.form-inline
       th = f.label :start_price, "開始価格(税抜)"
@@ -63,7 +61,7 @@
           = (f.select :auto_resale_date, ((1..14).map { |i| ["#{i}日", i] }.to_h), {}, { class: "form-control short" }) + " × "
           = (f.select :auto_resale, ({"再出品しない" => 0, "無制限" => 999}.merge((1..30).map { |i| ["#{i}回", i] }.to_h)), {}, { class: "form-control short" })
         p.help-block 落札されなかった場合、設定した回数だけ終了日時を延長します
-        
+
   = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
     span.glyphicon.glyphicon-save
     span.btn-content 保存
