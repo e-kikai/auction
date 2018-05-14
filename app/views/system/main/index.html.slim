@@ -4,26 +4,57 @@
 .row
   .col-md-3
     .panel.panel-default
-      .panel-heading ユーザ・出品会社管理
+      .panel-heading
+        span.glyphicon.glyphicon-user
+        span.btn-content ユーザ・出品会社管理
       ul.nav.nav-pills.nav-stacked
-        li = link_to "ユーザ管理", "/system/users"
-        li = link_to "手数料集計", "/system/total"
+        li = link_to "/system/users" do
+          span.glyphicon.glyphicon-thumbs-up
+          span.btn-content ユーザ管理
+        li = link_to "/system/total" do
+          span.glyphicon.glyphicon-jpy
+          span.btn-content 手数料集計
 
   .col-md-3
     .panel.panel-default
-      .panel-heading 各種管理
+      .panel-heading
+        span.glyphicon.glyphicon-wrench
+        span.btn-content 各種管理
       ul.nav.nav-pills.nav-stacked
-        li = link_to "カテゴリ管理",   "/system/categories"
-        li = link_to "お知らせ管理",   "/system/infos"
-        li = link_to "ヘルプ管理",     "/system/helps"
+        li = link_to "/system/categories" do
+          span.glyphicon.glyphicon-chevron-down
+          span.btn-content カテゴリ管理
+        li = link_to "/system/infos" do
+          span.glyphicon.glyphicon-info-sign
+          span.btn-content お知らせ管理
+        li = link_to "/system/helps" do
+          span.glyphicon.glyphicon-question-sign
+          span.btn-content ヘルプ管理
         - if Rails.env.development?
-          li = link_to "letter_opener", "/letter_opener", target: "_blank"
+          li = link_to "/letter_opener", target: "_blank" do
+            span.glyphicon.glyphicon-envelope
+            span.btn-content letter_opener
   .col-md-3
     .panel.panel-default
-      .panel-heading 履歴
+      .panel-heading
+        span.glyphicon.glyphicon-list
+        span.btn-content 履歴
       ul.nav.nav-pills.nav-stacked
-        li = link_to "出品商品履歴",         "/system/products"
-        li = link_to "入札履歴",             "/system/bids"
-        li = link_to "商品詳細アクセス履歴", "/system/detail_logs"
-        li = link_to "検索履歴",             "/system/search_logs"
-        li = link_to "GoogleAnalytics", "https://analytics.google.com/analytics/web/#embed/report-home/a115918166w172183137p171747763/", target: "_blank"
+        / li = link_to "/system/total/products" do
+        /   span.glyphicon.glyphicon-calendar
+        /   span.btn-content 日別トータル
+        li = link_to "/system/products" do
+          span.glyphicon.glyphicon-plus
+          span.btn-content 出品商品履歴
+        li = link_to "/system/bids" do
+          span.glyphicon.glyphicon-pencil
+          span.btn-content 入札履歴
+        li = link_to "/system/detail_logs" do
+          span.glyphicon.glyphicon-gift
+          span.btn-content 商品詳細アクセス履歴
+        li = link_to "/system/search_logs" do
+          span.glyphicon.glyphicon-search
+          span.btn-content 検索履歴
+        li = link_to "https://analytics.google.com/analytics/web/#embed/report-home/a115918166w172183137p171747763/", target: "_blank" do
+          span.glyphicon.glyphicon-stats
+          span.btn-content GoogleAnalytics

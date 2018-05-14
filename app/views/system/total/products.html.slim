@@ -1,0 +1,14 @@
+- set_meta_tags title: "日別トータル"
+- breadcrumb :system_something, "日別トータル"
+
+= form_tag("/system/products", method: "get", class: "form-inline") do
+  = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+  = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
+
+  = button_tag "検索",  class: "btn btn-info"
+
+= paginate @pproducts
+
+table.table.table-hover.table-condensed.table-striped.product-table
+  tr
+    th.num ID

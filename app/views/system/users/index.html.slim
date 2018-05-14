@@ -6,6 +6,11 @@ ul.nav.nav-pills
     span.glyphicon.glyphicon-plus
     span.btn-content 新規登録
 
+  li = link_to "/system/users.csv", class: "btn btn-default btn-square" do
+    span.glyphicon.glyphicon-download-alt
+    span.btn-content メールCSV
+
+
   / - if params.dig(:q, :seller_eq)
   /   = link_to "/system/users/", class: "btn btn-info" do
   /     span.glyphicon.glyphicon-filter
@@ -28,6 +33,7 @@ ul.nav.nav-pills
   .col-md-12
     table.table.table-hover.table-condensed.table-striped.product-table
       tr
+        th.num ID
         th ユーザ名
         th 会社名
         th ユニーク名
@@ -40,6 +46,7 @@ ul.nav.nav-pills
         th 削除
       - @pusers.each do |us|
         tr
+          td.num = us.id
           td = us.name
           td = us.company
           td = us.account
@@ -50,7 +57,7 @@ ul.nav.nav-pills
             span.glyphicon.glyphicon-edit
             =< "変更"
           td = link_to({ action: :edit_password, id: us.id }, class: "btn btn-success") do
-            span.glyphicon.glyphicon-edit
+            span.glyphicon.glyphicon-lock
             =< "PW変更"
           / td = link_to({ action: :sign_in, id: us.id }, method: :post, class: "btn btn-primary") do
           /   span.glyphicon.glyphicon-log-in

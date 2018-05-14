@@ -248,7 +248,12 @@ class Product < ApplicationRecord
     end
   end
 
-  ### 開催中か ###
+  ### 開始前か ###
+  def before?
+    dulation_start > Time.now
+  end
+
+  ### 終了後か ###
   def finished?
     dulation_end <= Time.now
   end

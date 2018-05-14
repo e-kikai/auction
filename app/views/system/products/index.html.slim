@@ -3,7 +3,9 @@
 
 = form_tag("/system/products", method: "get", class: "form-inline") do
   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
-  = button_tag "月変更",  class: "btn btn-info"
+  = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
+
+  = button_tag "検索",  class: "btn btn-info"
 
 = paginate @pproducts
 
@@ -37,7 +39,7 @@ table.table.table-hover.table-condensed.table-striped.product-table
       td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
       / td = pr.code
       td = link_to pr.name, "/products/#{pr.id}", target: "_blank"
-      td = pr.user.company
+      td = pr.user.company_remove_kabu
       td = I18n.l(pr.created_at, format: :full_date)
       td
         . = I18n.l(pr.dulation_start, format: :full_date)

@@ -1,9 +1,19 @@
 class System::UsersController < System::ApplicationController
+  include Exports
+
   def index
     @search = User.search(params[:q])
 
     @users  = @search.result.order(created_at: :desc)
     @pusers = @users.page(params[:page]).per(100)
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        @users = @users.where(allow_mail: true)
+        export_csv "mailaddress_list.csv"
+      }
+    end
   end
 
   def new

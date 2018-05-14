@@ -29,6 +29,11 @@
       - else
         span.glyphicon.glyphicon-ok
         span.btn-content  このオークションは終了しました。
+- elsif @product.before?
+.row
+  .alert.alert-warning
+      span.glyphicon.glyphicon-alert
+      span.btn-content このオークションは、開始前です。
 
 . itemscope="" itemtype="http://schema.org/Product"
   .row
@@ -153,7 +158,7 @@
             span.product-tax
               | (税込 #{number_to_currency(@product.max_price_with_tax)})
 
-          - unless @product.finished? || @product.user_id == current_user.try(:id)
+          - unless @product.finished? || @product.before? || @product.user_id == current_user.try(:id)
             = button_tag class: "btn btn-warning btn-lg center-block", data: { toggle: :modal, target: "#bid-modal"} do
               span.glyphicon.glyphicon-pencil
               span.btn-content 入札する
