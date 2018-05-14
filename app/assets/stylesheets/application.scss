@@ -196,6 +196,15 @@ table {
     width: 80px;
   }
 
+  td.total_price {
+    width: 120px;
+    text-align: right;
+  }
+
+  th.total_price {
+    width: 120px;
+  }
+
   td.num {
     width: 50px;
     text-align: right;

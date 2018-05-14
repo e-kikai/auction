@@ -1,14 +1,30 @@
-- set_meta_tags title: "日別トータル"
-- breadcrumb :system_something, "日別トータル"
+- set_meta_tags title: "日別トータル、出品予定"
+- breadcrumb :system_something, "日別トータル、出品予定"
 
-= form_tag("/system/products", method: "get", class: "form-inline") do
+= form_tag("/system/total/products", method: "get", class: "form-inline") do
   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
   = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
 
   = button_tag "検索",  class: "btn btn-info"
 
-= paginate @pproducts
+.col-md-offset-3.col-md-6
+  table.table.table-hover.table-condensed.table-striped.product-table
+    tr
+      th 日付
+      th.price 出品件数
+      th.price 開始数
+      th.price 未落札数<br />(延長含)
+      th.price 落札数
+      th.total_price 落札金額
 
-table.table.table-hover.table-condensed.table-striped.product-table
-  tr
-    th.num ID
+    - total = @start_count
+    - (@date.beginning_of_month..@date.end_of_month).each do |day|
+      - total += (@start_counts[day].to_i - @success_counts[day].to_i - @end_counts[day].to_i)
+
+      tr class="#{'danger' if day.strftime('%w') == '0'} #{'info' if day.strftime('%w') == '6'} #{'success' if day == Time.now.to_date}"
+        td = I18n.l(day, format: "%d (%a)")
+        td.price = number_with_delimiter total
+        td.price = number_with_delimiter @start_counts[day]
+        td.price = number_with_delimiter @end_counts[day]
+        td.price = number_with_delimiter @success_counts[day]
+        td.total_price = number_to_currency @success_prices[day]

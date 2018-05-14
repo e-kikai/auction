@@ -19,17 +19,30 @@ class System::TotalController < System::ApplicationController
   end
 
   def products
-    @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
+    @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now.to_date
     @company = params[:company]
 
     # 取得
-    @products  = Product.includes(:product_images, :user).where(created_at: @date.beginning_of_month..@date.end_of_month, template: false).order(created_at: :desc)
-
+    rstart = @date.beginning_of_month
+    rend   = @date.end_of_month
+    auto_sql = "DATE(dulation_end) + auto_resale * auto_resale_date"
+    @products  = Product.includes(:user).where(created_at: @date.beginning_of_month..@date.end_of_month, template: false)
+    @products  = Product.includes(:user).where(template: false)
     @products = @products.where(user: @company) if @company.present?
+
+    @start_counts   = @products.group("DATE(dulation_start)").having("DATE(dulation_start) BETWEEN ? AND ?", rstart, rend).count
+    @end_counts     = @products.where(max_bid_id: nil).group(auto_sql).having("#{auto_sql} BETWEEN ? AND ?", rstart, rend).count
+
+    @success        = @products.where.not(max_bid_id: nil).group("DATE(dulation_end)").having("DATE(dulation_end) BETWEEN ? AND ?", rstart, rend)
+    @success_counts = @success.count
+    @success_prices = @success.sum(:max_price)
+
+    @start_count    = @products.where("dulation_start < ?", rstart).where("(max_bid_id IS NOT NULL AND dulation_end >= ?) OR (max_bid_id IS NULL AND #{auto_sql} >=?)", rstart, rstart).count
+
 
     @pproducts = @products.page(params[:page]).per(100)
 
     # セレクタ
-    @company_selectors = User.companies.pluck(:company, :id)
+    @company_selectors = User.companies.map { |co| [co.company_remove_kabu, co.id] }
   end
 end
