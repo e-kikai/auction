@@ -7,9 +7,6 @@
 /// OGP ///
 - set_meta_tags og: { type: "website", title: "ものづくりオークション", description: "ものづくりに特化したオークションサイト", url: root_url, site_name: "ものづくりオークション", image: asset_url("auction_02.jpg") }
 
-- set_meta_tags twitter: { image: @product.product_images.first.image.thumb.url }
-- set_meta_tags og: { image: @product.product_images.first.image.view.url }
-
 .toppage.clearfix
   .row
     - if user_signed_in?
