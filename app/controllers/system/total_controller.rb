@@ -30,6 +30,7 @@ class System::TotalController < System::ApplicationController
     @products  = Product.includes(:user).where(template: false)
     @products = @products.where(user: @company) if @company.present?
 
+    # 集計
     @start_counts   = @products.group("DATE(dulation_start)").having("DATE(dulation_start) BETWEEN ? AND ?", rstart, rend).count
     @end_counts     = @products.where(max_bid_id: nil).group(auto_sql).having("#{auto_sql} BETWEEN ? AND ?", rstart, rend).count
 
@@ -39,10 +40,7 @@ class System::TotalController < System::ApplicationController
 
     @start_count    = @products.where("dulation_start < ?", rstart).where("(max_bid_id IS NOT NULL AND dulation_end >= ?) OR (max_bid_id IS NULL AND #{auto_sql} >=?)", rstart, rstart).count
 
-
-    @pproducts = @products.page(params[:page]).per(100)
-
     # セレクタ
-    @company_selectors = User.companies.map { |co| [co.company_remove_kabu, co.id] }
+    @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
   end
 end

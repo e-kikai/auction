@@ -9,7 +9,7 @@ class System::ProductsController < System::ApplicationController
 
     @pproducts = @products.page(params[:page]).per(100)
 
-    @company_selectors = User.companies.map { |co| [co.company_remove_kabu, co.id] }
+    @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
 
   end
 end
