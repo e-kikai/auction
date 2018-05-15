@@ -5,6 +5,13 @@
 
 h4 #{title} : #{number_with_delimiter(@products.count)} 件
 
+= form_tag("/myauction/products", method: "get", class: "form-inline") do
+  = hidden_field_tag :cond, params[:cond]
+  = text_field_tag "q[code_cont]", (params[:q][:code_cont] rescue ""), placeholder: "管理番号", class: "form-control"
+  = text_field_tag "q[name_cont]", (params[:q][:name_cont] rescue ""), placeholder: "商品名", class: "form-control"
+
+  = button_tag "検索",  class: "btn btn-info"
+
 = paginate @pproducts
 
 - if @pproducts.length == 0
