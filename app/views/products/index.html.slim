@@ -72,6 +72,18 @@
           = link_to("すべて", params.to_unsafe_h.deep_merge(q: {state_eq: nil})) + " | "
           = link_to("中古", params.to_unsafe_h.deep_merge(q: {state_eq: Product.states["中古"]})) + " | "
           = link_to "新品", params.to_unsafe_h.deep_merge(q: {state_eq: Product.states["新品"]})
+
+    .panel.panel-default
+      .panel-heading
+        span.glyphicon.glyphicon-search
+        span.btn-content カテゴリから探す
+      ul.list-group
+        = link_to "すべて", "products", class: "list-group-item"
+        - @roots.each do |ca|
+          = link_to "#{ca.name}", "products?category_id=#{ca.id}", class: "list-group-item"
+          - ca.children.order(:order_no).each do |ca2|
+            = link_to "　#{ca2.name}", "products?category_id=#{ca2.id}", class: "list-group-item"
+
   .col-md-10
     .search-title
       span.glyphicon.glyphicon-search
@@ -104,11 +116,11 @@
               .
                 span.inner-title カテゴリ
                 - pr.category.path.each.with_index do |ca, i|
-                  / =<> ">" if i != 0
+                  = " > " if i != 0
 
-                  /// 工具のみの仮処理
-                  - next if i == 0
-                  = " > " if i != 1
+                  / /// 工具のみの仮処理
+                  / - next if i == 0
+                  / = " > " if i != 1
                   = link_to(ca.name, "products/?category_id=#{ca.id}")
           td.price.absolute
             strong

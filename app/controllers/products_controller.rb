@@ -24,6 +24,8 @@ class ProductsController < ApplicationController
     # フィルタリング
     @select_categories = @products.joins(:category).group(:category_id).group("categories.name").reorder("count_id DESC").count
     @select_addr1      = @products.group(:addr_1).reorder(:addr_1).count
+
+    @roots = Category.roots.order(:order_no)
   end
 
   def show

@@ -17,8 +17,8 @@ crumb :category do |ca|
   link ca.name, "/products?category_id=#{ca.id}"
   if ca.root?
     parent :root
-  elsif ca.depth <= 1 # 工具のみのときの仮処理
-    parent :root
+  # elsif ca.depth <= 1 # 工具のみのときの仮処理
+  #   parent :root
   else
     parent :category, ca.parent
   end
