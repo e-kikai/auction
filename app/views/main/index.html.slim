@@ -49,6 +49,7 @@
         /   .pull-right
         /     .glyphicon.glyphicon-menu-right
       ul.list-group
+        = link_to "すべて", "products", class: "list-group-item"
         - @roots.each do |ca|
           - ca.children.each do |ca2|
             = link_to ca2.name, "products?category_id=#{ca2.id}", class: "list-group-item"

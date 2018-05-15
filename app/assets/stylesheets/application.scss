@@ -42,7 +42,7 @@ header {
     height: 50px;
   }
 }
-//// キーワード検索
+/// キーワード検索 ///
 .search-area .input-group {
   width: 100%;
 }
@@ -60,6 +60,17 @@ header {
 .btn-search-save {
   width: 100%;
   margin-bottom: 4px;
+}
+
+.search-title {
+  background: $main-color;
+  padding: 6px 12px;
+  margin-bottom: 8px;
+
+  .count {
+    margin-left: 16px;
+    font-weight: bold;
+  }
 }
 
 /// footer ///
@@ -121,27 +132,27 @@ footer {
   margin: 0 8px;
 }
 
- #page-top {
-   position: fixed;
-   bottom: 20px;
-   right: 20px;
- }
+#page-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
 
- label.required:after {
-   content: "必須";
-   color: #D00;
-   vertical-align: top;
-   font-size: 80%;
-   font-weight: normal;
-   margin-left: 10px;
- }
+label.required:after {
+  content: "必須";
+  color: #D00;
+  vertical-align: top;
+  font-size: 80%;
+  font-weight: normal;
+  margin-left: 10px;
+}
 
- .product-title {
-   background: $main-color;
-   padding: 6px;
- }
+.product-title {
+  background: $main-color;
+  padding: 6px;
+}
 
- .product-table {
+.product-table {
    tr.img {
      width: 160px;
    }
