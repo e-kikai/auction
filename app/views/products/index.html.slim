@@ -33,22 +33,24 @@
         span.btn-content この検索条件を保存
     = hidden_field_tag :search_id, params[:search_id]
 
+    - base_params = params.to_unsafe_h.merge(page: nil)
+
     .panel.panel-default
       .panel-heading
         span.glyphicon.glyphicon-filter
         =< "絞り込み"
       .panel-body
         label カテゴリ
-        . = link_to "すべて", params.to_unsafe_h.deep_merge(category_id: nil)
+        . = link_to "すべてのカテゴリ", base_params.deep_merge(category_id: nil)
         - @select_categories.each do |i, count|
-          . = link_to "#{i[1]} (#{count})", params.to_unsafe_h.merge(category_id: i[0])
+          . = link_to "#{i[1]} (#{count})", base_params.merge(category_id: i[0])
 
         br
         label 発送元
-        . = link_to "すべて", params.to_unsafe_h.deep_merge(q: {addr_1_eq: nil})
+        . = link_to "すべての地域", base_params.deep_merge(q: {addr_1_eq: nil})
         - @select_addr1.each do |i, count|
           - next if i.blank?
-          . = link_to "#{i} (#{count})", params.to_unsafe_h.deep_merge(q: {addr_1_eq: i})
+          . = link_to "#{i} (#{count})", base_params.deep_merge(q: {addr_1_eq: i})
 
         br
         = form_tag request.fullpath, method: :get, class: "form-inline" do
@@ -69,9 +71,9 @@
         br
         label 商品の状態
         .
-          = link_to("すべて", params.to_unsafe_h.deep_merge(q: {state_eq: nil})) + " | "
-          = link_to("中古", params.to_unsafe_h.deep_merge(q: {state_eq: Product.states["中古"]})) + " | "
-          = link_to "新品", params.to_unsafe_h.deep_merge(q: {state_eq: Product.states["新品"]})
+          = link_to("すべて", base_params.deep_merge(q: {state_eq: nil})) + " | "
+          = link_to("中古", base_params.deep_merge(q: {state_eq: Product.states["中古"]})) + " | "
+          = link_to "新品", base_params.deep_merge(q: {state_eq: Product.states["新品"]})
 
     .panel.panel-default
       .panel-heading
