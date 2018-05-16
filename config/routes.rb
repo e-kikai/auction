@@ -82,7 +82,7 @@ Rails.application.routes.draw do
     resources :categories, only: [:index, :new, :create, :edit, :update]
     resources :users,      only: [:index, :new, :create, :edit, :update, :destroy] do
       member do
-        post  'sign_in'
+        post  'signin'
         get   'edit_password'
         patch 'update_password'
       end

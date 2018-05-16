@@ -53,13 +53,13 @@ class System::UsersController < System::ApplicationController
     redirect_to "/system/users/", notice: "#{@user.name}を削除しました"
   end
 
-  # def sign_in
-  #   @user = User.find(params[:id])
-  #
-  #   current_user = @user
-  #
-  #   redirect_to "/myauction/", notice: "#{@user.name}で代理ログインしました"
-  # end
+  def signin
+    @user = User.find(params[:id])
+
+    sign_in(:user, @user, bypass: true)
+
+    redirect_to "/myauction/", notice: "#{@user.name}で代理ログインしました"
+  end
 
   def edit_password
     @user = User.find(params[:id])
