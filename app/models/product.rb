@@ -142,7 +142,7 @@ class Product < ApplicationRecord
 
   scope :finished, -> {
     # where("dulation_end BETWEEN ? AND ?", LIMIT_DAY, Time.now).order(dulation_end: :desc)
-    where("dulation_end < ?", Time.now).where("template = ?", false).order(dulation_end: :desc)
+    where("dulation_end < ?", Time.now).where(template: false).order(dulation_end: :desc)
   }
 
   scope :status, -> cond {
@@ -157,7 +157,7 @@ class Product < ApplicationRecord
   }
 
   scope :templates, -> {
-    where("template = ?", true)
+    where(template: true)
   }
 
   ### callback ###
