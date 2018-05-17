@@ -141,7 +141,7 @@
 
           /// リッチスニペット ///
           meta itemprop="sku" content="#{@product.id}"
-          .product-price itemscope="" itemtype="http://schema.org/Offer"
+          .product-price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer"
             meta itemprop="price" content="#{@product.max_price}"
             meta itemprop="priceCurrency" content="JPY"
             - if @product.state == "新品"

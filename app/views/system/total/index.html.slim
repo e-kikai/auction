@@ -9,9 +9,11 @@
 - total_fee     = 0
 
 .col-md-offset-2.col-md-8
-  = form_tag("/system/total", method: "get", class: "form-inline") do
+  = form_tag("/system/total", method: "get", class: "form-inline filtering-form") do
     = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
-    = button_tag "月変更",  class: "btn btn-info", style: "margin-right:8px;"
+    = button_tag class: "btn btn-info", style: "margin-right:8px;" do
+      span.glyphicon.glyphicon-search
+      span.btn-content 月変更
 
     = button_tag :submit, name: :format, value: :pdf, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
       span.glyphicon.glyphicon-file

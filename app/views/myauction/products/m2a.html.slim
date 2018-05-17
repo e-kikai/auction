@@ -3,13 +3,15 @@
 
 h3 マシンライフから出品
 
-= form_tag("/myauction/products/m2a", method: "get", class: "form-inline") do
+= form_tag("/myauction/products/m2a", method: "get", class: "form-inline filtering-form") do
   / = select_date @date, {prefix: :date, start_year: 2011, discard_day: true, include_blank: "-なし-"}, {class: "form-control"}
   / = button_tag "月変更",  class: "btn btn-info"
 
   = select_tag :date, options_for_select(@date_selector, selected: @date), {include_blank: "-- 年月選択なし --", class: "form-control"}
   = select_tag :genre, options_for_select(@genre_selectors, selected: @genre), {include_blank: "-- ジャンル選択なし --", class: "form-control"}
-  = button_tag "検索", name: "s", value: "1", class: "btn btn-info"
+  = button_tag name: "s", value: "1", class: "btn btn-info" do
+    span.glyphicon.glyphicon-search
+    span.btn-content 検索
 
 hr
 

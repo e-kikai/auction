@@ -264,20 +264,20 @@ table {
         background: #03b833;
       }
     }
-
-    // .fb-share-button {
-    //   margin-bottom: 5px;
-    // }
-    //
-    // .twitter-share-button {
-    // }
-    //
-    // .line-it-button {
-    // }
   }
 
   th.sns {
     width: 90px;
+  }
+
+  th.sepa,
+  td.sepa {
+    border-right: 1px solid #ddd;
+  }
+
+  th.sep2,
+  td.sep2 {
+    border-right: 3px double #ddd;
   }
 }
 
@@ -581,7 +581,6 @@ hr.detail-price-calc {
 }
 
 /// マイ・オークション ///
-
 .nav-pills.nav-stacked {
   hr {
     margin: 4px 0;
@@ -674,6 +673,15 @@ dl.star-dl {
 
   dd {
     margin-left: 128px;
+  }
+}
+
+.filtering-form {
+  margin-bottom: 8px;
+
+  input,
+  select {
+    margin-right: 4px;
   }
 }
 

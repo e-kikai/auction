@@ -71,3 +71,8 @@ set :whenever_environment, :production
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
+
+after "deploy", "refresh_sitemaps"
+task :refresh_sitemaps do
+  run "cd #{latest_release} && RAILS_ENV=#{rails_env} bundle exec rake sitemap:refresh"
+end
