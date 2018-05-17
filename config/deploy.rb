@@ -91,3 +91,8 @@ end
 before 'deploy:compile_assets', 'bower:install'
 
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+
+after "deploy", "refresh_sitemaps"
+task :refresh_sitemaps do
+  run "cd #{latest_release} && RAILS_ENV=#{rails_env} rake sitemap:refresh"
+end
