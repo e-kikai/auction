@@ -92,4 +92,4 @@ before 'deploy:compile_assets', 'bower:install'
 
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
-after 'deploy:restart', 'deploy:sitemap:refresh'
+after 'deploy:restart', 'sitemap:refresh'
