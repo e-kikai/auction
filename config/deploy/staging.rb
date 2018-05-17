@@ -17,8 +17,6 @@ set :unicorn_options,  " -p 3000 "
 ask :branch, 'master'
 set :pty, false
 
-set :keep_releases, 10
-
 set :whenever_environment, :staging
 
 # role-based syntax
