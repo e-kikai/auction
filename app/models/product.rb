@@ -446,7 +446,8 @@ class Product < ApplicationRecord
   end
 
   def make_search_keywords
-    self.search_keywords = "#{name} #{category.name} #{user.company} #{state} #{addr_1} #{addr_2} #{hashtags}".strip
+    categories = category.path.map { |ca| ca.name }.join(" ")
+    self.search_keywords = "#{name} #{categories} #{user.company} #{state} #{addr_1} #{addr_2} #{hashtags}".strip
     self
   end
 

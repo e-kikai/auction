@@ -6,7 +6,7 @@
 - if @product.prompt_dicision_price
   - desc += "|即決価格 #{number_to_currency @product.prompt_dicision_price_with_tax}"
 
-- set_meta_tags keywords: @product.hashtags, description: desc
+- set_meta_tags keywords: "オークション ものオク #{@product.search_keywords}", description: desc
 
 /// Twitterカード ///
 - set_meta_tags twitter: { card: "summary", site: "@username" }
