@@ -95,7 +95,7 @@ class Product < ApplicationRecord
   ### enum ###
   enum shipping_user:  { "落札者" => 0, "出品者" => 100, "店頭引取り" => 500 }
   enum delivery_date:  { "未設定" => 0, "1〜2日で発送" => 100, "3〜7日で発送" => 200, "8日以降に発送" => 300 }
-  enum state:          { "中古" => 0, "新品" => 100, "その他" => 200 }
+  enum state:          { "中古" => 0, "未使用品" => 50, "新品" => 100, "その他" => 200 }
   enum international:  { "海外発送不可" => false, "海外発送可" => true }
   enum returns:        { "返品不可" => false, "返品可" => true }
   enum auto_extension: { "自動延長しない" => false, "自動延長する" => true }
@@ -447,7 +447,7 @@ class Product < ApplicationRecord
 
   def make_search_keywords
     categories = category.path.map { |ca| ca.name }.join(" ")
-    self.search_keywords = "#{name} #{categories} #{user.company} #{state} #{addr_1} #{addr_2} #{hashtags}".strip
+    self.search_keywords = "#{name} #{categories} #{user.company} #{state} #{state_comment} #{addr_1} #{addr_2} #{hashtags}".strip
     self
   end
 

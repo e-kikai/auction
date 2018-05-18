@@ -73,6 +73,7 @@
         .
           = link_to("すべて", base_params.deep_merge(q: {state_eq: nil})) + " | "
           = link_to("中古", base_params.deep_merge(q: {state_eq: Product.states["中古"]})) + " | "
+          = link_to("未使用品", base_params.deep_merge(q: {state_eq: Product.states["未使用品"]})) + " | "
           = link_to "新品", base_params.deep_merge(q: {state_eq: Product.states["新品"]})
 
     .panel.panel-default
