@@ -141,11 +141,12 @@
     = paginate @pproducts
 
     - if @detaillog_products.present?
-      label
-        span.glyphicon.glyphicon-ok.check-icon
-        span.btn-content 最近チェックした商品
-      .panel.panel-default
-        .panel-body.toppage-contents
-          .toppage-scroll
-            - @detaillog_products.each do |pr|
-              = render "/main/product_panel", product: pr
+      .row
+        label
+          span.glyphicon.glyphicon-ok.check-icon
+          span.btn-content 最近チェックした商品
+        .panel.panel-default
+          .panel-body.toppage-contents
+            .toppage-scroll
+              - @detaillog_products.each do |pr|
+                = render "/main/product_panel", product: pr

@@ -40,6 +40,11 @@ class ProductsController < ApplicationController
     if user_signed_in?
       @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: current_user.addr_1)
     end
+
+    # このカテゴリの人気商品
+    @category_products = Product.status(Product::STATUS[:start]).includes(:product_images)
+      .where(category_id: @product.category.subtree_ids).where.not(id: @product.id)
+      .order(bids_count: :desc).limit(Product::NEW_MAX_COUNT)
   end
 
   def bids
