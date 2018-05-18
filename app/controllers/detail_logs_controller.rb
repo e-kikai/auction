@@ -2,8 +2,6 @@ class DetailLogsController < ApplicationController
   require 'resolv'
 
   def create
-    ip = request.env["HTTP_X_FORWARDED_FOR"].split(",").first.strip || request.remote_ip
-
     status = DetailLog.create(
       product_id: params[:product_id],
       user_id:    user_signed_in? ? current_user.id : nil,

@@ -23,5 +23,5 @@ table.table.table-hover.table-condensed.table-striped
       td = lo.ip
       td = lo.host
       td = lo.user.try(:account)
-      td #{lo.company.try(:company)} / #{lo.category.try(:name)} / #{lo.keywords}
+      td #{lo.company.try(:company_remove_kabu)} / #{lo.category.try(:name)} / #{lo.keywords}
       td.num #{lo.search_id}

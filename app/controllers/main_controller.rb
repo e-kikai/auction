@@ -7,9 +7,9 @@ class MainController < ApplicationController
     @roots = Category.roots.order(:order_no)
 
     # 最近チェックした商品
-    where_query = user_signed_in? ? {user_id: current_user.id} : {ip: (request.env["HTTP_X_FORWARDED_FOR"] || request.remote_ip)}
+    where_query = user_signed_in? ? {user_id: current_user.id} : {ip: ip}
 
-    detaillog_ids =  DetailLog.order(id: :desc).limit(Product::NEW_MAX_COUNT).select(:product_id).where(where_query)
+    detaillog_ids = DetailLog.order(id: :desc).limit(Product::NEW_MAX_COUNT).select(:product_id).where(where_query)
     @detaillog_products = Product.includes(:product_images).where(id: detaillog_ids)
 
     # チェックした商品の関連商品

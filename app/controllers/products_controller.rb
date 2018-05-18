@@ -26,6 +26,12 @@ class ProductsController < ApplicationController
     @select_addr1      = @products.group(:addr_1).reorder(:addr_1).count
 
     @roots = Category.roots.order(:order_no)
+
+    # 最近チェックした商品
+    where_query = user_signed_in? ? {user_id: current_user.id} : {ip: ip}
+
+    detaillog_ids = DetailLog.order(id: :desc).limit(Product::NEW_MAX_COUNT).select(:product_id).where(where_query)
+    @detaillog_products = Product.includes(:product_images).where(id: detaillog_ids)
   end
 
   def show

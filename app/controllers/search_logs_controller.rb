@@ -2,8 +2,6 @@ class SearchLogsController < ApplicationController
   require 'resolv'
 
   def create
-    ip = request.env["HTTP_X_FORWARDED_FOR"].split(",").first.strip || request.remote_ip
-
     status = SearchLog.create(
       category_id: params[:category_id],
       company_id:  params[:company_id],
