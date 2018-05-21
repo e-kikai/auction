@@ -5,6 +5,12 @@ class Myauction::ProductsController < Myauction::ApplicationController
     @search    = current_user.products.search(params[:q])
 
     @products  = @search.result.status(params[:cond])
+
+    if params[:cond] == "3" && params[:all].blank?
+      in_codes  = current_user.products.where(cancel: nil).where.not(code: "").select(:code)
+      @products = @products.where.not(code: in_codes)
+    end
+
     @pproducts = @products.page(params[:page]).includes(:product_images, max_bid: :user)
   end
 

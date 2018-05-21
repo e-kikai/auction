@@ -10,8 +10,8 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
   = text_field_tag "q[code_cont]", (params[:q][:code_cont] rescue ""), placeholder: "管理番号", class: "form-control"
   = text_field_tag "q[name_cont]", (params[:q][:name_cont] rescue ""), placeholder: "商品名", class: "form-control"
 
-  / - if params[:cond] == "3"
-  /   = select_tag :all, options_for_select({"再出品した商品を非表示" => nil, "すべての商品" => 1}, selected: params[:all]), {class: "form-control"}
+  - if params[:cond] == "3"
+    = select_tag :all, options_for_select({"再出品した商品を非表示" => nil, "すべての商品" => 1}, selected: params[:all]), {class: "form-control"}
 
   = button_tag class: "btn btn-info" do
     span.glyphicon.glyphicon-search
@@ -20,7 +20,7 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
 = paginate @pproducts
 
 - if @pproducts.length == 0
-  p 出品している商品はありません
+  p 該当する商品はありません
 - else
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
