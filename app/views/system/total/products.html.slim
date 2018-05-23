@@ -26,7 +26,7 @@
 
     - total = @start_count
     - (@date.beginning_of_month..@date.end_of_month).each do |day|
-      - total += (@start_counts[day].to_i - @success_counts[day].to_i - @end_counts[day].to_i)
+      - total += (@start_counts[day].to_i - @success_counts[day].to_i - @end_counts[day].to_i - @cancel_counts[day].to_i)
 
       tr class="#{'danger' if day.strftime('%w') == '0'} #{'info' if day.strftime('%w') == '6'} #{'success' if day == Time.now.to_date}"
         td.sepa = I18n.l(day, format: "%d (%a)")
