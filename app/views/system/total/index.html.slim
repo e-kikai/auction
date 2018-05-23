@@ -1,6 +1,7 @@
 - set_meta_tags title: "手数料集計"
 - breadcrumb :system_something, "手数料集計"
 
+- total_total   = 0
 - total_conunt  = 0
 - total_success = 0
 - total_access  = 0
@@ -28,13 +29,18 @@
       th.num ID
       th 出品会社名
       th.num 出品<br />件数
+      th.num 終了<br />件数
       th.num 落札<br />件数
       th.num 閲覧<br />総数
       th.num ウォッ<br />チ総数
       th.total_price 落札総額
       th.total_price 手数料<br />(#{Product::FEE_RATE}%)
     - @companies.each do |co|
+      - total = co.products.where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
+      - total_total += total
+
       - month_products = co.products.where(dulation_end: @date.beginning_of_month..@date.end_of_month)
+
       - fee_products   = month_products.where.not(fee: nil)
 
       - count          = month_products.count
@@ -56,6 +62,7 @@
       tr
         td.num = co.id
         td = co.company
+        td.num = number_with_delimiter(total)
         td.num = number_with_delimiter(count)
         td.num = number_with_delimiter(success)
         td.num = number_with_delimiter(access)
@@ -66,6 +73,7 @@
       tr
         td
         th 合計
+        td.num = number_with_delimiter(total_total)
         td.num = number_with_delimiter(total_conunt)
         td.num = number_with_delimiter(total_success)
         td.num = number_with_delimiter(total_access)
