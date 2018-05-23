@@ -9,15 +9,24 @@
 
 table.table.table-hover.table-condensed.table-striped
   tr
+    th.price ID
     th 入札日時
     th アカウント
-    th.num 商品ID
+    th.price.sepa 入札金額
+    th.price 商品ID
     th 商品名
-    th.price 入札金額
+    th.price 最高価格
+    th.price 入札数
   - @pbids.each do |bi|
     tr
+      td.price = bi.id
       td = bi.created_at
       td = bi.user.try(:account)
-      td.num = bi.product_id
-      td = bi.product ? (link_to bi.product.name, "/products/#{bi.product_id}", target: "_blank") : "× (削除された商品)"
-      td.price = number_to_currency(bi.amount)
+      td.price.sepa = number_to_currency(bi.amount)
+      - if bi.product.present?
+        td.price = bi.product_id
+        td = link_to bi.product.name, "/products/#{bi.product_id}", target: "_blank"
+        td.price = number_to_currency(bi.product.max_price)
+        td.price = number_with_delimiter(bi.product.bids_count)
+      - else
+        td colspan="4" × (削除された商品)

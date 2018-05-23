@@ -32,9 +32,14 @@
         td.price = number_with_delimiter total
         td.price = number_with_delimiter @start_counts[day]
         td.price = number_with_delimiter @end_counts[day]
-        td.price = number_with_delimiter @success_counts[day]
+        td.price
+          - if @success_counts[day].present?
+            = link_to(number_with_delimiter(@success_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}")
         td.total_price.sepa = number_to_currency @success_prices[day]
-        td.price = number_with_delimiter @bid_counts[day]
+        td.price
+          - if @bid_counts[day].present?
+            = link_to(number_with_delimiter(@bid_counts[day]), "/system/bids?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}")
+
         td.price = number_with_delimiter @detail_log_counts[day]
         td.price = number_with_delimiter @watch_counts[day]
         td.num  = number_with_delimiter @user_counts[day]

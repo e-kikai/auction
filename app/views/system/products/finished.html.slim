@@ -1,0 +1,58 @@
+- set_meta_tags title: "落札商品履歴"
+- breadcrumb :system_something, "落札商品履歴"
+
+= form_tag("/system/products/finished", method: "get", class: "form-inline filtering-form") do
+  = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
+  = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
+
+  = button_tag class: "btn btn-info" do
+    span.glyphicon.glyphicon-search
+    span.btn-content 検索
+
+= paginate @pproducts
+
+table.table.table-hover.table-condensed.table-striped.product-table
+  tr
+    th.num ID
+    th.img_mini
+    / th 管理番号
+    th 商品名
+    th 出品会社
+    th 登録日時
+    th
+      . 開始日時
+      . 終了日時
+    th.price
+     . 開始価格
+     . 最低落札
+     . 即決価格
+    / th.price 即決価格
+    th.price 落札価格
+    th 落札者
+
+    th.num 入札数
+    th.num 閲覧数
+    th.num ウォッチ数
+
+  - @pproducts.each do |pr|
+    tr
+      td.num = pr.id
+      td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
+      / td = pr.code
+      td = link_to pr.name, "/products/#{pr.id}", target: "_blank"
+      td = pr.user.company_remove_kabu
+      td = I18n.l(pr.created_at, format: :full_date)
+      td
+        . = I18n.l(pr.dulation_start, format: :full_date)
+        . = I18n.l(pr.dulation_end, format: :full_date)
+      td.price
+        . = number_to_currency(pr.start_price)
+        . = number_to_currency(pr.lower_price) || "-"
+        . = number_to_currency(pr.prompt_dicision_price) || "-"
+      td.price = number_to_currency(pr.max_price) || "-"
+      td = pr.max_bid.try(:user).try(:account) || "-"
+      td = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+      td = pr.detail_logs_count
+      td = pr.watches_count
+
+= paginate @pproducts

@@ -90,7 +90,11 @@ Rails.application.routes.draw do
 
     resources :helps,       only: [:index, :new, :create, :edit, :update, :destroy]
     resources :infos,       only: [:index, :new, :create, :edit, :update, :destroy]
-    resources :products,    only: [:index, :destroy]
+    resources :products,    only: [:index, :destroy] do
+      collection do
+        get 'finished'
+      end
+    end
     resources :bids,        only: [:index]
     resources :detail_logs, only: [:index]
     resources :search_logs, only: [:index]
