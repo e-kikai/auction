@@ -28,7 +28,7 @@ table.table.table-hover.table-condensed.table-striped
         td.price = bi.product_id
         td = link_to bi.product.name, "/products/#{bi.product_id}", target: "_blank"
         td.price = number_to_currency(bi.product.max_price)
-        td.price = number_with_delimiter(bi.product.bids_count)
+        td.price = link_to(number_with_delimiter(bi.product.bids_count), "/products/#{bi.product_id}/bids", target: "_blank")
         td = I18n.l(bi.product.dulation_end, format: "%m/%d (%a) %H:%M")
       - else
         td colspan="5" × (削除された商品)

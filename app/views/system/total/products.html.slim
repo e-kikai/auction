@@ -19,9 +19,9 @@
       th.price キャンセル
       th.price 落札数
       th.total_price.sepa 落札金額
-      th.num 入札
-      th.num 閲覧
-      th.num ウォ<br />ッチ
+      th.num 入札数
+      th.num 閲覧数
+      th.num.sepa ウォ<br />ッチ
       th.num 登録<br />人数
 
     - total = @start_count
@@ -43,5 +43,5 @@
             = link_to(number_with_delimiter(@bid_counts[day]), "/system/bids?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}")
 
         td.num = number_with_delimiter @detail_log_counts[day]
-        td.num = number_with_delimiter @watch_counts[day]
-        td.num  = number_with_delimiter @user_counts[day]
+        td.num.sepa = number_with_delimiter @watch_counts[day]
+        td.num = number_with_delimiter @user_counts[day]
