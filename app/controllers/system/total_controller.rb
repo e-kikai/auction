@@ -32,9 +32,10 @@ class System::TotalController < System::ApplicationController
 
     # 集計
     @start_counts   = @products.group("DATE(dulation_start)").having("DATE(dulation_start) BETWEEN ? AND ?", rstart, rend).count
-    @end_counts     = @products.where(max_bid_id: nil).group(auto_sql).having("#{auto_sql} BETWEEN ? AND ?", rstart, rend).count
+    @end_counts     = @products.where(cancel: nil, max_bid_id: nil).group(auto_sql).having("#{auto_sql} BETWEEN ? AND ?", rstart, rend).count
+    @cancel_counts  = @products.where.not(cancel: nil).where(max_bid_id: nil).group("DATE(dulation_end)").having("DATE(dulation_end) BETWEEN ? AND ?", rstart, rend).count
 
-    @success        = @products.where.not(max_bid_id: nil).group("DATE(dulation_end)").having("DATE(dulation_end) BETWEEN ? AND ?", rstart, rend)
+    @success        = @products.where(cancel: nil).where.not(max_bid_id: nil).group("DATE(dulation_end)").having("DATE(dulation_end) BETWEEN ? AND ?", rstart, rend)
     @success_counts = @success.count
     @success_prices = @success.sum(:max_price)
 

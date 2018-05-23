@@ -16,7 +16,7 @@ class System::ProductsController < System::ApplicationController
     @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i) : Time.now
     @company = params[:company]
 
-    @products  = Product.includes(:product_images, :user).where(dulation_end: @date.beginning_of_day..@date.end_of_day, template: false).where.not(max_price: nil).order(created_at: :desc)
+    @products  = Product.includes(:product_images, :user).where(dulation_end: @date.beginning_of_day..@date.end_of_day, template: false, cancel: nil).where.not(max_bid_id: nil).order(created_at: :desc)
 
     @products = @products.where(user: @company) if @company.present?
 
