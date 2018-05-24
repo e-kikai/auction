@@ -15,8 +15,9 @@ class System::ProductsController < System::ApplicationController
   def finished
     @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i) : Time.now
     @company = params[:company]
+    @cond    = params[:cond]
 
-    @products  = Product.status(params[:cond]).includes(:product_images, :user).where(dulation_end: @date.all_day, template: false, cancel: nil).where.not(max_bid_id: nil).order(dulation_end: :desc)
+    @products  = Product.status(@cond).includes(:product_images, :user).where(dulation_end: @date.all_day)
 
     @products = @products.where(user: @company) if @company.present?
 
