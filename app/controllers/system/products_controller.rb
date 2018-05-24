@@ -21,7 +21,7 @@ class System::ProductsController < System::ApplicationController
 
     @products = case @cond
     when "1"
-      @products.where(max_bid_id: nil, cancel: nil)
+      @products.where(max_bid_id: nil, cancel: nil, auto_resale: 0)
     when "3"
       @products.where.not(cancel: nil)
     else
