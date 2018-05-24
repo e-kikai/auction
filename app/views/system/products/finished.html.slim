@@ -2,6 +2,7 @@
 - breadcrumb :system_something, "落札商品履歴"
 
 = form_tag("/system/products/finished", method: "get", class: "form-inline filtering-form") do
+  = select_tag :cond, options_for_select({"終了(落札済)" => 2, "終了(未落札)" => 1, "キャンセル分" => 3}, selected: @cond), {class: "form-control"}
   = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
   = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
 
@@ -27,8 +28,8 @@ table.table.table-hover.table-condensed.table-striped.product-table
      . 最低落札
      . 即決価格
     / th.price 即決価格
-    th.price 落札価格
-    th 落札者
+    th.price 最高価格
+    th 最高<br />入札者
 
     th.num 入札数
     th.num 閲覧数

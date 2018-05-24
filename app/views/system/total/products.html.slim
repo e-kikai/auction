@@ -31,16 +31,24 @@
       tr class="#{'danger' if day.strftime('%w') == '0'} #{'info' if day.strftime('%w') == '6'} #{'success' if day == Time.now.to_date}"
         td.sepa = I18n.l(day, format: "%d (%a)")
         td.price = number_with_delimiter total
-        td.price = number_with_delimiter @start_counts[day]
-        td.price = number_with_delimiter @end_counts[day]
-        td.price = number_with_delimiter @cancel_counts[day]
+        td.price = number_with_delimiter(@start_counts[day])
+
+        td.price
+          - if @end_counts[day].present?
+            = link_to(number_with_delimiter(@end_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}&cond=1")
+
+        td.price
+          - if @cancel_counts[day].present?
+            = link_to(number_with_delimiter(@cancel_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}&cond=3")
+
         td.price
           - if @success_counts[day].present?
-            = link_to(number_with_delimiter(@success_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}")
+            = link_to(number_with_delimiter(@success_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}&cond=2")
         td.total_price.sepa = number_to_currency @success_prices[day]
+
         td.num
           - if @bid_counts[day].present?
-            = link_to(number_with_delimiter(@bid_counts[day]), "/system/bids?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}")
+            = link_to(number_with_delimiter(@bid_counts[day]), "/system/bids?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}")
 
         td.num = number_with_delimiter @detail_log_counts[day]
         td.num.sepa = number_with_delimiter @watch_counts[day]
