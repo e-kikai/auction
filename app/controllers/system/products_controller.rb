@@ -17,7 +17,16 @@ class System::ProductsController < System::ApplicationController
     @company = params[:company]
     @cond    = params[:cond]
 
-    @products  = Product.status(@cond).includes(:product_images, :user).where(dulation_end: @date.all_day)
+    @products  = Product.includes(:product_images, :user).where(dulation_end: @date.all_day, template: false).order(dulation_end: :desc)
+
+    @products = case @cond
+    when "1"
+      @products.where(max_bid_id: nil, cancel: nil)
+    when "3"
+      @products.where.not(cancel: nil)
+    else
+      @products.where.not(max_bid_id: nil)
+    end
 
     @products = @products.where(user: @company) if @company.present?
 
