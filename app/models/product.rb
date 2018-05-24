@@ -77,6 +77,8 @@ class Product < ApplicationRecord
   AUTO_RESALE_DAY        = 3.day
   AUTO_EXTENSION_MINUTE  = 5.minute
 
+  REMINDER_MINUTE        = 15.minute
+
   ### relations ###
   belongs_to :user,     required: true
   belongs_to :category, required: true
@@ -151,7 +153,7 @@ class Product < ApplicationRecord
     when STATUS[:failure]; finished.where(max_bid_id: nil, cancel: nil) # 未落札
     when STATUS[:success]; finished.where.not(max_bid_id: nil) # 落札済み
     when STATUS[:cancel];  finished.where.not(cancel: nil) # 未落札
-    else;                  where("dulation_start <= ? AND dulation_end > ?", Time.now, Time.now).order(:dulation_end)  # 公開中
+    else;                  where(template: false).where("dulation_start <= ? AND dulation_end > ?", Time.now, Time.now).order(:dulation_end)  # 公開中
 
     end
   }
@@ -440,8 +442,15 @@ class Product < ApplicationRecord
       )
     end
 
-    ### TODO ###
     # ウォッチアラート
+    time = Time.now + REMINDER_MINUTE
+    Product.status(STATUS[:start]).where(dulation_end: (time.beginning_of_minute..time.end_of_minute)).includes(watches: [:user]).each do |pr|
+      pr.watches.each do |wa|
+        BidMailer.reminder(wa.user, pr).deliver
+      end
+    end
+
+    ### TODO ###
     # 新着アラート
   end
 

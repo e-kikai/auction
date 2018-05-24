@@ -69,4 +69,12 @@ class BidMailer < ApplicationMailer
     mail(to: user.email, subject: "ものオク 出品キャンセルのお知らせ : #{@product.name}")
   end
 
+  # ウォッチリマインダ
+  def reminder(user, product)
+    @user    = user
+    @product = product
+
+    mail(to: user.email, subject: "ものオク まもなく終了 : #{@product.name}")
+  end
+
 end
