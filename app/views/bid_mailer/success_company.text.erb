@@ -7,10 +7,17 @@
 管理番号 : <%= @product.code %>
 <%= @product.name %>
 
-落札ユーザアカウント : <%=@product.max_bid.user.account %>
 落札価格(税込) : <%= number_to_currency(@product.max_price_with_tax) %>
 入札件数 : <%= @product.bids_count %> 件
 終了日時 : <%= I18n.l(@product.dulation_end, format: :full_date) %>
+
+<落札ユーザ>
+アカウント : <%=@product.max_bid.user.account %>
+お名前 : <%=@product.max_bid.user.name %>
+会社名 : <%=@product.max_bid.user.company %>
+電話番号 : <%=@product.max_bid.user.tel %>
+郵便番号 : <%=@product.max_bid.user.zip %>
+住所 : <%=@product.max_bid.user.addr_1 %> <%=@product.max_bid.user.addr_2 %> <%=@product.max_bid.user.addr_3 %>
 
 ============================
 

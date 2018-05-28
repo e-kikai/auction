@@ -76,6 +76,8 @@
       span.btn-content 落札者情報
     .panel-body.trade-user
       dl.dl-horizontal
+        dt アカウント
+        dd = @product.max_bid.user.account
         dt 名前
         dd = @product.max_bid.user.name
         dt 会社名
@@ -86,23 +88,6 @@
         dd = @product.max_bid.user.zip
         dt 住所
         dd #{@product.max_bid.user.addr_1} #{@product.max_bid.user.addr_2} #{@product.max_bid.user.addr_3}
-
-    / table.table.table-hover.table-condensed.trade-user
-    /   tr
-    /     th 名前
-    /     td = @product.max_bid.user.name
-    /   tr
-    /     th 会社名
-    /     td = @product.max_bid.user.company
-    /   tr
-    /     th 電話番号
-    /     td = @product.max_bid.user.tel
-    /   tr
-    /     th 〒 郵便番号
-    /     td = @product.max_bid.user.zip
-    /   tr
-    /     th 住所
-    /     td #{@product.max_bid.user.addr_1} #{@product.max_bid.user.addr_2} #{@product.max_bid.user.addr_3}
 
 .col-md-7
   .alert.alert-danger

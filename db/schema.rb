@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_11_052959) do
+ActiveRecord::Schema.define(version: 2018_05_28_090250) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -174,7 +174,7 @@ ActiveRecord::Schema.define(version: 2018_05_11_052959) do
     t.string "state_comment"
     t.boolean "returns", default: false, null: false
     t.string "returns_comment"
-    t.boolean "auto_extension", default: false, null: false
+    t.boolean "auto_extension", default: true, null: false
     t.boolean "early_termination", default: false, null: false
     t.integer "auto_resale", default: 8
     t.integer "resaled"

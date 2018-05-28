@@ -23,7 +23,7 @@
 #  state_comment         :string
 #  returns               :boolean          default("返品不可"), not null
 #  returns_comment       :string
-#  auto_extension        :boolean          default("自動延長しない"), not null
+#  auto_extension        :boolean          default("自動延長する"), not null
 #  early_termination     :boolean          default(FALSE), not null
 #  auto_resale           :integer          default(8)
 #  resaled               :integer
