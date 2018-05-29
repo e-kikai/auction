@@ -177,6 +177,10 @@ class Product < ApplicationRecord
 
   ### 現在の最高入札と入札金額を比較 ###
   def versus(bid)
+    # 自動延長処理
+    if auto_extension && dulation_end <= (Time.now + AUTO_EXTENSION_MINUTE)
+      self.dulation_end += AUTO_EXTENSION_MINUTE
+    end
 
     if prompt_dicision_price.present? && prompt_dicision_price <= bid.amount
       # 即決価格
@@ -210,14 +214,6 @@ class Product < ApplicationRecord
     else
       # その他(現在の入札の勝ち、入札単位以下)
       self.max_price = max_bid.amount
-    end
-
-    # 入札数インクリメント
-    # self.bids_count += 1
-
-    # 自動延長処理
-    if auto_extension && dulation_end <= (Time.now + AUTO_EXTENSION_MINUTE)
-      self.dulation_end += AUTO_EXTENSION_MINUTE
     end
 
     save

@@ -1,17 +1,21 @@
 class Myauction::ProductsController < Myauction::ApplicationController
-  before_action :get_product,        only: [:edit, :update, :destroy, :prompt, :cancel, :additional, :additional_update]
+  before_action :get_product, only: [:edit, :update, :destroy, :prompt, :cancel, :additional, :additional_update]
 
   def index
-    @search    = current_user.products.search(params[:q])
+    @search    = current_user.products.includes(:product_images, max_bid: :user).search(params[:q])
 
     @products  = @search.result.status(params[:cond])
 
     if params[:cond] == "3" && params[:all].blank?
       in_codes  = current_user.products.where(cancel: nil).where.not(code: "").select(:code)
       @products = @products.where.not(code: in_codes)
+    elsif params[:cond] == "2"
+      in_user_ids = @products.joins(:max_bid).select("bids.user_id")
+      @user_selectors = User.where(id: in_user_ids).order(:account).pluck("account || ' | ' || name", :id)
+      @products = @products.joins(:max_bid).where("bids.user_id" => params[:user_id]) if params[:user_id].present?
     end
 
-    @pproducts = @products.page(params[:page]).includes(:product_images, max_bid: :user)
+    @pproducts = @products.page(params[:page])
   end
 
   def new

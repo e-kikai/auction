@@ -12,6 +12,8 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
 
   - if params[:cond] == "3"
     = select_tag :all, options_for_select({"再出品した商品を非表示" => nil, "すべての商品" => 1}, selected: params[:all]), {class: "form-control"}
+  - elsif params[:cond] == "2"
+    = select_tag :user_id, options_for_select(@user_selectors, selected: params[:user_id]), {include_blank: "すべての落札ユーザ" ,class: "form-control"}
 
   = button_tag class: "btn btn-info" do
     span.glyphicon.glyphicon-search
