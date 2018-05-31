@@ -101,7 +101,7 @@
 
   = form_for @trade, url: "/myauction/trades/?product_id=#{params[:product_id]}", html: { method: :post, class: 'form-horizontal' } do |f|
     = f.label :comment, "こちらで取引コメントを入力して「投稿する」をクリックしてください。"
-    = f.text_area :comment, class: "form-control", style: "height: 100px;margin-bottom:4px;"
+    = f.text_area :comment, class: "form-control", style: "height: 240px;margin-bottom:4px;"
 
     = f.button :button, data: { "disable-with" => "投稿中..." }, class: "btn btn-default btn-square btn-submit center-block" do
       span.glyphicon.glyphicon-send

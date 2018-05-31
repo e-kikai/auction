@@ -10,9 +10,20 @@ class Myauction::ProductsController < Myauction::ApplicationController
       in_codes  = current_user.products.where(cancel: nil).where.not(code: "").select(:code)
       @products = @products.where.not(code: in_codes)
     elsif params[:cond] == "2"
-      in_user_ids = @products.joins(:max_bid).select("bids.user_id")
-      @user_selectors = User.where(id: in_user_ids).order(:account).pluck("account || ' | ' || name", :id)
+      @user_selectors = current_user.products.status(params[:cond]).joins(max_bid: :user).reorder(nil)
+        .group("bids.user_id", "users.account", "users.name", "users.company").count
+        .map { |k, v| ["#{k[1]} | #{k[2]} #{k[3]} (#{v})", k[0]] }
+
       @products = @products.joins(:max_bid).where("bids.user_id" => params[:user_id]) if params[:user_id].present?
+    elsif params[:cond] == "-1"
+      @start_date_selector = current_user.products.status(params[:cond]).reorder(nil)
+        .group("DATE(dulation_start)").count
+        .map { |k, v| ["#{k} (#{v})", k] }
+
+      if params[:start_date].present?
+        date = Date.strptime(params[:start_date], '%Y/%m/%d')
+        @products = @products.where(dulation_start: date.all_day)
+      end
     end
 
     @pproducts = @products.page(params[:page])

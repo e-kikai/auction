@@ -34,4 +34,5 @@ end
 # 落札確認処理
 every :minute do
   runner "Product.scheduling"
+  # rake 'scheduling:all'
 end

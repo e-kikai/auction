@@ -13,7 +13,11 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
   - if params[:cond] == "3"
     = select_tag :all, options_for_select({"再出品した商品を非表示" => nil, "すべての商品" => 1}, selected: params[:all]), {class: "form-control"}
   - elsif params[:cond] == "2"
+    = text_field_tag "q[max_bid_user_account_or_max_bid_user_name_or_max_bid_user_company_cont]", (params[:q][:max_bid_user_account_or_max_bid_user_name_or_max_bid_user_company_cont] rescue ""), placeholder: "ユーザ名・アカウント", class: "form-control"
+
     = select_tag :user_id, options_for_select(@user_selectors, selected: params[:user_id]), {include_blank: "すべての落札ユーザ" ,class: "form-control"}
+  - elsif params[:cond] == "-1"
+    = select_tag :start_date, options_for_select(@start_date_selector, selected: params[:start_date]), {include_blank: "すべての開始日" ,class: "form-control"}
 
   = button_tag class: "btn btn-info" do
     span.glyphicon.glyphicon-search

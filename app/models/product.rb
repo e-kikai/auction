@@ -111,8 +111,8 @@ class Product < ApplicationRecord
   validates :delivery_date, presence: true, inclusion: {in: Product.delivery_dates.keys}
   validates :state,         presence: true, inclusion: {in: Product.states.keys}
 
-  validates :dulation_start,    presence: true
-  validates :dulation_end,      presence: true
+  validates :dulation_start, presence: true
+  validates :dulation_end,   presence: true
 
   # validates :returns,           inclusion: {in: [true, false]}
   # validates :auto_extension,    inclusion: {in: [true, false]}
@@ -129,10 +129,6 @@ class Product < ApplicationRecord
   ### SCOPE ###
   scope :with_keywords, -> keywords {
     if keywords.present?
-      # columns = [:name, :description, :state_comment, :returns_comment, :addr_1, :addr_2, :hashtags]
-      # where(keywords.split(/[[:space:]]/).reject(&:empty?).map {|keyword|
-      #   columns.map { |a| arel_table[a].matches("%#{keyword}%") }.inject(:or)
-      # }.inject(:and))
       res = self
       keywords.split(/[[:space:]]/).reject(&:empty?).each do |keyword|
         res = res.where("search_keywords LIKE ?", "%#{keyword}%")
@@ -151,7 +147,7 @@ class Product < ApplicationRecord
     case cond.to_i
     when STATUS[:before];  where("dulation_start > ? ", Time.now).order(:dulation_start) # 開始前
     when STATUS[:failure]; finished.where(max_bid_id: nil, cancel: nil) # 未落札
-    when STATUS[:success]; finished.where.not(max_bid_id: nil) # 落札済み
+    when STATUS[:success]; finished.where(cancel: nil).where.not(max_bid_id: nil) # 落札済み
     when STATUS[:cancel];  finished.where.not(cancel: nil) # 未落札
     else;                  where(template: false).where("dulation_start <= ? AND dulation_end > ?", Time.now, Time.now).order(:dulation_end)  # 公開中
 
@@ -431,8 +427,6 @@ class Product < ApplicationRecord
     # 自動再出品
     Product.status(STATUS[:failure]).where(auto_resale: 1..Float::INFINITY).each do |pr|
       pr.update(
-        # dulation_end: pr.dulation_end + AUTO_RESALE_DAY,
-        # auto_resale:  pr.auto_resale - 1,
         dulation_end: pr.dulation_end + pr.auto_resale_date.day,
         auto_resale:  pr.auto_resale -= (pr.auto_resale < 100 ? 1 : 0),
       )
