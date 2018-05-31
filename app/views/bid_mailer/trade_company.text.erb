@@ -8,6 +8,11 @@
 管理番号 : <%= @product.code %>
 <%= @product.name %>
 
+<落札ユーザ>
+アカウント : <%=@product.max_bid.user.account %>
+お名前 : <%=@product.max_bid.user.name %>
+会社名 : <%=@product.max_bid.user.company %>
+
 <取引メッセージ>
 ============================
 <%= @trade.comment %>
