@@ -19,7 +19,7 @@ class System::TotalController < System::ApplicationController
   end
 
   def products
-    @date    = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now.to_date
+    @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now.to_date
     @company = params[:company]
 
     # 取得

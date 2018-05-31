@@ -42,7 +42,7 @@ class System::ProductsController < System::ApplicationController
     @company = params[:company]
 
     @products  = Product.includes(:product_images, :user, max_bid: :user).where(template: false)
-      .where("dulation_start <= ? AND dulation_end >= ?", @date.end_of_day, @date.beginning_of_day).order(dulation_start: :asc)
+      .where("dulation_start <= ? AND dulation_end >= ?", @date.end_of_month, @date.end_of_month).order(dulation_start: :asc)
 
     @products = @products.where(user: @company) if @company.present?
 
