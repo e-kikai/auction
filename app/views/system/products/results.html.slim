@@ -1,5 +1,5 @@
-- set_meta_tags title: "月別結果一覧"
-- breadcrumb :system_something, "月別結果一覧"
+- set_meta_tags title: "月別商品結果一覧"
+- breadcrumb :system_something, "月別商品結果一覧"
 
 = form_tag("/system/products/results", method: "get", class: "form-inline filtering-form") do
   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
@@ -8,6 +8,10 @@
   = button_tag class: "btn btn-info" do
     span.glyphicon.glyphicon-search
     span.btn-content 検索
+
+  = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+    span.glyphicon.glyphicon-download-alt
+    span.btn-content CSV出力
 
 = paginate @pproducts
 

@@ -36,10 +36,10 @@
       th.total_price 落札総額
       th.total_price 手数料<br />(#{Product::FEE_RATE}%)
     - @companies.each do |co|
-      - total = co.products.where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
+      - total = co.products.where(template: false).where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
       - total_total += total
 
-      - month_products = co.products.where(dulation_end: @date.beginning_of_month..@date.end_of_month)
+      - month_products = co.products.where(template: false).where(dulation_end: @date.beginning_of_month..@date.end_of_month)
 
       - fee_products   = month_products.where.not(fee: nil)
 

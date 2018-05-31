@@ -1,6 +1,8 @@
 class System::ProductsController < System::ApplicationController
+  include Exports
+
   def index
-    @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
+    @date    = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
     @company = params[:company]
 
     @products  = Product.includes(:product_images, :user).where(created_at: @date.all_month, template: false).order(created_at: :desc)
@@ -13,7 +15,7 @@ class System::ProductsController < System::ApplicationController
   end
 
   def finished
-    @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i) : Time.now
+    @date    = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i) : Time.now
     @company = params[:company]
     @cond    = params[:cond]
 
@@ -36,7 +38,7 @@ class System::ProductsController < System::ApplicationController
   end
 
   def results
-    @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
+    @date    = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
     @company = params[:company]
 
     @products  = Product.includes(:product_images, :user, max_bid: :user).where(template: false)
@@ -47,5 +49,10 @@ class System::ProductsController < System::ApplicationController
     @pproducts = @products.page(params[:page]).per(100)
 
     @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
+
+    respond_to do |format|
+      format.html
+      format.csv { export_csv "results_#{@date.strftime('%Y_%m')}.csv" }
+    end
   end
 end
