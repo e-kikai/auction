@@ -41,7 +41,7 @@ class System::ProductsController < System::ApplicationController
     @date    = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
     @company = params[:company]
 
-    @products  = Product.includes(:product_images, :user, max_bid: :user).where(template: false)
+    @products  = Product.includes(:product_images, :user, :category, max_bid: :user).where(template: false)
       .where("dulation_start <= ? AND dulation_end >= ?", @date.end_of_month, @date.beginning_of_month).order(dulation_start: :asc)
 
     @products = @products.where(user: @company) if @company.present?
