@@ -93,6 +93,7 @@ Rails.application.routes.draw do
     resources :products,    only: [:index, :destroy] do
       collection do
         get 'finished'
+        get 'results'
       end
     end
     resources :bids,        only: [:index]

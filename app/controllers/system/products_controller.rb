@@ -34,4 +34,18 @@ class System::ProductsController < System::ApplicationController
 
     @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
   end
+
+  def results
+    @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
+    @company = params[:company]
+
+    @products  = Product.includes(:product_images, :user, max_bid: :user).where(template: false)
+      .where("dulation_start <= ? AND dulation_end >= ?", @date.end_of_day, @date.beginning_of_day).order(dulation_start: :asc)
+
+    @products = @products.where(user: @company) if @company.present?
+
+    @pproducts = @products.page(params[:page]).per(100)
+
+    @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
+  end
 end

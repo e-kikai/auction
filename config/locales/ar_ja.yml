@@ -9,7 +9,7 @@ ja:
         addr_1: 都道府県
         addr_2: 市区町村
         addr_3: 番地その他
-        account: ユニーク名
+        account: ユニークアカウント
 
         password: パスワード
         password_confirmation: パスワード確認
