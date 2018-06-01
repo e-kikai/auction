@@ -20,10 +20,11 @@ prawn_document do |pdf|
 
     # # pdf.stroke_axis
     #
-    pdf.text "#{co.zip} #{co.addr_1} #{co.addr_2} #{co.addr_3}", size: 12
+    pdf.text "〒 #{co.zip}", size: 13
+    pdf.text "#{co.addr_1} #{co.addr_2} #{co.addr_3}", size: 13
     pdf.move_down 5.mm
-    pdf.text "#{co.company} 御中", size: 20
-    pdf.stroke_line [0, 258.mm], [90.mm, 258.mm]
+    pdf.text "#{co.company} 御中", size: 13
+    pdf.stroke_line [0, 255.mm], [90.mm, 255.mm]
 
     pdf.move_down 15.mm
 
@@ -36,9 +37,21 @@ prawn_document do |pdf|
     pdf.text_box "#{number_to_currency(fee_with_tax)} (税込)", size: 20, at: [60.mm, 230.mm]
     pdf.stroke_line [54.mm, 222.mm], [124.mm, 222.mm]
 
-    # フッタ群
     pdf.font "vendor/assets/fonts/ipaexm.ttf"
-    pdf.bounding_box([0, 132.mm], width: 178.mm, height: 60.mm) do
+    pdf.bounding_box([0.mm, 200.mm], width: 170.mm, height: 42.mm) do
+      # pdf.stroke_bounds
+
+      pdf.default_leading 8
+
+      # pdf.text "以上", size: 12, align: :right
+      pdf.text "平成#{Time.now.strftime("%Y").to_i - 1988}年 #{Time.now.strftime("%-m月 %-d日")}", size: 12, align: :right
+      pdf.text "ものづくりオークション委員会", size: 14, align: :right
+      pdf.text "〒578-0965 住所 東大阪市本庄西2丁目5番10号 大阪機械卸業団地協同組合", size: 12, align: :right
+      pdf.text "TEL 06-6747-7521　FAX 06-6747-7525", size: 12, align: :right
+    end
+
+    # フッタ群
+    pdf.bounding_box([0, 120.mm], width: 178.mm, height: 80.mm) do
       # pdf.stroke_bounds
 
       pdf.default_leading 6
@@ -47,28 +60,16 @@ prawn_document do |pdf|
       pdf.text "平成#{@date.strftime("%Y").to_i - 1988}年#{@date.next_month(1).strftime("%-m月")}20日までにご入金下さい。", size: 16
       pdf.text ""
       # pdf.font "vendor/assets/fonts/VL-PGothic-Regular.ttf"
-      pdf.text "〇〇〇〇 〇〇支店", size: 12
-
+      pdf.text "ゆうちょ銀行", size: 12
+      pdf.text "店名 四○八 (読み ヨンゼロハチ)", size: 12
+      pdf.text "店番 408 預金種類 普通預金", size: 12
       pdf.font "vendor/assets/fonts/ipaexm.ttf"
-      pdf.text "当座預金 0000000", size: 12
-      pdf.text "口座名称 xxxxxxxxxxxxx", size: 12
-      pdf.text "略称 xxxxxxxxxxxxx", size: 12
+      pdf.text "口座番号 4999155", size: 12
+      pdf.text "口座名称 ものづくりオークションイインカイ", size: 12
+      pdf.text "(略称) モノヅクリオークションイインカイ", size: 12
       pdf.text "", size: 12
       # pdf.font "vendor/assets/fonts/VL-PGothic-Regular.ttf"
       pdf.text "お願い:お振り込みいただく場合は、振込手数料は貴社でご負担下さい。", size: 12
-    end
-
-    pdf.bounding_box([0.mm, 50.mm], width: 170.mm, height: 42.mm) do
-      # pdf.stroke_bounds
-
-      pdf.default_leading 8
-
-      # pdf.text "以上", size: 12, align: :right
-      # pdf.text "平成　　年　　月　　日", size: 12, align: :right
-      pdf.text "平成#{Time.now.strftime("%Y").to_i - 1988}年 #{Time.now.strftime("%-m月 %-d日")}", size: 12, align: :right
-      pdf.text "ものづくりオークション委員会", size: 14, align: :right
-      pdf.text "〒578-0965 住所 東大阪市本庄西2丁目5番10号 大阪機械卸業団地協同組合", size: 12, align: :right
-      pdf.text "TEL 06-6747-7521　FAX 06-6747-7525", size: 12, align: :right
     end
 
     ### 明細 ####
@@ -113,5 +114,63 @@ prawn_document do |pdf|
       t.row(-2).columns([3, 5]).style(align: :right, size: 12)
       t.row(-3).columns([3, 5]).style(align: :right, size: 12, weight: :bold)
     end
+
+    ### 領収証 ####
+    pdf.start_new_page layout: :portrait, margin: [10.mm, 10.mm]
+
+    pdf.default_leading 2
+
+    pdf.font "vendor/assets/fonts/ipaexm.ttf"
+    [277.mm, 128.5.mm].each.with_index do |v, i|
+      pdf.bounding_box([0, v], width: 190.mm, height: 128.5.mm) do
+        pdf.stroke_bounds
+
+        pdf.text_box "#{co.company} 御中", size: 16, at: [10.mm, 110.mm]
+        pdf.text_box "領収証 #{i == 1 ? " (控)" : ""}", size: 26, at: [0.mm, 95.mm], align: :center
+        pdf.text_box "下記の通り、領収いたしました。", size: 12, at: [2.mm, 87.mm]
+        pdf.text_box "記", size: 12, at: [2.mm, 80.mm], align: :center
+
+        arr = [
+          ["手数料合計(税抜)", "消費税(#{Product::TAX_RATE}%)", "合計請求金額"],
+          [number_to_currency(fee), number_to_currency(fee_tax), number_to_currency(fee_with_tax)]
+        ]
+
+        pdf.move_down 55.mm
+        pdf.table arr, {
+          header: true, position: 3.mm
+        } do |t|
+          t.cells.style(size: 16)
+
+          t.columns(0).style(width: 67.mm, align: :right)
+          t.columns(1).style(width: 45.mm, align: :right)
+          t.columns(2).style(width: 72.mm, align: :right)
+
+          t.row(0).style(align: :center, size: 12)
+          t.row(1).style(align: :right, size: 16, height: 15.mm, padding: 4.mm)
+
+        end
+
+        pdf.move_down 4.mm
+
+        arr = [
+          [{:content => "内訳", :rowspan => 2}, "", "現金"],
+          ["", "小切手"],
+        ]
+        pdf.table arr, {
+          header: true, position: 3.mm
+        } do |t|
+          t.cells.style(align: :center, valign: :middle, size: 12)
+
+          t.columns(0).style(width: 17.mm, padding: [6.mm, 0])
+          t.columns(1).style(width: 8.mm)
+          t.columns(2).style(width: 26.mm)
+        end
+
+        pdf.text "以上", size: 12, align: :right
+        pdf.text "平成　　年　　月　　日", size: 12, align: :right
+        pdf.text "ものづくりオークション委員会", size: 12, align: :right
+      end
+    end
+
   end
 end
