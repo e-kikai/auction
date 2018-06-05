@@ -19,4 +19,6 @@ class Blacklist < ApplicationRecord
 
   validates :user_id,    presence: true
   validates :to_user_id, presence: true
+
+  validates :to_user_id, uniqueness: { message: "は、既にブラックリストに登録されています。", scope: [:user_id, :soft_destroyed_at] }
 end

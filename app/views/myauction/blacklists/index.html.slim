@@ -1,0 +1,42 @@
+- set_meta_tags title: "ブラックリスト"
+- breadcrumb    :myauction_something, "ブラックリスト"
+
+h4 ブラックリスト登録
+= form_tag("/myauction/blacklists", method: :post, class: "form-inline filtering-form") do
+  span ユニークアカウント :
+  = text_field_tag :account, (params[:account] rescue ""), placeholder: "ユニークアカウント", class: "form-control"
+
+  = button_tag class: "btn btn-danger" do
+    span.glyphicon.glyphicon-thumbs-down
+    span.btn-content ブラックリストに追加
+
+
+h4 ブラックリストに登録しているユーザ
+
+= paginate @pblacklists
+
+- if @pblacklists.length == 0
+  p ブラックリストに登録しているユーザはありません
+- else
+  table.table.table-hover.table-condensed.table-striped.product-table
+    tr
+      th ユニークアカウント
+      th ブラック登録数
+      / th 評価
+      th
+    - @pblacklists.each do |bl|
+      tr
+        td = bl.to_user.account
+        td = bl.to_user.blacklisted_count
+        / td.h4
+        /   span.glyphicon.glyphicon-certificate.star-good
+        /   =< number_with_delimiter fo.to_user.count_star_good
+        /   br
+        /   span.glyphicon.glyphicon-cloud.star-bad
+        /   =< number_with_delimiter fo.to_user.count_star_bad
+
+        td
+          - unless params[:finished]
+            = link_to({ action: :destroy, id: bl.id }, method: :delete, class: "btn btn-danger") do
+              span.glyphicon.glyphicon-remove
+              =< "ブラックリスト解除"

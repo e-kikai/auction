@@ -85,6 +85,12 @@
             span.btn-content 送料設定インポート
           / li = link_to "カテゴリ管理",       "/myauction/categories"
           hr
+          li = link_to "/myauction/blacklists" do
+            span.glyphicon.glyphicon-thumbs-down
+            span.btn-content ブラックリスト
+          / li = link_to "カテゴリ管理",       "/myauction/categories"
+          hr
+
           li = link_to asset_path("auction_flyer_02.pdf"), target: "_blank"  do
             span.glyphicon.glyphicon-file
             span.btn-content 宣伝用チラシPDF

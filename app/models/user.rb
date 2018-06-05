@@ -107,6 +107,10 @@ class User < ApplicationRecord
     products.where("star <= 2").count
   end
 
+  def blacklisted_count
+    Blacklist.where(to_user_id: id).count
+  end
+
   def self.find_for_authentication(warden_conditions)
     without_soft_destroyed.where(email: warden_conditions[:email]).first
   end

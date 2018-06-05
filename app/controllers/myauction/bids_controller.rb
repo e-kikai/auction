@@ -78,6 +78,8 @@ class Myauction::BidsController < Myauction::ApplicationController
     # 自社入札の禁止
     if @product.user_id == current_user.id
       redirect_to "/products/#{@product.id}", alert: "自社の商品への入札は行なえません"
+    elsif Blacklist.exists?(user_id: @product.user_id, to_user_id: current_user.id)
+      redirect_to "/products/#{@product.id}", alert: "申し訳ありません。現在、この出品会社の商品への入札は行なえません"
     end
   end
 end

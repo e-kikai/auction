@@ -15,4 +15,9 @@ class Myauction::ApplicationController < ApplicationController
       render "/myauction/users/edit"
     end
   end
+
+  # 出品会社チェック
+  def check_seller
+    render "/myauction/" unless current_user.seller?
+  end
 end

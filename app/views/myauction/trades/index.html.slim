@@ -89,6 +89,20 @@
         dt 住所
         dd #{@product.max_bid.user.addr_1} #{@product.max_bid.user.addr_2} #{@product.max_bid.user.addr_3}
 
+      /// 出品会社のみ表示 ///
+      - if @product.user_id == current_user.id
+        hr
+
+        - if current_user.blacklists.exists?(to_user_id: @product.max_bid.user_id)
+          = link_to "※ このユーザはブラックリストに登録されています", "/myauction/blacklists"
+        - else
+          = form_tag("/myauction/blacklists", method: :post, class: "form-inline filtering-form") do
+            = hidden_field_tag :account, @product.max_bid.user.account
+
+            = button_tag class: "btn btn-danger" do
+              span.glyphicon.glyphicon-thumbs-down
+              span.btn-content このユーザをブラックリストに追加
+
 .col-md-7
   .alert.alert-danger
     .
