@@ -6,7 +6,10 @@ h3.product-title = @product.name
 .col-md-offset-3.col-md-6
   h3 入札履歴
 
-  p ※ お名前は表示されません、ユニークアカウントで表示されます。
+  p
+    | ※ 入札したお客様のお名前は表示されません。
+    = = link_to "ユニークアカウント", "/helps/uid"
+    | で表示されます。
   table.table.table-striped.table-hover.table-condensed
     tr
       th 入札ユーザ

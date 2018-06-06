@@ -80,7 +80,7 @@
             dd
               . = @product.state
               . = @product.state_comment
-            dt 自動延長
+            dt = link_to "自動延長", "/helps/auto_extension"
             dd = @product.auto_extension
             / dt 早期終了
             / dd = @product.early_termination ? 'あり' : 'なし'
