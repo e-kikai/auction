@@ -6,6 +6,6 @@ class Myauction::HelpsController < Myauction::ApplicationController
   def show
     @helps = Help.where(target: 100).order(:order_no)
 
-    @help  = Help.where(target: 100).find(params[:id])
+    @help  = Help.where(target: 100).find_by(uid: params[:id])
   end
 end
