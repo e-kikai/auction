@@ -55,6 +55,10 @@ coffee:
           = f.text_field :tel, required: "required", class: 'form-control short'
 
         .form-group
+          = f.label :fax
+          = f.text_field :fax, class: 'form-control short'
+
+        .form-group
           = f.label :zip, class: :required
           = f.text_field :zip, required: "required", class: 'form-control short'
 
@@ -96,9 +100,6 @@ coffee:
                 = f.label     :remove_header_image, "ヘッダ画像を削除"
 
           .form-group
-            = f.label :fax
-            = f.text_field :fax, class: 'form-control'
-          .form-group
             = f.label :url
             = f.text_field :url, class: 'form-control'
           .form-group
@@ -115,6 +116,8 @@ coffee:
           .form-group
             = f.label :result_message, class: :required
             = f.text_area :result_message, required: "required", class: 'form-control'
+            p.help-block 落札したユーザに自動送信されるメールに記載されます。
+
           .form-group
             = f.label :note, class: :note
             = f.text_area :note, class: 'form-control'

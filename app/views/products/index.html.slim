@@ -83,9 +83,9 @@
       ul.list-group
         = link_to "すべて", "products", class: "list-group-item"
         - @roots.each do |ca|
-          = link_to "#{ca.name}", "products?category_id=#{ca.id}", class: "list-group-item"
+          = link_to "#{ca.name}", "/products?category_id=#{ca.id}", class: "list-group-item"
           - ca.children.order(:order_no).each do |ca2|
-            = link_to "　#{ca2.name}", "products?category_id=#{ca2.id}", class: "list-group-item"
+            = link_to "　#{ca2.name}", "/products?category_id=#{ca2.id}", class: "list-group-item"
 
   .col-md-10
     .search-title
@@ -126,7 +126,7 @@
                   / /// 工具のみの仮処理
                   / - next if i == 0
                   / = " > " if i != 1
-                  = link_to(ca.name, "products/?category_id=#{ca.id}")
+                  = link_to(ca.name, "/products/?category_id=#{ca.id}")
           td.price.absolute
             strong
               = number_to_currency(pr.max_price_with_tax)
