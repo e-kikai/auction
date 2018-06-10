@@ -73,6 +73,11 @@ Rails.application.routes.draw do
     resources :helps,  only: [:index, :show]
     resources :infos,  only: [:index, :show]
 
+    resources :total,  only: [:index] do
+      collection do
+        get 'products'
+      end
+    end
   end
 
   ### 管理者ページ ###
@@ -96,6 +101,7 @@ Rails.application.routes.draw do
         get 'results'
       end
     end
+
     resources :bids,        only: [:index]
     resources :detail_logs, only: [:index]
     resources :search_logs, only: [:index]
