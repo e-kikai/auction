@@ -1,4 +1,5 @@
 class Myauction::ProductsController < Myauction::ApplicationController
+  before_action :check_seller
   before_action :get_product, only: [:edit, :update, :destroy, :prompt, :cancel, :additional, :additional_update]
 
   def index

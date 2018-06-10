@@ -1,5 +1,7 @@
 class Myauction::ShippingController < Myauction::ApplicationController
   include Exports
+  
+  before_action :check_seller
 
   def index
     @labels  = ShippingLabel.where(user_id: current_user.id).order(:shipping_no)

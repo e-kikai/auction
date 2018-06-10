@@ -1,4 +1,5 @@
 class Myauction::CsvController < Myauction::ApplicationController
+  before_action :check_seller
 
   def new
     # @template_selectors  = current_user.products.templates.pluck(:name, :id)

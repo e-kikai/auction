@@ -3,7 +3,7 @@
 
 = form_tag("/myauction/total/products", method: "get", class: "form-inline filtering-form") do
   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
-  = select_tag :mine, options_for_select({"全体" => false, "自社のみ" => true}, selected: @mine), {class: "form-control"}
+  = select_tag :mine, options_for_select({"全体" => nil, "自社のみ" => 1}, selected: @mine), {class: "form-control"}
 
   = button_tag class: "btn btn-info" do
     span.glyphicon.glyphicon-search

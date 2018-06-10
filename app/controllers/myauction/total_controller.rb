@@ -11,7 +11,7 @@ class Myauction::TotalController < Myauction::ApplicationController
     auto_sql = "DATE(dulation_end) + auto_resale * auto_resale_date"
     # @products  = Product.includes(:user).where(created_at: @date.beginning_of_month..@date.end_of_month, template: false)
     @products = Product.includes(:user).where(template: false)
-    @products = @products.where(user: current_user) if @mine == true
+    @products = @products.where(user: current_user) if @mine
 
     # 集計
     @start_counts   = @products.group("DATE(dulation_start)").having("DATE(dulation_start) BETWEEN ? AND ?", rstart, rend).count
@@ -22,7 +22,7 @@ class Myauction::TotalController < Myauction::ApplicationController
     @success_counts = @success.count
     @success_prices = @success.sum(:max_price)
 
-    if @mine == true
+    if @mine
       product_ids = @products.select(:id)
 
       bids        = Bid.where(product_id: product_ids)
