@@ -12,6 +12,8 @@ h4 ウォッチリスト
 - if @pproducts.length == 0
   p ウォッチリストに登録している商品はありません
 - else
+  - if params[:result].blank?
+    p 入札終了15分前になると、リマインドメールを送信します。
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
       th.img_mini
