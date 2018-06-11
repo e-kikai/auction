@@ -104,7 +104,7 @@
           strong.pull-right = sort_link(@search, :dulation_start, "新着順", default_order: :desc)
         th.price = sort_link(@search, :max_price)
         th.price = sort_link(@search, :prompt_dicision_price)
-        th.num   = sort_link(@search, :bids_count)
+        th.num   = sort_link(@search, :bids_count, default_order: :desc)
         th.price = sort_link(@search, :dulation_end, "残り時間")
       - @pproducts.each do |pr|
         tr

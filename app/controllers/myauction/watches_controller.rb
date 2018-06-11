@@ -3,6 +3,13 @@ class Myauction::WatchesController <  Myauction::ApplicationController
     @search    = current_user.watch_products.search(params[:q])
 
     @products  = @search.result
+
+    @products = if params[:result].present?
+      @products.where("dulation_end <= now()").order(:dulation_end)
+    else
+      @products.where("dulation_end > now()").order(dulation_end: :desc)
+    end
+
     @pproducts = @products.page(params[:page]).preload(:user, :product_images, max_bid: :user)
   end
 
