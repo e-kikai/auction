@@ -93,7 +93,17 @@
           li = link_to "/myauction/total/products" do
             span.glyphicon.glyphicon-calendar
             span.btn-content 日別トータル、出品予定
-          hr
+
+  .col-md-3
+    - if current_user.seller?
+      .panel.panel-default
+        .panel-heading
+          span.glyphicon.glyphicon-info-sign
+          span.btn-content 出品者向けヘルプ・お知らせ
+        ul.nav.nav-pills.nav-stacked
+          li = link_to "/myauction/helps" do
+            span.glyphicon.glyphicon-question-sign
+            span.btn-content 出品者向けヘルプ
 
           li = link_to asset_path("auction_flyer_02.pdf"), target: "_blank"  do
             span.glyphicon.glyphicon-file
@@ -104,24 +114,15 @@
           li = link_to asset_path("auction_02.jpg"), target: "_blank" do
             span.glyphicon.glyphicon-picture
             span.btn-content 宣伝用リンクバナーJPEG(正方形)
-
-          li = link_to "/myauction/helps" do
-            span.glyphicon.glyphicon-question-sign
-            span.btn-content 出品者向けヘルプ
           li = mail_to "bata44883@gmail.com" do
             span.glyphicon.glyphicon-send
             span.btn-content 開発者メール問い合わせ
-
-  .col-md-3
-    - if current_user.seller?
-      .panel.panel-default
-        .panel-heading
-          span.glyphicon.glyphicon-info-sign
-          span.btn-content 出品者向けお知らせ
+          hr
         .panel-body
           - @infos.each do |inf|
             p = link_to inf.title, "/myauction/infos/#{inf.id}"
           p = link_to ">> お知らせ一覧", "/myauction/infos"
+
 
     .panel.panel-default
       .panel-heading

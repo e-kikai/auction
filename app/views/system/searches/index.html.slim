@@ -1,0 +1,34 @@
+- set_meta_tags title: "保存した検索条件履歴"
+- breadcrumb :system_something, "保存した検索条件履歴"
+
+/ = form_tag("/system/search_logs", method: "get", class: "form-inline filtering-form") do
+/   = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
+/   = button_tag class: "btn btn-info" do
+/     span.glyphicon.glyphicon-search
+/     span.btn-content 日付変更
+
+= paginate @psearches
+
+table.table.table-hover.table-condensed.table-striped
+  tr
+    th.num ID
+    th.sepa  検索条件名
+    th カテゴリ
+    th 会社名
+    th.sepa 検索キーワード
+    th.sepa 公開
+    th.num ユーザID
+    th.sepa アカウント
+    th 保存日時
+
+  - @psearches.each do |se|
+    tr
+      td.num = se.id
+      td.sepa  = se.name
+      td = se.category.try(:name)
+      td = se.company.try(:company_remove_kabu)
+      td.sepa = se.keywords
+      td.sepa = '○' if se.publish
+      td.num = se.user_id
+      td.sepa = se.user.try(:account)
+      td = se.created_at
