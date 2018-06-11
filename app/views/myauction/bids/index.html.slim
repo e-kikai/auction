@@ -42,7 +42,8 @@ h4 = title
         td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
         td = link_to pr.name, "/products/#{pr.id}"
         td = I18n.l(pr.dulation_end, format: :full_date)
-        td.price = number_to_currency(pr.max_price_with_tax)
+        td.price
+          strong = number_to_currency(pr.max_price_with_tax)
         td = link_to pr.user.company, "/products?company_id=#{pr.user_id}"
         - if params[:cond] == "2"
           - if pr.max_bid.user_id != pr.user_id
