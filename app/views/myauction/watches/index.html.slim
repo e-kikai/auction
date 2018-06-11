@@ -7,13 +7,15 @@ h4 ウォッチリスト
   = link_to "開催中の商品", "/myauction/watches/",           class: "btn btn-default #{:active if params[:result].blank?}"
   = link_to "終了した商品", "/myauction/watches/?result=1",  class: "btn btn-default #{:active if params[:result].present?}"
 
-= paginate @pproducts
 
 - if @pproducts.length == 0
   p ウォッチリストに登録している商品はありません
 - else
   - if params[:result].blank?
     p 入札終了15分前になると、リマインドメールを送信します。
+
+  . = paginate @pproducts
+  
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
       th.img_mini

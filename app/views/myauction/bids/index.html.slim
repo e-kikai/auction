@@ -1,4 +1,4 @@
-- title = params[:cond] == "2" ? "落札分" : "入札中"
+- title = params[:cond] == "2" ? "落札した商品(取引)" : "入札中"
 
 - set_meta_tags title: title
 - breadcrumb    :myauction_something, title
@@ -6,15 +6,19 @@
 h4 = title
 
 - if @pproducts.blank?
-  p 入札中の商品はありません
+  - if params[:cond] == "2"
+    p 落札した商品はありません
+  - else
+    p 入札中の商品はありません
 - else
-  = paginate @pproducts
 
   - if params[:cond] == "2"
     p
       | 落札した商品については、「取引」より出品会社と取引を行ってください。
       br
       | 商品受け取り後は、「受取確認・評価」より、商品の受取確認と出品会社の評価を行ってください
+
+  . = paginate @pproducts
 
   table.table.table-hover.table-condensed.table-striped.product-table
     tr
@@ -32,7 +36,7 @@ h4 = title
         th 出品会社
         th.num =  sort_link(@search, :bids_count)
         th 最高入札者
-        th.num 残り<br />時間
+        th = sort_link(@search, :dulation_end, "残り時間")
     - @pproducts.each do |pr|
       tr
         td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
@@ -63,11 +67,13 @@ h4 = title
             - if pr.max_bid.user_id == current_user.id
               | ★あなたが最高入札者です
             - elsif pr.max_bid.present?
-              . = pr.max_bid.user.account.gsub(/^(.)(.)(.)(.)(.).*$/, '\1*\3*\5***')
-              . = link_to "再入札する", "/myauction/bids/new?id=#{pr.id}&bid%5Bamount%5D="
+              . = pr.max_bid.user.account
+              . = link_to "/myauction/bids/new?id=#{pr.id}&bid%5Bamount%5D=" do
+                span.glyphicon.glyphicon-pencil
+                =< "再入札する"
             - else
               = "-"
 
-          td.num = pr.remaining_time
+          td = pr.remaining_time
 
   = paginate @pproducts
