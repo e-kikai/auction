@@ -158,6 +158,13 @@ class Product < ApplicationRecord
     where(template: true)
   }
 
+  scope :populars, -> {
+    products = self
+    Product.status(STATUS[:start]).includes(:product_images)
+      .where(category_id: products.select(:category_id)).where.not(id: products.select(:id))
+      .reorder("((bids_count + 1) * (watches_count + 1)) DESC", :dulation_end)
+  }
+
   ### callback ###
   before_save :default_max_price
   before_save :youtube_id

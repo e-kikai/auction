@@ -12,6 +12,8 @@ class Myauction::BidsController < Myauction::ApplicationController
     end
 
     @pproducts = @products.page(params[:page]).preload(:product_images, :user, max_bid: :user)
+
+    @popular_products = @pproducts.populars.limit(Product::NEW_MAX_COUNT)
   end
 
   def new

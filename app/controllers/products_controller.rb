@@ -42,9 +42,11 @@ class ProductsController < ApplicationController
     end
 
     # このカテゴリの人気商品
-    @category_products = Product.status(Product::STATUS[:start]).includes(:product_images)
-      .where(category_id: @product.category.subtree_ids).where.not(id: @product.id)
-      .order(bids_count: :desc).limit(Product::NEW_MAX_COUNT)
+    # @category_products = Product.status(Product::STATUS[:start]).includes(:product_images)
+    #   .where(category_id: @product.category.subtree_ids).where.not(id: @product.id)
+    #   .order(bids_count: :desc).limit(Product::NEW_MAX_COUNT)
+
+    @popular_products = Product.where(id: @product.id).populars.limit(Product::NEW_MAX_COUNT)
   end
 
   def bids

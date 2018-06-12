@@ -246,7 +246,7 @@
     h4.product-description 落札事項
     . = markdown(@product.note)
 
-- if @category_products.present?
+- if @popular_products.present?
   .row
     label
       span.glyphicon.glyphicon-thumbs-up.check-icon
@@ -254,7 +254,7 @@
     .panel.panel-default
       .panel-body.toppage-contents
         .toppage-scroll
-          - @category_products.each do |pr|
+          - @popular_products.each do |pr|
             = render "/main/product_panel", product: pr
 
 /// 入札ダイアログ ////
