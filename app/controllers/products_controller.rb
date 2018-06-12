@@ -46,7 +46,8 @@ class ProductsController < ApplicationController
     #   .where(category_id: @product.category.subtree_ids).where.not(id: @product.id)
     #   .order(bids_count: :desc).limit(Product::NEW_MAX_COUNT)
 
-    @popular_products = Product.where(id: @product.id).populars.limit(Product::NEW_MAX_COUNT)
+    # 人気商品
+    @popular_products = Products(@product).populars.limit(Product::NEW_MAX_COUNT)
   end
 
   def bids
