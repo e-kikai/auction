@@ -159,9 +159,13 @@ class Product < ApplicationRecord
   }
 
   scope :populars, -> products {
-    Product.status(STATUS[:start]).includes(:product_images)
-      .where(category_id: products.select(:category_id)).where.not(id: products.select(:id))
-      .reorder("((bids_count + 1) * (watches_count + 1)) DESC", :dulation_end)
+    res = Product.status(STATUS[:start]).includes(:product_images).reorder("((bids_count + 1) * (watches_count + 1)) DESC", :dulation_end)
+    if products.class.name == "Product"
+      res.where(category_id: products.category.subtree_ids).where.not(id: products.id)
+    else
+      res.where(category_id: products.select(:category_id)).where.not(id: products.select(:id))
+    end
+
   }
 
   ### callback ###
