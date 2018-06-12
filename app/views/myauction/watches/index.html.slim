@@ -54,15 +54,15 @@ h4 ウォッチリスト
               span.glyphicon.glyphicon-remove
               =< "削除"
 
-    . = paginate @pproducts
+  . = paginate @pproducts
 
-    - if @popular_products.present?
-      .row
-        label
-          span.glyphicon.glyphicon-thumbs-up.check-icon
-          span.btn-content あなたへのおすすめの人気商品
-        .panel.panel-default
-          .panel-body.toppage-contents
-            .toppage-scroll
-              - @popular_products.each do |pr|
-                = render "/main/product_panel", product: pr
+  - if @popular_products.present?
+    .row
+      label
+        span.glyphicon.glyphicon-thumbs-up.check-icon
+        span.btn-content あなたへのおすすめの人気商品
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @popular_products.each do |pr|
+              = render "/main/product_panel", product: pr
