@@ -6,7 +6,7 @@
 - if @product.prompt_dicision_price
   - desc += "即決価格 #{number_to_currency @product.prompt_dicision_price_with_tax}|"
 - desc += @product.description
-- keywords = "オークション,ものオク,販売,中古,機械,工具,#{@product.search_keywords.gsub(/\s+/, ",")}"
+- keywords = "オークション,ものオク,販売,中古,機械,工具,#{@product.search_keywords.gsub(/(\s|　)+/, ",")}"
 
 - set_meta_tags keywords: keywords, description: desc
 
