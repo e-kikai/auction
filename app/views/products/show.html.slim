@@ -21,236 +21,233 @@
   - set_meta_tags og: { image: @product.product_images.first.image.view.url }
 
 - if @product.finished?
-  .row
-    .alert.alert-danger
-      - if @product.cancel?
-        .
-          span.glyphicon.glyphicon-remove
-          span.btn-content このオークションは、以下の理由により出品キャンセルされました。
-        = markdown(@product.cancel)
-      - else
-        span.glyphicon.glyphicon-ok
-        span.btn-content  このオークションは終了しました。
+  .alert.alert-danger
+    - if @product.cancel?
+      .
+        span.glyphicon.glyphicon-remove
+        span.btn-content このオークションは、以下の理由により出品キャンセルされました。
+      = markdown(@product.cancel)
+    - else
+      span.glyphicon.glyphicon-ok
+      span.btn-content  このオークションは終了しました。
 - elsif @product.before?
-  .row
-    .alert.alert-warning
-        span.glyphicon.glyphicon-alert
-        span.btn-content このオークションは、開始前です。
+  .alert.alert-warning
+      span.glyphicon.glyphicon-alert
+      span.btn-content このオークションは、開始前です。
 
-. itemscope="" itemtype="http://schema.org/Product"
-  .row
-    h1.product-title itemprop="name" = @product.name
+article itemscope="" itemtype="http://schema.org/Product"
+  h1.product-title itemprop="name" = @product.name
 
-    .col-md-offset-2.col-md-8
-      - if @bid.errors.full_messages.present?
-        .alert.alert-danger
-          ul
-            - @bid.errors.full_messages.each do |msg|
-              li = msg
+  .col-md-offset-2.col-md-8
+    - if @bid.errors.full_messages.present?
+      .alert.alert-danger
+        ul
+          - @bid.errors.full_messages.each do |msg|
+            li = msg
 
-    = hidden_field_tag :product_id, @product.id
-    /// 画像枠 ///
-    .col-md-8
-      - if @product.product_images.first
-        #product-carousel.carousel.slide data-ride="carousel" data-interval="false"
-          .carousel-inner
-            - @product.product_images.each_with_index do |pi, i|
-              - if i == 0
-                .item.active = image_tag pi.image.view.url, alt: "#{@product.name}_画像#{i+1}", itemprop: "image"
-              - else
-                .item = image_tag pi.image.view.url, alt: "#{@product.name}_画像#{i+1}"
-          a.left.carousel-control href="#product-carousel" data-slide="prev"
-            span.glyphicon.glyphicon-chevron-left
-          a.right.carousel-control href="#product-carousel" data-slide="next"
-            span.glyphicon.glyphicon-chevron-right
+  = hidden_field_tag :product_id, @product.id
+  /// 画像枠 ///
+  .col-md-8
+    - if @product.product_images.first
+      #product-carousel.carousel.slide data-ride="carousel" data-interval="false"
+        .carousel-inner
+          - @product.product_images.each_with_index do |pi, i|
+            - if i == 0
+              .item.active = image_tag pi.image.view.url, alt: "#{@product.name}_画像#{i+1}", itemprop: "image"
+            - else
+              .item = image_tag pi.image.view.url, alt: "#{@product.name}_画像#{i+1}"
+        a.left.carousel-control href="#product-carousel" data-slide="prev"
+          span.glyphicon.glyphicon-chevron-left
+        a.right.carousel-control href="#product-carousel" data-slide="next"
+          span.glyphicon.glyphicon-chevron-right
 
-      div.carousel-select
-        - @product.product_images.each_with_index do |pi, i|
-          = link_to 'javascript:void(0);', onclick: "$('#product-carousel').carousel(#{i});" do
-            = image_tag pi.image.thumb.url, alt: "#{@product.name}_画像#{i+1}"
+    div.carousel-select
+      - @product.product_images.each_with_index do |pi, i|
+        = link_to 'javascript:void(0);', onclick: "$('#product-carousel').carousel(#{i});" do
+          = image_tag pi.image.thumb.url, alt: "#{@product.name}_画像#{i+1}"
 
-      - if @product.youtube.present?
-        iframe width="640" height="382" src="https://www.youtube.com/embed/#{@product.youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="true"
+    - if @product.youtube.present?
+      iframe width="640" height="382" src="https://www.youtube.com/embed/#{@product.youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="true"
 
-      .panel.panel-default
-        .panel-body
-          dl.dl-horizontal.product-dl
-            dt 開始日時
-            dd = I18n.l(@product.dulation_start, format: :full_date)
-            dt 終了日時
-            dd = I18n.l(@product.dulation_end, format: :full_date)
-            dt 商品の状態
+    .panel.panel-default
+      section.panel-body
+        dl.dl-horizontal.product-dl
+          dt 開始日時
+          dd = I18n.l(@product.dulation_start, format: :full_date)
+          dt 終了日時
+          dd = I18n.l(@product.dulation_end, format: :full_date)
+          dt 商品の状態
+          dd
+            . = @product.state
+            . = @product.state_comment
+          dt = link_to "自動延長", "/helps/auto_extension"
+          dd = @product.auto_extension
+          / dt 早期終了
+          / dd = @product.early_termination ? 'あり' : 'なし'
+          dt 最高入札者
+          dd = @product.max_bid.present? ? @product.max_bid.user.account : "-"
+          dt 開始価格(税抜)
+          dd #{number_to_currency(@product.start_price)}
+
+        dl.dl-horizontal.product-dl.product-dl-border
+          dt 発送元
+          dd #{@product.addr_1} #{@product.addr_2}
+          dt 送料負担
+          dd
+            . = @product.shipping_user
+            . = @product.shipping_comment
+          dt 海外発送
+          dd = @product.international
+          - if @shipping_label
+            dt 発送方法
+            dd = @shipping_label.name
+          - if @shipping_fee
+            dt 送料(税込)
             dd
-              . = @product.state
-              . = @product.state_comment
-            dt = link_to "自動延長", "/helps/auto_extension"
-            dd = @product.auto_extension
-            / dt 早期終了
-            / dd = @product.early_termination ? 'あり' : 'なし'
-            dt 最高入札者
-            dd = @product.max_bid.present? ? @product.max_bid.user.account : "-"
-            dt 開始価格(税抜)
-            dd #{number_to_currency(@product.start_price)}
+              . = number_to_currency(@shipping_fee.price)
+              . ※ 送料は目安です。落札後に必ず「取引」でご確認お願いいたします。
+          dt 梱包について
+          dd = @product.packing
 
-          dl.dl-horizontal.product-dl.product-dl-border
-            dt 発送元
-            dd #{@product.addr_1} #{@product.addr_2}
-            dt 送料負担
-            dd
-              . = @product.shipping_user
-              . = @product.shipping_comment
-            dt 海外発送
-            dd = @product.international
-            - if @shipping_label
-              dt 発送方法
-              dd = @shipping_label.name
-            - if @shipping_fee
-              dt 送料(税込)
-              dd
-                . = number_to_currency(@shipping_fee.price)
-                . ※ 送料は目安です。落札後に必ず「取引」でご確認お願いいたします。
-            dt 梱包について
-            dd = @product.packing
+          dt 発送期間
+          dd = @product.delivery_date
+          dt 返品の可否
+          dd
+            . = @product.returns
+            . = @product.returns_comment
+  .col-md-4
+    .panel.panel-default
+      .panel-body
+        .col-md-4
+          span.glyphicon.glyphicon-tags
+          span.btn-content 入札件数
+          .
+            span.h3 #{@product.bids_count}
+          . =< link_to "/products/#{@product.id}/bids" do
+            span.glyphicon.glyphicon-align-justify
+            span.btn-content 入札履歴
+        .col-md-4
+          span.glyphicon.glyphicon-time
+          span.btn-content 残り時間
+          .
+            span.h3> #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
+            | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
+        .col-md-4
+          = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
+            span.glyphicon.glyphicon-star.watch-star
+            span.btn-content ウォッチ
+      .panel-body.detail-price-area
+        h4 現在価格
 
-            dt 発送期間
-            dd = @product.delivery_date
-            dt 返品の可否
-            dd
-              . = @product.returns
-              . = @product.returns_comment
-    .col-md-4
-      .panel.panel-default
-        .panel-body
-          .col-md-4
-            span.glyphicon.glyphicon-tags
-            span.btn-content 入札件数
-            .
-              span.h3 #{@product.bids_count}
-            . =< link_to "/products/#{@product.id}/bids" do
-              span.glyphicon.glyphicon-align-justify
-              span.btn-content 入札履歴
-          .col-md-4
-            span.glyphicon.glyphicon-time
-            span.btn-content 残り時間
-            .
-              span.h3> #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
-              | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
-          .col-md-4
-            dd = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
-              span.glyphicon.glyphicon-star.watch-star
-              span.btn-content ウォッチ
+        /// リッチスニペット ///
+        meta itemprop="sku" content="#{@product.id}"
+        .product-price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer"
+          meta itemprop="price" content="#{@product.max_price}"
+          meta itemprop="priceCurrency" content="JPY"
+          - if @product.state == "新品"
+            meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/NewCondition"
+          - elsif @product.state == "中古"
+            meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/UsedCondition"
+
+          - if @product.lower_price.to_i > @product.max_price
+            p.alert-message #{link_to "最低落札価格", "/helps/lower_price"}に達していません
+          - elsif @product.max_bid.present? && @product.max_bid.user == current_user
+            p.success-message あなたが現在の最高入札者です
+
+          span.h2> #{number_to_currency @product.max_price}
+          span.product-tax
+            | (税込 #{number_to_currency(@product.max_price_with_tax)})
+
+        - unless @product.finished? || @product.before? || @product.user_id == current_user.try(:id)
+          = button_tag class: "btn btn-warning btn-lg center-block", data: { toggle: :modal, target: "#bid-modal"} do
+            span.glyphicon.glyphicon-pencil
+            span.btn-content 入札する
+
+      - if @product.prompt_dicision_price
         .panel-body.detail-price-area
-          h4 現在価格
-
-          /// リッチスニペット ///
-          meta itemprop="sku" content="#{@product.id}"
-          .product-price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer"
-            meta itemprop="price" content="#{@product.max_price}"
-            meta itemprop="priceCurrency" content="JPY"
-            - if @product.state == "新品"
-              meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/NewCondition"
-            - elsif @product.state == "中古"
-              meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/UsedCondition"
-
-            - if @product.lower_price.to_i > @product.max_price
-              p.alert-message #{link_to "最低落札価格", "/helps/lower_price"}に達していません
-            - elsif @product.max_bid.present? && @product.max_bid.user == current_user
-              p.success-message あなたが現在の最高入札者です
-
-            span.h2> #{number_to_currency @product.max_price}
+          h4 即決価格
+          .product-price
+            span.h2> #{number_to_currency @product.prompt_dicision_price}
             span.product-tax
-              | (税込 #{number_to_currency(@product.max_price_with_tax)})
+              | (税込 #{number_to_currency(@product.prompt_dicision_price_with_tax)})
 
-          - unless @product.finished? || @product.before? || @product.user_id == current_user.try(:id)
-            = button_tag class: "btn btn-warning btn-lg center-block", data: { toggle: :modal, target: "#bid-modal"} do
-              span.glyphicon.glyphicon-pencil
-              span.btn-content 入札する
+          - unless @product.finished? || @product.user_id == current_user.try(:id)
+            = button_tag class: "btn btn-danger btn-lg center-block", data: { toggle: :modal, target: "#prompt-modal"} do
+              span.glyphicon.glyphicon-jpy
+              span.btn-content 今すぐ落札する
 
-        - if @product.prompt_dicision_price
-          .panel-body.detail-price-area
-            h4 即決価格
-            .product-price
-              span.h2> #{number_to_currency @product.prompt_dicision_price}
-              span.product-tax
-                | (税込 #{number_to_currency(@product.prompt_dicision_price_with_tax)})
+      /// 出品会社 ///
+      .panel-body
+        h4
+          span.glyphicon.glyphicon-home
+          span.btn-content 出品会社
+        section.detail-company-area
+          .
+            span.h4 = @product.user.company
+            = " ("
+            = link_to "/companies/#{@product.user_id}" do
+              span.glyphicon.glyphicon-home
+              span.btn-content 出品会社情報
+            = ")"
 
-            - unless @product.finished? || @product.user_id == current_user.try(:id)
-              = button_tag class: "btn btn-danger btn-lg center-block", data: { toggle: :modal, target: "#prompt-modal"} do
-                span.glyphicon.glyphicon-jpy
-                span.btn-content 今すぐ落札する
+          .
+            span.glyphicon.glyphicon-star
+            span.btn-content 評価 :
+            span.h4
+              =<> number_with_delimiter @product.user.count_star
+              | (
+              span.glyphicon.glyphicon-certificate.star-good
+              =<> number_with_delimiter @product.user.count_star_good
+              span.glyphicon.glyphicon-cloud.star-bad
+              =< number_with_delimiter @product.user.count_star_bad
+              | )
 
-        /// 出品会社 ///
-        .panel-body
-          h4
-            span.glyphicon.glyphicon-home
-            span.btn-content 出品会社
-          .detail-company-area
-            .
-              span.h4 = @product.user.company
-              = " ("
-              = link_to "/companies/#{@product.user_id}" do
-                span.glyphicon.glyphicon-home
-                span.btn-content 出品会社情報
-              = ")"
+          . = link_to "/products/?company_id=#{@product.user_id}" do
+            span.glyphicon.glyphicon-list
+            span.btn-content = "#{@product.user.company}のそのほかの出品商品を見る"
 
-            .
-              span.glyphicon.glyphicon-star
-              span.btn-content 評価 :
-              span.h4
-                =<> number_with_delimiter @product.user.count_star
-                | (
-                span.glyphicon.glyphicon-certificate.star-good
-                =<> number_with_delimiter @product.user.count_star_good
-                span.glyphicon.glyphicon-cloud.star-bad
-                =< number_with_delimiter @product.user.count_star_bad
-                | )
+          .
+            span.glyphicon.glyphicon-map-marker
+            span.btn-content = "出品地域 : #{@product.user.addr_1} #{@product.user.addr_2}"
+          .
+            span.glyphicon.glyphicon-file
+            span.btn-content = "免許情報 : #{@product.user.license}"
 
-            . = link_to "/products/?company_id=#{@product.user_id}" do
-              span.glyphicon.glyphicon-list
-              span.btn-content = "#{@product.user.company}のそのほかの出品商品を見る"
+        .trade-button-area
+          = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
+            span.glyphicon.glyphicon-heart.follow-heart
+            span.btn-content フォローする
 
-            .
-              span.glyphicon.glyphicon-map-marker
-              span.btn-content = "出品地域 : #{@product.user.addr_1} #{@product.user.addr_2}"
-            .
-              span.glyphicon.glyphicon-file
-              span.btn-content = "免許情報 : #{@product.user.license}"
+    //// SNSボタン ///
+    .sns-area
+      = link_to "http://www.facebook.com/sharer.php?u=#{root_url}products/#{@product.id}", target: "_blank", class: "facebook-button" do
+        = image_tag "fb_icon.png"
+        span シェア
 
-          .trade-button-area
-            = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
-              span.glyphicon.glyphicon-heart.follow-heart
-              span.btn-content フォローする
+      = link_to "http://twitter.com/share?hashtags=ものオク&text=#{@product.name}｜ものづくりオークション&url=#{root_url}products/#{@product.id}", target: "_blank", class: "twitter-button" do
+        = image_tag "twitter_icon.png"
+        span Tweet
 
-      //// SNSボタン ///
-      .sns-area
-        = link_to "http://www.facebook.com/sharer.php?u=#{root_url}products/#{@product.id}", target: "_blank", class: "facebook-button" do
-          = image_tag "fb_icon.png"
-          span シェア
-
-        = link_to "http://twitter.com/share?hashtags=ものオク&text=#{@product.name}｜ものづくりオークション&url=#{root_url}products/#{@product.id}", target: "_blank", class: "twitter-button" do
-          = image_tag "twitter_icon.png"
-          span Tweet
-
-        = link_to "LINEで送る", "http://line.me/R/msg/text/?#{@product.name}｜ものづくりオークション #{root_url}products/#{@product.id}",target: "_blank", class: "line-button"
+      = link_to "LINEで送る", "http://line.me/R/msg/text/?#{@product.name}｜ものづくりオークション #{root_url}products/#{@product.id}",target: "_blank", class: "line-button"
 
 
-      /// ハッシュダグ ///
-      h5 関連キーワード
-      .detail-hashtags
-        - @product.hashtags.split(/(?:\s|　)+/).each do |ta|
-          = link_to ta, "/products?keywords=#{ta}"
+    /// ハッシュダグ ///
+    h5 関連キーワード
+    section.detail-hashtags
+      - @product.hashtags.split(/(?:\s|　)+/).each do |ta|
+        = link_to ta, "/products?keywords=#{ta}"
 
-  .row
+  .col-md-12
     h4.product-description 商品説明
-    . itemprop="description" = markdown(@product.description)
+    section itemprop="description" = markdown(@product.description)
     - if @product.additional.present?
       .additional-label <追記事項>
-      .additional = markdown(@product.additional)
+      section.additional = markdown(@product.additional)
     h4.product-description 落札事項
-    . = markdown(@product.note)
+    section = markdown(@product.note)
 
 - if @popular_products.present?
-  .row
+  .col-md-12
     label
       span.glyphicon.glyphicon-thumbs-up.check-icon
       span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
