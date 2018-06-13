@@ -165,7 +165,8 @@ class Product < ApplicationRecord
     if products.class.name == "Product"
       res.where(category_id: products.category.subtree_ids).where.not(id: products.id)
     else
-      res.where(category_id: products.except(:order).select(:category_id)).where.not(id: products.except(:order).select(:id))
+      res.where(category_id: products.except(:order).select(:category_id))
+        .where.not(id: products.except(:order).select(:id))
     end
 
   }

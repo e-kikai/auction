@@ -2,11 +2,13 @@
 - breadcrumb    :products_show, @product
 
 /// 基本 ///
-- desc = "オークション現在価格 #{number_to_currency @product.max_price_with_tax}"
+- desc = "オークション現在価格 #{number_to_currency @product.max_price_with_tax}|"
 - if @product.prompt_dicision_price
-  - desc += "|即決価格 #{number_to_currency @product.prompt_dicision_price_with_tax}"
+  - desc += "即決価格 #{number_to_currency @product.prompt_dicision_price_with_tax}|"
+- desc += @product.description
+- keywords = "オークション,ものオク,販売,中古,機械,工具,#{@product.search_keywords.gsub(/\s+/, ",")}"
 
-- set_meta_tags keywords: "オークション ものオク #{@product.search_keywords}", description: desc
+- set_meta_tags keywords: keywords, description: desc
 
 /// Twitterカード ///
 - set_meta_tags twitter: { card: "summary", site: "@username" }
@@ -37,7 +39,7 @@
 
 . itemscope="" itemtype="http://schema.org/Product"
   .row
-    h3.product-title itemprop="name" = @product.name
+    h1.product-title itemprop="name" = @product.name
 
     .col-md-offset-2.col-md-8
       - if @bid.errors.full_messages.present?
@@ -54,9 +56,9 @@
           .carousel-inner
             - @product.product_images.each_with_index do |pi, i|
               - if i == 0
-                .item.active = image_tag pi.image.view.url, itemprop: "image"
+                .item.active = image_tag pi.image.view.url, alt: "#{@product.name}_画像#{i+1}", itemprop: "image"
               - else
-                .item = image_tag pi.image.view.url
+                .item = image_tag pi.image.view.url, alt: "#{@product.name}_画像#{i+1}"
           a.left.carousel-control href="#product-carousel" data-slide="prev"
             span.glyphicon.glyphicon-chevron-left
           a.right.carousel-control href="#product-carousel" data-slide="next"
@@ -64,7 +66,8 @@
 
       div.carousel-select
         - @product.product_images.each_with_index do |pi, i|
-          = link_to(image_tag(pi.image.thumb.url), 'javascript:void(0);', onclick: "$('#product-carousel').carousel(#{i});")
+          = link_to 'javascript:void(0);', onclick: "$('#product-carousel').carousel(#{i});" do
+            = image_tag pi.image.thumb.url, alt: "#{@product.name}_画像#{i+1}"
 
       - if @product.youtube.present?
         iframe width="640" height="382" src="https://www.youtube.com/embed/#{@product.youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="true"
@@ -250,7 +253,7 @@
   .row
     label
       span.glyphicon.glyphicon-thumbs-up.check-icon
-      span.btn-content この商品と同じカテゴリの人気商品
+      span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
     .panel.panel-default
       .panel-body.toppage-contents
         .toppage-scroll
