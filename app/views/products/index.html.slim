@@ -1,11 +1,10 @@
+- title = ""
+- title = "#{params[:keywords]} #{title}" if params[:keywords].present?
+- title = "#{@category.name} #{title}"    if @category.present?
+- title = "#{@company.company} #{title}"  if @company.present?
+- title.strip!
 
-- title = params[:keywords]
-- if @company.present?
-  - title = "#{@company.company} #{title}"
-- if @category.present?
-  - title = " #{@category.name} #{title}"
-
-- set_meta_tags title: "#{title} 検索結果"
+- set_meta_tags title: "#{title} 検索結果(#{@pproducts.current_page}/#{@pproducts.total_pages})"
 
 - if @company.present?
   - breadcrumb :company, @company
@@ -126,7 +125,7 @@
                   / /// 工具のみの仮処理
                   / - next if i == 0
                   / = " > " if i != 1
-                  = link_to(ca.name, "/products/?category_id=#{ca.id}")
+                  = link_to(ca.name, "/products?category_id=#{ca.id}")
           td.price.absolute
             strong
               = number_to_currency(pr.max_price_with_tax)
