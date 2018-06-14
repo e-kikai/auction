@@ -1,5 +1,5 @@
-- set_meta_tags title: "保存した検索条件履歴"
-- breadcrumb :system_something, "保存した検索条件履歴"
+- set_meta_tags title: "保存した検索条件使用履歴"
+- breadcrumb :system_something, "保存した検索条件使用履歴"
 
 / = form_tag("/system/search_logs", method: "get", class: "form-inline filtering-form") do
 /   = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
@@ -21,6 +21,7 @@ table.table.table-hover.table-condensed.table-striped
     th.num ユーザID
     th.sepa アカウント
     th 保存日時
+    th 削除日時
 
   - @psearches.each do |se|
     tr
@@ -34,3 +35,4 @@ table.table.table-hover.table-condensed.table-striped
       td.num = se.user_id
       td.sepa = se.user.try(:account)
       td = se.created_at
+      td = se.soft_destroyed_at

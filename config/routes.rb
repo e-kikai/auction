@@ -105,7 +105,9 @@ Rails.application.routes.draw do
     resources :bids,        only: [:index]
     resources :detail_logs, only: [:index]
     resources :search_logs, only: [:index]
+    resources :watches,     only: [:index]
     resources :searches,    only: [:index]
+    resources :follows,     only: [:index]
 
     resources :total,       only: [:index] do
       collection do
