@@ -6,7 +6,7 @@ class ToppageLogsController < ApplicationController
       user_id: user_signed_in? ? current_user.id : nil,
       ip:      ip,
       host:    (Resolv.getname(ip) rescue ""),
-      referer: request.referer,
+      referer: params[:referer],
       ua:      request.user_agent,
     ) ? "success" : "error"
 

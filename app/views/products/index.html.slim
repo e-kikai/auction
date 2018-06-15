@@ -31,6 +31,7 @@
         span.glyphicon.glyphicon-pushpin
         span.btn-content この検索条件を保存
     = hidden_field_tag :search_id, params[:search_id]
+    = hidden_field_tag :referer,   request.referer
 
     - base_params = params.to_unsafe_h.merge(page: nil)
 

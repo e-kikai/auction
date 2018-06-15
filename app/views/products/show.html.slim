@@ -46,6 +46,8 @@ article itemscope="" itemtype="http://schema.org/Product"
             li = msg
 
   = hidden_field_tag :product_id, @product.id
+  = hidden_field_tag :referer,    request.referer
+
   /// 画像枠 ///
   .col-md-8
     - if @product.product_images.first

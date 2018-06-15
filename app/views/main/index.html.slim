@@ -12,6 +12,8 @@
 - set_meta_tags "msvalidate.01" => "CD6C752835253EA8CB5CECA5CEB50CCB"
 
 .toppage.clearfix
+  = hidden_field_tag :referer, request.referer
+
   .row
     - if user_signed_in?
       label.top-search

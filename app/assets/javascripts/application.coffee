@@ -33,7 +33,7 @@ $(document).on 'turbolinks:load', ->
       url:      "/detail_logs/"
       type:     'POST',
       dataType: 'json',
-      data :    { product_id : $('#product_id').val() },
+      data :    { product_id : $('#product_id').val(), referer : $('#referer').val()  },
       timeout:  3000,
       # success:  (data, status, xhr)   -> alert status
       # error:    (xhr,  status, error) -> alert status
@@ -45,7 +45,7 @@ $(document).on 'turbolinks:load', ->
       url:      "/search_logs/"
       type:     'POST',
       dataType: 'json',
-      data :    { category_id : $('#search_category_id').val(), company_id : $('#search_company_id').val(), keywords : $('#search_keywords').val(), search_id : $('#search_id').val() },
+      data :    { category_id : $('#search_category_id').val(), company_id : $('#search_company_id').val(), keywords : $('#search_keywords').val(), search_id : $('#search_id').val(), referer : $('#referer').val() },
       timeout:  3000,
       # success:  (data, status, xhr)   -> alert status
       # error:    (xhr,  status, error) -> alert status
@@ -58,7 +58,7 @@ $(document).on 'turbolinks:load', ->
       url:      "/toppage_logs/"
       type:     'POST',
       dataType: 'json',
-      data :    {},
+      data :    { referer : $('#referer').val() },
       timeout:  3000,
       # success:  (data, status, xhr)   -> alert status
       # error:    (xhr,  status, error) -> alert status
