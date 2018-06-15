@@ -28,4 +28,16 @@ table.table.table-hover.table-condensed.table-striped
       td.num = lo.product_id
       td = lo.product ? (link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank") : "× (削除された商品)"
       td.price = lo.product ? number_to_currency(lo.product.max_price) : ""
-      td = lo.referer
+      td
+        - if lo.referer =~ /https\:\/\/www.mnok.net/
+          | 内部リンク
+        - if lo.referer =~ /https\:\/\/google\.com/
+          | Google
+        - elsif lo.referer =~ /https\:\/\/facebook\.com/
+          | facebook
+        - elsif lo.referer =~ /https\:\/\/t\.co/
+          | Twitter
+        - elsif lo.referer =~ /http\:\/\/search\.yahoo\.co\.jp/
+          | Yahoo
+        - elsif lo.referer =~ /https\:\/\/www\.bing\.com/
+          | bing
