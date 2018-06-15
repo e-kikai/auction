@@ -18,6 +18,7 @@ table.table.table-hover.table-condensed.table-striped
     th.num 商品ID
     th 商品名
     th.price 最高金額
+    th リファラ
   - @pdetail_logs.each do |lo|
     tr
       td = lo.created_at
@@ -27,3 +28,4 @@ table.table.table-hover.table-condensed.table-striped
       td.num = lo.product_id
       td = lo.product ? (link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank") : "× (削除された商品)"
       td.price = lo.product ? number_to_currency(lo.product.max_price) : ""
+      td = lo.referer
