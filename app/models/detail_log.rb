@@ -21,6 +21,12 @@ class DetailLog < ApplicationRecord
   before_save :check_robot
 
   ROBOTS = /(google|yahoo|naver|ahrefs|msnbot|bot|crawl|amazonaws)/
+  KWDS   = {
+    "mail" => "メール", "top" => "トップページ", "dtl" => "詳細", "src" => "検索結果", "wtc" => "ウォッチリスト", "bid" => "入札",  "bds" => "入札一覧", "fin" => "落札一覧", "fls" => "フォローリスト",
+    "cmp" => "出品会社",
+    "lst" => "一覧", "flw" => "フォロー新着", "chk" => "最近チェック", "new" => "新着商品", "oss" => "おすすめ", "bfn" => "入札完了", "bck" => "戻る",
+    "win" => "入札通知", "los" => "高値更新", "csl" => "キャンセル", "suc" => "落札通知", "trd" => "取引通知"
+  }
 
   private
 

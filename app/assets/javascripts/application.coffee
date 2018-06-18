@@ -33,7 +33,7 @@ $(document).on 'turbolinks:load', ->
       url:      "/detail_logs/"
       type:     'POST',
       dataType: 'json',
-      data :    { product_id : $('#product_id').val(), referer : $('#referer').val()  },
+      data :    { product_id : $('#product_id').val(), r : $('#r').val(), referer : $('#referer').val()  },
       timeout:  3000,
       # success:  (data, status, xhr)   -> alert status
       # error:    (xhr,  status, error) -> alert status

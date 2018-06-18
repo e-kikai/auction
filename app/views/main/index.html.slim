@@ -75,7 +75,7 @@
         .panel-body.toppage-contents
           .toppage-scroll
             - @follows_new_products.each do |pr|
-              = render "product_panel", product: pr
+              = render "product_panel", product: pr, r: :top_flw
 
     .toppage-searches
       - if @searches[3]
@@ -91,7 +91,7 @@
         .panel-body.toppage-contents
           .toppage-scroll
             - @detaillog_products.each do |pr|
-              = render "product_panel", product: pr
+              = render "product_panel", product: pr, r: :top_chk
 
     .toppage-searches
       - if @searches[6]
@@ -105,7 +105,7 @@
       .panel-body.toppage-contents
         .toppage-scroll
           - @new_products.each do |pr|
-            = render "product_panel", product: pr
+            = render "product_panel", product: pr, r: :top_new
 
     .toppage-searches
       - if @searches[9]

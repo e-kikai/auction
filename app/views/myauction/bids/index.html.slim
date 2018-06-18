@@ -39,8 +39,8 @@ h4 = title
         th = sort_link(@search, :dulation_end, "残り時間")
     - @pproducts.each do |pr|
       tr
-        td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
-        td = link_to pr.name, "/products/#{pr.id}"
+        td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}?r=#{params[:cond] == "2" ? :fin_lst : :bds_lst}"
+        td = link_to pr.name, "/products/#{pr.id}?r=#{params[:cond] == "2" ? :fin_lst : :bds_lst}"
         td = I18n.l(pr.dulation_end, format: :full_date)
         td.price
           strong = number_to_currency(pr.max_price_with_tax)
@@ -88,4 +88,4 @@ h4 = title
         .panel-body.toppage-contents
           .toppage-scroll
             - @popular_products.each do |pr|
-              = render "/main/product_panel", product: pr
+              = render "/main/product_panel", product: pr, r: ( params[:cond] == "2" ? :fin_oss : :bds_oss)

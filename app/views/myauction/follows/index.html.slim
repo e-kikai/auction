@@ -27,8 +27,8 @@ h4 フォローリスト
           - Product.status(Product::STATUS[:start]).where(user_id: fo.to_user_id).order(dulation_start: :desc).limit(Follow::PRODUCTS_NUM).each do |pr|
             .thumbnail.product-pannel
               - if pr.product_images.first.try(:image)
-                = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}"
-              .name = link_to pr.name, "/products/#{pr.id}"
+                = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}?r=fls_lst"
+              .name = link_to pr.name, "/products/#{pr.id}?r=fls_lst"
               .price 価格 #{number_to_currency(pr.max_price_with_tax)}
         td
           - unless params[:finished]

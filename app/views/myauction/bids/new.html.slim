@@ -39,7 +39,7 @@ h3.product-title = @product.name
           p 一度行った入札は、キャンセルできません。
           p 購入前に、必ず商品説明・落札事項を確認してください。
 
-        p.text-center = link_to "商品詳細に戻る", "/products/#{@product.id}"
+        p.text-center = link_to "商品詳細に戻る", "/products/#{@product.id}?r=bid_bck"
 
   - else
     .col-md-offset-2.col-md-8

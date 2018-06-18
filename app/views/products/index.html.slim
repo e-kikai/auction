@@ -107,11 +107,11 @@
         th.price = sort_link(@search, :dulation_end, "残り時間")
       - @pproducts.each do |pr|
         tr
-          td.img = link_to image_tag(pr.thumb_url, alt: "#{pr.name}"), "/products/#{pr.id}"
+          td.img = link_to image_tag(pr.thumb_url, alt: "#{pr.name}"), "/products/#{pr.id}?r=src_lst"
           td.absolute
             - if pr.dulation_start > Time.now.yesterday
               span.new-icon
-            = link_to pr.name, "/products/#{pr.id}"
+            = link_to pr.name, "/products/#{pr.id}?r=src_lst"
             .td-under
               - if @company.blank?
                 .
@@ -150,4 +150,4 @@
           .panel-body.toppage-contents
             .toppage-scroll
               - @detaillog_products.each do |pr|
-                = render "/main/product_panel", product: pr
+                = render "/main/product_panel", product: pr, r: :src_chk

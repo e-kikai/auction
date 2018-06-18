@@ -16,6 +16,9 @@
 /// OGP ///
 - set_meta_tags og: { type: "article", title: @product.name, description: desc, url: "#{root_url}products/#{@product.id}", site_name: "ものづくりオークション" }
 
+/// canonical ///
+- set_meta_tags canonical: "#{root_url}products/#{@product.id}"
+
 - if @product.product_images.first
   - set_meta_tags twitter: { image: @product.product_images.first.image.thumb.url }
   - set_meta_tags og: { image: @product.product_images.first.image.view.url }
@@ -47,6 +50,7 @@ article itemscope="" itemtype="http://schema.org/Product"
 
   = hidden_field_tag :product_id, @product.id
   = hidden_field_tag :referer,    request.referer
+  = hidden_field_tag :r,          params[:r]
 
   /// 画像枠 ///
   .col-md-8
@@ -257,7 +261,7 @@ article itemscope="" itemtype="http://schema.org/Product"
       .panel-body.toppage-contents
         .toppage-scroll
           - @popular_products.each do |pr|
-            = render "/main/product_panel", product: pr
+            = render "/main/product_panel", product: pr, r: :dtl_sca
 
 /// 入札ダイアログ ////
 .modal.fade#bid-modal
