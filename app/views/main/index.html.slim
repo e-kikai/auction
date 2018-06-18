@@ -127,19 +127,19 @@
     //// SNSボタン ///
     .sns-area
       = link_to "http://www.facebook.com/sharer.php?u=#{root_url}", target: "_blank", class: "facebook-button" do
-        = image_tag "fb_icon.png"
+        = image_tag "fb_icon.png", alt: "facebook"
         span シェア
 
       = link_to "http://twitter.com/share?hashtags=ものオク&text=ものづくりオークション〜ものづくりに特化したオークションサイト&url=#{root_url}", target: "_blank", class: "twitter-button" do
-        = image_tag "twitter_icon.png"
+        = image_tag "twitter_icon.png", alt: "Twitter"
         span Tweet
 
-      = link_to "LINEで送る", "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト #{root_url}",target: "_blank", class: "line-button"
+      = link_to "LINEで送る", "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト #{root_url}",target: "_blank", class: "line-button", alt: "LINE"
 
       / . <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmonooku%2F&tabs=timeline&width=0&height=400&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&appId" width="0" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
 
     .banner-area
-      = link_to(image_tag(asset_url("kobayashi_logo.png")), "http://www.kkmt.co.jp/", target: "_blank")
-      = link_to(image_tag(asset_url("spotsale_logo_03.png"), style: "border:1px solid #CCC;"), "https://www.deadstocktool.com/", target: "_blank")
-      = link_to(image_tag(asset_url("logo_machinelife.png"), style: "border:1px solid #CCC;"), "http://www.zenkiren.net/", target: "_blank")
-      = link_to(image_tag(asset_url("e-kikai-header-logo.gif"), style: "border:1px solid #CFC;"), "https://www.e-kikai.com/", target: "_blank")
+      = link_to(image_tag(asset_url("kobayashi_logo.png", alt: "小林機械")), "http://www.kkmt.co.jp/", target: "_blank")
+      = link_to(image_tag(asset_url("spotsale_logo_03.png", alt: "デッドストックツール.com 機械団地のデッドストックツール通販サイト"), style: "border:1px solid #CCC;"), "https://www.deadstocktool.com/", target: "_blank")
+      = link_to(image_tag(asset_url("logo_machinelife.png", alt: "マシンライフ 全機連の中古機械情報サイト"), style: "border:1px solid #CCC;"), "http://www.zenkiren.net/", target: "_blank")
+      = link_to(image_tag(asset_url("e-kikai-header-logo.gif", alt: "e-kikai"), style: "border:1px solid #CFC;"), "https://www.e-kikai.com/", target: "_blank")

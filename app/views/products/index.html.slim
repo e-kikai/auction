@@ -15,8 +15,7 @@
 
 - if @company.present?
   - if @company.header_image.url.present?
-    .row.header-image
-      = image_tag @company.header_image.url
+    .row.header-image = image_tag @company.header_image.url, alt: @company.company
 
 .row
   / = @products.to_sql
@@ -108,7 +107,7 @@
         th.price = sort_link(@search, :dulation_end, "残り時間")
       - @pproducts.each do |pr|
         tr
-          td.img = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
+          td.img = link_to image_tag(pr.thumb_url, alt: "#{pr.name}"), "/products/#{pr.id}"
           td.absolute
             - if pr.dulation_start > Time.now.yesterday
               span.new-icon

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_28_090250) do
+ActiveRecord::Schema.define(version: 2018_06_17_154938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 2018_05_28_090250) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "referer"
+    t.string "r", default: "", null: false
     t.index ["product_id"], name: "index_detail_logs_on_product_id"
     t.index ["user_id"], name: "index_detail_logs_on_user_id"
   end
@@ -206,6 +207,19 @@ ActiveRecord::Schema.define(version: 2018_05_28_090250) do
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["soft_destroyed_at"], name: "index_products_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_products_on_user_id"
+  end
+
+  create_table "result_logs", force: :cascade do |t|
+    t.bigint "product_id"
+    t.bigint "bid_id_id"
+    t.datetime "result_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "soft_destroyed_at"
+    t.index ["bid_id_id"], name: "index_result_logs_on_bid_id_id"
+    t.index ["product_id"], name: "index_result_logs_on_product_id"
+    t.index ["result_at"], name: "index_result_logs_on_result_at"
+    t.index ["soft_destroyed_at"], name: "index_result_logs_on_soft_destroyed_at"
   end
 
   create_table "search_logs", force: :cascade do |t|
