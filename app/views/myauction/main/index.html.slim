@@ -120,7 +120,7 @@
           hr
         .panel-body
           - @infos.each do |inf|
-            p = link_to inf.title, "/myauction/infos/#{inf.id}"
+            p = link_to inf.title, "/myauction/infos/#{inf.uid}"
           p = link_to ">> お知らせ一覧", "/myauction/infos"
 
 
