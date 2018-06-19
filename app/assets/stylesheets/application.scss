@@ -163,6 +163,7 @@ label.required:after {
   font-size: 25px;
   background: $main-color;
   padding: 6px;
+  margin-top: 0;
 }
 
 .product-table {
@@ -606,6 +607,23 @@ hr.detail-price-calc {
 /// markdown(ヘルプ・お知らせ) ///
 .markdown-area {
   margin: 16px;
+
+  p {
+    margin-bottom: 16px;
+  }
+
+  h1, .h1, h2, .h2, h3, .h3,
+  h4, .h4, h5, .h5, h6, .h6 {
+    margin-top: 20px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #808;
+  }
+
+  b, strong {
+    font-size: 17px;
+    color: #800;
+  }
 }
 
 /// マイ・オークション ///
