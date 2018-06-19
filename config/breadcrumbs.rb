@@ -164,7 +164,7 @@ crumb :myauction_helps_show do |he|
 end
 
 crumb :myauction_infos do
-  link   "出品者向けヘルプ一覧", "/myauction/infos"
+  link   "出品者向けお知らせ一覧", "/myauction/infos"
   parent :myauction
 end
 

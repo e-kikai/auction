@@ -1,10 +1,10 @@
-- set_meta_tags title: @info.title
+- set_meta_tags title: "お知らせ : #{@info.title}"
 - breadcrumb    :myauction_infos_show, @info
 
 .row
   .col-md-3
     .panel.panel-default
-      .panel-heading お知らせ一覧
+      .panel-heading 出品会社向けお知らせ一覧
       .panel-body
         - @infos.each do |he|
           p = link_to he.title, "/myauction/infos/#{he.uid}"

@@ -607,6 +607,7 @@ hr.detail-price-calc {
 /// markdown(ヘルプ・お知らせ) ///
 .markdown-area {
   margin: 16px;
+  margin-bottom: 32px;
 
   p {
     margin-bottom: 16px;
@@ -614,7 +615,7 @@ hr.detail-price-calc {
 
   h1, .h1, h2, .h2, h3, .h3,
   h4, .h4, h5, .h5, h6, .h6 {
-    margin-top: 20px;
+    margin-top: 24px;
     margin-bottom: 8px;
     font-weight: bold;
     color: #808;
