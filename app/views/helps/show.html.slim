@@ -6,6 +6,7 @@
     .panel.panel-default
       .panel-heading ヘルプ一覧
       .panel-body
+        p = link_to "ものづくりオークションとは", "/lp/index.html", target: "_blank"
         - @helps.each do |he|
           p = link_to he.title, "/helps/#{he.uid}"
         p = link_to "利用規約(PDF)", asset_path("terms_of_service_01.pdf"), target: "_blank"

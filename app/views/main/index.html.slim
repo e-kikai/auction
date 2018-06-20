@@ -1,12 +1,12 @@
 /// 基本 ///
 - set_meta_tags title: "ものづくりのための中古機械・工具のオークション ものオク", reverse: false
-- set_meta_tags keywords: "中古,新品,工具,機械,NC,ものづくり,オークション,販売,ものオク", description: "ものづくりのための中古機械・工具のオークション販売サイト"
+- set_meta_tags keywords: "中古,新品,工具,機械,NC,ものづくり,オークション,販売,ものオク", description: "新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！"
 
 /// Twitterカード ///
 - set_meta_tags twitter: { card: "summary", site: "@username", image: asset_url("auction_02.jpg") }
 
 /// OGP ///
-- set_meta_tags og: { type: "website", title: "ものづくりオークション ｜ ものづくりのための中古機械・工具のオークション ものオク", description: "ものづくりのための中古機械・工具のオークション販売サイト", url: root_url, site_name: "ものづくりオークション ｜ ものづくりのための中古機械・工具のオークション ものオク", image: asset_url("auction_02.jpg") }
+- set_meta_tags og: { type: "website", title: "ものづくりオークション ｜ ものづくりのための中古機械・工具のオークション ものオク", description: "新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！", url: root_url, site_name: "ものづくりオークション ｜ ものづくりのための中古機械・工具のオークション ものオク", image: asset_url("auction_02.jpg") }
 
 /// BING ///
 - set_meta_tags "msvalidate.01" => "CD6C752835253EA8CB5CECA5CEB50CCB"
@@ -119,6 +119,7 @@
         span.glyphicon.glyphicon-question-sign
         span.btn-content ヘルプ
       .panel-body
+        p = link_to "ものづくりオークションとは", "/lp/index.html", target: "_blank"
         - @helps.each do |he|
           p = link_to he.title, "/helps/#{he.uid}"
         p = link_to "利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
@@ -130,11 +131,11 @@
         = image_tag "fb_icon.png", alt: "facebook"
         span シェア
 
-      = link_to "http://twitter.com/share?hashtags=ものオク&text=ものづくりオークション〜ものづくりに特化したオークションサイト&url=#{root_url}", target: "_blank", class: "twitter-button" do
+      = link_to "http://twitter.com/share?hashtags=ものオク&text=ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！&url=#{root_url}", target: "_blank", class: "twitter-button" do
         = image_tag "twitter_icon.png", alt: "Twitter"
         span Tweet
 
-      = link_to "LINEで送る", "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト #{root_url}",target: "_blank", class: "line-button", alt: "LINE"
+      = link_to "LINEで送る", "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！ #{root_url}",target: "_blank", class: "line-button", alt: "LINE"
 
       / . <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmonooku%2F&tabs=timeline&width=0&height=400&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&appId" width="0" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
 
