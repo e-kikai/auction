@@ -20,15 +20,17 @@
 .row
   / = @products.to_sql
   .col-md-2
+    / = link_to "/myauction/searches/new?keywords=#{params[:keywords]}"
     = form_for Search.new, url: "/myauction/searches/new", method: :get do |f|
       = f.hidden_field :keywords,    value: params[:keywords]
       = f.hidden_field :category_id, value: params[:category_id]
       = f.hidden_field :company_id,  value: params[:company_id]
       = f.hidden_field :q,           value: params[:q].to_json
 
-      = f.button :button, class: "btn btn-info btn-sm btn-search-save" do
-        span.glyphicon.glyphicon-pushpin
+      = f.button :button, class: "btn btn-default btn-sm btn-search-save" do
+        span.glyphicon.glyphicon-pushpin.search-pushpin
         span.btn-content この検索条件を保存
+
     = hidden_field_tag :search_id, params[:search_id]
     = hidden_field_tag :referer,   request.referer
 

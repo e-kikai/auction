@@ -3,10 +3,11 @@ SitemapGenerator::Sitemap.default_host = "https://www.mnok.net"
 
 SitemapGenerator::Sitemap.create do
   add '/', priority: 1.0, changefreq: 'daily'
+  add '/lp/index.html', priority: 0.8, changefreq: 'monthly' #LP
 
   ### 商品詳細 ###
   Product.status(Product::STATUS[:start]).pluck(:id).each do |id|
-    add "/products/#{id}", priority: 1.0, changefreq: 'daily'
+    add "/products/#{id}", priority: 0.9, changefreq: 'daily'
   end
 
   ### カテゴリ ###

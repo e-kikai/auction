@@ -36,3 +36,10 @@ every :minute do
   runner "Product.scheduling"
   # rake 'scheduling:all'
 end
+
+# Twitter自動投稿
+if rails_env == :production
+  every :monday, at: '6:00 pm' do
+    rake 'twitter:toppage'
+  end
+end

@@ -54,12 +54,15 @@ table.table.table-hover.table-condensed.form-table
     tr
       th = f.label :category_id, class: :required
       td = f.select :category_id, Category.options, {include_blank: "-- カテゴリ選択 --"}, class: "form-control", required: "required"
-    tr
+    tr.form-inline
       th = f.label :code
-      td = f.text_field :code, class: "form-control short"
+      td
+        = f.text_field :code, class: "form-control short"
+        span.help-block style="display:inline-block;" 【任意】この項目はユーザには表示されません
     tr
       th = f.label :name, class: :required
       td = f.text_field :name, class: "form-control", required: "required"
+
     tr
       th = f.label :description
       td = f.text_area :description, class: "form-control description"
@@ -109,7 +112,10 @@ table.table.table-hover.table-condensed.form-table
       th = f.label :hashtags
       td
         = f.text_area :hashtags, class: "form-control"
-        p.help-block 空白区切りで記述してください
+        p.help-block
+          | キーワード検索、Googleなどの検索エンジンのキーワードになります。
+          br
+          | 商品名、メーカーの別名、能力値、用途、状態、一山商品の明細などを空白区切りで記述してください
 
   tr
     th = f.label :note
