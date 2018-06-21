@@ -38,7 +38,7 @@ every :minute do
 end
 
 # Twitter自動投稿
-if rails_env == :production
+if rails_env.to_sym == :production
   every :monday, at: '6:00 pm' do
     rake 'twitter:toppage'
   end
