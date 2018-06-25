@@ -8,23 +8,23 @@
 /     span.btn-content 日付変更
 
 = paginate @pfollowes
-
-table.table.table-hover.table-condensed.table-striped
-  tr
-    th.num ID
-    th.num ユーザID
-    th.sepa アカウント
-    th.num 会社ID
-    th.sepa 会社名
-    th 保存日時
-    th 削除日時
-
-  - @pfollowes.each do |se|
+.table-responsive
+  table.table.table-hover.table-condensed.table-striped
     tr
-      td.num = se.id
-      td.num = se.user_id
-      td.sepa = se.user.try(:account)
-      td.num = se.to_user_id
-      td.sepa = se.to_user.try(:company)
-      td = se.created_at
-      td = se.soft_destroyed_at
+      th.num ID
+      th.num ユーザID
+      th.sepa アカウント
+      th.num 会社ID
+      th.sepa 会社名
+      th 保存日時
+      th 削除日時
+
+    - @pfollowes.each do |se|
+      tr
+        td.num = se.id
+        td.num = se.user_id
+        td.sepa = se.user.try(:account)
+        td.num = se.to_user_id
+        td.sepa = se.to_user.try(:company)
+        td = se.created_at
+        td = se.soft_destroyed_at

@@ -27,9 +27,9 @@
       = f.hidden_field :company_id,  value: params[:company_id]
       = f.hidden_field :q,           value: params[:q].to_json
 
-      = f.button :button, class: "btn btn-default btn-sm btn-search-save" do
+      = f.button :button, class: "btn btn-default btn-search-save" do
         span.glyphicon.glyphicon-pushpin.search-pushpin
-        span.btn-content この検索条件を保存
+        span.btn-content 検索条件を保存
 
     = hidden_field_tag :search_id, params[:search_id]
     = hidden_field_tag :referer,   request.referer
@@ -98,48 +98,49 @@
 
     = paginate @pproducts
 
-    table.product-table.table.table-striped.table-hover.table-condensed
-      tr
-        th colspan="2" style="font-weight:normal;"
-          span 項目名をクリックすると、ソートすることができます
-          strong.pull-right = sort_link(@search, :dulation_start, "新着順", default_order: :desc,  page: nil)
-        th.price = sort_link(@search, :max_price, page: nil)
-        th.price = sort_link(@search, :prompt_dicision_price, page: nil)
-        th.num   = sort_link(@search, :bids_count, default_order: :desc, page: nil)
-        th.price = sort_link(@search, :dulation_end, "残り時間", page: nil)
-      - @pproducts.each do |pr|
+    .table-responsive
+      table.product-table.table.table-striped.table-hover.table-condensed
         tr
-          td.img = link_to image_tag(pr.thumb_url, alt: "#{pr.name}"), "/products/#{pr.id}?r=src_lst"
-          td.absolute
-            - if pr.dulation_start > Time.now.yesterday
-              span.new-icon
-            = link_to pr.name, "/products/#{pr.id}?r=src_lst"
-            .td-under
-              - if @company.blank?
+          th colspan="2" style="font-weight:normal;"
+            span 項目名をクリックすると、ソートすることができます
+            strong.pull-right = sort_link(@search, :dulation_start, "新着順", default_order: :desc,  page: nil)
+          th.price = sort_link(@search, :max_price, page: nil)
+          th.price = sort_link(@search, :prompt_dicision_price, page: nil)
+          th.num   = sort_link(@search, :bids_count, default_order: :desc, page: nil)
+          th.price = sort_link(@search, :dulation_end, "残り時間", page: nil)
+        - @pproducts.each do |pr|
+          tr
+            td.img = link_to image_tag(pr.thumb_url, alt: "#{pr.name}"), "/products/#{pr.id}?r=src_lst"
+            td.absolute
+              - if pr.dulation_start > Time.now.yesterday
+                span.new-icon
+              = link_to pr.name, "/products/#{pr.id}?r=src_lst"
+              .td-under
+                - if @company.blank?
+                  .
+                    span.inner-title 出品会社
+                    =< link_to pr.user.company, "/products?company_id=#{pr.user_id}"
                 .
-                  span.inner-title 出品会社
-                  =< link_to pr.user.company, "/products?company_id=#{pr.user_id}"
-              .
-                span.inner-title カテゴリ
-                - pr.category.path.each.with_index do |ca, i|
-                  = " > " if i != 0
+                  span.inner-title カテゴリ
+                  - pr.category.path.each.with_index do |ca, i|
+                    = " > " if i != 0
 
-                  / /// 工具のみの仮処理
-                  / - next if i == 0
-                  / = " > " if i != 1
-                  = link_to(ca.name, "/products?category_id=#{ca.id}")
-          td.price.absolute
-            strong
-              = number_to_currency(pr.max_price_with_tax)
-              - if pr.lower_price.present?
-                .lower-label 最低落札価格あり
-          td.price = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price_with_tax) : "-"
-          td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
-          td.price.absolute
-            = pr.remaining_time
-            .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
-              span.glyphicon.glyphicon-star.watch-star
-              span.btn-content ウォッチ
+                    / /// 工具のみの仮処理
+                    / - next if i == 0
+                    / = " > " if i != 1
+                    = link_to(ca.name, "/products?category_id=#{ca.id}")
+            td.price.absolute
+              strong
+                = number_to_currency(pr.max_price_with_tax)
+                - if pr.lower_price.present?
+                  .lower-label 最低落札価格あり
+            td.price = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price_with_tax) : "-"
+            td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+            td.price.absolute
+              = pr.remaining_time
+              .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
+                span.glyphicon.glyphicon-star.watch-star
+                span.btn-content ウォッチ
 
     = paginate @pproducts
 

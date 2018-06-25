@@ -37,11 +37,18 @@ header {
 
 .navbar-brand {
   padding: 0 15px;
+  background: #FFF;
 
   img {
     height: 50px;
   }
 }
+
+.navbar-text {
+  display: inline-block;
+  margin-left: 8px;
+}
+
 /// キーワード検索 ///
 .search-area .input-group {
   width: 100%;
@@ -52,8 +59,8 @@ header {
   line-height: 32px;
 
   a {
-    padding: 10px 8px;
-    margin: 0 2px;
+    display: inline-block;
+    padding: 0 4px;
     color: inherit;
   }
 
@@ -408,12 +415,13 @@ label.top-search {
 
 .thumbnail.product-pannel {
   width: 140px;
-  height: 168px;
+  height: 172px;
   margin:0 4px;
   white-space: normal;
   display: inline-block;
   vertical-align: top;
   padding: 0;
+  border-radius: 0;
 
   a {
     display: block;
@@ -441,6 +449,11 @@ label.top-search {
     &:hover {
       color: #333;
     }
+  }
+
+  .max_price {
+    font-size: 130%;
+    margin-left: 4px;
   }
 }
 
@@ -589,23 +602,33 @@ hr.detail-price-calc {
 }
 
 .product-dl {
-  width: 50%;
-  padding: 4px;
-  float: left;
-  margin: 0;
 
   dt {
-    width: 110px;
-    margin-bottom: 3px;
+    margin-top: 12px;
   }
 
-  dd {
-    margin-left: 130px;
-  }
-}
+  @media (min-width: 768px) {
+    &.product-dl-border {
+      border-left: 1px dotted #AAA;
+    }
 
-.product-dl-border {
-  border-left: 1px dotted #AAA;
+    width: 50%;
+    padding: 4px;
+    float: left;
+    margin: 0;
+
+    dt {
+      width: 110px;
+      margin-top: 0;
+      margin-bottom: 4px;
+    }
+
+    dd {
+      margin-left: 130px;
+    }
+  }
+
+
 }
 
 /// markdown(ヘルプ・お知らせ) ///
@@ -751,4 +774,8 @@ dl.star-dl {
   &:nth-child(odd) {
 
   }
+}
+
+.max_price {
+  color: #E50;
 }

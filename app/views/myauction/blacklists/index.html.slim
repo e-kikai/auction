@@ -18,25 +18,26 @@ h4 ブラックリストに登録しているユーザ
 - if @pblacklists.length == 0
   p ブラックリストに登録しているユーザはありません
 - else
-  table.table.table-hover.table-condensed.table-striped.product-table
-    tr
-      th ユニークアカウント
-      th ブラック登録数
-      / th 評価
-      th
-    - @pblacklists.each do |bl|
+  .table-responsive
+    table.table.table-hover.table-condensed.table-striped.product-table
       tr
-        td = bl.to_user.account
-        td = bl.to_user.blacklisted_count
-        / td.h4
-        /   span.glyphicon.glyphicon-certificate.star-good
-        /   =< number_with_delimiter fo.to_user.count_star_good
-        /   br
-        /   span.glyphicon.glyphicon-cloud.star-bad
-        /   =< number_with_delimiter fo.to_user.count_star_bad
+        th ユニークアカウント
+        th ブラック登録数
+        / th 評価
+        th
+      - @pblacklists.each do |bl|
+        tr
+          td = bl.to_user.account
+          td = bl.to_user.blacklisted_count
+          / td.h4
+          /   span.glyphicon.glyphicon-certificate.star-good
+          /   =< number_with_delimiter fo.to_user.count_star_good
+          /   br
+          /   span.glyphicon.glyphicon-cloud.star-bad
+          /   =< number_with_delimiter fo.to_user.count_star_bad
 
-        td
-          - unless params[:finished]
-            = link_to({ action: :destroy, id: bl.id }, method: :delete, class: "btn btn-danger") do
-              span.glyphicon.glyphicon-remove
-              =< "ブラックリスト解除"
+          td
+            - unless params[:finished]
+              = link_to({ action: :destroy, id: bl.id }, method: :delete, class: "btn btn-default btn-xs") do
+                span.glyphicon.glyphicon-remove
+                =< "ブラックリスト解除"

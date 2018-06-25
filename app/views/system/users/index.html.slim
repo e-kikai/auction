@@ -31,42 +31,43 @@ ul.nav.nav-pills
   p ユーザ情報はありません
 - else
   .col-md-12
-    table.table.table-hover.table-condensed.table-striped.product-table
-      tr
-        th.num ID
-        th ユーザ名
-        th 会社名
-        th ユニーク名
-        th 出品
-        th 案内
-        th 変更
-        / th 代理ログイン
-        th パスワード変更
-        th 代理ログイン
-        th 登録日時
-        th 削除
-      - @pusers.each do |us|
+    .table-responsive
+      table.table.table-hover.table-condensed.table-striped.product-table
         tr
-          td.num = us.id
-          td = us.name
-          td = us.company
-          td = us.account
-          td = us.seller? ? "◯" : "×"
-          td = us.allow_mail? ? "◯" : "×"
+          th.num ID
+          th ユーザ名
+          th 会社名
+          th ユニーク名
+          th 出品
+          th 案内
+          th 変更
+          / th 代理ログイン
+          th パスワード変更
+          th 代理ログイン
+          th 登録日時
+          th 削除
+        - @pusers.each do |us|
+          tr
+            td.num = us.id
+            td = us.name
+            td = us.company
+            td = us.account
+            td = us.seller? ? "◯" : "×"
+            td = us.allow_mail? ? "◯" : "×"
 
-          td = link_to({ action: :edit, id: us.id }, class: "btn btn-warning") do
-            span.glyphicon.glyphicon-edit
-            =< "変更"
-          td = link_to({ action: :edit_password, id: us.id }, class: "btn btn-success") do
-            span.glyphicon.glyphicon-lock
-            =< "PW変更"
-          td = link_to({ action: :signin, id: us.id }, method: :post, class: "btn btn-info") do
-            span.glyphicon.glyphicon-log-in
-            =< "ログイン"
-          / td = link_to({ action: :sign_in, id: us.id }, method: :post, class: "btn btn-primary") do
-          /   span.glyphicon.glyphicon-log-in
-          /   =< "ログイン"
-          td = I18n.l(us.created_at, format: :full_date)
-          td = link_to({ action: :destroy, id: us.id }, method: :delete, data: { confirm: "#{us.name} #{us.company}\n\nこのユーザを削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
-            span.glyphicon.glyphicon-remove
-            =< "削除"
+            td = link_to({ action: :edit, id: us.id }, class: "btn btn-warning") do
+              span.glyphicon.glyphicon-edit
+              =< "変更"
+            td = link_to({ action: :edit_password, id: us.id }, class: "btn btn-success") do
+              span.glyphicon.glyphicon-lock
+              =< "PW変更"
+            td = link_to({ action: :signin, id: us.id }, method: :post, class: "btn btn-info") do
+              span.glyphicon.glyphicon-log-in
+              =< "ログイン"
+            / td = link_to({ action: :sign_in, id: us.id }, method: :post, class: "btn btn-primary") do
+            /   span.glyphicon.glyphicon-log-in
+            /   =< "ログイン"
+            td = I18n.l(us.created_at, format: :full_date)
+            td = link_to({ action: :destroy, id: us.id }, method: :delete, data: { confirm: "#{us.name} #{us.company}\n\nこのユーザを削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
+              span.glyphicon.glyphicon-remove
+              =< "削除"

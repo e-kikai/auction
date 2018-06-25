@@ -8,40 +8,41 @@ h4 保存した検索条件
 - if @psearches.length == 0
   p 保存した検索条件はありません
 - else
-  table.table.table-hover.table-condensed.table-striped.product-table
-    tr
-      / th.img_mini
-      th 検索条件名
-      th 検索キーワード
-      th 出品会社
-      th カテゴリ
-
-      - if current_user.seller?
-        th トップページに公開する
-      th 削除
-
-      th
-    - @psearches.each do |se|
+  .table-responsive
+    table.table.table-hover.table-condensed.table-striped.product-table
       tr
-        / td.img_mini
-        /   - if se.product_image
-        /     = link_to image_tag(se.product_image.thumb.url), se.uri
-        td = link_to se.name, se.uri
-        td = se.keywords
-        td = se.company_id ? se.company.company : "-"
-        td = se.category_id ? se.category.name : "-"
+        / th.img_mini
+        th 検索条件名
+        th 検索キーワード
+        th 出品会社
+        th カテゴリ
 
         - if current_user.seller?
+          th トップページに公開する
+        th 削除
+
+        th
+      - @psearches.each do |se|
+        tr
+          / td.img_mini
+          /   - if se.product_image
+          /     = link_to image_tag(se.product_image.thumb.url), se.uri
+          td = link_to se.name, se.uri
+          td = se.keywords
+          td = se.company_id ? se.company.company : "-"
+          td = se.category_id ? se.category.name : "-"
+
+          - if current_user.seller?
+            td
+              - if se.publish?
+                = link_to({ action: :update, id: se.id }, method: :patch, class: "btn btn-warning") do
+                  span.glyphicon.glyphicon-stop
+                  =< "公開をやめる"
+              - else
+                = link_to({ action: :update, id: se.id }, method: :patch, class: "btn btn-success") do
+                  span.glyphicon.glyphicon-flag
+                  =< "トップページに公開"
           td
-            - if se.publish?
-              = link_to({ action: :update, id: se.id }, method: :patch, class: "btn btn-warning") do
-                span.glyphicon.glyphicon-stop
-                =< "公開をやめる"
-            - else
-              = link_to({ action: :update, id: se.id }, method: :patch, class: "btn btn-success") do
-                span.glyphicon.glyphicon-flag
-                =< "トップページに公開"
-        td
-          = link_to({ action: :destroy, id: se.id }, method: :delete, data: { confirm: "#{se.name}\n\nこの検索条件を削除します。よろしいですか", "disable-with" => "削除中..."}, class: "btn btn-danger") do
-            span.glyphicon.glyphicon-remove
-            =< "検索条件を削除"
+            = link_to({ action: :destroy, id: se.id }, method: :delete, data: { confirm: "#{se.name}\n\nこの検索条件を削除します。よろしいですか", "disable-with" => "削除中..."}, class: "btn btn-default btn-xs") do
+              span.glyphicon.glyphicon-remove
+              =< "検索条件を削除"

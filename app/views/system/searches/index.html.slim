@@ -8,31 +8,31 @@
 /     span.btn-content 日付変更
 
 = paginate @psearches
-
-table.table.table-hover.table-condensed.table-striped
-  tr
-    th.num ID
-    th.sepa  検索条件名
-    th カテゴリ
-    th 会社名
-    th.sepa 検索キーワード
-    th.sepa 公開
-    th.num.sepa 利用数
-    th.num ユーザID
-    th.sepa アカウント
-    th 保存日時
-    th 削除日時
-
-  - @psearches.each do |se|
+.table-responsive
+  table.table.table-hover.table-condensed.table-striped
     tr
-      td.num = se.id
-      td.sepa  = link_to se.name, se.uri, target: "_blank"
-      td = se.category.try(:name)
-      td = se.company.try(:company_remove_kabu)
-      td.sepa = se.keywords
-      td.sepa = '○' if se.publish
-      td.num.sepa = number_with_delimiter(@search_log_counts[se.id])
-      td.num = se.user_id
-      td.sepa = se.user.try(:account)
-      td = se.created_at
-      td = se.soft_destroyed_at
+      th.num ID
+      th.sepa  検索条件名
+      th カテゴリ
+      th 会社名
+      th.sepa 検索キーワード
+      th.sepa 公開
+      th.num.sepa 利用数
+      th.num ユーザID
+      th.sepa アカウント
+      th 保存日時
+      th 削除日時
+
+    - @psearches.each do |se|
+      tr
+        td.num = se.id
+        td.sepa  = link_to se.name, se.uri, target: "_blank"
+        td = se.category.try(:name)
+        td = se.company.try(:company_remove_kabu)
+        td.sepa = se.keywords
+        td.sepa = '○' if se.publish
+        td.num.sepa = number_with_delimiter(@search_log_counts[se.id])
+        td.num = se.user_id
+        td.sepa = se.user.try(:account)
+        td = se.created_at
+        td = se.soft_destroyed_at

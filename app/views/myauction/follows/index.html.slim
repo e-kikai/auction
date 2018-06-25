@@ -8,30 +8,31 @@ h4 フォローリスト
 - if @pfollows.length == 0
   p フォローリストに登録している出品会社はありません
 - else
-  table.table.table-hover.table-condensed.table-striped.product-table
-    tr
-      th 出品会社名
-      th 評価
-      th 最新の出品商品
-      th
-    - @pfollows.each do |fo|
+  .table-responsive
+    table.table.table-hover.table-condensed.table-striped.product-table
       tr
-        td = link_to fo.to_user.company, "/products?q[company_id_eq]=#{fo.to_user_id}"
-        td.h4
-          span.glyphicon.glyphicon-certificate.star-good
-          =< number_with_delimiter fo.to_user.count_star_good
-          br
-          span.glyphicon.glyphicon-cloud.star-bad
-          =< number_with_delimiter fo.to_user.count_star_bad
-        td
-          - Product.status(Product::STATUS[:start]).where(user_id: fo.to_user_id).order(dulation_start: :desc).limit(Follow::PRODUCTS_NUM).each do |pr|
-            .thumbnail.product-pannel
-              - if pr.product_images.first.try(:image)
-                = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}?r=fls_lst"
-              .name = link_to pr.name, "/products/#{pr.id}?r=fls_lst"
-              .price 価格 #{number_to_currency(pr.max_price_with_tax)}
-        td
-          - unless params[:finished]
-            = link_to({ action: :destroy, id: fo.id }, method: :delete, class: "btn btn-danger") do
-              span.glyphicon.glyphicon-remove
-              =< "フォローをはずす"
+        th 出品会社名
+        th 評価
+        th 最新の出品商品
+        th
+      - @pfollows.each do |fo|
+        tr
+          td = link_to fo.to_user.company, "/products?q[company_id_eq]=#{fo.to_user_id}"
+          td.h4
+            span.glyphicon.glyphicon-certificate.star-good
+            =< number_with_delimiter fo.to_user.count_star_good
+            br
+            span.glyphicon.glyphicon-cloud.star-bad
+            =< number_with_delimiter fo.to_user.count_star_bad
+          td
+            - Product.status(Product::STATUS[:start]).where(user_id: fo.to_user_id).order(dulation_start: :desc).limit(Follow::PRODUCTS_NUM).each do |pr|
+              .thumbnail.product-pannel
+                - if pr.product_images.first.try(:image)
+                  = link_to image_tag(pr.product_images.first.image.thumb.url), "/products/#{pr.id}?r=fls_lst"
+                .name = link_to pr.name, "/products/#{pr.id}?r=fls_lst"
+                .price 価格 #{number_to_currency(pr.max_price_with_tax)}
+          td
+            - unless params[:finished]
+              = link_to({ action: :destroy, id: fo.id }, method: :delete, class: "btn btn-default btn-xs") do
+                span.glyphicon.glyphicon-remove
+                =< "フォローをはずす"

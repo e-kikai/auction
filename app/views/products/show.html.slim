@@ -160,7 +160,7 @@ article itemscope="" itemtype="http://schema.org/Product"
           - elsif @product.max_bid.present? && @product.max_bid.user == current_user
             p.success-message あなたが現在の最高入札者です
 
-          span.h2> #{number_to_currency @product.max_price}
+          span.h2.max_price> #{number_to_currency @product.max_price}
           span.product-tax
             | (税込 #{number_to_currency(@product.max_price_with_tax)})
 

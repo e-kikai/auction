@@ -28,137 +28,138 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
 - if @pproducts.length == 0
   p 該当する商品はありません
 - else
-  table.table.table-hover.table-condensed.table-striped.product-table
-    tr
-      th.img_mini
-      th = sort_link(@search, :code)
-      th = sort_link(@search, :name)
-      - if params[:cond].to_i == -1
-        th = sort_link(@search, :dulation_start,  "開始日時")
-      th = sort_link(@search, :dulation_end, "終了日時")
-      th.price = sort_link(@search, :start_price)
-      th.price = sort_link(@search, :lower_price)
-      th.price = sort_link(@search, :prompt_dicision_price)
-      - if params[:cond].to_i == -1
-        th 変更
-        th 削除
-      - elsif params[:cond].to_i == 1
-        th.num = sort_link(@search, :detail_logs_count)
-        th.num = sort_link(@search, :watches_count)
-        th 再出品
-      - elsif params[:cond].to_i == 2
-        th.price = sort_link(@search, :max_price)
-        th 落札者
-        th 取引
-        th.num = sort_link(@search, :bids_count)
-        th.num = sort_link(@search, :detail_logs_count)
-        th.num = sort_link(@search, :watches_count)
-        th.price 手数料<br />(#{Product::FEE_RATE}%)
-        th 評価
-      - elsif params[:cond].to_i == 3
-        th.num = sort_link(@search, :bids_count)
-        th.num = sort_link(@search, :detail_logs_count)
-        th.num = sort_link(@search, :watches_count)
-        th 再出品
-      - else
-        th.price = sort_link(@search, :max_price)
-        th 最高<br />入札者
-        th.num = sort_link(@search, :bids_count)
-        th.num = sort_link(@search, :detail_logs_count)
-        th.num = sort_link(@search, :watches_count)
-        th.sns SNSシェア
-        th 追記<br />変更
-        th.num 残り<br />時間
-        / th 自社落札
-        th 出品<br />キャンセル
-    - @pproducts.each do |pr|
+  .table-responsive
+    table.table.table-hover.table-condensed.table-striped.product-table
       tr
-        td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
-        td = pr.code
-        td = link_to pr.name, "/products/#{pr.id}", target: "_blank"
+        th.img_mini
+        th = sort_link(@search, :code)
+        th = sort_link(@search, :name)
         - if params[:cond].to_i == -1
-          td = I18n.l(pr.dulation_start, format: :full_date)
-        td = I18n.l(pr.dulation_end, format: :full_date)
-        td.price = number_to_currency(pr.start_price)
-        td.price = pr.lower_price.try { |price| number_to_currency(price) } || "-"
-        td.price = pr.prompt_dicision_price.try { |price| number_to_currency(price) } || "-"
-
+          th = sort_link(@search, :dulation_start,  "開始日時")
+        th = sort_link(@search, :dulation_end, "終了日時")
+        th.price = sort_link(@search, :start_price)
+        th.price = sort_link(@search, :lower_price)
+        th.price = sort_link(@search, :prompt_dicision_price)
         - if params[:cond].to_i == -1
-          td = link_to({ action: :edit, id: pr.id }, class: "btn btn-warning") do
-            span.glyphicon.glyphicon-edit
-            =< "変更"
-          td = link_to({ action: :destroy, id: pr.id }, method: :delete, data: { confirm: "#{pr.name}\n\nこの商品を削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
-            span.glyphicon.glyphicon-remove
-            =< "削除"
+          th 変更
+          th 削除
         - elsif params[:cond].to_i == 1
-          td.num = pr.detail_logs_count
-          td.num = pr.watches_count
-          td = link_to({ action: :edit, id: pr.id }, class: "btn btn-success") do
-            span.glyphicon.glyphicon-refresh
-            =< "再出品"
+          th.num = sort_link(@search, :detail_logs_count)
+          th.num = sort_link(@search, :watches_count)
+          th 再出品
         - elsif params[:cond].to_i == 2
-          td.price = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
-          td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
-
-          - if pr.max_bid.user_id != current_user.id
-            td = link_to("/myauction/trades?product_id=#{pr.id}", class: "btn btn-success") do
-              span.glyphicon.glyphicon-transfer
-              =< "取引"
-            td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
-            td.num = pr.detail_logs_count
-            td.num = pr.watches_count
-            td.price = number_to_currency(pr.fee)
-            td.star = pr.star_view
-          - else
-            td 自社落札
-            td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
-            td.num = pr.detail_logs_count
-            td.num = pr.watches_count
-            td
-            td
+          th.price = sort_link(@search, :max_price)
+          th 落札者
+          th 取引
+          th.num = sort_link(@search, :bids_count)
+          th.num = sort_link(@search, :detail_logs_count)
+          th.num = sort_link(@search, :watches_count)
+          th.price 手数料<br />(#{Product::FEE_RATE}%)
+          th 評価
         - elsif params[:cond].to_i == 3
-          td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
-          td.num = pr.detail_logs_count
-          td.num = pr.watches_count
-          th = link_to("/myauction/products/new?id=#{pr.id}", class: "btn btn-success") do
-            span.glyphicon.glyphicon-refresh
-            =< "別の商品として再出品"
-
+          th.num = sort_link(@search, :bids_count)
+          th.num = sort_link(@search, :detail_logs_count)
+          th.num = sort_link(@search, :watches_count)
+          th 再出品
         - else
-          td.price = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
-          td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
-          td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
-          td.num = pr.detail_logs_count
-          td.num = pr.watches_count
-          td.sns
+          th.price = sort_link(@search, :max_price)
+          th 最高<br />入札者
+          th.num = sort_link(@search, :bids_count)
+          th.num = sort_link(@search, :detail_logs_count)
+          th.num = sort_link(@search, :watches_count)
+          th.sns SNSシェア
+          th 追記<br />変更
+          th.num 残り<br />時間
+          / th 自社落札
+          th 出品<br />キャンセル
+      - @pproducts.each do |pr|
+        tr
+          td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}"
+          td = pr.code
+          td = link_to pr.name, "/products/#{pr.id}", target: "_blank"
+          - if params[:cond].to_i == -1
+            td = I18n.l(pr.dulation_start, format: :full_date)
+          td = I18n.l(pr.dulation_end, format: :full_date)
+          td.price = number_to_currency(pr.start_price)
+          td.price = pr.lower_price.try { |price| number_to_currency(price) } || "-"
+          td.price = pr.prompt_dicision_price.try { |price| number_to_currency(price) } || "-"
 
-            = link_to "http://www.facebook.com/sharer.php?u=#{root_url}products/#{pr.id}", target: "_blank", class: "facebook-button" do
-              = image_tag "fb_icon.png"
-              span シェア
+          - if params[:cond].to_i == -1
+            td = link_to({ action: :edit, id: pr.id }, class: "btn btn-warning") do
+              span.glyphicon.glyphicon-edit
+              =< "変更"
+            td = link_to({ action: :destroy, id: pr.id }, method: :delete, data: { confirm: "#{pr.name}\n\nこの商品を削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
+              span.glyphicon.glyphicon-remove
+              =< "削除"
+          - elsif params[:cond].to_i == 1
+            td.num = pr.detail_logs_count
+            td.num = pr.watches_count
+            td = link_to({ action: :edit, id: pr.id }, class: "btn btn-success") do
+              span.glyphicon.glyphicon-refresh
+              =< "再出品"
+          - elsif params[:cond].to_i == 2
+            td.price = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
+            td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
 
-            = link_to "http://twitter.com/share?hashtags=ものオク&text=#{pr.name}｜ものづくりオークション&url=#{root_url}products/#{pr.id}", target: "_blank", class: "twitter-button" do
-              = image_tag "twitter_icon.png"
-              span Tweet
+            - if pr.max_bid.user_id != current_user.id
+              td = link_to("/myauction/trades?product_id=#{pr.id}", class: "btn btn-success") do
+                span.glyphicon.glyphicon-transfer
+                =< "取引"
+              td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+              td.num = pr.detail_logs_count
+              td.num = pr.watches_count
+              td.price = number_to_currency(pr.fee)
+              td.star = pr.star_view
+            - else
+              td 自社落札
+              td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+              td.num = pr.detail_logs_count
+              td.num = pr.watches_count
+              td
+              td
+          - elsif params[:cond].to_i == 3
+            td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+            td.num = pr.detail_logs_count
+            td.num = pr.watches_count
+            th = link_to("/myauction/products/new?id=#{pr.id}", class: "btn btn-success") do
+              span.glyphicon.glyphicon-refresh
+              =< "別の商品として再出品"
 
-            = link_to "LINEで送る", "http://line.me/R/msg/text/?#{pr.name}｜ものづくりオークション #{root_url}products/#{pr.id}",target: "_blank", class: "line-button"
+          - else
+            td.price = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
+            td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
+            td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+            td.num = pr.detail_logs_count
+            td.num = pr.watches_count
+            td.sns
 
-          td = link_to({ action: :additional, id: pr.id }, class: "btn btn-success") do
-            span.glyphicon.glyphicon-edit
-            =< "変更"
-          td.num = pr.remaining_time
+              = link_to "http://www.facebook.com/sharer.php?u=#{root_url}products/#{pr.id}", target: "_blank", class: "facebook-button" do
+                = image_tag "fb_icon.png"
+                span シェア
 
-          / td
-          /   - if pr.prompt_dicision_price.present?
-          /     = link_to({ action: :prompt, id: pr.id }, method: :post, data: { confirm: "#{pr.name}\n\nこの商品に即決価格で自社落札をおこないます。\n\nよろしいですか？", "disable-with" => "入札中..."}, class: "btn btn-success") do
-          /       span.glyphicon.glyphicon-pencil
-          /       =< "自社落札"
-          / td = link_to({ action: :destroy, id: pr.id }, method: :delete, data: { confirm: "#{pr.name}\n\nこの商品の出品を取り消しますか？", "disable-with" => "取消中..."}, class: "btn btn-danger") do
-          /     span.glyphicon.glyphicon-remove
-          /     =< "取消"
+              = link_to "http://twitter.com/share?hashtags=ものオク&text=#{pr.name}｜ものづくりオークション&url=#{root_url}products/#{pr.id}", target: "_blank", class: "twitter-button" do
+                = image_tag "twitter_icon.png"
+                span Tweet
 
-          td = button_tag class: "btn btn-danger btn-cancel", data: { toggle: :modal, target: "#cancel-modal-#{pr.id}"} do
-            span.glyphicon.glyphicon-remove
-            =< "cancle"
+              = link_to "LINEで送る", "http://line.me/R/msg/text/?#{pr.name}｜ものづくりオークション #{root_url}products/#{pr.id}",target: "_blank", class: "line-button"
+
+            td = link_to({ action: :additional, id: pr.id }, class: "btn btn-success") do
+              span.glyphicon.glyphicon-edit
+              =< "変更"
+            td.num = pr.remaining_time
+
+            / td
+            /   - if pr.prompt_dicision_price.present?
+            /     = link_to({ action: :prompt, id: pr.id }, method: :post, data: { confirm: "#{pr.name}\n\nこの商品に即決価格で自社落札をおこないます。\n\nよろしいですか？", "disable-with" => "入札中..."}, class: "btn btn-success") do
+            /       span.glyphicon.glyphicon-pencil
+            /       =< "自社落札"
+            / td = link_to({ action: :destroy, id: pr.id }, method: :delete, data: { confirm: "#{pr.name}\n\nこの商品の出品を取り消しますか？", "disable-with" => "取消中..."}, class: "btn btn-danger") do
+            /     span.glyphicon.glyphicon-remove
+            /     =< "取消"
+
+            td = button_tag class: "btn btn-danger btn-cancel", data: { toggle: :modal, target: "#cancel-modal-#{pr.id}"} do
+              span.glyphicon.glyphicon-remove
+              =< "cancle"
 
 = paginate @pproducts
 

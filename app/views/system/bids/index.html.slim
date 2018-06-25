@@ -8,31 +8,31 @@
   = button_tag class: "btn btn-info" do
     span.glyphicon.glyphicon-search
     span.btn-content 検索
-    
-= paginate @pbids
 
-table.table.table-hover.table-condensed.table-striped
-  tr
-    th.price ID
-    th 入札時間
-    th アカウント
-    th.price.sepa 入札金額
-    th.price 商品ID
-    th 商品名
-    th.price 最高価格
-    th.price 入札数
-    th 終了日時
-  - @pbids.each do |bi|
+= paginate @pbids
+.table-responsive
+  table.table.table-hover.table-condensed.table-striped
     tr
-      td.price = bi.id
-      td = I18n.l(bi.created_at, format: "%H:%M:%S")
-      td = bi.user.try(:account)
-      td.price.sepa = number_to_currency(bi.amount)
-      - if bi.product.present?
-        td.price = bi.product_id
-        td = link_to bi.product.name, "/products/#{bi.product_id}", target: "_blank"
-        td.price = number_to_currency(bi.product.max_price)
-        td.price = link_to(number_with_delimiter(bi.product.bids_count), "/products/#{bi.product_id}/bids", target: "_blank")
-        td = I18n.l(bi.product.dulation_end, format: "%m/%d (%a) %H:%M")
-      - else
-        td colspan="5" × (削除された商品)
+      th.price ID
+      th 入札時間
+      th アカウント
+      th.price.sepa 入札金額
+      th.price 商品ID
+      th 商品名
+      th.price 最高価格
+      th.price 入札数
+      th 終了日時
+    - @pbids.each do |bi|
+      tr
+        td.price = bi.id
+        td = I18n.l(bi.created_at, format: "%H:%M:%S")
+        td = bi.user.try(:account)
+        td.price.sepa = number_to_currency(bi.amount)
+        - if bi.product.present?
+          td.price = bi.product_id
+          td = link_to bi.product.name, "/products/#{bi.product_id}", target: "_blank"
+          td.price = number_to_currency(bi.product.max_price)
+          td.price = link_to(number_with_delimiter(bi.product.bids_count), "/products/#{bi.product_id}/bids", target: "_blank")
+          td = I18n.l(bi.product.dulation_end, format: "%m/%d (%a) %H:%M")
+        - else
+          td colspan="5" × (削除された商品)

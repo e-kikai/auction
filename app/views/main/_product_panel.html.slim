@@ -2,4 +2,6 @@
   = link_to "/products/#{product.id}?r=#{r}" do
     = image_tag(product.thumb_url, alt: product.name)
     .name = product.name
-    .price 価格 #{number_to_currency(product.max_price_with_tax)}
+    .price
+      | 現在
+      span.max_price = number_to_currency(product.max_price_with_tax)

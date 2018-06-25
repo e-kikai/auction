@@ -17,25 +17,26 @@ ul.nav.nav-pills
   p ヘルプ情報はありません
 - else
   .col-md-12
-    table.table.table-hover.table-condensed.table-striped.product-table
-      tr
-        th タイトル
-        th UID
-        th 対象
-        th 並び順
-        th 変更
-        th 登録日時
-        th 削除
-      - @helps.each do |he|
+    .table-responsive
+      table.table.table-hover.table-condensed.table-striped.product-table
         tr
-          td = link_to he.title, "/#{he.target == "出品会社" ? "myauction/" : ""}helps/#{he.uid}"
-          td = he.uid
-          td = he.target
-          td = he.order_no
-          td = link_to({ action: :edit, id: he.id }, class: "btn btn-warning") do
-            span.glyphicon.glyphicon-edit
-            =< "変更"
-          td = I18n.l(he.created_at, format: :full_date)
-          td = link_to({ action: :destroy, id: he.id }, method: :delete, data: { confirm: "#{he.title}\n\nこのヘルプを削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
-            span.glyphicon.glyphicon-remove
-            =< "削除"
+          th タイトル
+          th UID
+          th 対象
+          th 並び順
+          th 変更
+          th 登録日時
+          th 削除
+        - @helps.each do |he|
+          tr
+            td = link_to he.title, "/#{he.target == "出品会社" ? "myauction/" : ""}helps/#{he.uid}"
+            td = he.uid
+            td = he.target
+            td = he.order_no
+            td = link_to({ action: :edit, id: he.id }, class: "btn btn-warning") do
+              span.glyphicon.glyphicon-edit
+              =< "変更"
+            td = I18n.l(he.created_at, format: :full_date)
+            td = link_to({ action: :destroy, id: he.id }, method: :delete, data: { confirm: "#{he.title}\n\nこのヘルプを削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
+              span.glyphicon.glyphicon-remove
+              =< "削除"
