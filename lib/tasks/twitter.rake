@@ -5,7 +5,9 @@ namespace :twitter do
   task :new_product => :environment do
     client = get_twitter_client
 
-    product = Product.status(Product::STATUS[:start]).where("dulation_start > ?", Time.now - 12.hours).order("RANDOM()").first
+    product = Product.status(Product::STATUS[:start]).where("dulation_start > ?", Time.now - 24.hours).order("RANDOM()").first
+
+    next if product.blank?
 
     tweet = <<-EOS
 ものづくりオークション
