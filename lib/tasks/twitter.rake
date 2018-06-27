@@ -5,27 +5,27 @@ namespace :twitter do
   task :new_product => :environment do
     client = get_twitter_client
 
-    tweet1 = "自動投稿テスト その1 / #{Time.now}"
-    update(client, tweet1)
+    product = Product.status(Product::STATUS[:start]).where("dulation_start > ?", Time.now - 12.hours).order("RANDOM()").first
 
-    sleep(5)
+    tweet = <<-EOS
+ものづくりオークション
+#{I18n.l(Time.now, format: "%Y年%m月%d日(%a)")} 新着商品情報
 
-    tweet2 = "自動投稿テスト その2 / #{Time.now}"
-    update(client, tweet2)
+#{product.name}
 
-    # Product.status(Product::STATUS[:success]).where(fee: nil).includes(max_bid: [:user]).each do |pr|
-    #   pr.update(fee: pr.fee_calc)
-    #
-    #   BidMailer.success_user(pr.max_bid.user, pr).deliver
-    #   BidMailer.success_company(pr).deliver
-    # end
+#ものオク #ものづくり #オークション #{product.category.path.map { |ca| "#" + ca.name }.join(" ")}
+
+#{root_url}products/#{product.id}
+EOS
+
+    update(client, tweet)
   end
 
   desc "トップページリンクを自動投稿(毎週月曜日 18:00)"
   task :toppage => :environment do
     client = get_twitter_client
 
-    tweet1 = <<-EOS
+    tweet = <<-EOS
 〜ものづくりオークション〜
 
 新品も中古も！欲しかったあの工具が格安で手に入るかも！
@@ -34,7 +34,8 @@ namespace :twitter do
 #ものオク #ものづくり #オークション #工具 #工作機械
 https://www.mnok.net/
 EOS
-    update(client, tweet1)
+
+    update(client, tweet)
   end
 end
 
