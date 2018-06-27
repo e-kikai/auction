@@ -5,19 +5,17 @@ namespace :twitter do
   task :new_product => :environment do
     client = get_twitter_client
 
-    product = Product.status(Product::STATUS[:start]).where("dulation_start > ?", Time.now - 24.hours).order("RANDOM()").first
+    product = Product.status(Product::STATUS[:start]).where("dulation_start > ?", Time.now - 12.hours).order("RANDOM()").first
 
     next if product.blank?
 
     tweet = <<-EOS
-ものづくりオークション
-#{I18n.l(Time.now, format: "%Y年%m月%d日(%a)")} 新着商品情報
+ものづくりオークション #{I18n.l(Time.now, format: "%Y年%-m月%-d日(%a)")} 新着商品情報
 
 #{product.name}
 
 #ものオク #ものづくり #オークション #{product.category.path.map { |ca| "#" + ca.name }.join(" ")}
-
-#{root_url}products/#{product.id}
+https://www.mnok.net/products/#{product.id}
 EOS
 
     update(client, tweet)
