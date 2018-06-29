@@ -107,6 +107,10 @@ $(document).on 'turbolinks:load', ->
     $(@).find("input.price").each ->
       $(this).triggerHandler "focus"
 
+  # スマートフォンのみcollapseを閉じておく
+  if window.matchMedia('(max-width: 767px)').matches
+    console.log($(".xs-close").collapse('hide'))
+
 priceUnformat = (str) ->
   num = new String(str).replace(/[^0-9]/g, "")
   num = "" if num == '0'

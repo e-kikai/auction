@@ -37,10 +37,12 @@
     - base_params = params.to_unsafe_h.merge(page: nil)
 
     .panel.panel-default
-      .panel-heading
+      = link_to "#collapse_filter", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
         span.glyphicon.glyphicon-filter
-        =< "絞り込み"
-      .panel-body
+        span.btn-content 絞り込み
+        span.glyphicon.glyphicon-chevron-down
+
+      .panel-body#collapse_filter.panel-collapse.collapse.in.xs-close
         label カテゴリ
         . = link_to "すべてのカテゴリ", base_params.deep_merge(category_id: nil)
         - @select_categories.each do |i, count|
@@ -78,10 +80,11 @@
           = link_to "新品", base_params.deep_merge(q: {state_eq: Product.states["新品"]})
 
     .panel.panel-default
-      .panel-heading
+      = link_to "#collapse_category", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
         span.glyphicon.glyphicon-search
         span.btn-content カテゴリから探す
-      ul.list-group
+        span.glyphicon.glyphicon-chevron-down
+      ul.list-group#collapse_category.panel-collapse.collapse.in.xs-close
         = link_to "すべて", "products", class: "list-group-item"
         - @roots.each do |ca|
           = link_to "#{ca.name}", "/products?category_id=#{ca.id}", class: "list-group-item"

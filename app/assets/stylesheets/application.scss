@@ -411,6 +411,11 @@ label.top-search {
     white-space: nowrap;
     display: inline-block;
   }
+
+  @media (max-width: 767px) {
+    height: 180px;
+    padding: 4px;
+  }
 }
 
 .thumbnail.product-pannel {
@@ -478,8 +483,64 @@ label.top-search {
     margin: auto;
   }
 }
+
 .carousel-select a img {
   margin: 6px;
+
+  @media (max-width: 767px) {
+    width: 31%;
+    margin: 1%;
+  }
+}
+
+.product-dl {
+  @media (max-width: 767px) {
+    margin-bottom: 0;
+
+    dt {
+      margin-top: 8px;
+
+      &.dt-first {
+        margin-top: 0;
+      }
+    }
+  }
+
+  @media (min-width: 767px) {
+    &.product-dl-border {
+      border-left: 1px dotted #AAA;
+    }
+
+    width: 50%;
+    padding: 4px;
+    float: left;
+    margin: 0;
+
+    dt {
+      width: 110px;
+      margin-top: 0;
+      margin-bottom: 4px;
+    }
+
+    dd {
+      margin-left: 130px;
+    }
+  }
+}
+
+.youtube {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  margin-bottom: 8px;
+}
+
+.youtube iframe {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .trade {
@@ -560,6 +621,10 @@ hr.detail-price-calc {
   }
 }
 
+.twitter-area {
+  border: 1px solid #DDD;
+}
+
 .alert-message {
   background: #f2dede;
   padding: 4px 8px;
@@ -599,36 +664,6 @@ hr.detail-price-calc {
   th {
     width: 172px;
   }
-}
-
-.product-dl {
-
-  dt {
-    margin-top: 12px;
-  }
-
-  @media (min-width: 768px) {
-    &.product-dl-border {
-      border-left: 1px dotted #AAA;
-    }
-
-    width: 50%;
-    padding: 4px;
-    float: left;
-    margin: 0;
-
-    dt {
-      width: 110px;
-      margin-top: 0;
-      margin-bottom: 4px;
-    }
-
-    dd {
-      margin-left: 130px;
-    }
-  }
-
-
 }
 
 /// markdown(ヘルプ・お知らせ) ///
@@ -778,4 +813,22 @@ dl.star-dl {
 
 .max_price {
   color: #E50;
+}
+
+a.accordion-toggle {
+  color: inherit;
+  display: block;
+  text-decoration: none;
+  position: relative;
+
+  & > span.glyphicon-chevron-down {
+    display: block;
+    position: absolute;
+    top: 17px;
+    right: 4px;
+  }
+
+  &.collapsed > span.glyphicon-chevron-down:before {
+    content: "\e080";
+  }
 }

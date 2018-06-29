@@ -22,46 +22,53 @@
       - current_user.searches.each do |se|
         =< link_to se.name, se.uri
 
-  .col-md-2
+  .col-md-2.col-sm-4.col-xs-12
     .panel.panel-default
-      .panel-heading = link_to "マイ・オークション", "/myauction"
-      ul.list-group
-        = link_to "myauction/watches", class: "list-group-item" do
+      = link_to "#collapse_myauction", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
+        span マイ・オークション
+        span.glyphicon.glyphicon-chevron-down
+      ul.list-group#collapse_myauction.panel-collapse.collapse.in.xs-close
+        = link_to "/myauction/", class: "list-group-item" do
+          span.glyphicon.glyphicon-user
+          span.btn-content マイ・オークション
+        = link_to "/myauction/watches", class: "list-group-item" do
           span.glyphicon.glyphicon-star
           span.btn-content ウォッチリスト
-        = link_to "myauction/bids", class: "list-group-item" do
+        = link_to "/myauction/bids", class: "list-group-item" do
           span.glyphicon.glyphicon-pencil
           span.btn-content 入札中
-        = link_to "myauction/bids?cond=2", class: "list-group-item" do
+        = link_to "/myauction/bids?cond=2", class: "list-group-item" do
           span.glyphicon.glyphicon-transfer
           span.btn-content 落札分(取引)
         - if current_user.try(:seller?)
-          = link_to "myauction/products", class: "list-group-item" do
+          = link_to "/myauction/products", class: "list-group-item" do
             span.glyphicon.glyphicon-gift
             span.btn-content 出品中
-          = link_to "myauction/products?cond=1", class: "list-group-item" do
+          = link_to "/myauction/products?cond=1", class: "list-group-item" do
             span.glyphicon.glyphicon-refresh
             span.btn-content 出品終了 - 未落札
-          = link_to "myauction/products?cond=2", class: "list-group-item" do
+          = link_to "/myauction/products?cond=2", class: "list-group-item" do
             span.glyphicon.glyphicon-transfer
             span.btn-content 出品終了 - 落札済
 
     .panel.panel-default
-      .panel-heading
+      = link_to "#collapse_category", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
         span.glyphicon.glyphicon-search
         span.btn-content カテゴリから探す
+        span.glyphicon.glyphicon-chevron-down
+
         / = link_to "categories" do
         /   | カテゴリから探す
         /   .pull-right
         /     .glyphicon.glyphicon-menu-right
-      ul.list-group
+      ul.list-group#collapse_category.panel-collapse.collapse.in.xs-close
         = link_to "すべて", "products", class: "list-group-item"
         - @roots.each do |ca|
           = link_to "#{ca.name}", "products?category_id=#{ca.id}", class: "list-group-item"
           - ca.children.order(:order_no).each do |ca2|
             = link_to "　#{ca2.name}", "products?category_id=#{ca2.id}", class: "list-group-item"
 
-  .col-md-7
+  .col-md-7.col-sm-8.col-xs-12
     .toppage-searches
       - if @searches[0]
         - @searches[0..2].each do |se|
@@ -113,12 +120,14 @@
           = render "search_panel", search: se
 
 
-  .col-md-3
+  .col-md-3.col-sm-8.col-xs-12
     .panel.panel-default
-      .panel-heading
+      = link_to "#collapse_help", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
         span.glyphicon.glyphicon-question-sign
         span.btn-content ヘルプ
-      .panel-body
+        span.glyphicon.glyphicon-chevron-down
+      .panel-body#collapse_help.panel-collapse.collapse.in.xs-close
+
         p = link_to "ものづくりオークションとは", "/lp/index.html", target: "_blank"
         - @helps.each do |he|
           p = link_to he.title, "/helps/#{he.uid}"
@@ -137,9 +146,10 @@
 
       = link_to "LINEで送る", "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！ #{root_url}",target: "_blank", class: "line-button", alt: "LINE"
 
-      / . <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmonooku%2F&tabs=timeline&width=0&height=400&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&appId" width="0" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+    <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmonooku%2F&tabs=timeline&width=300&height=400&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false&appId" width="100%" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
 
-      <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmonooku%2F&tabs=timeline&width=300&height=400&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false&appId" width="100%" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+    .twitter-area
+      <a class="twitter-timeline" data-lang="ja" data-height="400" data-link-color="#981CEB" href="https://twitter.com/mnok_official?ref_src=twsrc%5Etfw">Tweets by mnok_official</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
     .banner-area
       = link_to(image_tag(asset_url("kobayashi_logo.png", alt: "小林機械")), "http://www.kkmt.co.jp/", target: "_blank")
