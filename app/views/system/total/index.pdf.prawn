@@ -65,7 +65,7 @@ prawn_document do |pdf|
       pdf.text "店番 408 預金種類 普通預金", size: 12
       pdf.font "vendor/assets/fonts/ipaexm.ttf"
       pdf.text "口座番号 4999155", size: 12
-      pdf.text "口座名称 ものづくりオークションイインカイ", size: 12
+      pdf.text "口座名称 ものづくりオークション委員会", size: 12
       pdf.text "(略称) モノヅクリオークションイインカイ", size: 12
       pdf.text "", size: 12
       # pdf.font "vendor/assets/fonts/VL-PGothic-Regular.ttf"

@@ -166,6 +166,12 @@ article itemscope="" itemtype="http://schema.org/Product"
 
       = link_to "LINEで送る", "http://line.me/R/msg/text/?#{@product.name}｜ものづくりオークション #{root_url}products/#{@product.id}",target: "_blank", class: "line-button"
 
+    /// ハッシュダグ ///
+    h5 関連キーワード
+    section.detail-hashtags
+      - @product.hashtags.split(/(?:\s|　)+/).each do |ta|
+        = link_to ta, "/products?keywords=#{ta}"
+
   /// 画像枠 ///
   .col-md-8.col-md-pull-4
     - if @product.product_images.first
@@ -237,13 +243,7 @@ article itemscope="" itemtype="http://schema.org/Product"
             . = @product.returns
             . = @product.returns_comment
 
-    /// ハッシュダグ ///
-    h5 関連キーワード
-    section.detail-hashtags
-      - @product.hashtags.split(/(?:\s|　)+/).each do |ta|
-        = link_to ta, "/products?keywords=#{ta}"
-
-  .col-md-12
+  .description-area
     h4.product-description 商品説明
     section itemprop="description" = markdown(@product.description)
     - if @product.additional.present?
@@ -253,7 +253,7 @@ article itemscope="" itemtype="http://schema.org/Product"
     section = markdown(@product.note)
 
 - if @popular_products.present?
-  .col-md-12
+  .special-area
     label
       span.glyphicon.glyphicon-thumbs-up.check-icon
       span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
