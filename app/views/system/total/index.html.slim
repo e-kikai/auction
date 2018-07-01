@@ -9,74 +9,76 @@
 - total_price   = 0
 - total_fee     = 0
 
-.col-md-offset-2.col-md-8
-  = form_tag("/system/total", method: "get", class: "form-inline filtering-form") do
-    = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
-    = button_tag class: "btn btn-info", style: "margin-right:8px;" do
-      span.glyphicon.glyphicon-search
-      span.btn-content 月変更
+.row
+  .col-lg-offset-2.col-lg-8.col-md-offset-1.col-md-10.col-sm-12
+    = form_tag("/system/total", method: "get", class: "form-inline filtering-form") do
+      = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+      = button_tag class: "btn btn-info", style: "margin-right:8px;" do
+        span.glyphicon.glyphicon-search
+        span.btn-content 月変更
 
-    = button_tag :submit, name: :format, value: :pdf, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
-      span.glyphicon.glyphicon-file
-      span.btn-content PDF出力
+      = button_tag :submit, name: :format, value: :pdf, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+        span.glyphicon.glyphicon-file
+        span.btn-content PDF出力
 
-    = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
-      span.glyphicon.glyphicon-download-alt
-      span.btn-content CSV出力
+      = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+        span.glyphicon.glyphicon-download-alt
+        span.btn-content CSV出力
 
-  table.table.table-hover.table-condensed.table-striped.product-table
-    tr
-      th.num ID
-      th 出品会社名
-      th.num 出品<br />件数
-      th.num 終了<br />件数
-      th.num 落札<br />件数
-      th.num 閲覧<br />総数
-      th.num ウォッ<br />チ総数
-      th.total_price 落札総額
-      th.total_price 手数料<br />(#{Product::FEE_RATE}%)
-    - @companies.each do |co|
-      - total = co.products.where(template: false).where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
-      - total_total += total
-
-      - month_products = co.products.where(template: false).where(dulation_end: @date.beginning_of_month..@date.end_of_month)
-
-      - fee_products   = month_products.where.not(fee: nil)
-
-      - count          = month_products.count
-      - total_conunt   += count
-      - success        = fee_products.count
-      - total_success  += success
-      - access         = month_products.sum(:detail_logs_count)
-      - total_access   += access
-      - watch          = month_products.sum(:watches_count)
-      - total_watch    += watch
-
-      - price          = fee_products.sum(:max_price)
-      - total_price    += price
-      / - fee            = price * Product::FEE_RATE / 100
-      - fee            = fee_products.sum(:fee)
-
-      - total_fee      += fee
-
+    table.table.table-hover.table-condensed.table-striped.product-table
       tr
-        td.num = co.id
-        td = co.company
-        td.num = number_with_delimiter(total)
-        td.num = number_with_delimiter(count)
-        td.num = number_with_delimiter(success)
-        td.num = number_with_delimiter(access)
-        td.num = number_with_delimiter(watch)
-        td.total_price = number_to_currency(price)
-        td.total_price = number_to_currency(fee)
-    tfooter
-      tr
-        td
-        th 合計
-        td.num = number_with_delimiter(total_total)
-        td.num = number_with_delimiter(total_conunt)
-        td.num = number_with_delimiter(total_success)
-        td.num = number_with_delimiter(total_access)
-        td.num = number_with_delimiter(total_watch)
-        td.total_price = number_to_currency(total_price)
-        td.total_price = number_to_currency(total_fee)
+        th.num ID
+        th 出品会社名
+        th.num 出品<br />件数
+        th.num 終了<br />件数
+        th.num 落札<br />件数
+        th.num 閲覧<br />総数
+        th.num ウォッ<br />チ総数
+        th.total_price 落札総額
+        th.total_price 手数料<br />(#{Product::FEE_RATE}%)
+      - @companies.each do |co|
+        - total = co.products.where(template: false).where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
+        - total_total += total
+
+        - month_products = co.products.where(template: false).where(dulation_end: @date.beginning_of_month..@date.end_of_month)
+
+        - fee_products   = month_products.where.not(fee: nil)
+
+        - count          = month_products.count
+        - total_conunt   += count
+        - success        = fee_products.count
+        - total_success  += success
+        - access         = month_products.sum(:detail_logs_count)
+        - total_access   += access
+        - watch          = month_products.sum(:watches_count)
+        - total_watch    += watch
+
+        - price          = fee_products.sum(:max_price)
+        - total_price    += price
+        / - fee            = price * Product::FEE_RATE / 100
+        - fee            = fee_products.sum(:fee)
+
+        - total_fee      += fee
+
+        tr
+          td.num = co.id
+          td = co.company
+          td.num = number_with_delimiter(total)
+          td.num = number_with_d  .col-lg-offset-2.col-lg-8.col-md-offset-1.col-md-10.col-sm-12
+elimiter(count)
+          td.num = number_with_delimiter(success)
+          td.num = number_with_delimiter(access)
+          td.num = number_with_delimiter(watch)
+          td.total_price = number_to_currency(price)
+          td.total_price = number_to_currency(fee)
+      tfooter
+        tr
+          td
+          th 合計
+          td.num = number_with_delimiter(total_total)
+          td.num = number_with_delimiter(total_conunt)
+          td.num = number_with_delimiter(total_success)
+          td.num = number_with_delimiter(total_access)
+          td.num = number_with_delimiter(total_watch)
+          td.total_price = number_to_currency(total_price)
+          td.total_price = number_to_currency(total_fee)

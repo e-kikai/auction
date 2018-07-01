@@ -7,9 +7,9 @@ ul.nav.nav-pills
     span.btn-content 新規登録
 
   .btn-group role="group"
-    = link_to "すべて表示",       "/system/infos/",                  class: "btn btn-info"
-    = link_to "ユーザのみ表示",   "/system/infos/?q[target_eq]=0",   class: "btn btn-info"
-    = link_to "出品会社のみ表示", "/system/infos/?q[target_eq]=100", class: "btn btn-info"
+    = link_to "すべて",       "/system/infos/",                    class: "btn btn-default #{:active if params[:seller_eq].blank?}"
+    = link_to "ユーザのみ",   "/system/infos/?q[target_eq]=false", class: "btn btn-default #{:active if params[:seller_eq] == 0}"
+    = link_to "出品会社のみ", "/system/infos/?q[target_eq]=true",  class: "btn btn-default #{:active if params[:seller_eq] == 100}"
 
 = paginate @pinfos
 
