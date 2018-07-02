@@ -17,4 +17,4 @@
     li = "1日平均 #{number_with_delimiter(@success_products.count.to_f / @day.to_f)}件"
 
     - if @max_product
-      li = "最高落札金額の商品は「#{@max_product.name}」の #{number_to_currency(@max_product.max_bid.amount)}(入札件数#{@max_price.bids_count}件)でした。"
+      li = "最高落札金額の商品は「#{@max_product.name}」の #{number_to_currency(@max_product.max_bid.amount)}(入札件数#{@max_product.bids_count}件)でした。"
