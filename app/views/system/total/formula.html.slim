@@ -47,6 +47,6 @@
 
     hr
 
-    li = "ウォッチリスト登録数は #{number_with_delimiter(@watches.count)}件、利用ユーザ数は #{number_with_delimiter(@watches.count('DISTINCT user_id'))人}"
-    li = "検索条件の保存数は #{number_with_delimiter(@searches.count)}件、利用ユーザ数は #{number_with_delimiter(@searches.count('DISTINCT user_id'))人}"
-    li = "フォロー登録 #{number_with_delimiter(@follows.count)}件、利用ユーザ数は #{number_with_delimiter(@follows.count('DISTINCT user_id'))人}"
+    li = "ウォッチリスト登録数は #{number_with_delimiter(@watches.count)}件、利用ユーザ数は #{number_with_delimiter(@watches.count('DISTINCT user_id'))}人"
+    li = "検索条件の保存数は #{number_with_delimiter(@searches.count)}件、利用ユーザ数は #{number_with_delimiter(@searches.count('DISTINCT user_id'))}人"
+    li = "フォロー登録 #{number_with_delimiter(@follows.count)}件、利用ユーザ数は #{number_with_delimiter(@follows.count('DISTINCT user_id'))}人"
