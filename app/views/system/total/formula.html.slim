@@ -25,12 +25,12 @@
 
     hr
 
-    li = "入札数は #{number_with_delimiter(@success_products.sum(:bids_count))}件"
-    li = "日平均は #{number_with_delimiter(@success_products.sum(:bids_count).fdiv(@day).round(2))}"
-    li = "落札商品平均は #{number_with_delimiter(@success_products.sum(:bids_count).fdiv(@success_products.count).round(2))}"
+    li = "合計入札数は #{number_with_delimiter(@success_products.sum(:bids_count))}件"
+    li = "日平均は #{number_with_delimiter(@success_products.sum(:bids_count).fdiv(@day).round(2))}件"
+    li = "落札商品平均は #{number_with_delimiter(@success_products.sum(:bids_count).fdiv(@success_products.count).round(2))}件"
 
     - if @max_bid_product
-      li = "最多入札の商品は「#{@max_bid_product.name}」の #{@max_bid_product.bids_count}件、参加人数は #{@max_bid_product.bids.count('DISTINCT user_id')}"
+      li = "最多入札の商品は「#{@max_bid_product.name}」の #{@max_bid_product.bids_count}件、参加人数は #{@max_bid_product.bids.count('DISTINCT user_id')}人"
 
     hr
 
@@ -39,4 +39,14 @@
 
     hr
 
-    li = "新規ユーザ登録数は #{@users.count}人"
+    li = "新規ユーザ登録数は #{number_with_delimiter(@users.count)}人"
+    li = "総登録人数は #{number_with_delimiter(User.all.count)}人"
+    li = "うち入札参加人数は #{number_with_delimiter(@bids.count('DISTINCT user_id'))}人"
+    li = "1人平均の入札数は #{number_with_delimiter(@success_products.sum(:bids_count).fdiv(@bids.count('DISTINCT user_id')).round(2))}"
+    li = ""
+
+    hr
+
+    li = "ウォッチリスト登録数は #{number_with_delimiter(@watches.count)}件、利用ユーザ数は #{number_with_delimiter(@watches.count('DISTINCT user_id'))}"
+    li = "検索条件の保存数は #{number_with_delimiter(@searches.count)}件、利用ユーザ数は #{number_with_delimiter(@searches.count('DISTINCT user_id'))}"
+    li = "フォロー登録 #{number_with_delimiter(@follows.count)}件、利用ユーザ数は #{number_with_delimiter(@follows.count('DISTINCT user_id'))}"

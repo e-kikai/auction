@@ -83,6 +83,11 @@ class System::TotalController < System::ApplicationController
 
     @users = User.where(created_at: rstart..rend)
 
+    @bids = Bid.where(product_id:  @success_products)
+
+    @watches  = Watch.where(created_at: rstart..rend)
+    @follows  = Follow.where(created_at: rstart..rend)
+    @searches = Search.where(created_at: rstart..rend)
     # セレクタ
     @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
 
