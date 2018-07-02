@@ -4,11 +4,13 @@
 .row
   .col-md-3
     .panel.panel-default
-      .panel-heading 出品会社向けお知らせ一覧
-      .panel-body
+      = link_to "#collapse_help", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
+        span.glyphicon.glyphicon-question-sign
+        span.btn-content 出品会社向けお知らせ一覧
+        span.glyphicon.glyphicon-chevron-down
+      .panel-body#collapse_help.panel-collapse.collapse.in.xs-close
         - @infos.each do |he|
           p = link_to he.title, "/myauction/infos/#{he.uid}"
-
 
   .col-md-9
     h3.product-title itemprop="name" = @info.title

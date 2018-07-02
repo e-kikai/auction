@@ -10,12 +10,12 @@ namespace :twitter do
     next if product.blank?
 
     tweet = <<-EOS
-ものづくりオークション #{I18n.l(Time.now, format: "%Y年%-m月%-d日(%a)")} 新着商品情報
+#{I18n.l(Time.now, format: "%Y年%-m月%-d日(%a)")} 新着商品情報
 
 #{product.name}
 
-#ものオク #ものづくり #オークション #{product.category.path.map { |ca| "#" + ca.name }.join(" ")}
 https://www.mnok.net/products/#{product.id}
+#ものオク #ものづくり #オークション #{product.category.path.map { |ca| "#" + ca.name }.join(" ")}
 EOS
 
     update(client, tweet)
