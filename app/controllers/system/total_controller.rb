@@ -76,7 +76,7 @@ class System::TotalController < System::ApplicationController
     @products = Product.includes(:user, :max_bid).where(template: false, cancel: nil).where("dulation_start < ? AND dulation_end > ?", rend, rstart)
 
     @success_products = @products.where.not(max_bid_id: nil).where("dulation_end < ? ", rend)
-    @max_product      = @success_products.order("max_bid.amount").first
+    @max_product      = @success_products.joins(:max_bid).order("bids.amount").first
 
     @day = rend.day
 
