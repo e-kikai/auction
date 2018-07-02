@@ -34,9 +34,9 @@
 
     hr
 
-    li = "出品を行った会社数は #{@products.count("DISTINCT user_id")}社"
-    li = "うち落札があったのが #{@success_products.count("DISTINCT user_id")}社"
+    li = "出品を行った会社数は #{@products.count("DISTINCT products.user_id")}社"
+    li = "うち落札があったのが #{@success_products.count("DISTINCT products.user_id")}社"
 
     hr
 
-    li = "新規ユーザ登録数は #{@users.count}"
+    li = "新規ユーザ登録数は #{@users.count}人"
