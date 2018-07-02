@@ -64,7 +64,7 @@ class System::TotalController < System::ApplicationController
   end
 
   def formula
-    @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now.to_date
+    @date    = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
     @company = params[:company]
 
     # 取得
@@ -81,7 +81,7 @@ class System::TotalController < System::ApplicationController
 
     @day = rend.day
 
-    @users =
+    @users = User.where(created_at: rstart..rend)
 
     # セレクタ
     @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
