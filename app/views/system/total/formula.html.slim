@@ -16,12 +16,23 @@
     li = "うち、落札総数は #{number_with_delimiter(@success_products.count)}件"
     li = "1日平均 #{number_with_delimiter(@success_products.count.fdiv(@day).round(2))}件"
 
+    hr
     li = "落札総額は #{number_to_currency(@success_products.sum(:max_price))}"
     li = "平均落札金額は #{number_to_currency(@success_products.sum(:max_price).fdiv(@success_products.count).round(2))}"
 
     - if @max_product
-      li = "最高落札金額の商品は「#{@max_product.name}」の #{number_to_currency(@max_product.max_bid.amount)}(入札件数#{@max_product.bids_count}件)でした。"
+      li = "最高落札金額の商品は「#{@max_product.name}」の #{number_to_currency(@max_product.max_price)}(入札件数#{@max_product.bids_count}件)でした。"
+
+    hr
 
     li = "入札数は #{number_with_delimiter(@success_products.sum(:bids_count))}件"
     li = "日平均は #{number_with_delimiter(@success_products.sum(:bids_count).fdiv(@day).round(2))}"
     li = "落札商品平均は #{number_with_delimiter(@success_products.sum(:bids_count).fdiv(@success_products.count).round(2))}"
+
+    - if @max_bid_product
+      li = "最多入札の商品は「#{@max_bid_product.name}」の #{@max_bid_product.bids_count}件、参加人数は #{@max_bid_product.bids.count('DISTINCT user_id')}"
+
+    hr
+
+    li = "出品を行った会社数は #{@product.count("DISTINCT user_id")}社"
+    li = "うち落札があったのが #{@success_products.count("DISTINCT user_id")}社"

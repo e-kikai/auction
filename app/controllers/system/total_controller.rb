@@ -76,9 +76,12 @@ class System::TotalController < System::ApplicationController
     @products = Product.includes(:user, :max_bid).where(template: false, cancel: nil).where("dulation_start < ? AND dulation_end > ?", rend, rstart)
 
     @success_products = @products.where.not(max_bid_id: nil).where("dulation_end < ? ", rend)
-    @max_product      = @success_products.order("bids.amount DESC").first
+    @max_product      = @success_products.order("max_price DESC").first
+    @max_bid_product  = @success_products.order("bids_count DESC").first
 
     @day = rend.day
+
+    @users =
 
     # セレクタ
     @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
