@@ -14,8 +14,8 @@ namespace :twitter do
 
 #{product.name}
 
+#ものオク #ものづくり #{product.category.path.map { |ca| "#" + ca.name }.join(" ")}
 https://www.mnok.net/products/#{product.id}
-#ものオク #ものづくり #オークション #{product.category.path.map { |ca| "#" + ca.name }.join(" ")}
 EOS
 
     update(client, tweet)

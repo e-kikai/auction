@@ -62,4 +62,26 @@ class System::TotalController < System::ApplicationController
     # セレクタ
     @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
   end
+
+  def formula
+    @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now.to_date
+    @company = params[:company]
+
+    # 取得
+    rstart = @date.beginning_of_month
+    rend   = @date.end_of_month
+
+
+    # 期間内に出品されていた商品
+    @products = Product.includes(:user, :max_bid).where(template: false, cancel: nil).where("dulation_start < ? AND dulation_end > ?", rend, rstart)
+
+    @success_products = @products.where.not(max_bid_id: nil).where("dulation_end < ? ", rend)
+    @max_product      = @success_products.order("max_bid.amount").first
+
+    @day = rend.day
+
+    # セレクタ
+    @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
+
+  end
 end
