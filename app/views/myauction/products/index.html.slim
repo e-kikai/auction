@@ -54,7 +54,7 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
           th.num = sort_link(@search, :bids_count)
           th.num = sort_link(@search, :detail_logs_count)
           th.num = sort_link(@search, :watches_count)
-          th.price 手数料<br />(#{Product::FEE_RATE}%)
+          / th.price 手数料<br />(#{Product::FEE_RATE}%)
           th 評価
         - elsif params[:cond].to_i == 3
           th.num = sort_link(@search, :bids_count)
@@ -108,7 +108,7 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
               td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
               td.num = pr.detail_logs_count
               td.num = pr.watches_count
-              td.price = number_to_currency(pr.fee)
+              / td.price = number_to_currency(pr.fee)
               td.star = pr.star_view
             - else
               td 自社落札

@@ -408,7 +408,7 @@ class Product < ApplicationRecord
 
   # 消費税計算
   def self.calc_tax(price)
-    (price.to_i * TAX_RATE / 100).ceil
+    (price.to_i * TAX_RATE / 100).floor
   end
 
   # 税込金額計算

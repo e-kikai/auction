@@ -6,9 +6,12 @@ prawn_document do |pdf|
     # count        = month_products.count
     # success      = fee_products.length
     price        = fee_products.sum(&:max_price)
-    fee          = fee_products.sum(&:fee)
-    fee_tax      = fee_products.sum(&:fee_tax)
-    fee_with_tax = fee_products.sum(&:fee_with_tax)
+    # fee          = fee_products.sum(&:fee)
+    # fee_tax      = fee_products.sum(&:fee_tax)
+    # fee_with_tax = fee_products.sum(&:fee_with_tax)
+    fee          = price * Product::FEE_RATE / 100
+    fee_tax      = Product.calc_tax(fee)
+    fee_with_tax = fee + fee_tax
 
     next if fee_products.blank?
 
@@ -81,14 +84,15 @@ prawn_document do |pdf|
     pdf.text "ものづくりオークション #{co.company} 様 #{@date.strftime("%Y年%-m月")} 落札商品明細"
 
     pdf.font "vendor/assets/fonts/ipaexm.ttf"
-    arr = [%w|No. 管理番号 商品名 開始価格 落札金額 落札日時 手数料|] +
+    arr = [%w|No. 管理番号 商品名 開始価格 落札日時 落札金額|] +
     fee_products.map.with_index do |pr, i|
-      [(i+1), pr.code, pr.name, number_with_delimiter(pr.start_price), number_with_delimiter(pr.max_price),
-        I18n.l(pr.dulation_end, format: :date_time), number_with_delimiter(pr.fee),]
+      [(i+1), pr.code, pr.name, number_with_delimiter(pr.start_price),
+        I18n.l(pr.dulation_end, format: :date_time), number_with_delimiter(pr.max_price)]
     end + [
-      [ {content: "", colspan: 3}, {content: "手数料合計", colspan: 2}, {content: number_to_currency(fee), colspan: 2},],
-      [ {content: "", colspan: 3}, {content: "消費税(#{Product::TAX_RATE}%)", colspan: 2}, {content: number_to_currency(fee_tax), colspan: 2},],
-      [ {content: "", colspan: 3}, {content: "請求金額", colspan: 2}, {content: number_to_currency(fee_with_tax), colspan: 2},],
+      [ {content: "", colspan: 2}, {content: "落札金額合計", colspan: 2}, {content: number_to_currency(price), colspan: 2},],
+      [ {content: "", colspan: 2}, {content: "システム使用料", colspan: 2}, {content: number_to_currency(fee), colspan: 2},],
+      [ {content: "", colspan: 2}, {content: "消費税 (#{Product::TAX_RATE}%)", colspan: 2}, {content: number_to_currency(fee_tax), colspan: 2},],
+      [ {content: "", colspan: 2}, {content: "請求金額", colspan: 2}, {content: number_to_currency(fee_with_tax), colspan: 2},],
     ]
 
     pdf.table arr, {
@@ -96,23 +100,25 @@ prawn_document do |pdf|
     } do |t|
       t.cells.style(size: 10)
 
-      t.columns(0).style(width: 28,  align: :right)
+      t.columns(0).style(width: 38,  align: :right)
       t.columns(1).style(width: 66, align: :left)
-      t.columns(2).style(width: 190, align: :left)
-      t.columns(3).style(width: 60, align: :right)
-      t.columns(4).style(width: 60, align: :right)
-      t.columns(5).style(width: 74, align: :left)
-      t.columns(6).style(width: 60, align: :right)
+      t.columns(2).style(width: 220, align: :left)
+      t.columns(3).style(width: 70, align: :right)
+      t.columns(4).style(width: 74, align: :left)
+      t.columns(5).style(width: 70, align: :right)
+      # t.columns(6).style(width: 60, align: :right)
 
       t.row(0).style(align: :center)
 
       t.row(-1).columns(0).border_width = 0
       t.row(-2).columns(0).border_width = 0
       t.row(-3).columns(0).border_width = 0
+      t.row(-4).columns(0).border_width = 0
 
-      t.row(-1).columns([3, 5]).style(align: :right, size: 12)
-      t.row(-2).columns([3, 5]).style(align: :right, size: 12)
-      t.row(-3).columns([3, 5]).style(align: :right, size: 12, weight: :bold)
+      t.row(-1).columns([2, 4]).style(align: :right, size: 12)
+      t.row(-2).columns([2, 4]).style(align: :right, size: 12)
+      t.row(-3).columns([2, 4]).style(align: :right, size: 12)
+      t.row(-4).columns([2, 4]).style(align: :right, size: 12)
     end
 
     ### 領収証 ####

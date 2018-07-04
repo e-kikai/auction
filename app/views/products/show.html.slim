@@ -111,7 +111,7 @@ article itemscope="" itemtype="http://schema.org/Product"
               span.product-tax
                 | (税込 #{number_to_currency(@product.prompt_dicision_price_with_tax)})
 
-            - unless @product.finished? || @product.user_id == current_user.try(:id)
+            - unless @product.finished? || @product.before? || @product.user_id == current_user.try(:id)
               = button_tag class: "btn btn-danger btn-lg center-block", data: { toggle: :modal, target: "#prompt-modal"} do
                 span.glyphicon.glyphicon-jpy
                 span.btn-content 今すぐ落札する

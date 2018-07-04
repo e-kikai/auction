@@ -1,5 +1,5 @@
-- set_meta_tags title: "手数料集計"
-- breadcrumb :system_something, "手数料集計"
+- set_meta_tags title: "システム使用料集計"
+- breadcrumb :system_something, "システム使用料集計"
 
 - total_total   = 0
 - total_conunt  = 0
@@ -34,8 +34,8 @@
         th.num 落札<br />件数
         th.num 閲覧<br />総数
         th.num ウォッ<br />チ総数
-        th.total_price 落札総額
-        th.total_price 手数料<br />(#{Product::FEE_RATE}%)
+        th.total_price 落札金額合計
+        th.total_price システム使用料<br />(#{Product::FEE_RATE}%)
       - @companies.each do |co|
         - total = co.products.where(template: false).where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
         - total_total += total
@@ -55,9 +55,10 @@
 
         - price          = fee_products.sum(:max_price)
         - total_price    += price
-        / - fee            = price * Product::FEE_RATE / 100
-        - fee            = fee_products.sum(:fee)
+        - fee            = price * Product::FEE_RATE / 100
+        / - fee            = fee_products.sum(:fee)
 
+        / - total_fee      += fee
         - total_fee      += fee
 
         tr
