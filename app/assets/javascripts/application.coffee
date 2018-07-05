@@ -110,6 +110,8 @@ $(document).on 'turbolinks:load', ->
   # スマートフォンのみcollapseを閉じておく
   if window.matchMedia('(max-width: 767px)').matches
     console.log($(".xs-close").collapse('hide'))
+  if window.matchMedia('(max-width: 991px)').matches
+    console.log($(".sm-close").collapse('hide'))
 
 priceUnformat = (str) ->
   num = new String(str).replace(/[^0-9]/g, "")

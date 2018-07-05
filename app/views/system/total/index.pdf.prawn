@@ -35,10 +35,10 @@ prawn_document do |pdf|
     pdf.font "vendor/assets/fonts/VL-PGothic-Regular.ttf"
     pdf.text "ものづくりオークション #{@date.strftime("%Y年%-m月")} 販売分", size: 14
 
-    # 手数料
-    pdf.text_box "手数料請求金額", size: 14, at: [12.mm, (228.5).mm]
-    pdf.text_box "#{number_to_currency(fee_with_tax)} (税込)", size: 20, at: [60.mm, 230.mm]
-    pdf.stroke_line [54.mm, 222.mm], [124.mm, 222.mm]
+    # システム使用料
+    pdf.text_box "システム使用料 請求金額", size: 14, at: [12.mm, (228.5).mm]
+    pdf.text_box "#{number_to_currency(fee_with_tax)} (税込)", size: 20, at: [80.mm, 230.mm]
+    pdf.stroke_line [74.mm, 222.mm], [154.mm, 222.mm]
 
     pdf.font "vendor/assets/fonts/ipaexm.ttf"
     pdf.bounding_box([0.mm, 200.mm], width: 170.mm, height: 42.mm) do
@@ -59,7 +59,7 @@ prawn_document do |pdf|
 
       pdf.default_leading 6
 
-      pdf.text "別紙明細の通り、上記手数料請求金額をいただきます。", size: 12
+      pdf.text "別紙明細の通り、上記システム使用料請求金額をいただきます。", size: 12
       pdf.text "平成#{@date.strftime("%Y").to_i - 1988}年#{@date.next_month(1).strftime("%-m月")}20日までにご入金下さい。", size: 16
       pdf.text ""
       # pdf.font "vendor/assets/fonts/VL-PGothic-Regular.ttf"
@@ -137,7 +137,7 @@ prawn_document do |pdf|
         pdf.text_box "記", size: 12, at: [2.mm, 80.mm], align: :center
 
         arr = [
-          ["手数料合計(税抜)", "消費税(#{Product::TAX_RATE}%)", "合計請求金額"],
+          ["システム使用料(税抜)", "消費税(#{Product::TAX_RATE}%)", "合計請求金額"],
           [number_to_currency(fee), number_to_currency(fee_tax), number_to_currency(fee_with_tax)]
         ]
 

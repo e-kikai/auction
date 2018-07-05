@@ -121,7 +121,7 @@ crumb :myauction_bids_star do |pr|
 end
 
 crumb :myauction_products_end do
-  link   "出品終了分(落札済み)", "/myauction/products/?cond=2"
+  link   "出品終了分 - 落札済", "/myauction/products/?cond=2"
   parent :myauction
 end
 

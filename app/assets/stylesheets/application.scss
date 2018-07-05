@@ -493,6 +493,7 @@ label.top-search {
   }
 }
 
+.trade-dl,
 .product-dl {
   @media (max-width: 767px) {
     margin-bottom: 0;
@@ -524,6 +525,28 @@ label.top-search {
 
     dd {
       margin-left: 130px;
+    }
+  }
+}
+
+.trade-dl {
+  width: 100%;
+
+  &.product {
+    dt {
+      width: 50%;
+      text-align: left;
+      margin-top: 0;
+      margin-bottom: 0;
+      float: left;
+    }
+
+    dd {
+      width: 50%;
+      text-align: right;
+      margin-top: 0;
+      margin-bottom: 0;
+      margin-left: 50%;
     }
   }
 }
@@ -717,36 +740,34 @@ hr.detail-price-calc {
   text-align: right;
 }
 
-.trade-user {
-  dt {
-    width: 90px;
-    text-align: right;
-    margin-bottom: 3px;
-  }
+// .trade-user {
+//   dt {
+//     width: 90px;
+//     text-align: right;
+//     margin-bottom: 3px;
+//   }
+//
+//   dd {
+//     margin-left: 110px;
+//   }
+//
+//   th {
+//     width: 120px;
+//     text-align: left;
+//   }
+// }
 
-  dd {
-    margin-left: 110px;
-  }
-
-  th {
-    width: 120px;
-    text-align: left;
-  }
-
-
-}
-
-.trade-product {
-  dt {
-    width: 100px;
-    text-align: left;
-  }
-
-  dd {
-    margin-left: 120px;
-    text-align: right;
-  }
-}
+// .trade-product {
+//   dt {
+//     width: 100px;
+//     text-align: left;
+//   }
+//
+//   dd {
+//     margin-left: 120px;
+//     text-align: right;
+//   }
+// }
 
 .star-good {
   color: #fcbc01;

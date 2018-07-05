@@ -42,7 +42,7 @@
         span.btn-content 絞り込み
         span.glyphicon.glyphicon-chevron-down
 
-      .panel-body#collapse_filter.panel-collapse.collapse.in.xs-close
+      .panel-body#collapse_filter.panel-collapse.collapse.in.sm-close
         label カテゴリ
         . = link_to "すべてのカテゴリ", base_params.deep_merge(category_id: nil)
         - @select_categories.each do |i, count|
@@ -84,7 +84,7 @@
         span.glyphicon.glyphicon-search
         span.btn-content カテゴリから探す
         span.glyphicon.glyphicon-chevron-down
-      ul.list-group#collapse_category.panel-collapse.collapse.in.xs-close
+      ul.list-group#collapse_category.panel-collapse.collapse.in.sm-close
         = link_to "すべて", "products", class: "list-group-item"
         - @roots.each do |ca|
           = link_to "#{ca.name}", "/products?category_id=#{ca.id}", class: "list-group-item"
