@@ -1,6 +1,7 @@
 /// 基本 ///
 - set_meta_tags title: "ものづくりのための中古機械・工具のオークション ものオク", reverse: false
-- set_meta_tags keywords: "中古,新品,工具,機械,NC,ものづくり,オークション,販売,ものオク", description: "新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！"
+- set_meta_tags keywords: "中古,新品,工具,機械,NC,ものづくり,オークション,販売,ものオク"
+- set_meta_tags description: "新品も中古も！欲しかったあの工具が格安価格で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からオークションで購入！"
 
 /// Twitterカード ///
 - set_meta_tags twitter: { card: "summary", site: "@username", image: asset_url("auction_02.jpg") }
@@ -18,7 +19,7 @@
     .topsearch-area
       label.top-search
         span.glyphicon.glyphicon-search
-        span.btn-content 保存した検索条件
+        span.btn-content お気に入り検索
       - current_user.searches.each do |se|
         =< link_to se.name, se.uri
 
@@ -72,8 +73,10 @@
     .col-md-7.col-sm-8.col-xs-12
       .toppage-searches
         - if @searches[0]
-          - @searches[0..2].each do |se|
+          - @searches[0..1].each do |se|
             = render "search_panel", search: se
+          .thumbnail.search-panel style="border:0;"
+            = link_to(image_tag(asset_url("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！")), "/lp/index.html", target: "_blank")
 
       - if @follows_new_products.present?
         label
@@ -86,8 +89,8 @@
                 = render "product_panel", product: pr, r: :top_flw
 
       .toppage-searches
-        - if @searches[3]
-          - @searches[3..5].each do |se|
+        - if @searches[2]
+          - @searches[3..4].each do |se|
             = render "search_panel", search: se
 
 
@@ -102,8 +105,8 @@
                 = render "product_panel", product: pr, r: :top_chk
 
       .toppage-searches
-        - if @searches[6]
-          - @searches[6..8].each do |se|
+        - if @searches[5]
+          - @searches[5..7].each do |se|
             = render "search_panel", search: se
 
       label
@@ -116,8 +119,8 @@
               = render "product_panel", product: pr, r: :top_new
 
       .toppage-searches
-        - if @searches[9]
-          - @searches[9..11].each do |se|
+        - if @searches[8]
+          - @searches[8..10].each do |se|
             = render "search_panel", search: se
 
 

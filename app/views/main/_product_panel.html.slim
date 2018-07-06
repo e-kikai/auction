@@ -3,5 +3,5 @@
     = image_tag(product.thumb_url, alt: product.name)
     .name = product.name
     .price
-      | 現在
+      span.max_price_label 現在価格
       span.max_price = number_to_currency(product.max_price_with_tax)

@@ -1,18 +1,18 @@
-- set_meta_tags title: "保存した検索条件"
-- breadcrumb    :myauction_something, "保存した検索条件"
+- set_meta_tags title: "検索条件お気に入り一覧"
+- breadcrumb    :myauction_something, "検索条件お気に入り一覧"
 
-h4 保存した検索条件
+h4 検索条件お気に入り一覧
 
 = paginate @psearches
 
 - if @psearches.length == 0
-  p 保存した検索条件はありません
+  p 保存した検索条件お気に入りはありません
 - else
   .table-responsive
     table.table.table-hover.table-condensed.table-striped.product-table
       tr
         / th.img_mini
-        th 検索条件名
+        th お気に入りタイトル
         th 検索キーワード
         th 出品会社
         th カテゴリ

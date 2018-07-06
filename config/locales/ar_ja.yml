@@ -70,7 +70,7 @@ ja:
       trade:
         comment: コメント
       search:
-        name: 検索条件のタイトル
+        name: お気に入りタイトル
         category: カテゴリ
         keywords: 検索キーワード
         publish: トップページに公開する
