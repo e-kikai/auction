@@ -69,7 +69,7 @@
       th
         span.glyphicon.glyphicon-info-sign
         span.btn-content 備考欄
-      td = simple_format(@company.note)
+      td = markdown(@company.note)
     tr
       th
         span.glyphicon.glyphicon-star
