@@ -718,6 +718,14 @@ hr.detail-price-calc {
   li {
     margin-bottom: 4px;
   }
+
+  table {
+    th, td {
+      border: 1px solid #ddd;
+      background: #FFF;
+      
+    }
+  }
 }
 
 /// マイ・オークション ///
