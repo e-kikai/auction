@@ -76,7 +76,7 @@
           - @searches[0..1].each do |se|
             = render "search_panel", search: se
           .thumbnail.search-panel style="border:0;"
-            = link_to(image_tag(asset_url("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！")), "/lp/index.html", target: "_blank")
+            = link_to(image_tag(asset_url("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！")), "/lp/index.html?r=top_bnr", target: "_blank")
 
       - if @follows_new_products.present?
         label
@@ -132,7 +132,7 @@
           span.glyphicon.glyphicon-chevron-down
         .panel-body#collapse_help.panel-collapse.collapse.in.xs-close
 
-          p = link_to "ものづくりオークションとは", "/lp/index.html", target: "_blank"
+          p = link_to "ものづくりオークションとは？", "/lp/index.html", target: "_blank"
           - @helps.each do |he|
             p = link_to he.title, "/helps/#{he.uid}"
           p = link_to "利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
