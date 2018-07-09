@@ -5,90 +5,91 @@
   .row.header-image
     = image_tag @company.header_image.url
 
-.col-md-offset-2.col-md-8
-  h4 出品会社情報
+.row
+  .col-md-offset-2.col-md-8
+    h4 出品会社情報
 
-  = link_to "/products?company_id=#{@company.id}"
-    span.glyphicon.glyphicon-list
-    span.btn-content = "#{@company.company}の出品商品を見る"
+    = link_to "/products?company_id=#{@company.id}"
+      span.glyphicon.glyphicon-list
+      span.btn-content = "#{@company.company}の出品商品を見る"
 
-  table.table.table-striped.table-hover.table-condensed.company-table
-    tr
-      th
-        span.glyphicon.glyphicon-home
-        span.btn-content 会社名
-      td = @company.company
+    table.table.table-striped.table-hover.table-condensed.company-table
+      tr
+        th
+          span.glyphicon.glyphicon-home
+          span.btn-content 会社名
+        td = @company.company
 
-    tr
-      th
-        span.glyphicon 〒
-        span.btn-content 郵便番号
-      td = @company.zip
-    tr
-      th
-        span.glyphicon.glyphicon-map-marker
-        span.btn-content 住所
-      td = "#{@company.addr_1} #{@company.addr_2} #{@company.addr_3}"
+      tr
+        th
+          span.glyphicon 〒
+          span.btn-content 郵便番号
+        td = @company.zip
+      tr
+        th
+          span.glyphicon.glyphicon-map-marker
+          span.btn-content 住所
+        td = "#{@company.addr_1} #{@company.addr_2} #{@company.addr_3}"
 
-    tr
-      th
-        span.glyphicon.glyphicon-earphone
-        span.btn-content TEL
-      td = @company.tel
-    tr
-      th
-        span.glyphicon.glyphicon-phone-alt
-        span.btn-content FAX
-      td = @company.fax
-    tr
-      th
-        span.glyphicon.glyphicon-link
-        span.btn-content ウェブサイト
-      td
-        - if @company.url
-          = link_to @company.url, @company.url, target: "_blank"
+      tr
+        th
+          span.glyphicon.glyphicon-earphone
+          span.btn-content TEL
+        td = @company.tel
+      tr
+        th
+          span.glyphicon.glyphicon-phone-alt
+          span.btn-content FAX
+        td = @company.fax
+      tr
+        th
+          span.glyphicon.glyphicon-link
+          span.btn-content ウェブサイト
+        td
+          - if @company.url
+            = link_to @company.url, @company.url, target: "_blank"
 
-    tr
-      th
-        span.glyphicon.glyphicon-user
-        span.btn-content 担当者
-      td = @company.charge
+      tr
+        th
+          span.glyphicon.glyphicon-user
+          span.btn-content 担当者
+        td = @company.charge
 
 
-    tr
-      th
-        span.glyphicon.glyphicon-calendar
-        span.btn-content 営業日情報
-      td = @company.business_hours
-    tr
-      th
-        span.glyphicon.glyphicon-file
-        span.btn-content 免許情報
-      td = @company.license
-    tr
-      th
-        span.glyphicon.glyphicon-info-sign
-        span.btn-content 備考欄
-      td = markdown(@company.note)
-    tr
-      th
-        span.glyphicon.glyphicon-star
-        span.btn-content 評価
-      td
-        dl.dl-horizontal.star-dl
-         dt 総合評価
-         dd = number_with_delimiter(@company.count_star)
-         dt
-           span.glyphicon.glyphicon-certificate.star-good
-           span.btn-content 良い評価の割合
-         dd #{@company.count_star_good * 100 / @company.count_star rescue 0} %
-         dt.star ★★★★★
-         dd = number_with_delimiter @company.products.where(star: 5).count
-         dt.star ★★★★
-         dd = number_with_delimiter @company.products.where(star: 4).count
-         dt.star ★★★
-         dd = number_with_delimiter @company.products.where(star: 3).count
-         dt.star ★★
-         dd = number_with_delimiter @company.products.where(star: 2).count
-         dt.star ★
-         dd = number_with_delimiter @company.products.where(star: 1).count
+      tr
+        th
+          span.glyphicon.glyphicon-calendar
+          span.btn-content 営業日情報
+        td = @company.business_hours
+      tr
+        th
+          span.glyphicon.glyphicon-file
+          span.btn-content 免許情報
+        td = @company.license
+      tr
+        th colspan="2"
+          span.glyphicon.glyphicon-info-sign
+          span.btn-content 備考欄
+          = markdown(@company.note)
+      tr
+        th
+          span.glyphicon.glyphicon-star
+          span.btn-content 評価
+        td
+          dl.dl-horizontal.star-dl
+           dt 総合評価
+           dd = number_with_delimiter(@company.count_star)
+           dt
+             span.glyphicon.glyphicon-certificate.star-good
+             span.btn-content 良い評価の割合
+           dd #{@company.count_star_good * 100 / @company.count_star rescue 0} %
+           dt.star ★★★★★
+           dd = number_with_delimiter @company.products.where(star: 5).count
+           dt.star ★★★★
+           dd = number_with_delimiter @company.products.where(star: 4).count
+           dt.star ★★★
+           dd = number_with_delimiter @company.products.where(star: 3).count
+           dt.star ★★
+           dd = number_with_delimiter @company.products.where(star: 2).count
+           dt.star ★
+           dd = number_with_delimiter @company.products.where(star: 1).count
