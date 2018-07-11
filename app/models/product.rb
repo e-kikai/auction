@@ -467,7 +467,7 @@ class Product < ApplicationRecord
   private
 
   def default_max_price
-    self.max_price = start_price if max_bid_id.blank?
+    self.max_price = start_price if max_price < start_price
   end
 
   def youtube_id
