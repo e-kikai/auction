@@ -1,34 +1,42 @@
 - set_meta_tags title: "#{@product.name} 入札履歴"
 - breadcrumb    :products_bids, @product
 
+- desc = "オークション現在価格 #{number_to_currency @product.max_price_with_tax}|"
+- if @product.prompt_dicision_price
+  - desc += "即決価格 #{number_to_currency @product.prompt_dicision_price_with_tax}|"
+- desc += @product.description
+
+- set_meta_tags description: desc
+
 h1.product-title ="#{@product.name} 入札履歴"
 
-.col-md-offset-3.col-md-6
-  p
-    | ※ 入札したお客様のお名前は表示されません。
-    = link_to "ユニークアカウント", "/helps/uid"
-    | で表示されます。
-  table.table.table-striped.table-hover.table-condensed
-    tr
-      th 入札ユーザ
-      th.price 金額
-      th 手動入札日時
-
-    - @product.bids.order(created_at: :desc).each do |bi|
+.row
+  .col-md-offset-3.col-md-6.col-sm-12
+    p
+      | ※ 入札したお客様のお名前は表示されません。
+      = link_to "ユニークアカウント", "/helps/uid"
+      | で表示されます。
+    table.table.table-striped.table-hover.table-condensed
       tr
-        td
-          - if bi.user_id == current_user.try(:id)
-            | ★あなたの入札
-          - else
-            / = bi.user.account.gsub(/^(.)(.)(.)(.)(.).*$/, '\1*\3*\5***')
-            = bi.user.account
-          - if bi.id == @product.max_bid_id
-            = " (最高入札者)"
-        td.price
-          - if bi.id == @product.max_bid_id
-            = number_to_currency(@product.max_price_with_tax)
-          - elsif @product.max_bid.try(:user_id) == bi.user_id && @product.max_price < bi.amount
-            = number_to_currency(@product.max_price_with_tax)
-          - else
-            = number_to_currency(bi.amount_with_tax)
-        td = I18n.l(bi.created_at, format: :full_date)
+        th 入札ユーザ
+        th.price 金額
+        th 手動入札日時
+
+      - @product.bids.order(created_at: :desc).each do |bi|
+        tr
+          td
+            - if bi.user_id == current_user.try(:id)
+              | ★あなたの入札
+            - else
+              / = bi.user.account.gsub(/^(.)(.)(.)(.)(.).*$/, '\1*\3*\5***')
+              = bi.user.account
+            - if bi.id == @product.max_bid_id
+              = " (最高入札者)"
+          td.price
+            - if bi.id == @product.max_bid_id
+              = number_to_currency(@product.max_price_with_tax)
+            - elsif @product.max_bid.try(:user_id) == bi.user_id && @product.max_price < bi.amount
+              = number_to_currency(@product.max_price_with_tax)
+            - else
+              = number_to_currency(bi.amount_with_tax)
+          td = I18n.l(bi.created_at, format: :full_date)

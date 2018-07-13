@@ -128,6 +128,7 @@ class Product < ApplicationRecord
 
   ### SCOPE ###
   scope :with_keywords, -> keywords {
+    keywords = keywords.normalize_charwidth.strip
     if keywords.present?
       res = self
       keywords.split(/[[:space:]]/).reject(&:empty?).each do |keyword|

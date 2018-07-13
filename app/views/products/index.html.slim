@@ -4,7 +4,8 @@
 - title = "#{@company.company} #{title}"  if @company.present?
 - title.strip!
 
-- set_meta_tags title: "#{title} 検索結果(#{@pproducts.current_page}/#{@pproducts.total_pages})"
+- set_meta_tags title: "#{title} の検索結果(#{@pproducts.current_page}/#{@pproducts.total_pages})"
+- set_meta_tags description: "#{title} の新品も中古も！工具・機械ならものオク。ものづくりの現場で活躍する工具・機械を格安価格で安心安全な業者からオークションで購入！"
 
 - if @company.present?
   - breadcrumb :company, @company

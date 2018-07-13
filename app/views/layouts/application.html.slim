@@ -2,7 +2,7 @@ doctype html
 html
   head
     - set_meta_tags nofollow: true, noindex: true unless Rails.env.production?
-    = display_meta_tags site: "ものづくりオークション", reverse: true, separator: "｜", charset: "utf-8", viewport: "width=device-width, initial-scale=1"
+    = display_meta_tags site: "中古工具・機械のものづくりオークション", reverse: true, separator: "｜", charset: "utf-8", viewport: "width=device-width, initial-scale=1"
 
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => :reload
     = javascript_include_tag 'application', 'data-turbolinks-track' => :reload
@@ -27,7 +27,7 @@ html
     header.navbar.navbar-default.container-fluid role="navigation"
       .navbar-header
         / = link_to "ものづくりオークション", "/", class: "navbar-brand omdc-logo"
-        = link_to( image_tag("logo_02.png", alt: "中古機械・工具のオークション販売サイト ものづくりオークション | ものオク"), "/", class: "navbar-brand omdc-logo")
+        = link_to( image_tag("logo_02.png", alt: "中古工具・機械のオークション販売サイト ものづくりオークション | ものオク"), "/", class: "navbar-brand omdc-logo")
 
         - if user_signed_in?
           p.navbar-text

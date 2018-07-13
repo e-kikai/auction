@@ -1,11 +1,13 @@
 - set_meta_tags title: "ヘルプ一覧"
 - breadcrumb    :helps
 
-h3.product-title itemprop="name" ヘルプ一覧
+- set_meta_tags description: "ものづくりオークションのヘルプ一覧です。わからないことはここで解決。新品も中古も！工具・機械ならものオク。"
 
+h3.product-title itemprop="name" ものづくりオークション ヘルプ一覧
 
-ul.col-md-offset-2.col-md-8
-  li = link_to "ものづくりオークションとは", "/lp/index.html", target: "_blank"
-  - @helps.each do |he|
-    li = link_to he.title, "/helps/#{he.uid}"
-  li = link_to "利用規約(PDF)", asset_path("terms_of_service_01.pdf"), target: "_blank"
+.row
+  ul.col-md-offset-2.col-md-8.col-sm-12
+    li = link_to "ものづくりオークションとは", "/lp/index.html", target: "_blank"
+    - @helps.each do |he|
+      li = link_to he.title, "/helps/#{he.uid}"
+    li = link_to "利用規約(PDF)", asset_path("terms_of_service_01.pdf"), target: "_blank"
