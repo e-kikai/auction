@@ -26,6 +26,10 @@ $main-color: #edc9ff;
   content: "> "
 }
 
+a:hover img {
+  opacity: 0.6;
+}
+
 /// header ///
 header {
 
@@ -385,7 +389,7 @@ label.top-search {
 
       img {
         position: absolute;
-        width: inherit;
+        // width: inherit;
         top: 0;
         left: 0;
         right: 0;
@@ -395,9 +399,11 @@ label.top-search {
     }
 
     .name {
-      text-align: center;
+      text-align: left;
       font-size: 14px;
       font-weight: bold;
+      padding-bottom: 25%;
+      height: 0;
     }
   }
 }
