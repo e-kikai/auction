@@ -14,7 +14,7 @@ require "sprockets/railtie"
 
 require "charwidth"
 require "charwidth/string"
-require "charwidth/active_record"
+# require "charwidth/active_record"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.

@@ -176,6 +176,7 @@ class Product < ApplicationRecord
   before_save :default_max_price
   before_save :youtube_id
   before_save :make_search_keywords
+  before_save :normalize_changed_attributes
 
   ### インポート用getter setter ###
   attr_accessor :template_id, :template_name
@@ -463,6 +464,14 @@ class Product < ApplicationRecord
     categories = category.path.map { |ca| ca.name }.join(" ")
     self.search_keywords = "#{name} #{categories} #{user.company} #{state} #{state_comment} #{addr_1} #{addr_2} #{hashtags}".strip
     self
+  end
+
+  # string, textで変更のあったカラムを変換
+  def normalize_changed_attributes
+    attributes.each do |key, _|
+    # changed_attributes.each do |key, _|
+      self[key] = Charwidth.normalize(self[key]) if self[key].is_a?(String) && self[key].present?
+    end
   end
 
   private

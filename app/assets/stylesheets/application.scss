@@ -366,13 +366,15 @@ label.top-search {
     vertical-align: top;
     border-radius: 0;
     padding: 0;
+    // background: #EEE;
+    // border: 0;
 
     a {
       display: block;
       padding: 0;
 
       &:hover {
-        background: #f5f5f5;
+        background: #FFFFE0;
         text-decoration: none;
       }
     }
@@ -400,10 +402,10 @@ label.top-search {
 
     .name {
       text-align: left;
-      font-size: 14px;
-      font-weight: bold;
-      padding-bottom: 25%;
-      height: 0;
+      font-size: 16px;
+      // font-weight: bold;
+      padding: 2px;
+      color: #333;
     }
   }
 }
@@ -439,7 +441,7 @@ label.top-search {
     padding: 4px;
 
     &:hover {
-      background: #f5f5f5;
+      background: #FFFFE0;
       text-decoration: none;
     }
   }
