@@ -77,7 +77,8 @@ html
               = form_tag "/products", method: :get, class: "form-inline" do
                 = hidden_field_tag :category_id, params[:category_id]
                 .input-group
-                  = text_field_tag :keywords, params[:keywords], class: "form-control", placeholder: "キーワードから探す - 空白区切りでAND検索できます"
+                  / = text_field_tag :keywords, params[:keywords], class: "form-control", placeholder: "キーワードから探す - 空白区切りでAND検索できます"
+                  = text_field_tag :keywords, @keywords.to_s, class: "form-control", placeholder: "キーワードから探す - 空白区切りでAND検索できます"
                   span.input-group-btn
                     = button_tag class: "btn btn-default" do
                       span.glyphicon.glyphicon-search

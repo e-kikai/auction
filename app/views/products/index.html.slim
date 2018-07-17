@@ -1,7 +1,7 @@
 - title = ""
-- title = "#{params[:keywords]} #{title}" if params[:keywords].present?
-- title = "#{@category.name} #{title}"    if @category.present?
-- title = "#{@company.company} #{title}"  if @company.present?
+- title = "#{@keywords} #{title}"        if @keywords.present?
+- title = "#{@category.name} #{title}"   if @category.present?
+- title = "#{@company.company} #{title}" if @company.present?
 - title.strip!
 
 - set_meta_tags title: "#{title} の検索結果(#{@pproducts.current_page}/#{@pproducts.total_pages})"
@@ -21,9 +21,9 @@
 .row
   / = @products.to_sql
   .col-md-2
-    / = link_to "/myauction/searches/new?keywords=#{params[:keywords]}"
+    / = link_to "/myauction/searches/new?keywords=#{@keywords}"
     = form_for Search.new, url: "/myauction/searches/new", method: :get do |f|
-      = f.hidden_field :keywords,    value: params[:keywords]
+      = f.hidden_field :keywords,    value: @keywords
       = f.hidden_field :category_id, value: params[:category_id]
       = f.hidden_field :company_id,  value: params[:company_id]
       = f.hidden_field :q,           value: params[:q].to_json

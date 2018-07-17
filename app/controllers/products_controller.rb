@@ -4,7 +4,9 @@ class ProductsController < ApplicationController
 
   def index
     cond = params[:success].present? ? Product::STATUS[:success] : Product::STATUS[:start] # 終了した商品
-    @search = Product.status(cond).with_keywords(params[:keywords]).search(params[:q])
+
+    @keywords = params[:keywords].to_s.normalize_charwidth.strip
+    @search   = Product.status(cond).with_keywords(@keywords).search(params[:q])
 
     # カテゴリ
     if params[:category_id].present?
