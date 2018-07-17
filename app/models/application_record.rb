@@ -9,7 +9,7 @@ class ApplicationRecord < ActiveRecord::Base
   def normalize_changed_attributes
     attributes.each do |key, _|
     # changed_attributes.each do |key, _|
-      next if key.in?(%w|note|)
+      next if key.in?(%w|note encrypted_password|)
       self[key] = Charwidth.normalize(self[key]) if self[key].is_a?(String) && self[key].present?
     end
   end
