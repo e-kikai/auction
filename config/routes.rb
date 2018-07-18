@@ -91,6 +91,10 @@ Rails.application.routes.draw do
         get   'edit_password'
         patch 'update_password'
       end
+
+      collection do
+        get 'total'
+      end
     end
 
     resources :helps,       only: [:index, :new, :create, :edit, :update, :destroy]

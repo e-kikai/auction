@@ -1,0 +1,94 @@
+- set_meta_tags title: "ユーザ別トータル"
+- breadcrumb :system_something, "ユーザ別トータル"
+
+- total_total   = 0
+- total_conunt  = 0
+- total_success = 0
+- total_access  = 0
+- total_watch   = 0
+- total_price   = 0
+- total_fee     = 0
+
+.row
+  .col-md-offset-1.col-md-10.col-sm-12
+    = form_tag("/users/total", method: "get", class: "form-inline filtering-form") do
+      = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+      = button_tag class: "btn btn-info", style: "margin-right:8px;" do
+        span.glyphicon.glyphicon-search
+        span.btn-content 月変更
+
+      = button_tag :submit, name: :format, value: :pdf, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+        span.glyphicon.glyphicon-file
+        span.btn-content PDF出力
+
+      = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+        span.glyphicon.glyphicon-download-alt
+        span.btn-content CSV出力
+
+    table.table.table-hover.table-condensed.table-striped.product-table
+      tr
+        th.num ID
+        th アカウント
+        th 会社名
+        th ユーザ名
+        th 都道府県
+        th.sepa 出品
+        th.num 入札<br />件数
+        th.num 落札<br />件数
+        th.total_price.sepa 落札金額
+        th.num ウォッ<br />チ数
+        th.num お気に<br />いり数
+        th.num.sepa フォロ<br />ー数
+        th ユーザ<br />登録日時
+
+      - @users.each do |us|
+        / - total = us.products.where(template: false).where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
+        / - total_total += total
+        /
+        / - month_products = us.products.where(template: false).where(dulation_end: @date.beginning_of_month..@date.end_of_month)
+        /
+        / - fee_products   = month_products.where.not(fee: nil)
+        /
+        / - count          = month_products.count
+        / - total_conunt   += count
+        / - success        = fee_products.count
+        / - total_success  += success
+        / - access         = month_products.sum(:detail_logs_count)
+        / - total_access   += access
+        / - watch          = month_products.sum(:watches_count)
+        / - total_watch    += watch
+        /
+        / - price          = fee_products.sum(:max_price)
+        / - total_price    += price
+        / - fee            = price * Product::FEE_RATE / 100
+        / / - fee            = fee_products.sum(:fee)
+        /
+        / / - total_fee      += fee
+        / - total_fee      += fee
+
+        tr
+          td.num = us.id
+          td = us.account
+          td = us.company
+          td = us.name
+          td = us.addr_1
+          td.sepa = us.seller? ? "◯" : "×"
+          td.num = number_with_delimiter(@bids_count[us.id])
+          td.num = number_with_delimiter(@count_max_price[us.id])
+          td.total_price.sepa = number_to_currency(@sum_max_price[us.id])
+          td.num = number_with_delimiter(@watches_count[us.id])
+          td.num = number_with_delimiter(@searches_count[us.id])
+          td.num.sepa = number_with_delimiter(@follows_count[us.id])
+          td = I18n.l(us.created_at, format: :full_date)
+
+      / tfooter
+      /   tr
+      /     td
+      /     th 合計
+      /     td.num = number_with_delimiter(total_total)
+      /     td.num = number_with_delimiter(total_conunt)
+      /     td.num = number_with_delimiter(total_success)
+      /     td.num = number_with_delimiter(total_access)
+      /     td.num = number_with_delimiter(total_watch)
+      /     td.total_price = number_to_currency(total_price)
+      /     td.total_price = number_to_currency(total_fee)

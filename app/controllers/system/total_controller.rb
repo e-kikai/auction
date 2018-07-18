@@ -90,6 +90,5 @@ class System::TotalController < System::ApplicationController
     @searches = Search.where(created_at: rstart..rend)
     # セレクタ
     @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
-
   end
 end
