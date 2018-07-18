@@ -88,16 +88,16 @@ class System::UsersController < System::ApplicationController
     @products = Product.where(dulation_end: rstart..rend, template: false, cancel: nil).where.not(max_bid_id: nil)
 
     # 落札金額、落札数、入札数
-    @sum_max_price   = @products.joins(:max_bid).group("bids.user_id").sum(:max_price)
+    @sum_max_price   = @products.joins(:max_bid).group("bids.user_id").order("sum_max_price DESC").sum(:max_price)
     @count_max_price = @products.joins(:max_bid).group("bids.user_id").count(:max_price)
-    @bids_count      = Bid.where(created_at: rstart..rend).group(:user_id).count
-    @watches_count   = Watch.where(created_at: rstart..rend).group(:user_id).count
-    @follows_count   = Follow.where(created_at: rstart..rend).group(:user_id).count
-    @searches_count  = Search.where(created_at: rstart..rend).group(:user_id).count
+    @bids_count      = Bid.where(created_at: rstart..rend).group(:user_id).order("count_all DESC").count
+    @watches_count   = Watch.where(created_at: rstart..rend).group(:user_id).order("count_all DESC").count
+    @follows_count   = Follow.where(created_at: rstart..rend).group(:user_id).order("count_all DESC").count
+    @searches_count  = Search.where(created_at: rstart..rend).group(:user_id).order("count_all DESC").count
 
-    user_ids = @count_max_price.keys + @bids_count.keys
+    @user_ids = (@count_max_price.keys + @bids_count.keys + @watches_count.keys + @follows_count.keys).uniq
 
-    @users = User.where(id: user_ids)
+    @users = User.where(id: @user_ids)
   end
 
   private
