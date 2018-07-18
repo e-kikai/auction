@@ -10,20 +10,18 @@ ul.nav.nav-pills
     span.glyphicon.glyphicon-download-alt
     span.btn-content メールCSV
 
-
-  / - if params.dig(:q, :seller_eq)
-  /   = link_to "/system/users/", class: "btn btn-info" do
-  /     span.glyphicon.glyphicon-filter
-  /     span.btn-content すべて表示
-  / - else
-  /   = link_to "/system/users/?q[seller_eq]=true", class: "btn btn-info" do
-  /     span.glyphicon.glyphicon-filter
-  /     span.btn-content 出品会社のみ表示
-
   .btn-group role="group"
-    = link_to "すべて",       "/system/users/",                    class: "btn btn-default #{:active if params[:seller_eq].blank?}"
-    = link_to "ユーザのみ",   "/system/users/?q[seller_eq]=false", class: "btn btn-default #{:active if params[:seller_eq] == false}"
-    = link_to "出品会社のみ", "/system/users/?q[seller_eq]=true",  class: "btn btn-default #{:active if params[:seller_eq] == true}"
+    = link_to "すべて",       "/system/users/",                    class: "btn btn-default #{:active if params.dig(:q, :seller_eq).blank?}"
+    = link_to "ユーザのみ",   "/system/users/?q[seller_eq]=false", class: "btn btn-default #{:active if params.dig(:q, :seller_eq) == "false"}"
+    = link_to "出品会社のみ", "/system/users/?q[seller_eq]=true",  class: "btn btn-default #{:active if params.dig(:q, :seller_eq) == "true"}"
+
+  = search_form_for(@search, url: "/system/users/", class: "form-inline", html: { style: "display:inline-block;margin-left: 8px;"} ) do |f|
+    .input-group
+      = f.search_field :account_cont, class: 'form-control', placeholder: "アカウント"
+      span.input-group-btn
+        = f.button :button, class: "btn btn-default" do
+          span.glyphicon.glyphicon-search
+          span.btn-content 検索
 
 = paginate @pusers
 
@@ -38,7 +36,8 @@ ul.nav.nav-pills
             th.num ID
             th ユーザ名
             th 会社名
-            th ユニーク名
+            th アカウント
+            th 都道府県
             th 出品
             th 案内
             th 変更
@@ -53,6 +52,7 @@ ul.nav.nav-pills
               td = us.name
               td = us.company
               td = us.account
+              td = us.addr_1
               td = us.seller? ? "◯" : "×"
               td = us.allow_mail? ? "◯" : "×"
 
@@ -69,6 +69,6 @@ ul.nav.nav-pills
               /   span.glyphicon.glyphicon-log-in
               /   =< "ログイン"
               td = I18n.l(us.created_at, format: :full_date)
-              td = link_to({ action: :destroy, id: us.id }, method: :delete, data: { confirm: "#{us.name} #{us.company}\n\nこのユーザを削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
+              td = link_to({ action: :destroy, id: us.id }, method: :delete, data: { confirm: "#{us.name} #{us.company}\n\nこのユーザを削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-default btn-xs") do
                 span.glyphicon.glyphicon-remove
                 =< "削除"

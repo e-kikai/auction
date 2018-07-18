@@ -14,7 +14,10 @@
       th アクセス日時
       th IP
       th ホスト名
+      th ユーザ名
+      th 会社名
       th アカウント
+      th 都道府県
       th.num 商品ID
       th 商品名
       th.price 最高金額
@@ -24,7 +27,10 @@
         td = lo.created_at
         td = lo.ip
         td = lo.host
+        td = lo.user.try(:name)
+        td = lo.user.try(:company)
         td = lo.user.try(:account)
+        td = lo.user.try(:addr_1)
         td.num = lo.product_id
         td = lo.product ? (link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank") : "× (削除された商品)"
         td.price = lo.product ? number_to_currency(lo.product.max_price) : ""

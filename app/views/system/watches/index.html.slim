@@ -15,7 +15,10 @@
       th.num ユーザID
       th.sepa アカウント
       th.num 商品ID
-      th 商品名
+      th ユーザ名
+      th 会社名
+      th アカウント
+      th 都道府県
       / th 開始日時
       th 終了日時
       th 落札
@@ -28,7 +31,10 @@
       tr
         td.num = wa.id
         td.num = wa.user_id
+        td.sepa = wa.user.try(:name)
+        td.sepa = wa.user.try(:company)
         td.sepa = wa.user.try(:account)
+        td.sepa = wa.user.try(:addr_1)
         td.num = wa.product_id
         td = link_to wa.product.try(:name), "/products/#{wa.product_id}", target: "_blank"
         / td = wa.product.try(:dulation_start)
