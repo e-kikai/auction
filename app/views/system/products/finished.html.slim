@@ -51,7 +51,13 @@ table.table.table-hover.table-condensed.table-striped.product-table
         . = number_to_currency(pr.lower_price) || "-"
         . = number_to_currency(pr.prompt_dicision_price) || "-"
       td.price = number_to_currency(pr.max_price) || "-"
-      td = pr.max_bid.try(:user).try(:account) || "-"
+      td
+        - if pr.max_bid.try(:user)
+          . = pr.max_bid.try(:user).try(:account)
+          . = "#{pr.max_bid.try(:user).try(:company)} #{pr.max_bid.try(:user).try(:name)}".strip
+        - else
+          = "-"
+
       td = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
       td = pr.detail_logs_count
       td = pr.watches_count

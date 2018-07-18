@@ -13,6 +13,7 @@
     tr
       th.num ID
       th.num ユーザID
+      th 会社・ユーザ名
       th.sepa アカウント
       th.num 会社ID
       th.sepa 会社名
@@ -23,6 +24,7 @@
       tr
         td.num = se.id
         td.num = se.user_id
+        td = "#{se.user.try(:company)} #{se.user.try(:name)}".strip
         td.sepa = se.user.try(:account)
         td.num = se.to_user_id
         td.sepa = se.to_user.try(:company)
