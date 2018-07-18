@@ -98,6 +98,11 @@ class System::UsersController < System::ApplicationController
     @user_ids = (@sum_max_price.keys + @bids_count.keys + @watches_count.keys + @follows_count.keys).uniq
 
     @users = User.where(id: @user_ids)
+
+    respond_to do |format|
+      format.html
+      format.csv { export_csv "users_total.csv" }
+    end
   end
 
   private

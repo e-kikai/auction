@@ -17,9 +17,9 @@
         span.glyphicon.glyphicon-search
         span.btn-content 月変更
 
-      = button_tag :submit, name: :format, value: :pdf, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
-        span.glyphicon.glyphicon-file
-        span.btn-content PDF出力
+      / = button_tag :submit, name: :format, value: :pdf, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+      /   span.glyphicon.glyphicon-file
+      /   span.btn-content PDF出力
 
       = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
         span.glyphicon.glyphicon-download-alt
@@ -27,6 +27,7 @@
 
     table.table.table-hover.table-condensed.table-striped.product-table
       tr
+        th.num
         th.num ID
         th アカウント
         th 会社名
@@ -41,7 +42,7 @@
         th.num.sepa フォロ<br />ー数
         th ユーザ登録日時
 
-      - @user_ids.each do |uid|
+      - @user_ids.each.with_index(1) do |uid, i|
         / - total = us.products.where(template: false).where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
         / - total_total += total
         /
@@ -69,6 +70,7 @@
         - us = @users.find { |u| u.id == uid } || next
 
         tr
+          td.num = number_with_delimiter(i)
           td.num = us.id
           td = us.account
           td = us.company
