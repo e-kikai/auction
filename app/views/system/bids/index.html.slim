@@ -15,8 +15,8 @@
     tr
       th.price ID
       th 入札時間
-      th 会社・ユーザ名
       th アカウント
+      th 会社・ユーザ名
       th.price.sepa 入札金額
       th.price 商品ID
       th 商品名
@@ -27,8 +27,8 @@
       tr
         td.price = bi.id
         td = I18n.l(bi.created_at, format: "%H:%M:%S")
-        td = "#{bi.user.try(:company)} #{bi.user.try(:name)}".strip
         td = bi.user.try(:account)
+        td = "#{bi.user.try(:company)} #{bi.user.try(:name)}".strip
         td.price.sepa = number_to_currency(bi.amount)
         - if bi.product.present?
           td.price = bi.product_id

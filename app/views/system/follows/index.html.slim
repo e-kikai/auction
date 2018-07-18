@@ -12,9 +12,8 @@
   table.table.table-hover.table-condensed.table-striped
     tr
       th.num ID
-      th.num ユーザID
-      th 会社・ユーザ名
-      th.sepa アカウント
+      th アカウント
+      th.sepa 会社・ユーザ名
       th.num 会社ID
       th.sepa 会社名
       th 保存日時
@@ -23,9 +22,8 @@
     - @pfollowes.each do |se|
       tr
         td.num = se.id
-        td.num = se.user_id
-        td = "#{se.user.try(:company)} #{se.user.try(:name)}".strip
-        td.sepa = se.user.try(:account)
+        td = se.user.try(:account)
+        td.sepa = "#{se.user.try(:company)} #{se.user.try(:name)}".strip
         td.num = se.to_user_id
         td.sepa = se.to_user.try(:company)
         td = se.created_at
