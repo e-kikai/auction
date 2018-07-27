@@ -4,12 +4,12 @@
 - title = "#{@company.company} #{title}" if @company.present?
 - title.strip!
 
-- if @title
+- if @title.present?
   - set_meta_tags title: "#{@title}(#{@pproducts.current_page}/#{@pproducts.total_pages})"
 - else
   - set_meta_tags title: "#{title} 検索結果(#{@pproducts.current_page}/#{@pproducts.total_pages})"
 
-- if @description
+- if @description.present?
   - set_meta_tags description: @description
 - else
   - set_meta_tags description: "#{title}の新品も中古も！工具・機械ならものオク。ものづくりの現場で活躍する工具・機械を格安価格で安心安全な業者からオークションで購入！"
@@ -18,6 +18,8 @@
   - breadcrumb :company, @company
 - elsif @category.present?
   - breadcrumb :category, @category
+- elsif @title.present?
+  - breadcrumb :something, @title
 - else
   - breadcrumb :search
 
