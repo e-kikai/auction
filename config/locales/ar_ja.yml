@@ -71,8 +71,10 @@ ja:
         comment: コメント
       search:
         name: お気に入りタイトル
-        category: カテゴリ
+        category_id: カテゴリ
         keywords: 検索キーワード
+        company_id: 出品会社
+        description: トップ公開用説明
         publish: トップページに公開する
       help:
         title: ページタイトル

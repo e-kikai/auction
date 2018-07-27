@@ -1,0 +1,47 @@
+span.help-block 検索条件をお気に入りに登録すると、トップページから簡単に検索できます。
+
+table.table.table-hover.table-condensed.form-table
+  = f.hidden_field :q
+  = f.hidden_field :product_image_id
+
+  - if f.object.errors.full_messages.present?
+    .alert.alert-danger
+      ul
+        - f.object.errors.full_messages.each do |msg|
+          li = msg
+
+  tr
+    th = f.label :name, class: :required
+    td = f.text_field :name, autofocus: true, required: "required", class: 'form-control'
+
+  tr
+    th = f.label :keywords
+    td = f.text_field :keywords, class: "form-control"
+
+  tr
+    th = f.label "出品会社"
+    td = f.select :company_id, User.companies_selector, {include_blank: "すべての出品会社"}, class: "form-control"
+
+  tr
+    th = f.label :category_id
+    td = f.select :category_id, Category.options, {include_blank: "すべてのカテゴリ"}, class: "form-control"
+
+  - if current_user.seller?
+    tr
+      th = f.label "トップ公開用画像"
+      td
+        - if @search.product_image_id
+          = image_tag @search.product_image.image.thumb.url
+    tr
+      th = f.label :description
+      td
+        = f.text_area :description, class: "form-control"
+        p.help-block トップ公開時に検索結果、Google検索結果に表示されます
+
+    tr
+      th = f.label :publish
+      td = f.check_box :publish
+
+= f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+    span.glyphicon.glyphicon-save
+    span.btn-content 保存

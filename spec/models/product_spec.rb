@@ -52,6 +52,8 @@
 #  international         :boolean          default("海外発送不可"), not null
 #  search_keywords       :text             default(""), not null
 #  auto_resale_date      :integer          default(7), not null
+#  stock                 :integer
+#  dst_id                :integer
 #
 
 require 'rails_helper'

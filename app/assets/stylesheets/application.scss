@@ -89,6 +89,12 @@ header {
   }
 }
 
+.searches-title {
+  margin: 0;
+  font-size: 26px;
+  color: #5937ff;
+}
+
 .banner-area{
   img {
     margin-top: 8px;
@@ -318,7 +324,7 @@ table {
 }
 
 .search-pushpin {
-  color: #00D;
+  color: #5937ff;
 }
 
 .check-icon {
@@ -354,6 +360,11 @@ table {
 label.top-search {
   background: $main-color;
   padding: 0 8px;
+}
+
+.topsearch-area a {
+  display: inline-block;
+  margin-left: 12px;
 }
 
 .toppage-searches {

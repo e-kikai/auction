@@ -14,6 +14,7 @@
 #  updated_at        :datetime         not null
 #  soft_destroyed_at :datetime
 #  company_id        :integer
+#  description       :text             default("")
 #
 
 FactoryBot.define do

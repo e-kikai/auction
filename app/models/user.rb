@@ -115,6 +115,11 @@ class User < ApplicationRecord
     without_soft_destroyed.where(email: warden_conditions[:email]).first
   end
 
+  def self.companies_selector
+    user_ids = Product.status(Product::STATUS[:start]).select(:user_id)
+    where(seller: true, id: user_ids).order(:id).pluck(:company, :id)
+  end
+
   def company_remove_kabu
     company.gsub(/(株式会社|有限会社|\(株\)|\(有\))/, "")
   end

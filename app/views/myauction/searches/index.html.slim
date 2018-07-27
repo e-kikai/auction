@@ -16,9 +16,9 @@ h4 検索条件お気に入り一覧
         th 検索キーワード
         th 出品会社
         th カテゴリ
-
-        - if current_user.seller?
-          th トップページに公開する
+        th 変更
+        / - if current_user.seller?
+        /   th トップページに公開する
         th 削除
 
         th
@@ -31,18 +31,21 @@ h4 検索条件お気に入り一覧
           td = se.keywords
           td = se.company_id ? se.company.company : "-"
           td = se.category_id ? se.category.name : "-"
+          td = link_to({ action: :edit, id: se.id }, method: :get, class: "btn btn-success") do
+            span.glyphicon.glyphicon-edit
+            span.btn-content 変更
 
-          - if current_user.seller?
-            td
-              - if se.publish?
-                = link_to({ action: :update, id: se.id }, method: :patch, class: "btn btn-warning") do
-                  span.glyphicon.glyphicon-stop
-                  =< "公開をやめる"
-              - else
-                = link_to({ action: :update, id: se.id }, method: :patch, class: "btn btn-success") do
-                  span.glyphicon.glyphicon-flag
-                  =< "トップページに公開"
+          / - if current_user.seller?
+          /   td
+          /     - if se.publish?
+          /       = link_to({ action: :update, id: se.id }, method: :patch, class: "btn btn-warning") do
+          /         span.glyphicon.glyphicon-stop
+          /         =< "公開をやめる"
+          /     - else
+          /       = link_to({ action: :update, id: se.id }, method: :patch, class: "btn btn-success") do
+          /         span.glyphicon.glyphicon-flag
+          /         =< "トップページに公開"
           td
             = link_to({ action: :destroy, id: se.id }, method: :delete, data: { confirm: "#{se.name}\n\nこの検索条件を削除します。よろしいですか", "disable-with" => "削除中..."}, class: "btn btn-default btn-xs") do
               span.glyphicon.glyphicon-remove
-              =< "検索条件を削除"
+              span.btn-content = "検索条件を削除"

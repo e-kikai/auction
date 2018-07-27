@@ -3,24 +3,44 @@ class ProductsController < ApplicationController
   before_action :get_product,        only: [:show, :conf, :bids]
 
   def index
+    #### パラメータ取得 ###
+    if params[:search_id].present?
+      search = Search.find(params[:search_id])
+      @pms         = search.params
+      @title       = search.name
+      @description = search.description
+    else
+      pms = params.to_unsafe_h
+      @pms = {
+        keywords:    pms[:keywords].to_s.normalize_charwidth.strip,
+        category_id: pms[:category_id],
+        company_id:  pms[:company_id],
+        q:           pms[:q],
+        search_id:   nil
+      }
+    end
+
+    @keywords = @pms[:keywords].to_s.normalize_charwidth.strip
+
     cond = params[:success].present? ? Product::STATUS[:success] : Product::STATUS[:start] # 終了した商品
 
-    @keywords = params[:keywords].to_s.normalize_charwidth.strip
-    @search   = Product.status(cond).with_keywords(@keywords).search(params[:q])
+    @search   = Product.status(cond).with_keywords(@keywords).search(@pms[:q])
 
     # カテゴリ
-    if params[:category_id].present?
-      @category = Category.find(params[:category_id])
+    if @pms[:category_id].present?
+      @category = Category.find(@pms[:category_id])
       @search   = @search.result.search(category_id_in: @category.subtree_ids)
     end
 
     # 出品会社
-    if params[:company_id].present?
-      @company = User.companies.find(params[:company_id])
-      @search  = @search.result.search(user_id_eq: params[:company_id])
+    if @pms[:company_id].present?
+      @company = User.companies.find(@pms[:company_id])
+      @search  = @search.result.search(user_id_eq: @pms[:company_id])
     end
 
     @products  = @search.result.includes(:product_images, :category, :user)
+
+    ### ページャ ###
     @pproducts = @products.page(params[:page])
 
     # フィルタリング

@@ -129,7 +129,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
       end
       redirect_to "/myauction/products", notice: "#{@product.name}を出品キャンセルしました"
     else
-      redirect_to "/myauction/products", alert: "#{@product.name}を出品キャンセルできませんでした"
+      redirect_to "/myauction/products", alert: "#{@product.name}を出品キャンセルできませんでした(キャンセルから再出品した商品は、別のキャンセル理由の文言を記述してください)"
     end
   end
 

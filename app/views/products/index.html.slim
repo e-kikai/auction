@@ -4,8 +4,15 @@
 - title = "#{@company.company} #{title}" if @company.present?
 - title.strip!
 
-- set_meta_tags title: "#{title} の検索結果(#{@pproducts.current_page}/#{@pproducts.total_pages})"
-- set_meta_tags description: "#{title} の新品も中古も！工具・機械ならものオク。ものづくりの現場で活躍する工具・機械を格安価格で安心安全な業者からオークションで購入！"
+- if @title
+  - set_meta_tags title: "#{@title}(#{@pproducts.current_page}/#{@pproducts.total_pages})"
+- else
+  - set_meta_tags title: "#{title} 検索結果(#{@pproducts.current_page}/#{@pproducts.total_pages})"
+
+- if @description
+  - set_meta_tags description: @description
+- else
+  - set_meta_tags description: "#{title}の新品も中古も！工具・機械ならものオク。ものづくりの現場で活躍する工具・機械を格安価格で安心安全な業者からオークションで購入！"
 
 - if @company.present?
   - breadcrumb :company, @company
@@ -19,23 +26,24 @@
     .row.header-image = image_tag @company.header_image.url, alt: @company.company
 
 .row
+  / = url_for @pms
   / = @products.to_sql
   .col-md-2
     / = link_to "/myauction/searches/new?keywords=#{@keywords}"
     = form_for Search.new, url: "/myauction/searches/new", method: :get do |f|
       = f.hidden_field :keywords,    value: @keywords
-      = f.hidden_field :category_id, value: params[:category_id]
-      = f.hidden_field :company_id,  value: params[:company_id]
-      = f.hidden_field :q,           value: params[:q].to_json
+      = f.hidden_field :category_id, value: @pms[:category_id]
+      = f.hidden_field :company_id,  value: @pms[:company_id]
+      = f.hidden_field :q,           value: @pms[:q].to_json
 
       = f.button :button, class: "btn btn-default btn-search-save" do
         span.glyphicon.glyphicon-pushpin.search-pushpin
         span.btn-content お気に入り登録
 
-    = hidden_field_tag :search_id, params[:search_id]
+    = hidden_field_tag :search_id, @pms[:search_id]
     = hidden_field_tag :referer,   request.referer
 
-    - base_params = params.to_unsafe_h.merge(page: nil)
+    / - @pms = @pms.to_unsafe_h.merge(page: nil)
 
     .panel.panel-default
       = link_to "#collapse_filter", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
@@ -45,40 +53,40 @@
 
       .panel-body#collapse_filter.panel-collapse.collapse.in.sm-close
         label カテゴリ
-        . = link_to "すべてのカテゴリ", base_params.deep_merge(category_id: nil)
+        . = link_to "すべてのカテゴリ", @pms.deep_merge(category_id: nil)
         - @select_categories.each do |i, count|
-          . = link_to "#{i[1]} (#{count})", base_params.merge(category_id: i[0])
+          . = link_to "#{i[1]} (#{count})", @pms.merge(category_id: i[0])
 
         br
         label 発送元
-        . = link_to "すべての地域", base_params.deep_merge(q: {addr_1_eq: nil})
+        . = link_to "すべての地域", @pms.deep_merge(q: {addr_1_eq: nil})
         - @select_addr1.each do |i, count|
           - next if i.blank?
-          . = link_to "#{i} (#{count})", base_params.deep_merge(q: {addr_1_eq: i})
+          . = link_to "#{i} (#{count})", @pms.deep_merge(q: {addr_1_eq: i})
 
         br
-        = form_tag request.fullpath, method: :get, class: "form-inline" do
+        = form_tag url_for(@pms), method: :get, class: "form-inline" do
           label 現在価格
           .
-            = number_field_tag("q[max_price_gteq]", (params[:q][:max_price_gteq] rescue nil), class: "form-control filter-price", placeholder: "最低額") + "円"
+            = number_field_tag("q[max_price_gteq]", (@pms[:q][:max_price_gteq] rescue nil), class: "form-control filter-price", placeholder: "最低額") + "円"
             = " 〜 "
-            = number_field_tag("q[max_price_lteq]", (params[:q][:max_price_lteq] rescue nil), class: "form-control filter-price", placeholder: "最高額") + "円"
+            = number_field_tag("q[max_price_lteq]", (@pms[:q][:max_price_lteq] rescue nil), class: "form-control filter-price", placeholder: "最高額") + "円"
             = button_tag "絞り込む", class: "btn btn-default"
 
           br
           label 即決価格
           .
-            = number_field_tag("q[prompt_dicision_price_gteq]", (params[:q][:prompt_dicision_price_gteq] rescue nil), class: "form-control filter-price", placeholder: "最低額") + "円"
+            = number_field_tag("q[prompt_dicision_price_gteq]", (@pms[:q][:prompt_dicision_price_gteq] rescue nil), class: "form-control filter-price", placeholder: "最低額") + "円"
             = " 〜 "
-            = number_field_tag("q[prompt_dicision_price_lteq]", (params[:q][:prompt_dicision_price_lteq] rescue nil), class: "form-control filter-price", placeholder: "最高額") + "円"
+            = number_field_tag("q[prompt_dicision_price_lteq]", (@pms[:q][:prompt_dicision_price_lteq] rescue nil), class: "form-control filter-price", placeholder: "最高額") + "円"
             = button_tag "絞り込む", class: "btn btn-default"
         br
         label 商品の状態
         .
-          = link_to("すべて", base_params.deep_merge(q: {state_eq: nil})) + " | "
-          = link_to("中古", base_params.deep_merge(q: {state_eq: Product.states["中古"]})) + " | "
-          = link_to("未使用品", base_params.deep_merge(q: {state_eq: Product.states["未使用品"]})) + " | "
-          = link_to "新品", base_params.deep_merge(q: {state_eq: Product.states["新品"]})
+          = link_to("すべて",   @pms.deep_merge(q: {state_eq: nil})) + " | "
+          = link_to("中古",     @pms.deep_merge(q: {state_eq: Product.states["中古"]})) + " | "
+          = link_to("未使用品", @pms.deep_merge(q: {state_eq: Product.states["未使用品"]})) + " | "
+          = link_to "新品",     @pms.deep_merge(q: {state_eq: Product.states["新品"]})
 
     .panel.panel-default
       = link_to "#collapse_category", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
@@ -93,6 +101,10 @@
             = link_to "　#{ca2.name}", "/products?category_id=#{ca2.id}", class: "list-group-item"
 
   .col-md-10
+    - if @title.present?
+      h1.searches-title = @title
+    - if @description.present?
+      = markdown(@description)
     .search-title
       span.glyphicon.glyphicon-search
       span.btn-content = "#{title} 検索結果"

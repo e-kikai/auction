@@ -14,6 +14,7 @@
 #  updated_at        :datetime         not null
 #  soft_destroyed_at :datetime
 #  company_id        :integer
+#  description       :text             default("")
 #
 
 class Search < ApplicationRecord
@@ -36,16 +37,31 @@ class Search < ApplicationRecord
   end
 
   def uri
-    "/products?#{{ keywords: keywords, category_id: category_id, company_id: company_id, q: q_parse, search_id: id}.to_query}"
+    # "/products?#{{ keywords: keywords, category_id: category_id, company_id: company_id, q: q_parse, search_id: id}.to_query}"
+    "/searches/#{id}"
+  end
+
+  def params
+    {
+      keywords:    keywords,
+      category_id: category_id,
+      company_id:  company_id,
+      q:           q_parse,
+      search_id:   nil
+    }
   end
 
   # 検索
   def products
-    search = Product.status(Product::STATUS[:start]).with_keywords(keywords).search(q)
+    search = Product.status(Product::STATUS[:start]).with_keywords(keywords.to_s.normalize_charwidth.strip).search(q)
 
     if category_id.present?
       category = Category.find(category_id)
       search = search.result.search(category_id_in: category.subtree_ids)
+    end
+
+    if company_id.present?
+      search  = search.result.search(user_id_eq: company_id)
     end
 
     search.result

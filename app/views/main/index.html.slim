@@ -18,10 +18,12 @@
   - if user_signed_in?
     .topsearch-area
       label.top-search
-        span.glyphicon.glyphicon-search
+        span.glyphicon.glyphicon-pushpin.search-pushpin
         span.btn-content お気に入り検索
       - current_user.searches.each do |se|
-        =< link_to se.name, se.uri
+        = link_to se.uri do
+          span.glyphicon.glyphicon-search.search-pushpin
+          span.btn-content = se.name
 
   .row
     .col-md-2.col-sm-4.col-xs-12

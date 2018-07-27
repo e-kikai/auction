@@ -10,6 +10,11 @@ SitemapGenerator::Sitemap.create do
     add "/products/#{id}", priority: 0.9, changefreq: 'daily'
   end
 
+  ### トップ特集 ###
+  Search.where(publish: true).each do |id|
+    add "/searches/#{id}", priority: 0.8, changefreq: 'daily'
+  end
+
   ### カテゴリ ###
   Category.all.select(:id).each do |ca|
     if ca.products.exists?

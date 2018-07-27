@@ -19,6 +19,9 @@ Rails.application.routes.draw do
     end
   end
 
+  get "searches/:search_id" => "products#index"
+  # resources :searches,   only: [:show]
+
   resources :categories, only: [:index, :show]
   resources :companies,  only: [:show]
   resources :companies,  only: [:show]
@@ -39,7 +42,7 @@ Rails.application.routes.draw do
     resources :watches,    only: [:index, :create, :destroy]
     resources :follows,    only: [:index, :create, :destroy]
     resources :blacklists, only: [:index, :create, :destroy]
-    resources :searches,   only: [:index, :new, :create, :update, :destroy]
+    resources :searches,   only: [:index, :new, :create, :edit, :update, :destroy]
 
     resource  :user,       only: [:edit, :update]
 
