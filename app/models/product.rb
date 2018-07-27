@@ -52,6 +52,8 @@
 #  international         :boolean          default("海外発送不可"), not null
 #  search_keywords       :text             default(""), not null
 #  auto_resale_date      :integer          default(7), not null
+#  stock                 :integer
+#  dst_id                :integer
 #
 
 class Product < ApplicationRecord
@@ -469,7 +471,8 @@ class Product < ApplicationRecord
   private
 
   def default_max_price
-    self.max_price = start_price if max_price < start_price
+    # self.max_price = start_price if max_price < start_price
+    self.max_price = start_price if bids_count == 0
   end
 
   def youtube_id
