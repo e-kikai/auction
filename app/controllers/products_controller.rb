@@ -5,14 +5,14 @@ class ProductsController < ApplicationController
   def index
     pms = params.to_unsafe_h
     @pms = {
-      keywords:    pms[:keywords].to_s.normalize_charwidth.strip,
-      category_id: pms[:category_id],
-      company_id:  pms[:company_id],
-      success:     pms[:success],
+      keywords:    pms[:keywords].to_s.normalize_charwidth.strip.presence,
+      category_id: pms[:category_id].presence,
+      company_id:  pms[:company_id].presence,
+      success:     pms[:success].presence,
       q:           pms[:q].presence || {},
 
-      search_id:   pms[:search_id],
-    }
+      search_id:   pms[:search_id].presence,
+    }.compact
 
     #### 検索条件からパラメータ取得 ###
     if params[:search_id].present?
