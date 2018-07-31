@@ -7,5 +7,5 @@
       span.glyphicon.glyphicon-pushpin.search-pushpin
       span.btn-content 検索条件のお気に入り登録
 
-    = form_for @search, url: "/myauction/products/", html: { multipart: true, method: :post, class: 'form-horizontal' } do |f|
+    = form_for @search, url: "/myauction/searches/", html: { multipart: true, method: :post, class: 'form-horizontal' } do |f|
       = render "form", f: f
