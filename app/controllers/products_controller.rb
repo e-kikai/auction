@@ -3,26 +3,30 @@ class ProductsController < ApplicationController
   before_action :get_product,        only: [:show, :conf, :bids]
 
   def index
-    #### パラメータ取得 ###
+    pms = params.to_unsafe_h
+    @pms = {
+      keywords:    pms[:keywords].to_s.normalize_charwidth.strip,
+      category_id: pms[:category_id],
+      company_id:  pms[:company_id],
+      success:     pms[:success],
+      q:           pms[:q].presence || {},
+
+      search_id:   pms[:search_id],
+    }
+
+    #### 検索条件からパラメータ取得 ###
     if params[:search_id].present?
       search = Search.find(params[:search_id])
-      @pms         = search.params
+      @pms         = search.params.merge(@pms)
       @title       = search.name
       @description = search.description
-    else
-      pms = params.to_unsafe_h
-      @pms = {
-        keywords:    pms[:keywords].to_s.normalize_charwidth.strip,
-        category_id: pms[:category_id],
-        company_id:  pms[:company_id],
-        q:           pms[:q],
-        search_id:   nil
-      }
     end
 
+    ### 検索キーワード ###
     @keywords = @pms[:keywords].to_s.normalize_charwidth.strip
 
-    cond = params[:success].present? ? Product::STATUS[:success] : Product::STATUS[:start] # 終了した商品
+    ### 終了後の表示 ###
+    cond = params[:success].present? ? Product::STATUS[:success] : Product::STATUS[:start]
 
     @search   = Product.status(cond).with_keywords(@keywords).search(@pms[:q])
 
