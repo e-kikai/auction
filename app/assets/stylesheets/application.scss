@@ -73,9 +73,14 @@ header {
   }
 }
 
+.search-bottons {
+  margin: 8px 0;
+}
+
 .btn-search-save {
-  width: 100%;
+  width: 172px;
   margin-bottom: 4px;
+  margin-left: 8px;
 }
 
 .search-title {
@@ -326,6 +331,10 @@ table {
 
 .search-pushpin {
   color: #5937ff;
+}
+
+.alert-bell {
+  color: #ffd700;
 }
 
 .check-icon {

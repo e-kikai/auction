@@ -37,9 +37,14 @@ every :minute do
   # rake 'scheduling:all'
 end
 
+# 新着アラート
+every :day, at: '7:00 am' do
+  runner "Alert.scheduling"
+end
+
 # Twitter自動投稿
 if rails_env.to_sym == :production
-  every :day, at: ['6:00 am', '6:00 pm']do
+  every :day, at: ['6:00 am', '6:00 pm'] do
     rake 'twitter:new_product'
   end
 

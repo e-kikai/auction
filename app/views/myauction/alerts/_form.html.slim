@@ -1,0 +1,29 @@
+span.help-block 新着通知メール登録すると、毎日一回、条件にあう新着情報を検索しメールいたします
+
+table.table.table-hover.table-condensed.form-table
+
+  - if f.object.errors.full_messages.present?
+    .alert.alert-danger
+      ul
+        - f.object.errors.full_messages.each do |msg|
+          li = msg
+
+  tr
+    th = f.label :name, class: :required
+    td = f.text_field :name, autofocus: true, required: "required", class: 'form-control'
+
+  tr
+    th = f.label :keywords
+    td = f.text_field :keywords, class: "form-control"
+
+  tr
+    th = f.label "出品会社"
+    td = f.select :company_id, User.companies_selector, {include_blank: "すべての出品会社"}, class: "form-control"
+
+  tr
+    th = f.label :category_id
+    td = f.select :category_id, Category.options, {include_blank: "すべてのカテゴリ"}, class: "form-control"
+
+= f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+    span.glyphicon.glyphicon-save
+    span.btn-content 保存

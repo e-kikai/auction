@@ -10,29 +10,59 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  soft_destroyed_at :datetime
+#  company_id        :integer
+#  name              :string           default("")
 #
 
 class Alert < ApplicationRecord
   soft_deletable
   default_scope { without_soft_destroyed }
 
-  TOPPAGE_COUNT = 12 # 新着表示数
+  NEWS_DAYS  = 1.day # 新着期間
+  NEWS_LIMIT = 10    # 新着表示件数
 
   belongs_to :user
-  belongs_to :category,      required: false
-  belongs_to :company,       class_name: "User", required: false
+  belongs_to :category, required: false
+  belongs_to :company,  class_name: "User", required: false
 
-  # 検索
+  ### 検索 ###
   def products
-    search = Product.status(Product::STATUS[:start]).with_keywords(keywords)
+    products = Product.includes(:user, :category).status(Product::STATUS[:start]).with_keywords(keywords.to_s.normalize_charwidth.strip)
 
     if category_id.present?
       category = Category.find(category_id)
-      search = search.result.search(category_id_in: category.subtree_ids)
-      
+      products = products.where(category_id: category.subtree_ids)
     end
 
-    search.result
+    products = products.where(user_id: company_id) if company_id.present?
+
+    products
+  end
+
+  ### 新着 ###
+  def news
+    products.where(dulation_start: (Time.now - NEWS_DAYS)..Time.now).limit(NEWS_LIMIT)
+  end
+
+  ### 新着アラート ###
+  def self.scheduling
+    Alert.includes(:user).all.each do |al|
+      if al.news.present?
+        BidMailer.news(al).deliver
+      end
+    end
+  end
+
+  def params
+    {
+      keywords:    keywords,
+      category_id: category_id,
+      company_id:  company_id
+    }
+  end
+
+  def uri
+    "/products?#{params.to_query}"
   end
 
 end

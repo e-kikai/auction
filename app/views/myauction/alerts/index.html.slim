@@ -1,0 +1,34 @@
+- set_meta_tags title: "新着通知メール設定一覧"
+- breadcrumb    :myauction_something, "新着メール通知設定一覧"
+
+h4 新着メール通知設定一覧
+
+= paginate @palerts
+
+- if @palerts.length == 0
+  p 新着メール通知設定はありません
+- else
+  .table-responsive
+    table.table.table-hover.table-condensed.table-striped.product-table
+      tr
+        th 通知タイトル
+        th 検索キーワード
+        th 出品会社
+        th カテゴリ
+        th 変更
+        th 削除
+
+        th
+      - @palerts.each do |al|
+        tr
+          td = al.name
+          td = al.keywords
+          td = al.company_id ? al.company.company : "-"
+          td = al.category_id ? al.category.name : "-"
+          td = link_to({ action: :edit, id: al.id }, method: :get, class: "btn btn-success") do
+            span.glyphicon.glyphicon-edit
+            span.btn-content 変更
+          td
+            = link_to({ action: :destroy, id: al.id }, method: :delete, data: { confirm: "#{al.name}\n\nこの検索条件を削除します。よろしいですか", "disable-with" => "削除中..."}, class: "btn btn-default btn-xs") do
+              span.glyphicon.glyphicon-remove
+              span.btn-content = "検索条件を削除"

@@ -76,6 +76,11 @@ ja:
         company_id: 出品会社
         description: トップ公開用説明
         publish: トップページに公開する
+      alert:
+        name: 通知タイトル
+        category_id: カテゴリ
+        keywords: 検索キーワード
+        company_id: 出品会社
       help:
         title: ページタイトル
         content: 内容(Markdown)

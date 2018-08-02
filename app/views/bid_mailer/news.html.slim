@@ -1,0 +1,53 @@
+doctype html
+html
+  head
+    - set_meta_tags nofollow: true, noindex: true unless Rails.env.production?
+    = display_meta_tags site: "ものづくりオークション", reverse: true, separator: "｜", charset: "utf-8", viewport: "width=device-width, initial-scale=1"
+
+  body style="font-size:14px;line-height: 1.428571429;"
+    = link_to image_tag(asset_url("logo_02.png"), alt: "ものづくりオークション", style: "display: block;height: 50px;margin:16px 0;"), root_url(only_path: false), target: "_blank"
+    p このメールは、#{@alert.user.company} #{@alert.user.name} さんが設定した新着メール通知です。
+
+    . style="background: #edc9ff;padding: 6px 12px;margin-bottom: 8px;"
+      = "#{@alert.name} 新着情報 : #{@alert.news.count} 件 - "
+      = link_to "この通知の設定を変更する", "#{root_url(only_path: false)}myauction/alerts/#{@alert.id}/edit", style: "text-decoration:none;color:#337ab7;", target: "_blank"
+
+    - @alert.news.each do |pr|
+      . style="width:100%;margin:4px 0;"
+        table sytle="border:0;"
+          tr
+            td style="border:0;width:160px; "
+              = link_to image_tag(pr.thumb_url, alt: pr.name), "#{root_url(only_path: false)}products/#{pr.id}?r=src_lst", style: "max-width: 160px;max-height:120px;", target: "_blank"
+            td style="padding:0 16px; vertical-align: top;"
+              . = link_to pr.name, "#{root_url(only_path: false)}products/#{pr.id}?r=mail_nws", style: "display:inline-block;margin-bottom: 16px;text-decoration:none;color:#337ab7;", target: "_blank"
+              . style="margin-bottom: 16px;"
+                = "現在価格 #{number_to_currency(pr.max_price_with_tax)}"
+                - if pr.prompt_dicision_price.present?
+                  = " / 即決価格 #{number_to_currency(pr.prompt_dicision_price_with_tax)}"
+                = " / 残り時間 #{pr.remaining_time}"
+              .
+                span style="display:inline-block;width:64px;color:#777;" = "カテゴリ"
+                - pr.category.path.each.with_index do |ca, i|
+                  = " > " if i != 0
+                  = link_to ca.name, "#{root_url(only_path: false)}products?category_id=#{ca.id}", style: "text-decoration:none;color:#337ab7;", target: "_blank"
+              .
+                span style="display:inline-block;width:64px;color:#777;" = "出品会社"
+                = link_to pr.user.company, "#{root_url(only_path: false)}products?company_id=#{pr.user_id}", style: "text-decoration:none;color:#337ab7;", target: "_blank"
+
+
+    = link_to "＞ この条件で商品検索する", @alert.uri, style: "display:block;width:60%;margin:32px auto;padding:16px 8px;font-size:24px;color:#FFF;background:#8426b3;text-decoration:none;text-align:center;", target: "_blank"
+
+    /// footer ///
+    p style="margin:32px;text-align:center;"
+      = link_to "ものづくりオークション", root_url(only_path: false), style: "text-decoration:none;color:#337ab7;", target: "_blank"
+      = " - "
+      = link_to "この通知の設定を変更する", "#{root_url(only_path: false)}myauction/alerts/#{@alert.id}/edit", style: "text-decoration:none;color:#337ab7;", target: "_blank"
+      = " - "
+      = link_to "新着メール通知設定の一覧", "#{root_url(only_path: false)}myauction/alerts/", style: "text-decoration:none;color:#337ab7;", target: "_blank"
+
+    p style=""
+      | ※	この自動通知メールは、ものづくりオークションより自動的に送信されています。
+      br
+      | ※ このメールに返信しないようお願いいたします。
+
+    . style="text-align:center;margin-top:64px;" Copyright (C) #{Time.now.year} 任意団体ものづくりオークション委員会, All Rights reserved.

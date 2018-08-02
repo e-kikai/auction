@@ -10,6 +10,8 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  soft_destroyed_at :datetime
+#  company_id        :integer
+#  name              :string           default("")
 #
 
 require 'rails_helper'

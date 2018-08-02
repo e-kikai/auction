@@ -43,6 +43,7 @@ Rails.application.routes.draw do
     resources :follows,    only: [:index, :create, :destroy]
     resources :blacklists, only: [:index, :create, :destroy]
     resources :searches,   only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :alerts,     only: [:index, :new, :create, :edit, :update, :destroy]
 
     resource  :user,       only: [:edit, :update]
 
