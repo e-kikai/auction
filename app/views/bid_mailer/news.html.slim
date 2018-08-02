@@ -5,7 +5,7 @@ html
     = display_meta_tags site: "ものづくりオークション", reverse: true, separator: "｜", charset: "utf-8", viewport: "width=device-width, initial-scale=1"
 
   body style="font-size:14px;line-height: 1.428571429;"
-    = link_to image_tag(asset_url("logo_02.png"), alt: "ものづくりオークション", style: "display: block;height: 50px;margin:16px 0;"), root_url(only_path: false), target: "_blank"
+    = link_to image_tag("#{root_url(only_path: false)}#{asset_url("logo_02.png")}", alt: "ものづくりオークション", style: "display: block;height: 50px;margin:16px 0;"), root_url(only_path: false), target: "_blank"
     p このメールは、#{@alert.user.company} #{@alert.user.name} さんが設定した新着メール通知です。
 
     . style="background: #edc9ff;padding: 6px 12px;margin-bottom: 8px;"
@@ -21,21 +21,25 @@ html
             td style="padding:0 16px; vertical-align: top;"
               . = link_to pr.name, "#{root_url(only_path: false)}products/#{pr.id}?r=mail_nws", style: "display:inline-block;margin-bottom: 16px;text-decoration:none;color:#337ab7;", target: "_blank"
               . style="margin-bottom: 16px;"
-                = "現在価格 #{number_to_currency(pr.max_price_with_tax)}"
+                = "現在価格 "
+                span style="color: #E50;font-size: 130%;" = number_to_currency(pr.max_price_with_tax)
                 - if pr.prompt_dicision_price.present?
-                  = " / 即決価格 #{number_to_currency(pr.prompt_dicision_price_with_tax)}"
+                  = " / 即決価格 "
+                  span style="font-size: 130%;" = number_to_currency(pr.prompt_dicision_price_with_tax)
+
                 = " / 残り時間 #{pr.remaining_time}"
-              .
-                span style="display:inline-block;width:64px;color:#777;" = "カテゴリ"
-                - pr.category.path.each.with_index do |ca, i|
-                  = " > " if i != 0
-                  = link_to ca.name, "#{root_url(only_path: false)}products?category_id=#{ca.id}", style: "text-decoration:none;color:#337ab7;", target: "_blank"
+              / .
+              /   span style="display:inline-block;width:64px;color:#777;" = "カテゴリ"
+              /   - pr.category.path.each.with_index do |ca, i|
+              /     = " > " if i != 0
+              /     = link_to ca.name, "#{root_url(only_path: false)}products?category_id=#{ca.id}", style: "text-decoration:none;color:#337ab7;", target: "_blank"
               .
                 span style="display:inline-block;width:64px;color:#777;" = "出品会社"
-                = link_to pr.user.company, "#{root_url(only_path: false)}products?company_id=#{pr.user_id}", style: "text-decoration:none;color:#337ab7;", target: "_blank"
+                / = link_to pr.user.company, "#{root_url(only_path: false)}products?company_id=#{pr.user_id}", style: "text-decoration:none;color:#337ab7;", target: "_blank"
+                = pr.user.company
 
 
-    = link_to "＞ この条件で商品検索する", @alert.uri, style: "display:block;width:60%;margin:32px auto;padding:16px 8px;font-size:24px;color:#FFF;background:#8426b3;text-decoration:none;text-align:center;", target: "_blank"
+    = link_to "＞ この条件で商品検索する", "#{root_url(only_path: false)}#{@alert.uri}", style: "display:block;width:60%;margin:32px auto;padding:16px 8px;font-size:24px;color:#FFF;background:#8426b3;text-decoration:none;text-align:center;", target: "_blank"
 
     /// footer ///
     p style="margin:32px;text-align:center;"
