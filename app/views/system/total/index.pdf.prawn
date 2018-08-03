@@ -16,17 +16,17 @@ prawn_document do |pdf|
     next if fee_products.blank?
 
     ### 請求書 ###
-    pdf.start_new_page layout: :portrait, margin: [10.mm, 24.mm]
+    pdf.start_new_page layout: :portrait, margin: [10.mm, 20.mm]
     pdf.font "vendor/assets/fonts/ipaexm.ttf"
 
     pdf.default_leading 2
 
     # # pdf.stroke_axis
     #
-    pdf.text "〒 #{co.zip}", size: 13
-    pdf.text "#{co.addr_1} #{co.addr_2} #{co.addr_3}", size: 13
+    pdf.text "〒 #{co.zip}", size: 12
+    pdf.text "#{co.addr_1} #{co.addr_2} #{co.addr_3}".normalize_charwidth, size: 12
     pdf.move_down 5.mm
-    pdf.text "#{co.company} 御中", size: 13
+    pdf.text "#{co.company} 御中", size: 12
     pdf.stroke_line [0, 255.mm], [90.mm, 255.mm]
 
     pdf.move_down 15.mm
