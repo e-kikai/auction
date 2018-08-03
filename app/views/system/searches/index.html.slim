@@ -1,5 +1,5 @@
-- set_meta_tags title: "保存した検索条件利用履歴"
-- breadcrumb :system_something, "保存した検索条件利用履歴"
+- set_meta_tags title: "お気に入り利用履歴"
+- breadcrumb :system_something, "お気に入り利用履歴"
 
 / = form_tag("/system/search_logs", method: "get", class: "form-inline filtering-form") do
 /   = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
@@ -19,7 +19,8 @@
       th.sepa 公開
       th.num.sepa 利用数
       th.num ユーザID
-      th.sepa アカウント
+      th アカウント
+      th.sepa 会社・ユーザ名
       th 保存日時
       th 削除日時
 
@@ -33,6 +34,7 @@
         td.sepa = '○' if se.publish
         td.num.sepa = number_with_delimiter(@search_log_counts[se.id])
         td.num = se.user_id
-        td.sepa = se.user.try(:account)
+        td = se.user.try(:account)
+        td.sepa = "#{se.user.try(:company)} #{se.user.try(:name)}".strip
         td = se.created_at
         td = se.soft_destroyed_at
