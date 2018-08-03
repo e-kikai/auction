@@ -115,6 +115,7 @@ Rails.application.routes.draw do
     resources :search_logs, only: [:index]
     resources :watches,     only: [:index]
     resources :searches,    only: [:index]
+    resources :alerts,      only: [:index]
     resources :follows,     only: [:index]
 
     resources :total,       only: [:index] do
