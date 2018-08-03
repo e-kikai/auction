@@ -29,19 +29,19 @@ prawn_document do |pdf|
     pdf.text "#{co.company} 御中", size: 12
     pdf.stroke_line [0, 255.mm], [90.mm, 255.mm]
 
-    pdf.move_down 15.mm
+    pdf.move_down 25.mm
 
     # ヘッダ
     pdf.font "vendor/assets/fonts/VL-PGothic-Regular.ttf"
     pdf.text "ものづくりオークション #{@date.strftime("%Y年%-m月")} 販売分", size: 14
 
     # システム使用料
-    pdf.text_box "システム使用料 請求金額", size: 14, at: [12.mm, (228.5).mm]
-    pdf.text_box "#{number_to_currency(fee_with_tax)} (税込)", size: 20, at: [80.mm, 230.mm]
-    pdf.stroke_line [74.mm, 222.mm], [154.mm, 222.mm]
+    pdf.text_box "システム使用料 請求金額", size: 14, at: [12.mm, (218.5).mm]
+    pdf.text_box "#{number_to_currency(fee_with_tax)} (税込)", size: 20, at: [80.mm, 220.mm]
+    pdf.stroke_line [74.mm, 212.mm], [154.mm, 212.mm]
 
     pdf.font "vendor/assets/fonts/ipaexm.ttf"
-    pdf.bounding_box([0.mm, 200.mm], width: 170.mm, height: 42.mm) do
+    pdf.bounding_box([0.mm, 190.mm], width: 170.mm, height: 42.mm) do
       # pdf.stroke_bounds
 
       pdf.default_leading 8
