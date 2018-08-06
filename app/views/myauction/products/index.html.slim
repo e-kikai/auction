@@ -37,9 +37,10 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
         - if params[:cond].to_i == -1
           th = sort_link(@search, :dulation_start,  "開始日時")
         th = sort_link(@search, :dulation_end, "終了日時")
-        th.price = sort_link(@search, :start_price)
-        th.price = sort_link(@search, :lower_price)
-        th.price = sort_link(@search, :prompt_dicision_price)
+        th.price
+          . = sort_link(@search, :start_price)
+          . = sort_link(@search, :lower_price, "最低落札")
+          . = sort_link(@search, :prompt_dicision_price)
         - if params[:cond].to_i == -1
           th 変更
           th 削除
@@ -56,6 +57,7 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
           th.num = sort_link(@search, :watches_count)
           / th.price 手数料<br />(#{Product::FEE_RATE}%)
           th 評価
+          th 再出品
         - elsif params[:cond].to_i == 3
           th.num = sort_link(@search, :bids_count)
           th.num = sort_link(@search, :detail_logs_count)
@@ -80,9 +82,10 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
           - if params[:cond].to_i == -1
             td = I18n.l(pr.dulation_start, format: :full_date)
           td = I18n.l(pr.dulation_end, format: :full_date)
-          td.price = number_to_currency(pr.start_price)
-          td.price = pr.lower_price.try { |price| number_to_currency(price) } || "-"
-          td.price = pr.prompt_dicision_price.try { |price| number_to_currency(price) } || "-"
+          td.price
+            . = number_to_currency(pr.start_price)
+            . = pr.lower_price.try { |price| number_to_currency(price) } || "-"
+            . = pr.prompt_dicision_price.try { |price| number_to_currency(price) } || "-"
 
           - if params[:cond].to_i == -1
             td = link_to({ action: :edit, id: pr.id }, class: "btn btn-warning") do
@@ -110,20 +113,26 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
               td.num = pr.watches_count
               / td.price = number_to_currency(pr.fee)
               td.star = pr.star_view
+              td = link_to("/myauction/products/new?id=#{pr.id}", class: "btn btn-success btn-sm") do
+                span.glyphicon.glyphicon-refresh
+                =< "別商品として再出品"
             - else
               td 自社落札
               td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
               td.num = pr.detail_logs_count
               td.num = pr.watches_count
+              / td
               td
-              td
+              td = link_to("/myauction/products/new?id=#{pr.id}", class: "btn btn-success btn-sm") do
+                span.glyphicon.glyphicon-refresh
+                =< "別商品として再出品"
           - elsif params[:cond].to_i == 3
             td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
             td.num = pr.detail_logs_count
             td.num = pr.watches_count
-            th = link_to("/myauction/products/new?id=#{pr.id}", class: "btn btn-success") do
+            td = link_to("/myauction/products/new?id=#{pr.id}", class: "btn btn-success btn-sm") do
               span.glyphicon.glyphicon-refresh
-              =< "別の商品として再出品"
+              =< "別商品として再出品"
 
           - else
             td.price = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
