@@ -16,7 +16,7 @@ h4 新着メール通知設定一覧
         th 出品会社
         th カテゴリ
         th 変更
-        th 削除
+        th 解除
 
         th
       - @palerts.each do |al|
@@ -31,4 +31,4 @@ h4 新着メール通知設定一覧
           td
             = link_to({ action: :destroy, id: al.id }, method: :delete, data: { confirm: "#{al.name}\n\nこの検索条件を削除します。よろしいですか", "disable-with" => "削除中..."}, class: "btn btn-default btn-xs") do
               span.glyphicon.glyphicon-remove
-              span.btn-content = "検索条件を削除"
+              span.btn-content = "通知を解除"
