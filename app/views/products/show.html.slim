@@ -104,8 +104,7 @@ article itemscope="" itemtype="http://schema.org/Product"
               span.glyphicon.glyphicon-pencil
               span.btn-content 入札する
 
-        - if @product.prompt_dicision_price
-          .panel-body.detail-price-area
+          - if @product.prompt_dicision_price
             h4 即決価格
             .product-price
               span.h2> #{number_to_currency @product.prompt_dicision_price}
@@ -116,6 +115,11 @@ article itemscope="" itemtype="http://schema.org/Product"
               = button_tag class: "btn btn-danger btn-lg center-block", data: { toggle: :modal, target: "#prompt-modal"} do
                 span.glyphicon.glyphicon-jpy
                 span.btn-content 今すぐ落札する
+
+          .trade-button-area
+            = link_to "/myauction/alerts/new?alert[category_id]=#{@product.category_id}&alert[name]=◎#{@product.category.name} 新着通知", method: :get, class: "btn btn-default" do
+              span.glyphicon.glyphicon-bell.alert-bell
+              span.btn-content おなじカテゴリの新着メール通知
 
         /// 出品会社 ///
         .panel-body
@@ -152,9 +156,12 @@ article itemscope="" itemtype="http://schema.org/Product"
               span.btn-content = "免許情報 : #{@product.user.license}"
 
           .trade-button-area
+            = link_to "/myauction/alerts/new?alert[company_id]=#{@product.user_id}&alert[name]=◎#{@product.user.company} 新着通知", method: :get, class: "btn btn-default" do
+              span.glyphicon.glyphicon-bell.alert-bell
+              span.btn-content この出品会社の新着メール通知
             = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
               span.glyphicon.glyphicon-heart.follow-heart
-              span.btn-content フォローする
+              span.btn-content 出品会社をフォロー
 
       //// SNSボタン ///
       .sns-area

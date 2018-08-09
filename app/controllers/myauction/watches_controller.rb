@@ -10,7 +10,7 @@ class Myauction::WatchesController <  Myauction::ApplicationController
       @products.where("dulation_end > ?", Time.now).order(:dulation_end)
     end
 
-    @pproducts = @products.page(params[:page]).per(10).preload(:user, :product_images, max_bid: :user)
+    @pproducts = @products.page(params[:page]).per(10).preload(:user, :category, :product_images, max_bid: :user)
 
     @popular_products = Product.populars(@products).limit(Product::NEW_MAX_COUNT)
   end

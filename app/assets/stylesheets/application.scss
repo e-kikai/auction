@@ -769,6 +769,10 @@ hr.detail-price-calc {
 }
 
 /// マイ・オークション ///
+.follow-button-area {
+  margin-top: 32px;
+}
+
 .nav-pills.nav-stacked {
   hr {
     margin: 4px 0;
@@ -778,7 +782,6 @@ hr.detail-price-calc {
 /// 取引 ///
 .trade-product {
   margin-top: 0;
-  margin-bottom: 8px;
 }
 
 .trade-left {
@@ -788,8 +791,14 @@ hr.detail-price-calc {
 }
 
 .trade-button-area {
-  margin: 8px 0 0 0;
+  margin: 16px 0 0 0;
   text-align: right;
+
+  .btn {
+    margin: 4px 0 0 4px;
+  }
+
+
 }
 
 // .trade-user {

@@ -19,6 +19,7 @@ h4 検索条件お気に入り一覧
         th 変更
         / - if current_user.seller?
         /   th トップページに公開する
+        th メール通知設定
         th 削除
 
         th
@@ -45,6 +46,10 @@ h4 検索条件お気に入り一覧
           /       = link_to({ action: :update, id: se.id }, method: :patch, class: "btn btn-success") do
           /         span.glyphicon.glyphicon-flag
           /         =< "トップページに公開"
+          td
+            = link_to "/myauction/alerts/new?alert[category_id]=#{se.category_id}&alert[company_id]=#{se.company_id}&alert[keywords]=#{se.keywords}&alert[name]=＋#{se.name} 新着通知", method: :get, class: "btn btn-default" do
+              span.glyphicon.glyphicon-bell.alert-bell
+              span.btn-content この条件の新着を通知
           td
             = link_to({ action: :destroy, id: se.id }, method: :delete, data: { confirm: "#{se.name}\n\nこの検索条件を削除します。よろしいですか", "disable-with" => "削除中..."}, class: "btn btn-default btn-xs") do
               span.glyphicon.glyphicon-remove

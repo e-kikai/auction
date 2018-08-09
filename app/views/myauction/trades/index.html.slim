@@ -72,15 +72,20 @@
           dd #{@product.user.addr_1} #{@product.user.addr_2} #{@product.user.addr_3}
           dt 振込先情報
           dd = simple_format(@product.user.bank)
+        br style="clear:both;"
 
-          = link_to "/products?company_id=#{@product.user_id}", target: "_blank" do
-            span.glyphicon.glyphicon-list
-            span.btn-content = "#{@product.user.company}のそのほかの出品商品を見る"
+        = link_to "/products?company_id=#{@product.user_id}", target: "_blank" do
+          span.glyphicon.glyphicon-list
+          span.btn-content = "#{@product.user.company}のそのほかの出品商品を見る"
 
         .trade-button-area
+          = link_to "/myauction/alerts/new?alert[company_id]=#{@product.user_id}&alert[name]=◆#{@product.user.company} 新着通知", method: :get, class: "btn btn-default" do
+            span.glyphicon.glyphicon-bell.alert-bell
+            span.btn-content この出品会社の新着メール通知
+
           = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
             span.glyphicon.glyphicon-heart.follow-heart
-            span.btn-content フォローする
+            span.btn-content 出品会社をフォロー
 
     .panel.panel-default
       = link_to "#collapse_user", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
@@ -107,17 +112,18 @@
 
         /// 出品会社のみ表示 ///
         - if @product.user_id == current_user.id
-          hr
+          br style="clear:both;"
 
           - if current_user.blacklists.exists?(to_user_id: @product.max_bid.user_id)
             = link_to "※ このユーザはブラックリストに登録されています", "/myauction/blacklists"
           - else
-            = form_tag("/myauction/blacklists", method: :post, class: "form-inline filtering-form") do
-              = hidden_field_tag :account, @product.max_bid.user.account
+            .trade-button-area
+              = form_tag("/myauction/blacklists", method: :post, class: "form-inline filtering-form") do
+                = hidden_field_tag :account, @product.max_bid.user.account
 
-              = button_tag class: "btn btn-danger" do
-                span.glyphicon.glyphicon-thumbs-down
-                span.btn-content このユーザをブラックリストに追加
+                = button_tag class: "btn btn-danger" do
+                  span.glyphicon.glyphicon-thumbs-down
+                  span.btn-content このユーザをブラックリストに追加
 
   .col-md-7
     .alert.alert-danger
