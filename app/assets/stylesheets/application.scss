@@ -16,24 +16,19 @@
  * require_tree .
  *= require_self
  */
-
 // $icon-font-path: "bootstrap-sass/assets/fonts/bootstrap/";
 // @import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
-
 $main-color: #edc9ff;
 
 .breadcrumb > li + li:before {
-  content: "> "
+  content: "> ";
 }
 
 a:hover img {
   opacity: 0.6;
 }
-
 /// header ///
-header {
-
-}
+header {}
 
 .navbar {
   border-radius: 0;
@@ -52,7 +47,6 @@ header {
   display: inline-block;
   margin-left: 8px;
 }
-
 /// キーワード検索 ///
 .search-area .input-group {
   width: 100%;
@@ -101,20 +95,18 @@ header {
   margin-bottom: 8px;
 }
 
-.banner-area{
+.banner-area {
   img {
     margin-top: 8px;
     max-width: 100%;
   }
 }
-
 /// footer ///
 footer {
   margin-top: 16px;
   margin-bottom: 8px;
   text-align: center;
 }
-
 /// ボタン ///
 .btn-content {
   margin-left: 4px;
@@ -161,7 +153,6 @@ footer {
     margin: auto;
   }
 }
-
 /// 共通レイアウト ///
 .main-container {
   margin: 0 8px;
@@ -190,11 +181,11 @@ label.required:after {
 }
 
 .product-table {
-   tr.img {
-     width: 160px;
-   }
+  tr.img {
+    width: 160px;
+  }
 
-   td.img {
+  td.img {
     width: 160px;
     height: 120px;
 
@@ -219,9 +210,10 @@ label.required:after {
   }
 }
 
-.form-group, table.form-table {
-  select.short,
-  input.short {
+.form-group,
+table.form-table {
+  input.short,
+  select.short {
     width: 200px;
   }
 
@@ -272,11 +264,12 @@ table {
 
   td.sns {
     width: 86px;
+
     a {
       color: #FFF;
       background: #A00;
       border-radius: 4px;
-      padding: 2px 2px;
+      padding: 2px;
       margin-bottom: 1px;
       width: 86px;
       display: block;
@@ -306,13 +299,13 @@ table {
     width: 90px;
   }
 
-  th.sepa,
-  td.sepa {
+  td.sepa,
+  th.sepa {
     border-right: 1px solid #ddd;
   }
 
-  th.sep2,
-  td.sep2 {
+  td.sep2,
+  th.sep2 {
     border-right: 3px double #ddd;
   }
 }
@@ -345,15 +338,16 @@ table {
   color: #333;
   font-size: 11px;
   font-weight: normal;
-
-  text-shadow:
-    #ffd700 1px 1px 0, #ffd700 -1px -1px 0,/*右下、左上*/
-    #ffd700 -1px 1px 0, #ffd700 1px -1px 0,/*右上、左下*/
-    #ffd700 0px 1px 0, #ffd700  0-1px 0,/*右、左*/
-    #ffd700 -1px 0 0, #ffd700 1px 0 0;/*上、下*/
-
+  text-shadow:#ffd700 1px 1px 0, #ffd700 -1px -1px 0,
+  /*右下、左上*/
+  #ffd700 -1px 1px 0, #ffd700 1px -1px 0,
+  /*右上、左下*/
+  #ffd700 0px 1px 0, #ffd700 0-1px 0,
+  /*右、左*/
+  #ffd700 -1px 0 0, #ffd700 1px 0 0;
+  /*上、下*/
   &:before {
-    content: "NEW!"
+    content: "NEW!";
   }
 }
 
@@ -365,7 +359,6 @@ table {
   display: inline-block;
   margin: 4px 16px;
 }
-
 /// トップページ ///
 label.top-search {
   background: $main-color;
@@ -381,7 +374,7 @@ label.top-search {
   .search-panel {
     width: 32%;
     height: auto;
-    margin:0 1% 1% 0;
+    margin: 0 1% 1% 0;
     white-space: normal;
     display: inline-block;
     vertical-align: top;
@@ -389,7 +382,6 @@ label.top-search {
     padding: 0;
     // background: #EEE;
     // border: 0;
-
     a {
       display: block;
       padding: 0;
@@ -404,10 +396,10 @@ label.top-search {
       position: relative;
 
       .pos {
-        display:block;
-        width:100%;
-        height:0;
-        padding-bottom:75%;
+        display: block;
+        width: 100%;
+        height: 0;
+        padding-bottom: 75%;
       }
 
       img {
@@ -440,7 +432,6 @@ label.top-search {
     white-space: nowrap;
     display: inline-block;
   }
-
   @media (max-width: 767px) {
     height: 180px;
     padding: 4px;
@@ -450,7 +441,7 @@ label.top-search {
 .thumbnail.product-pannel {
   width: 140px;
   height: 172px;
-  margin:0 4px;
+  margin: 0 4px;
   white-space: normal;
   display: inline-block;
   vertical-align: top;
@@ -494,7 +485,6 @@ label.top-search {
     font-size: 70%;
   }
 }
-
 /// search ///
 .header-image {
   margin-bottom: 4px;
@@ -509,7 +499,6 @@ label.top-search {
 .form-inline .filter-price {
   width: 90%;
 }
-
 /// detail ///
 #product-carousel {
   .item img {
@@ -519,15 +508,14 @@ label.top-search {
 
 .carousel-select a img {
   margin: 6px;
-
   @media (max-width: 767px) {
     width: 31%;
     margin: 1%;
   }
 }
 
-.trade-dl,
-.product-dl {
+.product-dl,
+.trade-dl {
   @media (max-width: 767px) {
     margin-bottom: 0;
 
@@ -539,12 +527,10 @@ label.top-search {
       }
     }
   }
-
   @media (min-width: 767px) {
     &.product-dl-border {
       border-left: 1px dotted #AAA;
     }
-
     width: 50%;
     padding: 4px;
     float: left;
@@ -603,6 +589,7 @@ label.top-search {
   margin-bottom: 4px;
   border-radius: 4px;
   padding: 8px;
+
   &.mine {
     background: #CFC;
   }
@@ -642,7 +629,7 @@ hr.detail-price-calc {
 .product-description {
   background: $main-color;
   padding: 4px 8px;
-  margin: 16px 0 4px 0;
+  margin: 16px 0 4px;
 }
 
 .sns-area {
@@ -714,33 +701,41 @@ hr.detail-price-calc {
 .additional {
   color: #dc143c;
 }
-
 /// 会社情報 ///
 .company-table {
   th {
     width: 132px;
   }
 }
-
 /// markdown(ヘルプ・お知らせ) ///
 .markdown-area {
-  margin: 12px;
-  margin-bottom: 32px;
+  margin: 12px 12px 32px;
   font-weight: normal;
 
   p {
     margin-bottom: 16px;
   }
 
-  h1, .h1, h2, .h2, h3, .h3,
-  h4, .h4, h5, .h5, h6, .h6 {
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     margin-top: 24px;
     margin-bottom: 8px;
     font-weight: bold;
     color: #707;
   }
 
-  b, strong {
+  b,
+  strong {
     font-size: 17px;
     color: #700;
   }
@@ -750,7 +745,8 @@ hr.detail-price-calc {
   }
 
   table {
-    th, td {
+    td,
+    th {
       width: auto;
       border: 1px solid #ddd;
       background: #FFF;
@@ -773,7 +769,6 @@ hr.detail-price-calc {
     margin: 2px auto 2px 0;
   }
 }
-
 /// マイ・オークション ///
 .follow-button-area {
   margin-top: 32px;
@@ -784,7 +779,6 @@ hr.detail-price-calc {
     margin: 4px 0;
   }
 }
-
 /// 取引 ///
 .trade-product {
   margin-top: 0;
@@ -797,16 +791,13 @@ hr.detail-price-calc {
 }
 
 .trade-button-area {
-  margin: 16px 0 0 0;
+  margin: 16px 0 0;
   text-align: right;
 
   .btn {
     margin: 4px 0 0 4px;
   }
-
-
 }
-
 // .trade-user {
 //   dt {
 //     width: 90px;
@@ -823,7 +814,6 @@ hr.detail-price-calc {
 //     text-align: left;
 //   }
 // }
-
 // .trade-product {
 //   dt {
 //     width: 100px;
@@ -869,7 +859,7 @@ td.absolute {
 dl.star-dl {
   dt {
     text-align: left;
-    width:120px;
+    width: 120px;
   }
 
   dd {
@@ -885,7 +875,6 @@ dl.star-dl {
     margin-right: 4px;
   }
 }
-
 /// system ///
 .system-log {
   padding: 3px 6px;
@@ -894,9 +883,7 @@ dl.star-dl {
     background: #EEE;
   }
 
-  &:nth-child(odd) {
-
-  }
+  &:nth-child(odd) {}
 }
 
 .max_price {

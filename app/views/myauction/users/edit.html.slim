@@ -41,6 +41,10 @@ coffee:
         .form-group
           = f.label :email, class: :required
           = f.text_field :email, required: "required", class: 'form-control'
+          p.help-block
+            span メールアドレスを変更すると、変更後のメールアドレスに確認メールが送信されますので「メールアドレス確認」をクリックしてください。
+            br
+            span ※ 「メールアドレス確認」を行うまで、メールアドレスは変更されません
 
         .form-group
           = f.label :account

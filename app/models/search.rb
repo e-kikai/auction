@@ -29,7 +29,7 @@ class Search < ApplicationRecord
   belongs_to :product_image, required: false
 
   ### validates ###
-  validates :name,        presence: true
+  validates :name, presence: true
 
   # URI生成
   def q_parse
@@ -61,10 +61,9 @@ class Search < ApplicationRecord
     end
 
     if company_id.present?
-      search  = search.result.search(user_id_eq: company_id)
+      search = search.result.search(user_id_eq: company_id)
     end
 
     search.result
   end
-
 end
