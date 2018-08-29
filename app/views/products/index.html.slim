@@ -148,15 +148,15 @@
                     / = " > " if i != 1
                     = link_to(ca.name, "/products?category_id=#{ca.id}")
             td.price.absolute
-              - unless pr.prompt_dicision?
-                strong
-                  = number_to_currency(pr.max_price_with_tax)
-                  - if pr.lower_price.present?
-                    .lower-label 最低落札価格あり
+              strong
+                = number_to_currency(pr.max_price_with_tax)
+                - if pr.lower_price.present?
+                  .lower-label 最低落札価格あり
             td.price = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price_with_tax) : "-"
             td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
             td.price.absolute
-              = pr.remaining_time
+              - unless pr.prompt_dicision?
+                = pr.remaining_time
               .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
                 span.glyphicon.glyphicon-star.watch-star
                 span.btn-content ウォッチ
