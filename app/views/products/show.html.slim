@@ -39,6 +39,17 @@
       span.glyphicon.glyphicon-alert
       span.btn-content このオークションは、開始前です。
 
+- if @product.finished? && @popular_products.present?
+  .special-area
+    label
+      span.glyphicon.glyphicon-thumbs-up.check-icon
+      span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
+    .panel.panel-default
+      .panel-body.toppage-contents
+        .toppage-scroll
+          - @popular_products.each do |pr|
+            = render "/main/product_panel", product: pr, r: :dtl_sca
+
 article itemscope="" itemtype="http://schema.org/Product"
   h1.product-title itemprop="name" = @product.name
 
@@ -67,22 +78,21 @@ article itemscope="" itemtype="http://schema.org/Product"
               span.glyphicon.glyphicon-align-justify
               span.btn-content 入札履歴
           .col-md-4.col-sm-4.col-xs-6
-            span.glyphicon.glyphicon-time
-            span.btn-content 残り時間
-            .
-              span.h3> #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
-              | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
+            - unless @product.prompt_dicision?
+              span.glyphicon.glyphicon-time
+              span.btn-content 残り時間
+              .
+                span.h3> #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
+                | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
           .col-md-4.col-sm-4.col-xs-6.col-md-offset-0.col-sm-offset-0.col-xs-offset-3
             = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
               span.glyphicon.glyphicon-star.watch-star
               span.btn-content ウォッチ
 
         .panel-body.detail-price-area
-          h4 現在価格
-
           /// リッチスニペット ///
           meta itemprop="sku" content="#{@product.id}"
-          .product-price itemprop="offers" itemscope="" itemtype="http://schema.org/Offer"
+          . itemprop="offers" itemscope="" itemtype="http://schema.org/Offer"
             meta itemprop="price" content="#{@product.max_price}"
             meta itemprop="priceCurrency" content="JPY"
             - if @product.state == "新品"
@@ -90,6 +100,8 @@ article itemscope="" itemtype="http://schema.org/Product"
             - elsif @product.state == "中古"
               meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/UsedCondition"
 
+          - unless @product.prompt_dicision?
+            h4 現在価格
             - if @product.lower_price.to_i > @product.max_price
               p.alert-message #{link_to "最低落札価格", "/helps/lower_price"}に達していません
             - elsif @product.max_bid.present? && @product.max_bid.user == current_user
@@ -99,10 +111,10 @@ article itemscope="" itemtype="http://schema.org/Product"
             span.product-tax
               | (税込 #{number_to_currency(@product.max_price_with_tax)})
 
-          - unless @product.finished? || @product.before? || @product.user_id == current_user.try(:id)
-            = button_tag class: "btn btn-warning btn-lg center-block", data: { toggle: :modal, target: "#bid-modal"} do
-              span.glyphicon.glyphicon-pencil
-              span.btn-content 入札する
+            - unless @product.finished? || @product.before? || @product.user_id == current_user.try(:id)
+              = button_tag class: "btn btn-warning btn-lg center-block", data: { toggle: :modal, target: "#bid-modal"} do
+                span.glyphicon.glyphicon-pencil
+                span.btn-content 入札する
 
           - if @product.prompt_dicision_price
             h4 即決価格
@@ -210,8 +222,9 @@ article itemscope="" itemtype="http://schema.org/Product"
           dl.dl-horizontal.product-dl
             dt.dt-first 開始日時
             dd = I18n.l(@product.dulation_start, format: :full_date)
-            dt 終了日時
-            dd = I18n.l(@product.dulation_end, format: :full_date)
+            - unless @product.prompt_dicision?
+              dt 終了日時
+              dd = I18n.l(@product.dulation_end, format: :full_date)
             dt 商品の状態
             dd
               . = @product.state
@@ -224,6 +237,10 @@ article itemscope="" itemtype="http://schema.org/Product"
             dd = @product.max_bid.present? ? @product.max_bid.user.account : "-"
             dt 開始価格(税抜)
             dd #{number_to_currency(@product.start_price)}
+
+            - if @product.prompt_dicision_price.present?
+              dt 即決価格(税抜)
+              dd #{number_to_currency(@product.prompt_dicision_price)}
 
           dl.dl-horizontal.product-dl.product-dl-border
             dt 発送元

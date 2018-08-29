@@ -10,9 +10,19 @@ SitemapGenerator::Sitemap.create do
     add "/products/#{id}", priority: 0.9, changefreq: 'daily'
   end
 
+  ### 落札済み ###
+  Product.status(Product::STATUS[:success]).pluck(:id).each do |id|
+    add "/products/#{id}", priority: 0.8, changefreq: 'daily'
+  end
+
+  ### 未落札 ###
+  Product.status(Product::STATUS[:failure]).pluck(:id).each do |id|
+    add "/products/#{id}", priority: 0.8, changefreq: 'daily'
+  end
+
   ### トップ特集 ###
   Search.where(publish: true).each do |id|
-    add "/searches/#{id}", priority: 0.8, changefreq: 'daily'
+    add "/searches/#{id}", priority: 0.7, changefreq: 'daily'
   end
 
   ### カテゴリ ###

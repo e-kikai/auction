@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_01_091244) do
+ActiveRecord::Schema.define(version: 2018_08_29_065817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -146,6 +146,15 @@ ActiveRecord::Schema.define(version: 2018_08_01_091244) do
     t.string "url"
     t.index ["product_id"], name: "index_importlogs_on_product_id"
     t.index ["user_id"], name: "index_importlogs_on_user_id"
+  end
+
+  create_table "industries", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.integer "order_no", default: 9999999, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "soft_destroyed_at"
+    t.index ["soft_destroyed_at"], name: "index_industries_on_soft_destroyed_at"
   end
 
   create_table "infos", force: :cascade do |t|
