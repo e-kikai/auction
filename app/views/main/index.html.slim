@@ -75,13 +75,8 @@
     .col-md-7.col-sm-8.col-xs-12
       .toppage-searches
         - if @searches[0]
-          - @searches[0..0].each do |se|
+          - @searches[0..2].each do |se|
             = render "search_panel", search: se
-          .thumbnail.search-panel style="border:0;"
-           = link_to(image_tag("deadstock_01.png", alt: "SALE 新古品 お買い得 即決 デッドストックエンドミル特集"), "/products?keywords=%E2%98%85%E3%83%87%E3%83%83%E3%83%89%E3%82%B9%E3%83%88%E3%83%83%E3%82%AF%E3%82%A8%E3%83%B3%E3%83%89%E3%83%9F%E3%83%AB%E7%89%B9%E9%9B%86%E2%98%85&r=top_bnr")
-
-          .thumbnail.search-panel style="border:0;"
-            = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
 
       - if @follows_new_products.present?
         label
@@ -94,8 +89,8 @@
                 = render "product_panel", product: pr, r: :top_flw
 
       .toppage-searches
-        - if @searches[1]
-          - @searches[1..3].each do |se|
+        - if @searches[3]
+          - @searches[3..5].each do |se|
             = render "search_panel", search: se
 
 
@@ -110,8 +105,8 @@
                 = render "product_panel", product: pr, r: :top_chk
 
       .toppage-searches
-        - if @searches[4]
-          - @searches[4..6].each do |se|
+        - if @searches[6]
+          - @searches[6..8].each do |se|
             = render "search_panel", search: se
 
       label
@@ -124,14 +119,20 @@
               = render "product_panel", product: pr, r: :top_new
 
       .toppage-searches
-        - if @searches[7]
-          - @searches[7..9].each do |se|
+        - if @searches[9]
+          - @searches[9..9].each do |se|
             = render "search_panel", search: se
+
+        .thumbnail.search-panel style="border:0;"
+         = link_to(image_tag("deadstock_01.png", alt: "SALE 新古品 お買い得 即決 デッドストックエンドミル特集"), "/products?keywords=%E2%98%85%E3%83%87%E3%83%83%E3%83%89%E3%82%B9%E3%83%88%E3%83%83%E3%82%AF%E3%82%A8%E3%83%B3%E3%83%89%E3%83%9F%E3%83%AB%E7%89%B9%E9%9B%86%E2%98%85&r=top_bnr")
+
+        .thumbnail.search-panel style="border:0;"
+          = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
 
 
     .col-md-3.col-sm-4.col-xs-12
-      .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
-       = link_to(image_tag("omdc_184_sq.png", alt: "第184回 機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+      / .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
+      /   = link_to(image_tag("omdc_184_sq.png", alt: "第184回 機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
       .panel.panel-default
         = link_to "#collapse_help", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
