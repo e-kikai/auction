@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_29_065817) do
+ActiveRecord::Schema.define(version: 2018_08_31_161344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -155,6 +155,15 @@ ActiveRecord::Schema.define(version: 2018_08_29_065817) do
     t.datetime "updated_at", null: false
     t.datetime "soft_destroyed_at"
     t.index ["soft_destroyed_at"], name: "index_industries_on_soft_destroyed_at"
+  end
+
+  create_table "industry_users", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "industry_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["industry_id"], name: "index_industry_users_on_industry_id"
+    t.index ["user_id"], name: "index_industry_users_on_user_id"
   end
 
   create_table "infos", force: :cascade do |t|
@@ -393,4 +402,6 @@ ActiveRecord::Schema.define(version: 2018_08_29_065817) do
     t.index ["user_id"], name: "index_watches_on_user_id"
   end
 
+  add_foreign_key "industry_users", "industries"
+  add_foreign_key "industry_users", "users"
 end

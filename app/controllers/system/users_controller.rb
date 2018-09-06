@@ -4,7 +4,7 @@ class System::UsersController < System::ApplicationController
   def index
     @search = User.search(params[:q])
 
-    @users  = @search.result.order(created_at: :desc)
+    @users  = @search.result.order(created_at: :desc).includes(:industries)
     @pusers = @users.page(params[:page]).per(100)
 
     respond_to do |format|
@@ -108,7 +108,11 @@ class System::UsersController < System::ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(%w|email password name company tel zip addr_1 addr_2 addr_3 account bank seller charge fax url license business_hours note allow_mail confirmed_at result_message machinelife_company_id header_image|)
+    # params.require(:user).permit(%w|email password name company tel zip addr_1 addr_2 addr_3 account bank seller charge fax url license business_hours note allow_mail confirmed_at result_message machinelife_company_id header_image|)
+
+    params.require(:user).permit(:email, :password, :name, :company, :tel, :zip, :addr_1, :addr_2, :addr_3, :account,
+       :bank, :seller, :charge, :fax, :url, :license, :business_hours, :note, :allow_mail, :confirmed_at,
+       :result_message, :machinelife_company_id, :header_image, :remove_header_image, industry_ids: [])
   end
 
   def password_params

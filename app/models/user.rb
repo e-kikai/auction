@@ -73,6 +73,10 @@ class User < ApplicationRecord
   has_many   :searches
   has_many   :alerts
 
+  has_many   :industry_users, dependent: :destroy
+  has_many   :industries,     through:   :industry_users
+
+  accepts_nested_attributes_for :industry_users, allow_destroy: true
   # accepts_nested_attributes_for :watches
 
   validates :allow_mail, inclusion: {in: [true, false]}

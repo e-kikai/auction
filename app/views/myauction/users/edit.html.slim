@@ -79,10 +79,16 @@ coffee:
           = f.text_field :addr_3, required: "required", class: 'form-control'
 
         .form-group
+          = f.label :industries
+          .
+            = f.collection_check_boxes(:industry_ids, Industry.order(:order_no), :id, :name) do |b|
+              label.checkbox-inline = b.check_box + b.text
+
+        .form-group
           = f.label :allow_mail, "ものづくりオークションからの案内メール"
           .
-            label.radio-inline = f.radio_button(:allow_mail, true) + " 送る"
-            label.radio-inline = f.radio_button(:allow_mail, false) + " 送らない"
+            label.radio-inline = f.radio_button(:allow_mail, true) + "送る"
+            label.radio-inline = f.radio_button(:allow_mail, false) + "送らない"
 
 
         - if current_user.seller?

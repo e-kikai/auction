@@ -28,6 +28,8 @@ ja:
         result_message: 落札時の自動メッセージ
         machinelife_company_id: マシンライフ連動ID
 
+        industries: 業種
+
       category:
         name: カテゴリ名
         order_no: 並び順

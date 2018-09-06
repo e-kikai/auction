@@ -37,6 +37,10 @@
         = f.text_field :tel, class: 'form-control short'
 
       .form-group
+        = f.label :fax
+        = f.text_field :fax, class: 'form-control short'
+
+      .form-group
         = f.label :zip
         = f.text_field :zip, class: 'form-control short'
 
@@ -53,18 +57,24 @@
         = f.text_field :addr_3, class: 'form-control'
 
       .form-group
+        = f.label :industries
+        .
+          = f.collection_check_boxes(:industry_ids, Industry.order(:order_no), :id, :name) do |b|
+            label.checkbox-inline = b.check_box + b.text
+
+      .form-group
         = f.label :allow_mail, "ものづくりオークションからの案内メール"
         .
-          label.radio-inline = f.radio_button(:allow_mail, true) + " 送る"
-          label.radio-inline = f.radio_button(:allow_mail, false) + " 送らない"
+          label.radio-inline = f.radio_button(:allow_mail, true)  + "送る"
+          label.radio-inline = f.radio_button(:allow_mail, false) + "送らない"
 
       hr
 
       .form-group
       = f.label :seller
       .
-        label.radio-inline = f.radio_button(:seller, true) + " 出品会社"
-        label.radio-inline = f.radio_button(:seller, false) + " 入札ユーザ"
+        label.radio-inline = f.radio_button(:seller, true)  + "出品会社"
+        label.radio-inline = f.radio_button(:seller, false) + "入札ユーザ"
 
       .form-group
         = f.label :machinelife_company_id
@@ -73,9 +83,7 @@
       .form-group
         = f.label :charge
         = f.text_field :charge, class: 'form-control'
-      .form-group
-        = f.label :fax
-        = f.text_field :fax, class: 'form-control'
+
       .form-group
         = f.label :url
         = f.text_field :url, class: 'form-control'
