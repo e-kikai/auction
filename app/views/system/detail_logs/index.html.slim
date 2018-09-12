@@ -32,7 +32,7 @@
         td.price = lo.product ? number_to_currency(lo.product.max_price) : ""
         td title="#{lo.referer}"
           - if lo.r.present?
-            = lo.r.split("_").map { |kwd| DetailLog::KWDS[kwd] || "" }.join(" | ")
+            = lo.r.split("_").map { |kwd| DetailLog::KWDS[kwd] || kwd }.join(" | ")
           / - elsif lo.referer =~ /https\:\/\/www.mnok.net/
           /   | 内部リンク
           - elsif lo.referer =~ /https\:\/\/google\.com/
