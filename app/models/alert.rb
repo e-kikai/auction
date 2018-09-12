@@ -18,8 +18,8 @@ class Alert < ApplicationRecord
   soft_deletable
   default_scope { without_soft_destroyed }
 
-  NEWS_DAYS  = 1.day # 新着期間
-  NEWS_LIMIT = 10    # 新着表示件数
+  # NEWS_DAYS  = 1.day # 新着期間
+  # NEWS_LIMIT = 10    # 新着表示件数
 
   belongs_to :user
   belongs_to :category, required: false
@@ -27,7 +27,7 @@ class Alert < ApplicationRecord
 
   ### 検索 ###
   def products
-    products = Product.includes(:user, :category).status(Product::STATUS[:start]).with_keywords(keywords.to_s.normalize_charwidth.strip)
+    products = Product.includes(:user, :category, :product_images).status(Product::STATUS[:start]).with_keywords(keywords.to_s.normalize_charwidth.strip)
 
     if category_id.present?
       category = Category.find(category_id)
@@ -40,16 +40,14 @@ class Alert < ApplicationRecord
   end
 
   ### 新着 ###
-  def news
-    products.where(dulation_start: (Time.now - NEWS_DAYS)..Time.now).limit(NEWS_LIMIT)
-  end
+  # def news
+  #   products.where(dulation_start: (Time.now - NEWS_DAYS)..Time.now).limit(NEWS_LIMIT)
+  # end
 
   ### 新着アラート ###
   def self.scheduling
     Alert.includes(:user).all.each do |al|
-      if al.news.present?
-        BidMailer.news(al).deliver
-      end
+      BidMailer.news(al).deliver if al.products.news.present?
     end
   end
 
@@ -64,5 +62,4 @@ class Alert < ApplicationRecord
   def uri
     "/products?#{params.to_query}"
   end
-
 end

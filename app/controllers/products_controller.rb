@@ -73,7 +73,7 @@ class ProductsController < ApplicationController
     #   .order(bids_count: :desc).limit(Product::NEW_MAX_COUNT)
 
     # 人気商品
-    @popular_products = Product.populars(@product).limit(Product::NEW_MAX_COUNT)
+    @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
   end
 
   def bids

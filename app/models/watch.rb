@@ -22,4 +22,15 @@ class Watch < ApplicationRecord
   validates :product_id, presence: true
 
   validates :product_id, uniqueness: { message: "は、既にウォッチリストに登録されています。", scope: [:user_id, :soft_destroyed_at] }
+
+  ### ウォッチおすすめ新着メール配信 ###
+  def self.scheduling
+    User.includes(:watches).all.each do |us|
+      next if us.watches.length == 0
+      products = Product.related_products(us.watch_products).news.limit(Product::NEWS_LIMIT)
+      next if products.blank? 
+
+      BidMailer.watch_news(us, products).deliver
+    end
+  end
 end

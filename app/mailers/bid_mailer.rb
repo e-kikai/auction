@@ -84,4 +84,12 @@ class BidMailer < ApplicationMailer
     mail(to: alert.user.email, subject: "ものオク 新着情報 : #{@alert.name}")
   end
 
+  # ウォッチ新着
+  def watch_news(user, products)
+    @user     = user
+    @products = products
+
+    mail(to: user.email, subject: "ものオク おすすめ新着情報")
+  end
+
 end

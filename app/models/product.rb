@@ -81,6 +81,9 @@ class Product < ApplicationRecord
 
   REMINDER_MINUTE        = 15.minute
 
+  NEWS_DAYS  = 1.day # 新着期間
+  NEWS_LIMIT = 10    # 新着表示件数
+
   ### relations ###
   belongs_to :user,     required: true
   belongs_to :category, required: true
@@ -152,7 +155,7 @@ class Product < ApplicationRecord
     when STATUS[:before];  where("dulation_start > ? ", Time.now).order(:dulation_start) # 開始前
     when STATUS[:failure]; finished.where(max_bid_id: nil, cancel: nil) # 未落札
     when STATUS[:success]; finished.where(cancel: nil).where.not(max_bid_id: nil) # 落札済み
-    when STATUS[:cancel];  finished.where.not(cancel: nil) # 未落札
+    when STATUS[:cancel];  finished.where.not(cancel: nil) # キャンセル
     else;                  where(template: false).where("dulation_start <= ? AND dulation_end > ?", Time.now, Time.now).order(:dulation_end)  # 公開中
 
     end
@@ -162,17 +165,25 @@ class Product < ApplicationRecord
     where(template: true)
   }
 
-  scope :populars, -> products {
-    res = Product.status(STATUS[:start]).includes(:product_images)
-      .except(:order).order("((bids_count + 1) * (watches_count + 1)) DESC", :dulation_end)
-
-    if products.class.name == "Product"
-      res.where(category_id: products.category.subtree_ids).where.not(id: products.id)
+  ### 関連商品(おなじカテゴリの商品) ###
+  scope :related_products, -> prs {
+    res = if prs.class.name == "Product"
+      where(category_id: prs.category.subtree_ids).where.not(id: prs.id)
     else
-      res.where(category_id: products.except(:order).select(:category_id))
-        .where.not(id: products.except(:order).select(:id))
+      where(category_id: prs.except(:order).select(:category_id)).where.not(id: prs.except(:order).select(:id))
     end
 
+    res.status(STATUS[:start]).includes(:product_images)
+  }
+
+  ### おすすめ順に並べる ###
+  scope :populars, -> {
+    except(:order).order("((bids_count + 1) * (watches_count + 1)) DESC", :dulation_end)
+  }
+
+  ### 新着情報 ###
+  scope :news, -> {
+    where(dulation_start: (Time.now - NEWS_DAYS)..Time.now)
   }
 
   ### callback ###
@@ -457,9 +468,6 @@ class Product < ApplicationRecord
         BidMailer.reminder(wa.user, pr).deliver
       end
     end
-
-    ### TODO ###
-    # 新着アラート
   end
 
   def make_search_keywords

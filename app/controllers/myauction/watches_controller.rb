@@ -12,7 +12,7 @@ class Myauction::WatchesController <  Myauction::ApplicationController
 
     @pproducts = @products.page(params[:page]).per(10).preload(:user, :category, :product_images, max_bid: :user)
 
-    @popular_products = Product.populars(@products).limit(Product::NEW_MAX_COUNT)
+    @popular_products = Product.related_products(@products).populars.limit(Product::NEW_MAX_COUNT)
   end
 
   def create
