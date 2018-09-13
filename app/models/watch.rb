@@ -25,10 +25,13 @@ class Watch < ApplicationRecord
 
   ### ウォッチおすすめ新着メール配信 ###
   def self.scheduling
-    User.includes(:watches).all.each do |us|
-      next if us.watches.length == 0
-      products = Product.related_products(us.watch_products).news.limit(Product::NEWS_LIMIT)
-      next if products.blank? 
+    User.includes(:watches, :bids).all.each do |us|
+      next if us.watches.length == 0 && us.bids.length == 0
+
+      base = Product.where(id: us.watches.pluck(:product_id).concat(us.bids.pluck(:product_id)))
+
+      products = Product.related_products(base).news.limit(Product::NEWS_LIMIT)
+      next if products.blank?
 
       BidMailer.watch_news(us, products).deliver
     end

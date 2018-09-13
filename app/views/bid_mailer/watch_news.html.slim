@@ -9,8 +9,10 @@ html
     p
       | このメールは、#{@user.company} #{@user.name} さんの
       = link_to "ウォッチリスト", "#{root_url(only_path: false)}myauction/watches/", style: "text-decoration:none;color:#337ab7;", target: "_blank"
+      | や
+      = link_to "入札履歴", "#{root_url(only_path: false)}myauction/bids/", style: "text-decoration:none;color:#337ab7;", target: "_blank"
       | からのおすすめ新着情報です。
-
+      
     . style="background: #edc9ff;padding: 6px 12px;margin-bottom: 8px;"
       = "おすすめ新着情報 : #{@products.count} 件"
 
@@ -47,6 +49,8 @@ html
       = link_to "マイ・オークション", "#{root_url(only_path: false)}myauction/", style: "text-decoration:none;color:#337ab7;", target: "_blank"
       = " - "
       = link_to "ウォッチリストを見る", "#{root_url(only_path: false)}myauction/watches/", style: "text-decoration:none;color:#337ab7;", target: "_blank"
+      = " - "
+      = link_to "入札履歴を見る", "#{root_url(only_path: false)}myauction/bids/", style: "text-decoration:none;color:#337ab7;", target: "_blank"
 
     p style=""
       | ※	この自動通知メールは、ものづくりオークションより自動的に送信されています。
