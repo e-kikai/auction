@@ -31,7 +31,7 @@ h4 ウォッチリスト
         th
       - @pproducts.each do |pr|
         tr
-          td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}?r=wtc_ls"
+          td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}?r=wtc_lst"
           td = link_to pr.name, "/products/#{pr.id}?r=wtc_lst"
           td.price
             strong = number_to_currency pr.max_price_with_tax

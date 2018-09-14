@@ -7,6 +7,10 @@
     span.glyphicon.glyphicon-search
     span.btn-content 日付変更
 
+  = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+    span.glyphicon.glyphicon-download-alt
+    span.btn-content CSV出力
+
 = paginate @pdetail_logs
 .table-responsive
   table.table.table-hover.table-condensed.table-striped
