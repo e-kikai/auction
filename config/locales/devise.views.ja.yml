@@ -51,19 +51,19 @@ ja:
       confirmation_instructions:
         action: "入札ユーザ登録確認"
         greeting: "%{recipient}様"
-        instruction: "次のリンクをクリックすることで、メールアドレスの確認が完了します。"
-        subject: "ものオク :入札ユーザ登録の有効化について"
+        instruction: "以下のリンクをクリックすることで、メールアドレスの確認が完了いたします。"
+        subject: "ものオク :登録メールアドレスの確認"
       password_change:
         greeting: "%{recipient}様"
-        message: "パスワードが再設定されたことを通知します。"
-        subject: "ものオク : パスワードの変更について"
+        message: "パスワードが再設定されましたので、通知いたします。"
+        subject: "ものオク : パスワードの変更"
       reset_password_instructions:
         action: "パスワード変更"
         greeting: "%{recipient}様"
-        instruction: "パスワード再設定の依頼を受けたため、メールを送信しています。下のリンクからパスワードの再設定ができます。"
+        instruction: "パスワード再設定の依頼を受けたため、メールを送信いたしました。下のリンクからパスワードの再設定ができます。"
         instruction_2: "パスワード再設定の依頼をしていない場合、このメールを無視してください。"
         instruction_3: "パスワードの再設定は、上のリンクから新しいパスワードを登録するまで完了しません。"
-        subject: "ものオク : パスワードの再設定について"
+        subject: "ものオク : パスワードの再設定"
       unlock_instructions:
         action: "入札ユーザ登録のロック解除"
         greeting: "%{recipient}様"
@@ -121,7 +121,7 @@ ja:
         didn_t_receive_confirmation_instructions: "入札ユーザ登録確認のメールを受け取っていませんか?"
         didn_t_receive_unlock_instructions: "入札ユーザ登録の凍結解除方法のメールを受け取っていませんか?"
         forgot_your_password: "パスワードを忘れましたか?"
-        sign_in: "ログイン"
+        sign_in: "すでにユーザ登録しています - ログイン"
         sign_in_with_provider: "%{provider}でログイン"
         sign_up: "初めての方はこちら - 入札ユーザ登録"
     unlocks:

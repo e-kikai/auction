@@ -57,7 +57,7 @@ class System::TotalController < System::ApplicationController
 
     @user_counts       = User.group("DATE(created_at)").having("DATE(created_at) BETWEEN ? AND ?", rstart, rend).count
 
-    @start_count    = @products.where(cancel: nil).where("dulation_start < ?", rstart).where("(max_bid_id IS NOT NULL AND dulation_end >= ?) OR (max_bid_id IS NULL AND #{auto_sql} >=?)", rstart, rstart).count
+    @start_count    = @products.where("dulation_start < ?", rstart).where("(max_bid_id IS NOT NULL AND dulation_end >= ?) OR (max_bid_id IS NULL AND #{auto_sql} >=?)", rstart, rstart).count
 
     # セレクタ
     @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
