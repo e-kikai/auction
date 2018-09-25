@@ -8,7 +8,9 @@
 
 - set_meta_tags description: desc
 
-h1.product-title ="#{@product.name} 入札履歴"
+h1.product-title
+  span.glyphicon.glyphicon-align-justify
+  span.btn-content ="#{@product.name} 入札履歴"
 
 .row
   .col-md-offset-3.col-md-6.col-sm-12
@@ -40,3 +42,8 @@ h1.product-title ="#{@product.name} 入札履歴"
             - else
               = number_to_currency(bi.amount_with_tax)
           td = I18n.l(bi.created_at, format: :full_date)
+
+p.text-center
+  = link_to "/products/#{@product.id}", class: "btn btn-default" do
+    span.glyphicon.glyphicon-arrow-left
+    span.btn-content 商品詳細ページに戻る
