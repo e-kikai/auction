@@ -43,7 +43,7 @@ h1.product-title
               = number_to_currency(bi.amount_with_tax)
           td = I18n.l(bi.created_at, format: :full_date)
 
-p.text-center
+.button-center
   = link_to "/products/#{@product.id}", class: "btn btn-default" do
     span.glyphicon.glyphicon-arrow-left
     span.btn-content 商品詳細ページに戻る

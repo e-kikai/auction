@@ -3,16 +3,19 @@ h3.product-title ものづくりオークションにようこそ
 .col-md-offset-2.col-md-8
   p
     span.glyphicon.glyphicon-sign-info
-    span.btn-content オークションに参加するには
-  p 1. まずは以下のフォームよりメールアドレス、パスワードを登録してください。
-  p
-    | 2. 登録したメールアドレスに確認メールが届きますので、リンクをクリックして登録確認を行ってください(仮登録)。
-    br
-    | ※ 確認メールが送信されない、削除してしまった場合は、
-    = link_to "登録確認メール再送", "/users/confirmation/new", target: "_blank"
-    | から再送信が行なえます。
-  p 3. 表示されるログインフォームからログインしてください。
-  p 4. 「マイ・オークション」でお名前、発送先住所などを登録してください(本登録)。
+    span.btn-content オークションに参加するには、
+  ol
+    li まずは以下のフォームよりメールアドレス、パスワードを入力・登録してください。
+    li
+      | 登録したメールアドレスにメール「登録メールアドレスの確認」が届きます。
+      br
+      | 「メールアドレス確認」リンクをクリックして登録確認を行ってください(仮登録)。
+      br
+      | ※ 確認メールが送信されない、削除してしまった場合は、
+      = link_to "登録確認メール再送", "/users/confirmation/new", target: "_blank"
+      | から再送信が行なえます。
+    li 表示されるログインフォームからログインしてください。
+    li 「マイ・オークション」でお名前、発送先住所などを登録してください(本登録)。
 
 = bootstrap_devise_error_messages!
 .col-md-offset-3.col-md-6
@@ -33,6 +36,6 @@ h3.product-title ものづくりオークションにようこそ
           = f.password_field :password_confirmation, class: 'form-control'
         / = f.submit t('.sign_up', default: 'Sign up'), class: 'btn btn-primary'
         = f.button :button, data: { "disable-with" => "登録中..." }, class: "btn btn-default btn-square btn-submit center-block" do
-          span.glyphicon.glyphicon-log-in
+          span.glyphicon.glyphicon-thumbs-up
           span.btn-content アカウント登録
   = render 'devise/shared/links'
