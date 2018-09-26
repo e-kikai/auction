@@ -7,11 +7,14 @@
 
 .row
   .col-md-offset-2.col-md-8
-    h4 出品会社情報
+    h1.product-title
+      span.glyphicon.glyphicon-home
+      span.btn-content #{@company.company} 出品会社情報
 
-    = link_to "/products?company_id=#{@company.id}"
-      span.glyphicon.glyphicon-list
-      span.btn-content = "#{@company.company}の出品商品を見る"
+    .button-center
+      = link_to "/products?company_id=#{@company.id}", class: "btn btn-default" do
+        span.glyphicon.glyphicon-list
+        span.btn-content = "#{@company.company}の出品商品を見る"
 
     table.table.table-striped.table-hover.table-condensed.company-table
       tr
