@@ -919,6 +919,10 @@ a.accordion-toggle {
 }
 
 .button-center {
-  margin: 8px auto;
+  margin: 6px auto;
   text-align: center;
+
+  .btn {
+    margin: 2px;
+  }
 }

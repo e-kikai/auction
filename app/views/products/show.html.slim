@@ -76,9 +76,10 @@ article itemscope="" itemtype="http://schema.org/Product"
             span.btn-content 入札件数
             .
               span.h3 #{@product.bids_count}
-            . =< link_to "/products/#{@product.id}/bids" do
-              span.glyphicon.glyphicon-align-justify
-              span.btn-content 入札履歴
+            - if @product.bids_count > 0
+              . =< link_to "/products/#{@product.id}/bids", class: "btn btn-default" do
+                span.glyphicon.glyphicon-align-justify
+                span.btn-content 入札履歴
           .col-md-4.col-sm-4.col-xs-6
             - unless @product.prompt_dicision?
               span.glyphicon.glyphicon-time
@@ -137,16 +138,19 @@ article itemscope="" itemtype="http://schema.org/Product"
 
         /// 出品会社 ///
         .panel-body
-          h4
-            span.glyphicon.glyphicon-home
-            span.btn-content 出品会社
           section.detail-company-area
             .
+              span.glyphicon.glyphicon-home
+              span.btn-content 出品会社 :
               span.h4 = @product.user.company
-            .
-              = link_to "/companies/#{@product.user_id}", style: "inline-block" do
+            .button-center
+              = link_to "/companies/#{@product.user_id}", class: "btn btn-default" do
                 span.glyphicon.glyphicon-home
                 span.btn-content 出品会社情報
+              = link_to "/products/?company_id=#{@product.user_id}", class: "btn btn-default"  do
+                span.glyphicon.glyphicon-list
+                span.btn-content = "そのほかの出品商品を見る"
+
             .
               span.glyphicon.glyphicon-star
               span.btn-content 評価 :
@@ -159,9 +163,7 @@ article itemscope="" itemtype="http://schema.org/Product"
                 =< number_with_delimiter @product.user.count_star_bad
                 | )
 
-            . = link_to "/products/?company_id=#{@product.user_id}" do
-              span.glyphicon.glyphicon-list
-              span.btn-content = "そのほかの出品商品を見る"
+
 
             .
               span.glyphicon.glyphicon-map-marker
