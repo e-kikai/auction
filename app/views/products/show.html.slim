@@ -71,26 +71,33 @@ article itemscope="" itemtype="http://schema.org/Product"
     .col-md-4.col-md-push-8
       .panel.panel-default
         .panel-body
-          .col-md-4.col-sm-4.col-xs-6
-            span.glyphicon.glyphicon-tags
-            span.btn-content 入札件数
-            .
-              span.h3 #{@product.bids_count}
-            - if @product.bids_count > 0
-              . =< link_to "/products/#{@product.id}/bids", class: "btn btn-default" do
-                span.glyphicon.glyphicon-align-justify
-                span.btn-content 入札履歴
-          .col-md-4.col-sm-4.col-xs-6
-            - unless @product.prompt_dicision?
-              span.glyphicon.glyphicon-time
-              span.btn-content 残り時間
+          .row
+            .col-md-4.col-sm-4.col-xs-6
+              span.glyphicon.glyphicon-tags
+              span.btn-content 入札件数
               .
-                span.h3> #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
-                | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
-          .col-md-4.col-sm-4.col-xs-6.col-md-offset-0.col-sm-offset-0.col-xs-offset-3
-            = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
-              span.glyphicon.glyphicon-star.watch-star
-              span.btn-content ウォッチ
+                span.h3 #{@product.bids_count}
+              - if @product.bids_count > 0
+                . =< link_to "/products/#{@product.id}/bids", class: "btn btn-default" do
+                  span.glyphicon.glyphicon-align-justify
+                  span.btn-content 入札履歴
+            .col-md-4.col-sm-4.col-xs-6
+              - unless @product.prompt_dicision?
+                span.glyphicon.glyphicon-time
+                span.btn-content 残り時間
+                .
+                  span.h3> #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
+                  | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
+            .col-md-4.col-sm-4.col-xs-6.col-md-offset-0.col-sm-offset-0.col-xs-offset-3
+              = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
+                span.glyphicon.glyphicon-star.watch-star
+                span.btn-content ウォッチ
+
+        .panel-body
+          - if @product.watches.count > 0
+            = "現在"
+            span.watches_count = number_with_delimiter(@product.watches.count)
+            = "人のユーザがウォッチしています。"
 
         .panel-body.detail-price-area
           /// リッチスニペット ///
@@ -149,7 +156,7 @@ article itemscope="" itemtype="http://schema.org/Product"
                 span.btn-content 出品会社情報
               = link_to "/products/?company_id=#{@product.user_id}", class: "btn btn-default"  do
                 span.glyphicon.glyphicon-list
-                span.btn-content = "そのほかの出品商品を見る"
+                span.btn-content = "出品商品を見る"
 
             .
               span.glyphicon.glyphicon-star

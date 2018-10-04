@@ -509,13 +509,18 @@ label.top-search {
   }
 }
 
-.carousel-select a img {
-  margin: 6px;
-  @media (max-width: 767px) {
-    width: 31%;
-    margin: 1%;
+.carousel-select {
+  margin: auto -1.5px;
+
+  a img {
+    margin: 1.5px;
+    @media (max-width: 767px) {
+      width: 31%;
+      margin: 1%;
+    }
   }
 }
+
 
 .product-dl,
 .trade-dl {
@@ -925,4 +930,10 @@ a.accordion-toggle {
   .btn {
     margin: 2px;
   }
+}
+
+.watches_count {
+  font-size: 18px;
+  margin: 0 2px;
+  color: #E05;
 }
