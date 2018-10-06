@@ -510,7 +510,7 @@ label.top-search {
 }
 
 .carousel-select {
-  margin: auto -1.5px;
+  margin: 6.5px -1.5px;
 
   a img {
     margin: 1.5px;
@@ -620,6 +620,11 @@ label.top-search {
 .detail-price-area {
   background-color: #ededec;
   margin-top: -15px;
+
+  &.bid-area {
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+  }
 }
 
 .detail-price-message {
