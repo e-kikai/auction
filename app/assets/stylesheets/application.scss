@@ -613,6 +613,10 @@ label.top-search {
   }
 }
 
+.watches-count-area {
+  margin: 8px 0;
+}
+
 .detail-price-area {
   background-color: #ededec;
   margin-top: -15px;
@@ -620,6 +624,19 @@ label.top-search {
 
 .detail-price-message {
   margin: 16px 64px;
+}
+
+.remaining-date {
+  background: #ededec;
+  width: 360px;
+  margin: 8px auto 16px auto;
+  padding: 10px 0;
+  font-size: 25px;
+  text-align: center;
+}
+
+.alertinfo {
+  color: #D00;
 }
 
 hr.detail-price-calc {
@@ -930,10 +947,22 @@ a.accordion-toggle {
   .btn {
     margin: 2px;
   }
+
+  &.text-left {
+    text-align: left;
+  }
 }
 
 .watches_count {
-  font-size: 18px;
+  font-size: 19px;
   margin: 0 2px;
   color: #E05;
+}
+
+.state {
+  margin: 0 0 0 32px;
+  border: 1px solid #777;
+  background: #CCC;
+  padding: 2px 12px;
+  font-size: 80%;
 }

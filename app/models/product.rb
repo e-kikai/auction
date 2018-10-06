@@ -245,8 +245,12 @@ class Product < ApplicationRecord
   end
 
   ### 残り時間を取得 ###
+  def remaining_second
+    ((dulation_end.presence || Time.now) - Time.now).round
+  end
+
   def remaining_time
-    second = ((dulation_end.presence || Time.now) - Time.now).round
+    second = remaining_second
     if second >= (60 * 60 * 24)
       "#{(second / (60 * 60 * 24)).round}日"
     elsif second >= (60 * 60)

@@ -77,6 +77,8 @@ class ProductsController < ApplicationController
   end
 
   def bids
+    # 人気商品
+    @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
   end
 
   private
