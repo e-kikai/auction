@@ -132,7 +132,10 @@
             td.absolute
               - if pr.dulation_start > Time.now.yesterday
                 span.new-icon
-              = link_to pr.name, "/products/#{pr.id}?r=src_lst"
+              = link_to "/products/#{pr.id}?r=src_lst" do
+                = pr.name
+                span.state class="state_#{pr.state_before_type_cast}" = pr.state
+
               .td-under
                 - if @company.blank?
                   .

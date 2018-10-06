@@ -66,6 +66,10 @@ class Myauction::BidsController < Myauction::ApplicationController
 
   def show
     @bid = Bid.find(params[:id])
+
+    # 人気商品
+    @popular_products = Product.related_products(@bid.product).populars.limit(Product::NEW_MAX_COUNT)
+
   end
 
   private

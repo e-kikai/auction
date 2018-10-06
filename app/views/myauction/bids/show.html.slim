@@ -1,11 +1,21 @@
 - set_meta_tags title: "入札完了"
 - breadcrumb    :myauction_bid_show, @bid
 
-h3.product-title = @bid.product.name
+h1.product-title
+  span.glyphicon.glyphicon-wrench
+  span.btn-content ="#{@bid.product.name}"
+  span.state class="state_#{@bid.product.state_before_type_cast}" = @bid.product.state
+
+.button-center.text-left
+  = link_to "/products/#{@bid.product.id}?r=bfn_bck", class: "btn btn-default" do
+    span.glyphicon.glyphicon-arrow-left
+    span.btn-content 商品詳細ページに戻る
 
 .row
   .col-md-6.col-md-offset-3
-    h3 入札完了
+    h3
+      span.glyphicon.glyphicon-thumbs-up
+      span.btn-content 入札完了
     .row
       .col-md-offset-2.col-md-3.h4 入札金額
       .col-md-5.text-right.h4 = number_to_currency(@bid.amount)
@@ -17,9 +27,28 @@ h3.product-title = @bid.product.name
       .col-md-offset-2.col-md-3.h3 税込価格
       .col-md-5.text-right.h3 = number_to_currency(@bid.amount_with_tax)
 
-
-    = link_to "商品ページに戻る", "/products/#{@bid.product.id}?r=bid_bfn", class: "btn btn-default btn-lg center-block"
-
 hr
-.row.text-center
-    = link_to "この出品会社のほかの出品商品も見る", "/products/?company_id=#{@bid.product.user_id}"
+.button-center
+  = link_to "/myauction/watches?id=#{@bid.product.id}", method: :post, class: "btn btn-default" do
+    span.glyphicon.glyphicon-star.watch-star
+    span.btn-content この商品をウォッチリストに登録する
+
+  = link_to "/products/?company_id=#{@bid.product.user_id}", class: "btn btn-default" do
+    span.glyphicon.glyphicon-list
+    span.btn-content この出品会社のほかの出品商品も見る
+
+.button-center.text-left
+  = link_to "/products/#{@bid.product.id}?r=bfn_bck", class: "btn btn-default" do
+    span.glyphicon.glyphicon-arrow-left
+    span.btn-content 商品詳細ページに戻る
+
+- if @popular_products.present?
+  .special-area
+    label
+      span.glyphicon.glyphicon-thumbs-up.check-icon
+      span.btn-content = "#{@bid.product.name} とおなじカテゴリの人気商品"
+    .panel.panel-default
+      .panel-body.toppage-contents
+        .toppage-scroll
+          - @popular_products.each do |pr|
+            = render "/main/product_panel", product: pr, r: :bfn_sca

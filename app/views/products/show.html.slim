@@ -54,7 +54,9 @@ article itemscope="" itemtype="http://schema.org/Product"
   h1.product-title
     span.glyphicon.glyphicon-wrench
     span.btn-content itemprop="name" = @product.name
-    / span.state = @product.state
+
+    /// 状態 ///
+    span.state class="state_#{@product.state_before_type_cast}" = @product.state
 
   - if @bid.errors.full_messages.present?
     .col-md-offset-2.col-md-8
@@ -84,7 +86,7 @@ article itemscope="" itemtype="http://schema.org/Product"
                   span.glyphicon.glyphicon-info-sign
                   span.btn-content 入札履歴・残り時間詳細
 
-            .col-md-4.col-sm-4.col-xs-6.text-right style="padding: 0 8px;"
+            .col-md-4.col-sm-4.col-xs-6.text-right style="padding: 0 8px;border-left: 1px dotted #CCC;"
               - unless @product.prompt_dicision?
                 span.glyphicon.glyphicon-time
                 span.btn-content 残り時間
@@ -103,14 +105,14 @@ article itemscope="" itemtype="http://schema.org/Product"
               span.btn-content
                 | 現在
                 span.watches_count = number_with_delimiter(@product.detail_logs.count('DISTINCT user_id'))
-                | 人のユーザがこの商品を見ています
+                | 人がこの商品を見ています
           - if @product.watches.count > 0
             .watches-count-area
               span.glyphicon.glyphicon-star.watch-star
               span.btn-content
                 | 現在
                 span.watches_count = number_with_delimiter(@product.watches.count)
-                | 人のユーザがウォッチリスト登録しています
+                | 人がウォッチ登録しています
 
         .panel-body.detail-price-area
           /// リッチスニペット ///
@@ -164,10 +166,10 @@ article itemscope="" itemtype="http://schema.org/Product"
               span.btn-content = "出品会社 : "
               span.h4 = @product.user.company
 
-            .trade-button-area
+            .company-button-area
               = link_to "/companies/#{@product.user_id}", class: "btn btn-default" do
                 span.glyphicon.glyphicon-home
-                span.btn-content 出品会社情報
+                span.btn-content 会社情報
               = link_to "/products/?company_id=#{@product.user_id}", class: "btn btn-default"  do
                 span.glyphicon.glyphicon-list
                 span.btn-content 出品商品を見る

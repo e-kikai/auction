@@ -1,14 +1,24 @@
 - set_meta_tags title: "入札確認"
 - breadcrumb    :myauction_bid_new, @product
 
-h3.product-title = @product.name
+h1.product-title
+  span.glyphicon.glyphicon-wrench
+  span.btn-content ="#{@product.name}"
+  span.state class="state_#{@product.state_before_type_cast}" = @product.state
+
+.button-center.text-left
+  = link_to "/products/#{@product.id}?r=bid_bck", class: "btn btn-default" do
+    span.glyphicon.glyphicon-arrow-left
+    span.btn-content 商品詳細ページに戻る
 
 .row
   - if @bid.amount.present? && @bid.valid?
 
     .col-md-6.col-md-offset-3
       = form_for @bid, url: "/myauction/bids/", method: :post, class: "form-inline" do |f|
-        h3 入札確認
+        h3
+          span.glyphicon.glyphicon-pencil
+          span.btn-content 入札確認
 
         - if @product.lower_price.present?
           p.lower_message #{link_to "最低落札価格", "/helps/lower_price", target: "_blank"}が設定されています
@@ -39,8 +49,6 @@ h3.product-title = @product.name
           p 一度行った入札は、キャンセルできません。
           p 購入前に、必ず商品説明・落札事項を確認してください。
 
-        p.text-center = link_to "商品詳細に戻る", "/products/#{@product.id}?r=bid_bck"
-
   - else
     .col-md-offset-2.col-md-8
       - if @bid.errors.full_messages.present?
@@ -63,3 +71,8 @@ h3.product-title = @product.name
             .form-group.form-group-lg = f.text_field :amount, value: (@product.max_price + (@product.bids_count > 0 ? @product.bid_unit : 0)), class: "form-control price", required: "required"
           .col-md-1.h4 円
         .row = f.button "確認する", class: "btn btn-default btn-lg center-block"
+
+.button-center.text-left
+  = link_to "/products/#{@product.id}?r=bid_bck", class: "btn btn-default" do
+    span.glyphicon.glyphicon-arrow-left
+    span.btn-content 商品詳細ページに戻る
