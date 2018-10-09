@@ -337,7 +337,7 @@ table {
 
 .new-icon {
   color: #333;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: normal;
   text-shadow:#ffd700 1px 1px 0, #ffd700 -1px -1px 0,
   /*右下、左上*/
@@ -347,6 +347,8 @@ table {
   /*右、左*/
   #ffd700 -1px 0 0, #ffd700 1px 0 0;
   /*上、下*/
+  margin: 0 4px;
+  
   &:before {
     content: "NEW!";
   }
