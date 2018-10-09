@@ -3,7 +3,7 @@
 
 h1.product-title
   span.glyphicon.glyphicon-wrench
-  - if pr.dulation_start > Time.now.yesterday
+  - if @bid.product.dulation_start > Time.now.yesterday
     span.new-icon
   span.btn-content = "#{@bid.product.name}"
   span.state class="state_#{@bid.product.state_before_type_cast}" = @bid.product.state

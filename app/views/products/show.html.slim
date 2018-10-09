@@ -53,7 +53,7 @@
 article itemscope="" itemtype="http://schema.org/Product"
   h1.product-title
     span.glyphicon.glyphicon-wrench
-    - if pr.dulation_start > Time.now.yesterday
+    - if @product.dulation_start > Time.now.yesterday
       span.new-icon
     span.btn-content itemprop="name" = @product.name
 
