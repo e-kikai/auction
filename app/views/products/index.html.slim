@@ -130,9 +130,9 @@
           tr
             td.img = link_to image_tag(pr.thumb_url, alt: "#{pr.name}"), "/products/#{pr.id}?r=src_lst"
             td.absolute
-              - if pr.dulation_start > Time.now.yesterday
-                span.new-icon
               = link_to "/products/#{pr.id}?r=src_lst" do
+                - if pr.dulation_start > Time.now.yesterday
+                  span.new-icon
                 = pr.name
                 span.state class="state_#{pr.state_before_type_cast}" = pr.state
 

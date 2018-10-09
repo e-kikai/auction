@@ -3,7 +3,9 @@
 
 h1.product-title
   span.glyphicon.glyphicon-wrench
-  span.btn-content ="#{@product.name}"
+  - if pr.dulation_start > Time.now.yesterday
+    span.new-icon
+  span.btn-content = "#{@product.name}"
   span.state class="state_#{@product.state_before_type_cast}" = @product.state
 
 .button-center.text-left
