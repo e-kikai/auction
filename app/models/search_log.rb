@@ -20,7 +20,7 @@ class SearchLog < ApplicationRecord
   belongs_to :user,     required: false
   belongs_to :category, required: false
   belongs_to :company,  class_name: "User", required: false
-  belongs_to :serach,   required: false
+  belongs_to :search,   required: false
 
   before_save :check_robot
 

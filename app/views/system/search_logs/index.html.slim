@@ -18,7 +18,9 @@
       th 出品会社
       th カテゴリ
       th.sepa キーワード
-      th.num 保存ID
+      th.num 検索ID
+      th 公開
+      th タイトル
     - @psearch_logs.each do |lo|
       tr
         td = lo.created_at
@@ -27,7 +29,10 @@
           . = lo.host
         td.sepa
           . = lo.user.try(:account)
-        . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip        td = lo.company.try(:company_remove_kabu)
+          . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip
+        td = lo.company.try(:company_remove_kabu)
         td = lo.category.try(:name)
         td.sepa = lo.keywords
         td.num #{lo.search_id}
+        td = "○" if lo.search.try(:publish)
+        td = lo.search.try(:name)

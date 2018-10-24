@@ -34,8 +34,11 @@
   / = url_for @pms
   / = @products.to_sql
   .col-md-2
-    = hidden_field_tag :search_id, @pms[:search_id]
-    = hidden_field_tag :referer,   request.referer
+    = hidden_field_tag :search_company_id,  @pms[:company_id]
+    = hidden_field_tag :search_category_id, @pms[:category_id]
+    = hidden_field_tag :search_keywords,    @pms[:keywords]
+    = hidden_field_tag :search_id,          @pms[:search_id]
+    = hidden_field_tag :referer,            request.referer
 
     .panel.panel-default
       = link_to "#collapse_filter", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
