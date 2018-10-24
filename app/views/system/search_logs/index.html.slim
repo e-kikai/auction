@@ -12,16 +12,16 @@
   table.table.table-hover.table-condensed.table-striped
     tr
       th アクセス日時
-      th IP
-      th ホスト名
+      th IP/ホスト名
       th アカウント
       th 検索条件
       th.num 保存ID
     - @psearch_logs.each do |lo|
       tr
         td = lo.created_at
-        td = lo.ip
-        td = lo.host
+        td
+          . = lo.ip
+          . = lo.host
         td = lo.user.try(:account)
         td #{lo.company.try(:company_remove_kabu)} / #{lo.category.try(:name)} / #{lo.keywords}
         td.num #{lo.search_id}

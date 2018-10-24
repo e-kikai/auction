@@ -2,10 +2,12 @@
 - breadcrumb :system_something, "商品詳細アクセス履歴"
 
 = form_tag("/system/detail_logs", method: "get", class: "form-inline filtering-form") do
-  = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
-  = button_tag "日付変更",  class: "btn btn-info" do
+  / = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
+  = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+
+  = button_tag "検索",  class: "btn btn-info" do
     span.glyphicon.glyphicon-search
-    span.btn-content 日付変更
+    span.btn-content 検索
 
   = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
     span.glyphicon.glyphicon-download-alt
@@ -16,8 +18,7 @@
   table.table.table-hover.table-condensed.table-striped
     tr
       th アクセス日時
-      th IP
-      th ホスト名
+      th IP/ホスト名
       th アカウント
       th.sepa 会社・ユーザ名
       th.num 商品ID
@@ -27,8 +28,9 @@
     - @pdetail_logs.each do |lo|
       tr
         td = lo.created_at
-        td = lo.ip
-        td = lo.host
+        td
+          . = lo.ip
+          . = lo.host
         td = lo.user.try(:account)
         td.sepa = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip
         td.num = lo.product_id
