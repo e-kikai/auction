@@ -26,42 +26,42 @@ $(document).on 'turbolinks:load', ->
     ga('set', 'location', location.href.split('#')[0])
     ga('send', 'pageview')
 
-  ### 詳細ページログ取得 ###
-  if $("body").data("controller") == "products" && $("body").data("action") == "show"
-    $.ajax
-      async:    true
-      url:      "/detail_logs/"
-      type:     'POST',
-      dataType: 'json',
-      data :    { product_id : $('#product_id').val(), r : $('#r').val(), referer : $('#referer').val()  },
-      timeout:  3000,
-      # success:  (data, status, xhr)   -> alert status
-      # error:    (xhr,  status, error) -> alert status
+  if !$("#nologging").val()
+    ### 詳細ページログ取得 ###
+    if $("body").data("controller") == "products" && $("body").data("action") == "show"
+      $.ajax
+        async:    true
+        url:      "/detail_logs/"
+        type:     'POST',
+        dataType: 'json',
+        data :    { product_id : $('#product_id').val(), r : $('#r').val(), referer : $('#referer').val()  },
+        timeout:  3000,
+        # success:  (data, status, xhr)   -> alert status
+        # error:    (xhr,  status, error) -> alert status
 
-  ### 検索ログ ###
-  if $("body").data("controller") == "products" && $("body").data("action") == "index"
-    $.ajax
-      async:    true
-      url:      "/search_logs/"
-      type:     'POST',
-      dataType: 'json',
-      data :    { category_id : $('#search_category_id').val(), company_id : $('#search_company_id').val(), keywords : $('#search_keywords').val(), search_id : $('#search_id').val(), referer : $('#referer').val() },
-      timeout:  3000,
-      # success:  (data, status, xhr)   -> alert status
-      # error:    (xhr,  status, error) -> alert status
+    ### 検索ログ ###
+    if $("body").data("controller") == "products" && $("body").data("action") == "index"
+      $.ajax
+        async:    true
+        url:      "/search_logs/"
+        type:     'POST',
+        dataType: 'json',
+        data :    { category_id : $('#search_category_id').val(), company_id : $('#search_company_id').val(), keywords : $('#search_keywords').val(), search_id : $('#search_id').val(), referer : $('#referer').val() },
+        timeout:  3000,
+        # success:  (data, status, xhr)   -> alert status
+        # error:    (xhr,  status, error) -> alert status
 
-
-  ### トップページログ ###
-  if $("body").data("controller") == "main" && $("body").data("action") == "index"
-    $.ajax
-      async:    true
-      url:      "/toppage_logs/"
-      type:     'POST',
-      dataType: 'json',
-      data :    { referer : $('#referer').val() },
-      timeout:  3000,
-      # success:  (data, status, xhr)   -> alert status
-      # error:    (xhr,  status, error) -> alert status
+    ### トップページログ ###
+    if $("body").data("controller") == "main" && $("body").data("action") == "index"
+      $.ajax
+        async:    true
+        url:      "/toppage_logs/"
+        type:     'POST',
+        dataType: 'json',
+        data :    { referer : $('#referer').val() },
+        timeout:  3000,
+        # success:  (data, status, xhr)   -> alert status
+        # error:    (xhr,  status, error) -> alert status
 
   # # フォーム共通 : フォーム自動全選択
   # $('input.allselect').click ->

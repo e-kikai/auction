@@ -7,5 +7,8 @@ class System::ApplicationController < ApplicationController
 
   def digest_auth
     authenticate_or_request_with_http_digest { |user| USERS[user] }
+
+    ### 管理者はログを取得しない ###
+    session[:system_account] = (Rails.env.development? ? false : true);
   end
 end

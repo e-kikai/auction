@@ -24,6 +24,8 @@ html
 
   / body onLoad="FixedMidashi.create();"
   body data-controller="#{controller.controller_path}" data-action="#{controller.action_name}"
+    - if session[:system_account]
+      = hidden_field_tag :nologging, 1
     header.navbar.navbar-default.container-fluid role="navigation"
       .navbar-header
         / = link_to "ものづくりオークション", "/", class: "navbar-brand omdc-logo"
