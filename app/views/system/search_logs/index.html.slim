@@ -2,10 +2,11 @@
 - breadcrumb :system_something, "検索履歴"
 
 = form_tag("/system/search_logs", method: "get", class: "form-inline filtering-form") do
-  = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
+  / = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
+  = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
   = button_tag class: "btn btn-info" do
     span.glyphicon.glyphicon-search
-    span.btn-content 日付変更
+    span.btn-content 検索
 
 = paginate @psearch_logs
 .table-responsive
@@ -13,8 +14,10 @@
     tr
       th アクセス日時
       th IP/ホスト名
-      th アカウント
-      th 検索条件
+      th.sepa アカウント/会社・ユーザ名
+      th 出品会社
+      th カテゴリ
+      th.sepa キーワード
       th.num 保存ID
     - @psearch_logs.each do |lo|
       tr
@@ -22,6 +25,9 @@
         td
           . = lo.ip
           . = lo.host
-        td = lo.user.try(:account)
-        td #{lo.company.try(:company_remove_kabu)} / #{lo.category.try(:name)} / #{lo.keywords}
+        td.sepa
+          . = lo.user.try(:account)
+        . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip        td = lo.company.try(:company_remove_kabu)
+        td = lo.category.try(:name)
+        td.sepa = lo.keywords
         td.num #{lo.search_id}
