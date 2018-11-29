@@ -1,0 +1,13 @@
+<%=I18n.l(Time.now, format: "%Y年%-m月%-d日(%a)")%> 新着情報
+
+<%=@product.name%> [<%=@product.state %>]
+
+<% unless @product.prompt_dicision %>
+現在価格 <%=number_to_currency(@product.max_price_with_tax)%>
+<% end %>
+<% if @product.prompt_dicision_price.present? %>
+即決価格 <%=number_to_currency(@product.prompt_dicision_price_with_tax)%>
+<% end %>
+
+https://www.mnok.net/products/<%=@product.id%>
+#ものオク #ものづくり #<%=@product.category.name%>
