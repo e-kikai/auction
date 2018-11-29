@@ -1,5 +1,5 @@
 # 出力先のログファイルの指定
-set :output, 'log/crontab.log'
+# set :output, 'log/crontab.log'
 
 # 事故防止の為RAILS_ENVの指定が無い場合にはdevelopmentを使用する
 rails_env = ENV['RAILS_ENV'] || :development
