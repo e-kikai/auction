@@ -2,7 +2,7 @@
 
 <%=@product.name%> [<%=@product.state %>]
 
-<% unless @product.prompt_dicision %>
+<% unless @product.prompt_dicision? %>
 現在価格 <%=number_to_currency(@product.max_price_with_tax)%>
 <% end %>
 <% if @product.prompt_dicision_price.present? %>
