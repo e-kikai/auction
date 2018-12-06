@@ -141,10 +141,10 @@ class Product < ApplicationRecord
       res = self
 
       ors = []
-      keywords.gsub(/[[:space:]]*\|[[:space:]]*/, OR_MARKER).split(/[[:space:]]/).reject(&:empty?).each do |keyword|
+      keywords.gsub(/[[:space:]]*[\|｜][[:space:]]*/, OR_MARKER).split(/[[:space:]]/).reject(&:empty?).each do |keyword|
         res = case
         when keyword.include?(OR_MARKER)
-          res.where("search_keywords NOT LIKE ?", "%#{keyword.split(OR_MARKER)}%")
+          res.where("search_keywords IN ?", "%#{keyword.split(OR_MARKER)}%")
         when keyword =~ /^\-(.*)/
           res.where("search_keywords NOT LIKE ?", "%#{$1}%")
         else
