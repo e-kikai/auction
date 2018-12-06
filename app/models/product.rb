@@ -84,6 +84,8 @@ class Product < ApplicationRecord
   NEWS_DAYS  = 1.day # 新着期間
   NEWS_LIMIT = 10    # 新着表示件数
 
+  OR_MARKER  = "[[xxxxorxxx]]"
+
   ### relations ###
   belongs_to :user,     required: true
   belongs_to :category, required: true
@@ -137,8 +139,17 @@ class Product < ApplicationRecord
 
     if keywords.present?
       res = self
-      keywords.split(/[[:space:]]/).reject(&:empty?).each do |keyword|
-        res = res.where("search_keywords LIKE ?", "%#{keyword}%")
+
+      ors = []
+      keywords.gsub(/[[:space:]]*\|[[:space:]]*/, OR_MARKER).split(/[[:space:]]/).reject(&:empty?).each do |keyword|
+        res = case
+        when keyword.include?(OR_MARKER)
+          res.where("search_keywords NOT LIKE ?", "%#{keyword.split(OR_MARKER)}%")
+        when keyword =~ /^\-(.*)/
+          res.where("search_keywords NOT LIKE ?", "%#{$1}%")
+        else
+          res.where("search_keywords LIKE ?", "%#{keyword}%")
+        end
       end
 
       res
