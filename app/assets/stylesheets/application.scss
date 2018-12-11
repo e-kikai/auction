@@ -11,7 +11,7 @@
  * It is generally better to create a new file per style scope.
  *
  *= require bootstrap-sass
- *= require devise_bootstrap_views
+ *= require devise-bootstrap-views
  *= require bootstrap-fileinput
  * require_tree .
  *= require_self
@@ -348,7 +348,7 @@ table {
   #ffd700 -1px 0 0, #ffd700 1px 0 0;
   /*上、下*/
   margin: 0 4px;
-  
+
   &:before {
     content: "NEW!";
   }
