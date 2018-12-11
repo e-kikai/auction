@@ -13,3 +13,5 @@ asset 'bootstrap-fileinput'
 asset 'moment'
 
 # asset 'dropzone'
+
+asset 'devise-bootstrap-views'

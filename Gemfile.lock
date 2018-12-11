@@ -645,7 +645,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   counter_culture
   devise
-  devise-bootstrap-views (~> 1.0)
+  devise-bootstrap-views
   devise-encryptable
   devise-i18n
   devise-i18n-views
