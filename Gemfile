@@ -4,7 +4,7 @@ source "https://rubygems.org"
 gem 'rails', '~> 5.0'
 gem 'rails-i18n'
 
-# gem 'bootsnap', require: false
+gem 'bootsnap', require: false
 
 # Use sqlite3 as the database for Active Record
 gem 'pg', '~> 0.21'
@@ -62,7 +62,7 @@ gem 'slim-rails'
 
 # 認証
 gem 'devise'
-gem 'devise-bootstrap-views'
+gem 'devise-bootstrap-views', '~> 1.0'
 gem 'devise-i18n'
 gem 'devise-i18n-views'
 gem 'devise-encryptable'
