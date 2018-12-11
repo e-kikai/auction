@@ -1,5 +1,5 @@
 class System::SchedulingController < ApplicationController
-  before_action :check_ip
+  # before_action :check_ip
 
   def product_scheduling
     Product.scheduling
