@@ -148,6 +148,7 @@ GEM
       railties (>= 4.1.0, < 6.0)
       responders
       warden (~> 1.2.3)
+    devise-bootstrap-views (1.1.0)
     devise-encryptable (0.2.0)
       devise (>= 2.1.0)
     devise-i18n (1.7.0)
@@ -644,6 +645,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   counter_culture
   devise
+  devise-bootstrap-views
   devise-encryptable
   devise-i18n
   devise-i18n-views

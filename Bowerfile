@@ -14,4 +14,4 @@ asset 'moment'
 
 # asset 'dropzone'
 
-asset 'devise-bootstrap-views'
+# asset 'devise-bootstrap-views'
