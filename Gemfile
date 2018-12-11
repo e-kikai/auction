@@ -4,7 +4,7 @@ source "https://rubygems.org"
 gem 'rails', '~> 5.0'
 gem 'rails-i18n'
 
-gem 'bootsnap', require: false
+# gem 'bootsnap', require: false
 
 # Use sqlite3 as the database for Active Record
 gem 'pg', '~> 0.21'
