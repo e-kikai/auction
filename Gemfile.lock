@@ -672,7 +672,7 @@ DEPENDENCIES
   prawn-rails
   prawn-table
   pry-rails
-  rails (~> 5.0)
+  rails (~> 5.2)
   rails-erd
   rails-i18n
   rails_real_favicon
@@ -697,4 +697,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   1.16.2
+   1.17.2
