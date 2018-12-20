@@ -18,7 +18,7 @@
   - if user_signed_in?
     .topsearch-area
       label.top-search
-        span.glyphicon.glyphicon-pushpin.search-pushpin
+        span.glyphicon.glyphicon-paperclip.search-pushpin
         span.btn-content お気に入り検索
       - current_user.searches.each do |se|
         = link_to se.uri do
@@ -134,8 +134,8 @@
       / .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
       /   = link_to(image_tag("omdc_184_sq.png", alt: "第184回 機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
-      / .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
-      /   = link_to(image_tag("bids_22.png", alt: "マシンライフ 第22回 Web入札会"), "http://www.zenkiren.net/bid_door.php?o=22&r=bnr", target: "_blank")
+      .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
+        = link_to(image_tag("bids_23.png", alt: "マシンライフ 第23回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=23&r=bnr", target: "_blank")
 
       .panel.panel-default
         = link_to "#collapse_help", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
