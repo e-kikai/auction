@@ -23,9 +23,9 @@ table.table.table-hover.table-condensed.table-striped.product-table
       . 登録日時
       . 開始日時
     th
-      - if @cond == 2
+      - if @cond.to_i == 2
         | 落札日時
-      - elsif @cond == 3
+      - elsif @cond.to_i == 3
         | キャンセル日時
       - else
         | 終了日時
@@ -35,12 +35,12 @@ table.table.table-hover.table-condensed.table-striped.product-table
      . 即決価格
     / th.price 即決価格
     th.price
-      - if @cond == 2
+      - if @cond.to_i == 2
         | 落札価格
       - else
         | 最高価格
     th
-      - if @cond == 2
+      - if @cond.to_i == 2
         | 落札者
       - else
         | 最高<br />入札者
