@@ -19,17 +19,31 @@ table.table.table-hover.table-condensed.table-striped.product-table
     / th 管理番号
     th 商品名
     th 出品会社
-    th 登録日時
     th
+      . 登録日時
       . 開始日時
-      . 終了日時
+    th
+      - if @cond == 2
+        | 落札日時
+      - elsif @cond == 3
+        | キャンセル日時
+      - else
+        | 終了日時
     th.price
      . 開始価格
      . 最低落札
      . 即決価格
     / th.price 即決価格
-    th.price 最高価格
+    th.price
+      - if @cond == 2
+        | 落札価格
+      - else
+        | 最高価格
     th 最高<br />入札者
+      - if @cond == 2
+        | 落札者
+      - else
+        | 最高<br />入札者
 
     th.num 入札数
     th.num 閲覧数
@@ -58,8 +72,8 @@ table.table.table-hover.table-condensed.table-striped.product-table
         - else
           = "-"
 
-      td = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
-      td = pr.detail_logs_count
-      td = pr.watches_count
+      td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+      td.num = pr.detail_logs_count
+      td.num = pr.watches_count
 
 = paginate @pproducts

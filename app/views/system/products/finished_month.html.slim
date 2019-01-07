@@ -1,7 +1,7 @@
-- set_meta_tags title: "落札商品履歴"
-- breadcrumb :system_something, "落札商品履歴"
+- set_meta_tags title: "月別 落札商品履歴"
+- breadcrumb :system_something, "月別 落札商品履歴"
 
-= form_tag("/system/products/finished", method: "get", class: "form-inline filtering-form") do
+= form_tag("/system/products/finished_month", method: "get", class: "form-inline filtering-form") do
   = select_tag :cond, options_for_select({"終了(落札済)" => 2, "終了(未落札)" => 1, "キャンセル分" => 3}, selected: @cond), {class: "form-control"}
   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
   = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
@@ -22,14 +22,27 @@ table.table.table-hover.table-condensed.table-striped.product-table
     th
       . 登録日時
       . 開始日時
-    th 落札日時
-    th.price
+    th
+      - if @cond == 2
+        | 落札日時
+      - elsif @cond == 3
+        | キャンセル日時
+      - else
+        | 終了日時    th.price
      . 開始価格
      . 最低落札
      . 即決価格
     / th.price 即決価格
-    th.price 落札価格
-    th 落札者
+    th.price
+      - if @cond == 2
+        | 落札価格
+      - else
+        | 最高価格
+    th 最高<br />入札者
+      - if @cond == 2
+        | 落札者
+      - else
+        | 最高<br />入札者
 
     th.num 入札数
     th.num 閲覧数
