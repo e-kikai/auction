@@ -47,7 +47,8 @@ prawn_document do |pdf|
       pdf.default_leading 8
 
       # pdf.text "以上", size: 12, align: :right
-      pdf.text "平成#{Time.now.strftime("%Y").to_i - 1988}年 #{Time.now.strftime("%-m月 %-d日")}", size: 12, align: :right
+      # pdf.text "平成#{Time.now.strftime("%Y").to_i - 1988}年 #{Time.now.strftime("%-m月 %-d日")}", size: 12, align: :right
+      pdf.text Time.now.strftime("%Y年 %-m月 %-d日"), size: 12, align: :right
       pdf.text "ものづくりオークション委員会", size: 14, align: :right
       pdf.text "〒578-0965 住所 東大阪市本庄西2丁目5番10号 大阪機械卸業団地協同組合", size: 12, align: :right
       pdf.text "TEL 06-6747-7521　FAX 06-6747-7525", size: 12, align: :right
@@ -60,7 +61,8 @@ prawn_document do |pdf|
       pdf.default_leading 6
 
       pdf.text "別紙明細の通り、上記システム使用料請求金額をいただきます。", size: 12
-      pdf.text "平成#{@date.strftime("%Y").to_i - 1988}年#{@date.next_month(1).strftime("%-m月")}20日までにご入金下さい。", size: 16
+      # pdf.text "平成#{@date.next_month(1).strftime("%Y").to_i - 1988}年#{@date.next_month(1).strftime("%-m月")}20日までにご入金下さい。", size: 16
+      pdf.text "#{@date.next_month(1).strftime("%Y年%-m月")}20日までにご入金下さい。", size: 16
       pdf.text ""
       # pdf.font "vendor/assets/fonts/VL-PGothic-Regular.ttf"
       pdf.text "ゆうちょ銀行", size: 12
@@ -173,7 +175,8 @@ prawn_document do |pdf|
         end
 
         pdf.text "以上", size: 12, align: :right
-        pdf.text "平成　　年　　月　　日", size: 12, align: :right
+        # pdf.text "平成　　年　　月　　日", size: 12, align: :right
+        pdf.text "　　　　年　　月　　日", size: 12, align: :right
         pdf.text "ものづくりオークション委員会", size: 12, align: :right
       end
     end

@@ -59,6 +59,9 @@
         li = link_to "/system/products/finished?cond=2" do
           span.glyphicon.glyphicon-ok
           span.btn-content 落札商品履歴
+        li = link_to "/system/products/finished_month?cond=2" do
+          span.glyphicon.glyphicon-ok
+          span.btn-content 月別落札商品履歴
         li = link_to "/system/bids" do
           span.glyphicon.glyphicon-pencil
           span.btn-content 入札履歴
@@ -73,7 +76,7 @@
           span.glyphicon.glyphicon-star
           span.btn-content ウォッチリスト利用履歴
         li = link_to "/system/searches" do
-          span.glyphicon.glyphicon-pushpin
+          span.glyphicon.glyphicon-paperclip
           span.btn-content お気に入り利用履歴
         li = link_to "/system/alerts" do
           span.glyphicon.glyphicon-bell

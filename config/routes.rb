@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   end
 
   get "searches/:search_id" => "products#index"
+  # get "news"                => "products#index"
   # resources :searches,   only: [:show]
 
   resources :categories, only: [:index, :show]
@@ -106,6 +107,7 @@ Rails.application.routes.draw do
     resources :products,    only: [:index, :destroy] do
       collection do
         get 'finished'
+        get 'finished_month'
         get 'results'
       end
     end
