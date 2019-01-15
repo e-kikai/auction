@@ -38,6 +38,15 @@ class System::SchedulingController < ApplicationController
     render plain: 'OK', status: 200
   end
 
+  # チラシメール定期
+  def flyer_mail
+    User.all.each do |us|
+      BidMailer.flyer(us).deliver
+    end
+
+    render plain: 'OK', status: 200
+  end
+
   private
 
   def check_ip

@@ -92,4 +92,9 @@ class BidMailer < ApplicationMailer
     mail(to: user.email, subject: "ものオク おすすめ新着情報")
   end
 
+  # チラシ
+  def flyer(user)
+    mail(to: user.email, subject: "ものづくりオークション 新着商品 続々追加中！")
+  end
+
 end
