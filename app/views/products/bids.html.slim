@@ -57,12 +57,12 @@ h1.product-title
 .row
   /// ウォッチ、閲覧数 ///
   .col-md-offset-3.col-md-6.col-sm-12
-    - if @product.detail_logs.count('DISTINCT user_id') > 0
+    - if @product.unique_user_count > 0
       .watches-count-area
         span.glyphicon.glyphicon-thumbs-up.check-icon
         span.btn-content
           | 現在
-          span.watches_count = number_with_delimiter(@product.detail_logs.count('DISTINCT user_id'))
+          span.watches_count = number_with_delimiter(@product.unique_user_count)
           | 人のユーザがこの商品を見ています
     - if @product.watches.count > 0
       .watches-count-area

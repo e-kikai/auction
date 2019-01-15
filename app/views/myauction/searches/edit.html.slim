@@ -4,7 +4,7 @@
 .row
   .col-md-offset-3.col-md-6
     h4
-      span.glyphicon.glyphicon-pushpin.search-pushpin
+      span.glyphicon.glyphicon-paperclip.search-pushpin
       span.btn-content 検索条件のお気に入り変更
 
     = form_for @search, url: "/myauction/searches/#{params[:id]}", html: { multipart: true, method: :patch, class: 'form-horizontal' } do |f|

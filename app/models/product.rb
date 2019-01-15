@@ -84,6 +84,8 @@ class Product < ApplicationRecord
   NEWS_DAYS  = 1.day # 新着期間
   NEWS_LIMIT = 10    # 新着表示件数
 
+  NEWS_PAGE_DAYS = 7.day
+
   OR_MARKER  = "[[xxxxorxxx]]"
 
   ### relations ###
@@ -187,14 +189,19 @@ class Product < ApplicationRecord
     res.status(STATUS[:start]).includes(:product_images)
   }
 
-  ### おすすめ順に並べる ###
+  # おすすめ順に並べる
   scope :populars, -> {
     except(:order).order("((bids_count + 1) * (watches_count + 1)) DESC", :dulation_end)
   }
 
-  ### 新着情報 ###
+  # 新着情報
   scope :news, -> {
     where(dulation_start: (Time.now - NEWS_DAYS)..Time.now)
+  }
+
+  # 新着情報(新着ページ)
+  scope :news_page, -> {
+    where(dulation_start: (Time.now - NEWS_PAGE_DAYS)..Time.now)
   }
 
   ### callback ###
@@ -497,13 +504,20 @@ class Product < ApplicationRecord
     prompt_dicision_price.present? && max_price.to_i >= prompt_dicision_price.to_i
   end
 
+  # 閲覧ユニークユーザ数カウント
+  def unique_user_count
+    detail_logs.count('DISTINCT ip')
+  end
+
   private
 
+  # 現在価格を初期化
   def default_max_price
     # self.max_price = start_price if max_price < start_price
     self.max_price = start_price if bids_count == 0
   end
 
+  # YoutubeID変換
   def youtube_id
     if youtube =~ /([\w\-]{11})/
       self.youtube = $1

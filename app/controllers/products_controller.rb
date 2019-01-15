@@ -28,7 +28,14 @@ class ProductsController < ApplicationController
     ### 終了後の表示 ###
     cond = params[:success].present? ? Product::STATUS[:success] : Product::STATUS[:start]
 
-    @search   = Product.status(cond).with_keywords(@keywords).search(@pms[:q])
+    # 初期検索クエリ作成
+    @search = Product.status(cond).with_keywords(@keywords).search(@pms[:q])
+
+    ### 新着ページ ###
+    if request.path_info =~ /^\/news/
+      @search = @search.result.news_page.search
+      @title  = "新着商品"
+    end
 
     # カテゴリ
     if @pms[:category_id].present?
@@ -76,6 +83,7 @@ class ProductsController < ApplicationController
     @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
   end
 
+  # 入札履歴ページ
   def bids
     # 人気商品
     @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)

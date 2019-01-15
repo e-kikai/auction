@@ -110,7 +110,7 @@
     .search-bottons
       span この検索条件を
       = link_to new_myauction_search_url(search: @pms.merge({name: "#{title}"})), class: "btn btn-default btn-search-save" do
-        span.glyphicon.glyphicon-pushpin.search-pushpin
+        span.glyphicon.glyphicon-paperclip.search-pushpin
         span.btn-content お気に入り登録
 
       = link_to new_myauction_alert_url(alert: @pms.merge({name: "■#{title} 新着通知"})), class: "btn btn-default btn-search-save" do
@@ -172,7 +172,7 @@
     .search-bottons
       span この検索条件を
       = link_to new_myauction_search_url(search: @pms), class: "btn btn-default btn-search-save" do
-        span.glyphicon.glyphicon-pushpin.search-pushpin
+        span.glyphicon.glyphicon-paperclip.search-pushpin
         span.btn-content お気に入り登録
 
       = link_to new_myauction_alert_url(alert: @pms), class: "btn btn-default btn-search-save" do

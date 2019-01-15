@@ -25,20 +25,35 @@
   - set_meta_tags og: { image: @product.product_images.first.image.view.url }
 
 - if @product.finished?
-  .alert.alert-danger
-    - if @product.cancel?
-      .
-        span.glyphicon.glyphicon-remove
-        span.btn-content このオークションは、以下の理由により出品キャンセルされました。
-      = markdown(@product.cancel)
-    - else
+  - if @product.max_bid.present? && @product.max_bid.user == current_user
+    .alert.alert-warning.h4
       span.glyphicon.glyphicon-ok
-      span.btn-content  このオークションは終了しました。
+      span.btn-content おめでとうございます！あなたが落札しました
+      = link_to("/myauction/trades?product_id=#{@product.id}", class: "btn btn-success") do
+        span.glyphicon.glyphicon-transfer
+        =< "出品会社と取引する"
+  - else
+    .alert.alert-danger
+      - if @product.cancel?
+        .
+          span.glyphicon.glyphicon-remove
+          span.btn-content このオークションは、以下の理由により出品キャンセルされました
+        = markdown(@product.cancel)
+      - elsif @product.max_bid.present?
+        span.glyphicon.glyphicon-ok
+        span.btn-content  このオークションは終了しました。たくさんの入札ありがとうございました
+      - elsif @product.lower_price.to_i > @product.max_price
+        span.glyphicon.glyphicon-ok
+        span.btn-content  最低落札価格に達しなかったため、このオークションはしています
+      - else
+        span.glyphicon.glyphicon-ok
+        span.btn-content  このオークションは終了しています
 - elsif @product.before?
   .alert.alert-warning
       span.glyphicon.glyphicon-alert
-      span.btn-content このオークションは、開始前です。
+      span.btn-content このオークションは開始前です
 
+/// 終了後、現在開催中の商品リスト ///
 - if @product.finished? && @popular_products.present?
   .special-area
     label
@@ -96,17 +111,18 @@ article itemscope="" itemtype="http://schema.org/Product"
                   span.h3> #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
                   | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
             .col-md-4.col-sm-4.col-xs-6.col-md-offset-0.col-sm-offset-0.col-xs-offset-3.text-center style="padding: 0;"
-              = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
-                span.glyphicon.glyphicon-star.watch-star
-                span.btn-content ウォッチ
+              - unless @product.finished?
+                = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
+                  span.glyphicon.glyphicon-star.watch-star
+                  span.btn-content ウォッチ
 
           /// ウォッチ、閲覧数 ///
-          - if @product.detail_logs.count('DISTINCT user_id') > 0
+          - if @product.unique_user_count > 0
             .watches-count-area
               span.glyphicon.glyphicon-thumbs-up.check-icon
               span.btn-content
                 | 現在
-                span.watches_count = number_with_delimiter(@product.detail_logs.count('DISTINCT user_id'))
+                span.watches_count = number_with_delimiter(@product.unique_user_count)
                 | 人がこの商品を見ています
           - if @product.watches.count > 0
             .watches-count-area

@@ -1,24 +1,28 @@
 class System::SchedulingController < ApplicationController
   # before_action :check_ip
 
+  # 定期実行処理
   def product_scheduling
     Product.scheduling
 
     render plain: 'OK', status: 200
   end
 
+  # 新着メール通知
   def alert_scheduling
     Alert.scheduling
 
     render plain: 'OK', status: 200
   end
 
+  # ウォッチ新着
   def watch_scheduling
     Watch.scheduling
 
     render plain: 'OK', status: 200
   end
 
+  # Twitter新着
   def twitter_new_product
     @product = Product.status(Product::STATUS[:start]).where("dulation_start > ?", Time.now - 12.hours).order("RANDOM()").first
 
@@ -27,6 +31,7 @@ class System::SchedulingController < ApplicationController
     render plain: 'OK', status: 200
   end
 
+  # Twitter定期bot
   def twitter_toppage
     twitter_send(render_to_string(formats: :text))
 
@@ -42,6 +47,7 @@ class System::SchedulingController < ApplicationController
     end
   end
 
+  # Twitter共通送信処理
   def twitter_send(tweet)
     client = Twitter::REST::Client.new do |config|
       config.consumer_key        = Rails.application.secrets.twitter_consumer_key
