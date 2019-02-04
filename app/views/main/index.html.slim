@@ -21,7 +21,7 @@
         span.glyphicon.glyphicon-paperclip.search-pushpin
         span.btn-content お気に入り検索
       - current_user.searches.each do |se|
-        = link_to se.uri do
+        = link_to se.uri, class: "btn btn-default btn-sm" do
           span.glyphicon.glyphicon-search.search-pushpin
           span.btn-content = se.name
 
@@ -112,6 +112,11 @@
       label
         span.new-icon
         span.btn-content 新着商品
+        = link_to "/news", class: "btn btn-warning", style: "margin-left: 4px;" do
+          span.new-icon
+          span.btn-content すべての新着商品を見る
+          span.new-icon
+
       .panel.panel-default
         .panel-body.toppage-contents
           .toppage-scroll

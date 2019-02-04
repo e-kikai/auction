@@ -368,9 +368,12 @@ label.top-search {
   padding: 0 8px;
 }
 
-.topsearch-area a {
-  display: inline-block;
-  margin-left: 12px;
+.topsearch-area {
+  margin-bottom: 4px;
+  a {
+    display: inline-block;
+    margin-left: 4px;
+  }
 }
 
 .toppage-searches {

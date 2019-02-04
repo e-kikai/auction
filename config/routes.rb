@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   end
 
   get "searches/:search_id" => "products#index"
-  # get "news"                => "products#index"
+  get "news_day/:news_day"  => "products#index"
+  get "news(/:news_week)"     => "products#index", defaults: { news_week: Time.now.yesterday }
+
   # resources :searches,   only: [:show]
 
   resources :categories, only: [:index, :show]

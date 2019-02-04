@@ -5,16 +5,21 @@
 - title.strip!
 
 /// タイトル ///
-- if @title.present?
-  - set_meta_tags title: "#{@title}(#{@pproducts.current_page}/#{@pproducts.total_pages})"
-- else
-  - set_meta_tags title: "#{title} 検索結果(#{@pproducts.current_page}/#{@pproducts.total_pages})"
+- set_meta_tags title: "#{@title.presence || (title + " 検索結果")}(#{@pproducts.current_page}/#{@pproducts.total_pages})"
 
 /// 概要 ///
-- if @description.present?
-  - set_meta_tags description: @description
-- else
-  - set_meta_tags description: "#{title}の新品も中古も！工具・機械ならものオク。ものづくりの現場で活躍する工具・機械を格安価格で安心安全な業者からオークションで購入！"
+- desc = @description.presence || "#{title}の新品も中古も！ものづくりの現場で活躍する工具・機械を格安価格で安心安全な業者からオークションで購入！"
+- set_meta_tags description: desc
+
+/// Twitterカード ///
+- set_meta_tags twitter: { card: "summary", site: "@mnok_official" }
+
+/// OGP ///
+- set_meta_tags og: { type: "article", title: title, description: desc,  site_name: "ものづくりオークション" }
+
+- if img = @pproducts.first.try(:product_images).try(:first)
+  - set_meta_tags twitter: { image: img.image.thumb.url }
+  - set_meta_tags og:      { image: img.image.view.url }
 
 /// パンくず ///
 - if @company.present?

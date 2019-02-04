@@ -199,9 +199,13 @@ class Product < ApplicationRecord
     where(dulation_start: (Time.now - NEWS_DAYS)..Time.now)
   }
 
-  # 新着情報(新着ページ)
-  scope :news_page, -> {
-    where(dulation_start: (Time.now - NEWS_PAGE_DAYS)..Time.now)
+  scope :news_day, -> day {
+    where(dulation_start: day.to_date.beginning_of_day..day.to_date.end_of_day)
+  }
+
+  # 新着情報(週)
+  scope :news_week, -> day {
+    where(dulation_start: (day.to_date - 6.day).beginning_of_day..day.to_date.end_of_day)
   }
 
   ### callback ###
@@ -522,6 +526,10 @@ class Product < ApplicationRecord
     if youtube =~ /([\w\-]{11})/
       self.youtube = $1
     end
+  end
+
+  def self.ransackable_scopes(auth_object = nil)
+    %i(news_day news_week)
   end
 
 end

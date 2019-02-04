@@ -25,6 +25,9 @@ SitemapGenerator::Sitemap.create do
     add "/searches/#{id}", priority: 0.7, changefreq: 'daily'
   end
 
+  ### 新着商品 ###
+  add "/news", priority: 0.9, changefreq: 'daily'
+
   ### カテゴリ ###
   Category.all.select(:id).each do |ca|
     if ca.products.exists?

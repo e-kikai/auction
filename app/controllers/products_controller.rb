@@ -8,6 +8,10 @@ class ProductsController < ApplicationController
       keywords:    pms[:keywords].to_s.normalize_charwidth.strip.presence,
       category_id: pms[:category_id].presence,
       company_id:  pms[:company_id].presence,
+
+      news_week:   pms[:news_week].presence,
+      news_day:    pms[:news_day].presence,
+
       success:     pms[:success].presence,
       q:           pms[:q].presence || {},
 
@@ -31,10 +35,22 @@ class ProductsController < ApplicationController
     # 初期検索クエリ作成
     @search = Product.status(cond).with_keywords(@keywords).search(@pms[:q])
 
-    ### 新着ページ ###
-    if request.path_info =~ /^\/news/
-      @search = @search.result.news_page.search
-      @title  = "新着商品"
+    # 新着(週)
+    if @pms[:news_week].present?
+      date = @pms[:news_week].to_date
+      @search   = @search.result.search(news_week: date.strftime("%F"))
+
+      @title       = "新着商品 #{(date - 6.day).strftime("%Y/%-m/%-d")} 〜 #{date.strftime("%-m/%-d")}"
+      @description = "#{(date - 6.day).strftime("%Y/%-m/%-d")} 〜 #{date.strftime("%-m/%-d")}の新着機械・工具です。お買い得商品を探してみましょう。"
+
+    end
+
+    # 新着(日)
+    if @pms[:news_day].present?
+      date = @pms[:news_day].to_date
+      @search   = @search.result.search(news_day: date.strftime("%F"))
+
+      @title  = "#{date.strftime("%Y/%-m/%-d")} の新着商品"
     end
 
     # カテゴリ
