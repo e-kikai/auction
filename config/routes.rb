@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   get "searches/:search_id" => "products#index"
   get "news_day/:news_day"  => "products#index"
-  get "news(/:news_week)"     => "products#index", defaults: { news_week: Time.now.yesterday }
+  get "news(/:news_week)"   => "products#index", defaults: { news_week: Time.now }
 
   # resources :searches,   only: [:show]
 

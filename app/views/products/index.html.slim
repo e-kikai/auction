@@ -15,7 +15,7 @@
 - set_meta_tags twitter: { card: "summary", site: "@mnok_official" }
 
 /// OGP ///
-- set_meta_tags og: { type: "article", title: title, description: desc,  site_name: "ものづくりオークション" }
+- set_meta_tags og: { type: "article", title: (@title.presence || title), description: desc,  site_name: "ものづくりオークション" }
 
 - if img = @pproducts.first.try(:product_images).try(:first)
   - set_meta_tags twitter: { image: img.image.thumb.url }
