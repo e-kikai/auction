@@ -471,6 +471,14 @@ class Product < ApplicationRecord
 
   # 定期処理
   def self.scheduling
+    # ウォッチアラート
+    time = Time.now + REMINDER_MINUTE
+    Product.status(STATUS[:start]).where(dulation_end: (time.beginning_of_minute..time.end_of_minute)).includes(watches: [:user]).each do |pr|
+      pr.watches.each do |wa|
+        BidMailer.reminder(wa.user, pr).deliver
+      end
+    end
+    
     # 落札確認
     Product.status(STATUS[:success]).where(fee: nil).includes(max_bid: [:user]).each do |pr|
       pr.update(fee: pr.fee_calc)
@@ -485,14 +493,6 @@ class Product < ApplicationRecord
         dulation_end: pr.dulation_end + pr.auto_resale_date.day,
         auto_resale:  pr.auto_resale -= (pr.auto_resale < 100 ? 1 : 0),
       )
-    end
-
-    # ウォッチアラート
-    time = Time.now + REMINDER_MINUTE
-    Product.status(STATUS[:start]).where(dulation_end: (time.beginning_of_minute..time.end_of_minute)).includes(watches: [:user]).each do |pr|
-      pr.watches.each do |wa|
-        BidMailer.reminder(wa.user, pr).deliver
-      end
     end
   end
 

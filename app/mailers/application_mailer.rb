@@ -1,6 +1,8 @@
 class ApplicationMailer < ActionMailer::Base
   add_template_helper(ApplicationHelper)
 
-  default from: 'ものオク<info@mnok.net>'
+  default from: "ものづくりオークション<info@mnok.net>"
   # layout 'mailer'
 end
+
+ActionMailer::Base.register_observer(EmailLogObserver.new)

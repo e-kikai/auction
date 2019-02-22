@@ -44,13 +44,15 @@ module Auction
     config.action_mailer.default_url_options = { :host => 'localhost' }
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.smtp_settings = {
-      :address => Rails.application.secrets.mail_smtp_server,
-      :port => 587,
+      :address   => Rails.application.secrets.mail_smtp_server,
+      :port      => 587,
       :user_name => Rails.application.secrets.mail_user_name,
-      :password => Rails.application.secrets.mail_passwd,
+      :password  => Rails.application.secrets.mail_passwd,
 
       :authentication => :plain,
       :enable_starttls_auto => true
     }
+
+    config.mail_logger = Logger.new("log/mail_#{Rails.env}.log")
   end
 end
