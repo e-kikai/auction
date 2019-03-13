@@ -140,7 +140,7 @@
       /   = link_to(image_tag("omdc_184_sq.png", alt: "第184回 機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
       / .thumbnail.search-panel style="border:0;padding:0;margin-bottom:4px;"
       /   = link_to(image_tag("https://s3-ap-northeast-1.amazonaws.com/machinelife/machine/public/media/banner/banner_20190215024120.gif", alt: "第186回 機械工具入札会", style: "width:100%;"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
-      - if Time.now.between?(Time.parse('2019-03-22'), Time.parse('2019-04-04'))
+      - if (Time.parse('2019-03-22 00:00:00')..Time.parse('2019-04-04 23:59:59')).include? Time.now
         .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
           = link_to(image_tag("https://www.deadstocktool.com/imgs/bids_24.png", alt: "マシンライフ 第24回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=24&r=bnr", target: "_blank")
 
