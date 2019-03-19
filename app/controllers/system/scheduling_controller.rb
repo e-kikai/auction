@@ -73,7 +73,7 @@ class System::SchedulingController < ApplicationController
     end
 
     begin
-      tweet = (tweet.length > 140) ? tweet[0..139].to_s : tweet
+      # tweet = (tweet.length > 140) ? tweet[0..139].to_s : tweet
       client.update(tweet.chomp)
     rescue => e
       Rails.logger.error "<<twitter.rake::tweet.update ERROR : #{e.message}>>"
