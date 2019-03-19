@@ -136,6 +136,7 @@ Rails.application.routes.draw do
         get 'watch_scheduling'
         get 'twitter_new_product'
         get 'twitter_toppage'
+        get 'twitter_news_week'
         get 'flyer_mail'
       end
     end
