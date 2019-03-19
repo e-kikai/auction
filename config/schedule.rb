@@ -49,4 +49,8 @@ if rails_env.to_sym == :production
     # rake 'twitter:toppage'
     command "wget --spider #{scheduling_url + '/twitter_toppage'}"
   end
+
+  every :friday, at: '6:00 pm' do
+    command "wget --spider #{scheduling_url + '/twitter_news_week'}"
+  end
 end

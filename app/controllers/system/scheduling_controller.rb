@@ -38,6 +38,13 @@ class System::SchedulingController < ApplicationController
     render plain: 'OK', status: 200
   end
 
+  # Twitter週末新着
+  def twitter_news_week
+    twitter_send(render_to_string(formats: :text))
+
+    render plain: 'OK', status: 200
+  end
+
   # チラシメール定期
   def flyer_mail
     User.all.each do |us|
