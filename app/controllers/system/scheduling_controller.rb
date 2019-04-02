@@ -54,6 +54,18 @@ class System::SchedulingController < ApplicationController
     render plain: 'OK', status: 200
   end
 
+  # 週間新着メール
+  def news_mail
+    date    = Time.now
+    product = Product.status(Product::STATUS[:start]).search(news_week: date.strftime("%F")).limit(Product::NEWS_LIMIT)
+
+    User.all.each do |us|
+      BidMailer.news_week(us, date, product).deliver
+    end
+
+    render plain: 'OK', status: 200
+  end
+
   private
 
   def check_ip

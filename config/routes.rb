@@ -138,6 +138,7 @@ Rails.application.routes.draw do
         get 'twitter_toppage'
         get 'twitter_news_week'
         get 'flyer_mail'
+        get 'news_mail'
       end
     end
   end

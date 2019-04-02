@@ -97,4 +97,11 @@ class BidMailer < ApplicationMailer
     mail(to: user.email, subject: "ものづくりオークション 新着商品 続々追加中！")
   end
 
+  # 週間新着メール
+  def news_week(user, date, products)
+    @date = date
+
+    mail(to: user.email, subject: "ものづくりオークション 今週の新着商品情報")
+  end
+
 end
