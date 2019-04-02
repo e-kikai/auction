@@ -57,10 +57,12 @@ class System::SchedulingController < ApplicationController
   # 週間新着メール
   def news_mail
     date    = Time.now
-    product = Product.status(Product::STATUS[:start]).search(news_week: date.strftime("%F")).limit(Product::NEWS_LIMIT)
+    res     = Product.status(Product::STATUS[:start]).search(news_week: date.strftime("%F")).result
+    product = res.limit(Product::NEWS_LIMIT)
+    count   = res.count
 
     User.all.each do |us|
-      BidMailer.news_week(us, date, product).deliver
+      BidMailer.news_week(us, date, product, count).deliver
     end
 
     render plain: 'OK', status: 200

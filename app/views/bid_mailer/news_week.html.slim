@@ -10,7 +10,7 @@ html
     p このメールは、ものづくりオークションに登録していただいたユーザの皆様にお送りしています。
 
     . style="background: #edc9ff;padding: 6px 12px;margin-bottom: 8px;"
-      = "今週(#{(@date - 6.day).strftime("%Y/%-m/%-d")} 〜 #{@date.strftime("%-m/%-d")})の新着情報 : #{@products.count} 件"
+      = "今週(#{(@date - 6.day).strftime("%Y/%-m/%-d")} 〜 #{@date.strftime("%-m/%-d")})の新着商品情報 : #{@count} 件"
 
     - @products.each do |pr|
       . style="width:100%;margin:4px 0;"

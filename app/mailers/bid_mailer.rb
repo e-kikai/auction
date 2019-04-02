@@ -99,7 +99,9 @@ class BidMailer < ApplicationMailer
 
   # 週間新着メール
   def news_week(user, date, products)
-    @date = date
+    @date     = date
+    @products = products
+    @count    = count
 
     mail(to: user.email, subject: "ものづくりオークション 今週の新着商品情報")
   end
