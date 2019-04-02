@@ -98,7 +98,7 @@ class BidMailer < ApplicationMailer
   end
 
   # 週間新着メール
-  def news_week(user, date, products)
+  def news_week(user, date, products, count)
     @date     = date
     @products = products
     @count    = count
