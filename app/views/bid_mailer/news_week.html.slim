@@ -10,7 +10,7 @@ html
     p このメールは、ものづくりオークションに登録していただいたユーザの皆様にお送りしています。
 
     . style="background: #edc9ff;padding: 6px 12px;margin-bottom: 8px;"
-      = "今週(#{(@date - 6.day).strftime("%Y/%-m/%-d")} 〜 #{@date.strftime("%-m/%-d")})の新着商品情報 : #{@count} 件"
+      = "今週の新着商品情報 (#{(@date - 6.day).strftime("%Y/%-m/%-d")} 〜 #{@date.strftime("%-m/%-d")}) : #{@count} 件"
 
     - @products.each do |pr|
       . style="width:100%;margin:4px 0;"
@@ -19,7 +19,7 @@ html
             td style="border:0;width:160px; "
               = link_to image_tag(pr.thumb_url, alt: pr.name), "#{root_url(only_path: false)}products/#{pr.id}?r=mail_wtc_nws", style: "max-width: 160px;max-height:120px;", target: "_blank"
             td style="padding:0 16px; vertical-align: top;"
-              . = link_to pr.name, "#{root_url(only_path: false)}products/#{pr.id}?r=mail_wtc_nws", style: "display:inline-block;margin-bottom: 16px;text-decoration:none;color:#337ab7;", target: "_blank"
+              . = link_to pr.name, "#{root_url(only_path: false)}products/#{pr.id}?r=mail_nws_wek", style: "display:inline-block;margin-bottom: 16px;text-decoration:none;color:#337ab7;", target: "_blank"
               . style="margin-bottom: 16px;"
                 = "現在価格 "
                 span style="color: #E50;font-size: 130%;" = number_to_currency(pr.max_price_with_tax)

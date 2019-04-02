@@ -103,7 +103,7 @@ class BidMailer < ApplicationMailer
     @products = products
     @count    = count
 
-    mail(to: user.email, subject: "ものづくりオークション 今週の新着商品情報")
+    mail(to: user.email, subject: "ものづくりオークション 今週の新着商品情報 (#{(@date - 6.day).strftime("%Y/%-m/%-d")} 〜 #{@date.strftime("%-m/%-d")})")
   end
 
 end
