@@ -162,7 +162,7 @@ article itemscope="" itemtype="http://schema.org/Product"
           - if @product.prompt_dicision_price
             h4 即決価格
             .product-price
-              span.h2> #{number_to_currency @product.prompt_dicision_price}
+              span.h2.prompt_dicision_price> #{number_to_currency @product.prompt_dicision_price}
               span.product-tax
                 | (税込 #{number_to_currency(@product.prompt_dicision_price_with_tax)})
 
