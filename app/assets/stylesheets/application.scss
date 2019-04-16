@@ -229,12 +229,17 @@ table.form-table {
 
 table {
   td.price {
-    width: 84px;
+    width: 94px;
     text-align: right;
+
+    .max_price,
+    .prompt_dicision_price {
+      font-size: 18px;
+    }
   }
 
   th.price {
-    width: 84px;
+    width: 94px;
   }
 
   td.total_price {
@@ -485,12 +490,13 @@ label.top-search {
   }
 
   .max_price {
-    font-size: 130%;
-    margin-left: 2px;
+    // font-size: 130%;
+    font-size: 18px;
+    margin-left: 3px;
   }
 
   .max_price_label {
-    font-size: 70%;
+    // font-size: 70%;
   }
 }
 /// search ///
@@ -942,6 +948,11 @@ dl.star-dl {
 
 .max_price {
   color: #E50;
+  font-weight: normal;
+}
+
+.prompt_dicision_price {
+  font-weight: normal;
 }
 
 a.accordion-toggle {

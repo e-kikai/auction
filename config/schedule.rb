@@ -50,11 +50,11 @@ if rails_env.to_sym == :production
     command "wget --spider #{scheduling_url + '/twitter_toppage'}"
   end
 
-  every :friday, at: '6:00 pm' do
+  every :friday, at: '5:00 pm' do
     command "wget --spider #{scheduling_url + '/twitter_news_week'}"
   end
 
-  every :friday, at: '6:00 pm' do
+  every :friday, at: '4:00 pm' do
     command "wget --spider #{scheduling_url + '/news_mail'}"
   end
 end

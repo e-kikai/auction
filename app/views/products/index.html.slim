@@ -45,7 +45,7 @@
     = hidden_field_tag :search_id,          @pms[:search_id]
     = hidden_field_tag :referer,            request.referer
 
-    .panel.panel-default
+    .panel.panel-info
       = link_to "#collapse_filter", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
         span.glyphicon.glyphicon-filter
         span.btn-content 絞り込み
@@ -88,7 +88,7 @@
           = link_to("未使用品", @pms.deep_merge(q: {state_eq: Product.states["未使用品"]})) + " | "
           = link_to "新品",     @pms.deep_merge(q: {state_eq: Product.states["新品"]})
 
-    .panel.panel-default
+    .panel.panel-success
       = link_to "#collapse_category", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
         span.glyphicon.glyphicon-search
         span.btn-content カテゴリから探す
@@ -159,11 +159,14 @@
                     / = " > " if i != 1
                     = link_to(ca.name, "/products?category_id=#{ca.id}")
             td.price.absolute
-              strong
-                = number_to_currency(pr.max_price_with_tax)
-                - if pr.lower_price.present?
-                  .lower-label 最低落札価格あり
-            td.price = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price_with_tax) : "-"
+              .max_price = number_to_currency(pr.max_price_with_tax)
+              - if pr.lower_price.present?
+                .lower-label 最低落札価格あり
+            td.price
+              - if pr.prompt_dicision_price
+                .prompt_dicision_price = number_to_currency(pr.prompt_dicision_price_with_tax)
+              - else
+                | -
             td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
             td.price.absolute
               - unless pr.prompt_dicision?
