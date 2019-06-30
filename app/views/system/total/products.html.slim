@@ -31,7 +31,7 @@
           - total += (@start_counts[day].to_i - @success_counts[day].to_i - @end_counts[day].to_i - @cancel_counts[day].to_i)
 
           tr class="#{'danger' if day.strftime('%w') == '0'} #{'info' if day.strftime('%w') == '6'} #{'success' if day == Time.now.to_date}"
-            td.sepa = I18n.l(day, format: "%d (%a)")
+            td.sepa = I18n.l(day, format: "%e (%a)")
             td.price = number_with_delimiter total
             td.price = number_with_delimiter(@start_counts[day])
 
