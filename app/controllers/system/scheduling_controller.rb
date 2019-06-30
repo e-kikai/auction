@@ -24,9 +24,17 @@ class System::SchedulingController < ApplicationController
 
   # Twitter新着
   def twitter_new_product
-    @product = Product.status(Product::STATUS[:start]).where("dulation_start > ?", Time.now - 12.hours).order("RANDOM()").first
+    @product = Product.status(Product::STATUS[:start]).where("dulation_start > ?", Time.now - Product::TWITTER_INTERVAL).order("RANDOM()").first
 
-    twitter_send(render_to_string(formats: :text)) if @product.present?
+    # 新着がなければ、別処理
+    @news = if @product.blank?
+      @product = Product.status(Product::STATUS[:start]).order("RANDOM()").first
+      false
+    else
+      true
+    end
+
+    twitter_send(render_to_string(formats: :text))
 
     render plain: 'OK', status: 200
   end

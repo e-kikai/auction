@@ -84,7 +84,9 @@ class Product < ApplicationRecord
   NEWS_DAYS  = 1.day # 新着期間
   NEWS_LIMIT = 10    # 新着表示件数
 
-  NEWS_PAGE_DAYS = 7.day
+  NEWS_PAGE_DAYS   = 7.day
+
+  TWITTER_INTERVAL = 6.hours
 
   OR_MARKER  = "[[xxxxorxxx]]"
 
@@ -478,7 +480,7 @@ class Product < ApplicationRecord
         BidMailer.reminder(wa.user, pr).deliver
       end
     end
-    
+
     # 落札確認
     Product.status(STATUS[:success]).where(fee: nil).includes(max_bid: [:user]).each do |pr|
       pr.update(fee: pr.fee_calc)

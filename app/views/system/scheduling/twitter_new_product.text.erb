@@ -1,4 +1,8 @@
+<% if (@news == true) %>
 <%=I18n.l(Time.now, format: "%Y年%-m月%-d日(%a)")%> 新着情報
+<% else %>
+〜 出品商品のご紹介 〜
+<% end %>
 
 <%=@product.name%> [<%=@product.state %>]
 
