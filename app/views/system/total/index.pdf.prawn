@@ -103,11 +103,11 @@ prawn_document do |pdf|
       t.cells.style(size: 10)
 
       t.columns(0).style(width: 38,  align: :right)
-      t.columns(1).style(width: 66, align: :left)
+      t.columns(1).style(width: 66,  align: :left)
       t.columns(2).style(width: 220, align: :left)
-      t.columns(3).style(width: 70, align: :right)
-      t.columns(4).style(width: 74, align: :left)
-      t.columns(5).style(width: 70, align: :right)
+      t.columns(3).style(width: 70,  align: :right)
+      t.columns(4).style(width: 74,  align: :right)
+      t.columns(5).style(width: 70,  align: :right)
       # t.columns(6).style(width: 60, align: :right)
 
       t.row(0).style(align: :center)
