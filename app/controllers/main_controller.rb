@@ -33,4 +33,13 @@ class MainController < ApplicationController
     @infos = Info.where(target: 0).order(start_at: :desc).limit(10)
 
   end
+
+  def feed
+    # 新着
+    @new_products = Product.status(Product::STATUS[:start]).includes(:product_images, :category).reorder(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
+
+    respond_to do |format|
+      format.rss
+    end
+  end
 end
