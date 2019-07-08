@@ -184,6 +184,8 @@
 
         = link_to "LINEで送る", "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！ #{root_url}",target: "_blank", class: "line-button", alt: "LINE"
 
+        = link_to "RSS", "/feed.rss", target: "_blank"
+
       <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmonooku%2F&tabs=timeline&width=300&height=400&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false&appId" width="100%" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
 
       .twitter-area
@@ -195,5 +197,3 @@
         = link_to(image_tag(asset_url("spotsale_logo_03.png", alt: "デッドストックツール.com 機械団地のデッドストックツール通販サイト"), style: "border:1px solid #CCC;"), "https://www.deadstocktool.com/", target: "_blank")
         = link_to(image_tag(asset_url("logo_machinelife.png", alt: "マシンライフ 全機連の中古機械情報サイト"), style: "border:1px solid #26347d;"), "http://www.zenkiren.net/", target: "_blank")
         = link_to(image_tag(asset_url("e-kikai-header-logo.gif", alt: "e-kikai"), style: "border:1px solid #CFC;"), "https://www.e-kikai.com/", target: "_blank")
-
-        = link_to "RSS", "/feed.rss", target: "_blank"

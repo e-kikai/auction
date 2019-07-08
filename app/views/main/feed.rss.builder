@@ -20,10 +20,10 @@ xml.rss(
 
     @new_products.each do |p|
       desc = ""
-      unless @product.prompt_dicision?
+      unless p.prompt_dicision?
         desc += "現在価格 : #{number_to_currency(p.max_price_with_tax)}"
       end
-      if @product.prompt_dicision_price.present?
+      if p.prompt_dicision_price.present?
         desc += "即決価格 : #{number_to_currency(p.prompt_dicision_price_with_tax)}"
       end
 
