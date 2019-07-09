@@ -34,7 +34,7 @@ class MainController < ApplicationController
 
   end
 
-  def feed
+  def rss
     # 新着
     @new_products = Product.status(Product::STATUS[:start]).includes(:product_images, :category).reorder(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
 

@@ -25,11 +25,11 @@ xml.rss(
         desc += "現在価格 : #{number_to_currency(p.max_price_with_tax)}"
       end
       if p.prompt_dicision_price.present?
-        desc += "\s即決価格 : #{number_to_currency(p.prompt_dicision_price_with_tax)}"
+        desc += " 即決価格 : #{number_to_currency(p.prompt_dicision_price_with_tax)}"
       end
-      desc += "\s#{p.dulation_end}"
-      desc += "\s#{p.description}"
-      desc += "\s出品会社 : #{p.user.company}"
+      desc += " 終了日時 : #{p.dulation_end}"
+      desc += " 出品会社 : #{p.user.company}"
+      desc += " | #{p.description}"
 
       xml.item do
         xml.title p.name
