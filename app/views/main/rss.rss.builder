@@ -19,7 +19,7 @@ xml.rss(
     xml.atom :link, "href" => "https://www.mnok.net/feed.rss", "rel" => "self", "type" => "application/rss+xml"
     xml.image asset_url("logo_03.png")
 
-    @new_products.each do |p|
+    @products.each do |p|
       desc = ""
       unless p.prompt_dicision?
         desc += "現在価格 : #{number_to_currency(p.max_price_with_tax)}"

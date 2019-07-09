@@ -36,7 +36,7 @@ class MainController < ApplicationController
 
   def rss
     # 新着
-    @new_products = Product.status(Product::STATUS[:start]).includes(:product_images, :category).reorder(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
+    @products = Product.status(Product::STATUS[:start]).includes(:product_images, :category).search(news_week: Time.now.strftime("%F")).result.reorder(dulation_start: :desc)
 
     respond_to do |format|
       format.rss
