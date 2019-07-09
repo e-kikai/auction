@@ -29,7 +29,7 @@ xml.rss(
       end
       desc += "\s#{p.dulation_end}"
       desc += "\s#{p.description}"
-      desc += "\s出品会社 : #{p.company}"
+      desc += "\s出品会社 : #{p.user.company}"
 
       xml.item do
         xml.title p.name
