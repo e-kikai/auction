@@ -16,8 +16,8 @@ xml.rss(
     xml.ttl "40"
     xml.pubDate(Time.now.strftime("%a, %d %b %Y %H:%M:%S %Z"))
     xml.copyright "Copyright (c) #{Time.now.year} 任意団体ものづくりオークション委員会, All Rights reserved."
-    # xml.atom :link, "href" => "https://www.mnok.net/feed.rss", "rel" => "self", "type" => "application/rss+xml"
-    xml.image "logo_03.png"
+    xml.atom :link, "href" => "https://www.mnok.net/feed.rss", "rel" => "self", "type" => "application/rss+xml"
+    xml.image "asset_url(logo_03.png)"
 
     @new_products.each do |p|
       desc = ""
@@ -25,8 +25,11 @@ xml.rss(
         desc += "現在価格 : #{number_to_currency(p.max_price_with_tax)}"
       end
       if p.prompt_dicision_price.present?
-        desc += "即決価格 : #{number_to_currency(p.prompt_dicision_price_with_tax)}"
+        desc += "\s即決価格 : #{number_to_currency(p.prompt_dicision_price_with_tax)}"
       end
+      desc += "\s#{p.dulation_end}"
+      desc += "\s#{p.description}"
+      desc += "\s出品会社 : #{p.company}"
 
       xml.item do
         xml.title p.name
@@ -35,8 +38,8 @@ xml.rss(
         end
         xml.pubDate p.created_at #公開日
         xml.link "https://www.mnok.net/products/#{p.id}"
-        # xml.guid "products/#{p.id}", "isPermaLint" => false
-        xml.enclosure "", "url" => p.thumb_url, "length" => "100000", "type" => "image/jpeg"
+        xml.guid "https://www.mnok.net/products/#{p.id}", "isPermaLint" => true
+        # xml.enclosure "", "url" => p.thumb_url, "length" => "100000", "type" => "image/jpeg"
         xml.category p.category.name
       end
     end
