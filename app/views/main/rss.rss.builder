@@ -17,7 +17,7 @@ xml.rss(
     xml.pubDate(Time.now.strftime("%a, %d %b %Y %H:%M:%S %Z"))
     xml.copyright "Copyright (c) #{Time.now.year} 任意団体ものづくりオークション委員会, All Rights reserved."
     xml.atom :link, "href" => "https://www.mnok.net/feed.rss", "rel" => "self", "type" => "application/rss+xml"
-    xml.image "asset_url(logo_03.png)"
+    xml.image asset_url(logo_03.png)
 
     @new_products.each do |p|
       desc = ""
