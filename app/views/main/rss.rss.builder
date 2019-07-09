@@ -27,9 +27,10 @@ xml.rss(
       if p.prompt_dicision_price.present?
         desc += " 即決価格 : #{number_to_currency(p.prompt_dicision_price_with_tax)}"
       end
-      desc += " 終了日時 : #{p.dulation_end}"
+      desc += " 終了日時 : #{I18n.l(p.dulation_end, format: :full_date)}"
       desc += " 出品会社 : #{p.user.company}"
-      desc += " | #{p.description}"
+
+      desc += " | #{p.description}" if p.description.present?
 
       xml.item do
         xml.title p.name
