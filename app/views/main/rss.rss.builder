@@ -41,7 +41,7 @@ xml.rss(
         xml.link "https://www.mnok.net/products/#{p.id}"
         xml.guid "https://www.mnok.net/products/#{p.id}", "isPermaLint" => true
         xml.enclosure "", "url" => p.thumb_url, "length" => "100000", "type" => "image/jpeg"
-        xml.media(:content, "url" => p.thumb_url)
+        xml.media(:content, "url" => p.thumb_url, "type" => "image/jpg")
         xml.category p.category.name
       end
     end
