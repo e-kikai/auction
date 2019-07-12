@@ -37,11 +37,11 @@ xml.rss(
         xml.description do
           xml.cdata! desc
         end
-        xml.pubDate p.created_at #公開日
+        xml.pubDate p.dulation_start # 開始日
         xml.link "https://www.mnok.net/products/#{p.id}"
         xml.guid "https://www.mnok.net/products/#{p.id}", "isPermaLint" => true
         xml.enclosure "", "url" => p.thumb_url, "length" => "100000", "type" => "image/jpeg"
-        xml.media(:content, "url" => p.thumb_url, "type" => "image/jpg")
+        xml.media(:content, "url" => p.thumb_url, "medium" => "image", "type" => "image/jpeg")
         xml.category p.category.name
       end
     end
