@@ -3,5 +3,8 @@
     = image_tag(product.thumb_url, alt: product.name)
     .name = product.name
     .price
-      span.max_price_label 現在
-      span.max_price = number_to_currency(product.max_price_with_tax)
+      - if @roduct.finished?
+        span.max_price_label 終了しました
+      - else
+        span.max_price_label 現在
+        span.max_price = number_to_currency(product.max_price_with_tax)
