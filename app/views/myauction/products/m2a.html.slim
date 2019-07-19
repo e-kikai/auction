@@ -4,9 +4,6 @@
 h3 マシンライフから出品
 
 = form_tag("/myauction/products/m2a", method: "get", class: "form-inline filtering-form") do
-  / = select_date @date, {prefix: :date, start_year: 2011, discard_day: true, include_blank: "-なし-"}, {class: "form-control"}
-  / = button_tag "月変更",  class: "btn btn-info"
-
   = select_tag :date, options_for_select(@date_selector, selected: @date), {include_blank: "-- 年月選択なし --", class: "form-control"}
   = select_tag :genre, options_for_select(@genre_selectors, selected: @genre), {include_blank: "-- ジャンル選択なし --", class: "form-control"}
   = button_tag name: "s", value: "1", class: "btn btn-info" do
@@ -16,9 +13,9 @@ h3 マシンライフから出品
 hr
 
 - if @date.blank? && @genre.blank?
-  .alert.alert-danger 取得年月もしくはジャンルを選択してください
+  .alert.alert-info 取得年月、ジャンルを選択してください
 - elsif @datas.blank? || !@datas[0].include?("id")
-  .alert.alert-danger マシンライフからデータを取得できませんでした
+  .alert.alert-danger マシンライフからデータを取得できませんでした(取得年月、ジャンルを選択してください)
 - else
   = form_tag("/myauction/products/new", method: "get", class: "form-inline") do
     .col-md-8.col-md-offset-2

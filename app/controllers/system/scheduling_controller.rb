@@ -55,7 +55,7 @@ class System::SchedulingController < ApplicationController
 
   # チラシメール定期
   def flyer_mail
-    User.all.each do |us|
+    User.where(allow_mail: false).each do |us|
       BidMailer.flyer(us).deliver
     end
 
@@ -69,7 +69,7 @@ class System::SchedulingController < ApplicationController
     product = res.limit(Product::NEWS_LIMIT)
     count   = res.count
 
-    User.all.each do |us|
+    User.where(allow_mail: true).each do |us|
       BidMailer.news_week(us, date, product, count).deliver
     end
 
