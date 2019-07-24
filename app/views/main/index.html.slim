@@ -159,6 +159,19 @@
         .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
           = link_to(image_tag("https://www.deadstocktool.com/imgs/bids_27.png", alt: "マシンライフ 第27回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=27&r=bnr", target: "_blank")
 
+
+      - if (Time.parse('2019-08-09 00:00:00')..Time.parse('2019-08-30 23:59:59')).include? Time.now
+        .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
+          = link_to(image_tag("https://www.deadstocktool.com/imgs/omdc_188.png", alt: "大阪機械卸業団地協同組合 第188回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+
+      - if (Time.parse('2019-11-11 00:00:00')..Time.parse('2019-11-29 23:59:59')).include? Time.now
+        .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
+          = link_to(image_tag("https://www.deadstocktool.com/imgs/omdc_189.png", alt: "大阪機械卸業団地協同組合 第189回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+
+      - if (Time.parse('2020-02-10 00:00:00')..Time.parse('2020-02-28 23:59:59')).include? Time.now
+        .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
+          = link_to(image_tag("https://www.deadstocktool.com/imgs/omdc_190.png", alt: "大阪機械卸業団地協同組合 第190回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+
       .panel.panel-default
         = link_to "#collapse_help", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
           span.glyphicon.glyphicon-question-sign
