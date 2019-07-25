@@ -391,8 +391,6 @@ label.top-search {
     vertical-align: top;
     border-radius: 0;
     padding: 0;
-    // background: #EEE;
-    // border: 0;
     a {
       display: block;
       padding: 0;
@@ -415,7 +413,6 @@ label.top-search {
 
       img {
         position: absolute;
-        // width: inherit;
         top: 0;
         left: 0;
         right: 0;
@@ -427,7 +424,6 @@ label.top-search {
     .name {
       text-align: left;
       font-size: 16px;
-      // font-weight: bold;
       padding: 2px;
       color: #333;
     }
@@ -490,13 +486,8 @@ label.top-search {
   }
 
   .max_price {
-    // font-size: 130%;
     font-size: 18px;
     margin-left: 3px;
-  }
-
-  .max_price_label {
-    // font-size: 70%;
   }
 }
 /// search ///
@@ -531,7 +522,6 @@ label.top-search {
     }
   }
 }
-
 
 .product-dl,
 .trade-dl {
