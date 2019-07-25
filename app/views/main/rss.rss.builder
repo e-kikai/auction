@@ -20,17 +20,29 @@ xml.rss(
     xml.image asset_url("logo_03.png")
 
     @products.each do |p|
-      desc = "<div>"
-      unless p.prompt_dicision?
-        desc += "現在 : #{number_to_currency(p.max_price_with_tax)}"
-      end
-      if p.prompt_dicision_price.present?
-        desc += " 即決 : #{number_to_currency(p.prompt_dicision_price_with_tax)}"
-      end
-      desc += " / #{I18n.l(p.dulation_end, format: :full_date)} 終了</div>"
-      desc += "<div>出品会社 : #{p.user.company}</div>"
+      if params[:mail]
+        desc = "<div>"
+        unless p.prompt_dicision?
+          desc += "現在価格 #{number_to_currency(p.max_price_with_tax)}"
+        end
+        if p.prompt_dicision_price.present?
+          desc += " 即決価格 #{number_to_currency(p.prompt_dicision_price_with_tax)}"
+        end
+        desc += " | #{I18n.l(p.dulation_end, format: :full_date)} 終了</div>"
+        desc += "<div>出品会社 : #{p.user.company}</div>"
+      else
+        desc = ""
+        unless p.prompt_dicision?
+          desc += "現在価格 : #{number_to_currency(p.max_price_with_tax)}"
+        end
+        if p.prompt_dicision_price.present?
+          desc += " 即決価格 : #{number_to_currency(p.prompt_dicision_price_with_tax)}"
+        end
+        desc += " 終了日時 : #{I18n.l(p.dulation_end, format: :full_date)}"
+        desc += " 出品会社 : #{p.user.company}"
 
-      desc += "<div>#{p.description}</div>" if p.description.present?
+        desc += " #{p.description}</div>" if p.description.present?
+      end
 
       xml.item do
         xml.title p.name
