@@ -6,7 +6,8 @@ xml.rss(
   "xmlns:dc"      => "http://purl.org/dc/elements/1.1/",
   "xmlns:atom"    => "http://www.w3.org/2005/Atom",
   "xmlns:sy"      => "http://purl.org/rss/1.0/modules/syndication/",
-  "xmlns:slash"   => "http://purl.org/rss/1.0/modules/slash/"
+  "xmlns:slash"   => "http://purl.org/rss/1.0/modules/slash/",
+  "xmlns:media"   => "http://search.yahoo.com/mrss/"
 ) do
   xml.channel do
     xml.title "ものづくりオークション"
@@ -41,7 +42,7 @@ xml.rss(
         desc += " 終了日時 : #{I18n.l(p.dulation_end, format: :full_date)}"
         desc += " 出品会社 : #{p.user.company}"
 
-        desc += " #{p.description}</div>" if p.description.present?
+        desc += " #{p.description}" if p.description.present?
       end
 
       xml.item do
