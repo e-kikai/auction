@@ -1,5 +1,5 @@
 /// 基本 ///
-- set_meta_tags title: "ものづくりオークション ものづくりのための中古工具・機械のオークションサイト ものオク"
+- set_meta_tags title: "ものづくりオークション｜ものづくりのための中古工具・機械のオークションサイト ものオク", site: nil
 / - set_meta_tags keywords: "中古,新品,工具,機械,NC,ものづくり,オークション,販売,ものオク"
 - set_meta_tags description: "新品も中古も！欲しかったあの工具・機械が格安価格で手に入るかも！ものづくりの現場で活躍する工具・機械を安心安全な業者からオークションで購入！"
 
@@ -7,7 +7,7 @@
 - set_meta_tags twitter: { card: "summary", site: "@mnok_official", image: asset_url("auction_02.jpg") }
 
 /// OGP ///
-- set_meta_tags og: { type: "website", title: "ものづくりオークション ｜ ものづくりのための中古機械・工具のオークション ものオク", description: "新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！", url: root_url, site_name: "ものづくりオークション ｜ ものづくりのための中古機械・工具のオークション ものオク", image: asset_url("auction_03.jpg") }
+- set_meta_tags og: { type: "website", title: "ものづくりオークション｜ものづくりのための中古機械・工具のオークション ものオク", description: "新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！", url: root_url, site_name: "ものづくりオークション｜ものづくりのための中古機械・工具のオークション ものオク", image: asset_url("auction_03.jpg") }
 
 /// BING ///
 - set_meta_tags "msvalidate.01" => "CD6C752835253EA8CB5CECA5CEB50CCB"
@@ -147,9 +147,9 @@
       /   .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
       /     = link_to(image_tag("https://www.deadstocktool.com/imgs/bids_24.png", alt: "マシンライフ 第24回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=24&r=bnr", target: "_blank")
 
-      - if (Time.parse('2019-06-21 00:00:00')..Time.parse('2019-07-04 23:59:59')).include? Time.now
-        .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
-          = link_to(image_tag("https://www.deadstocktool.com/imgs/bids_25.png", alt: "マシンライフ 第25回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=25&r=bnr", target: "_blank")
+      / - if (Time.parse('2019-06-21 00:00:00')..Time.parse('2019-07-04 23:59:59')).include? Time.now
+      /   .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
+      /     = link_to(image_tag("https://www.deadstocktool.com/imgs/bids_25.png", alt: "マシンライフ 第25回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=25&r=bnr", target: "_blank")
 
       - if (Time.parse('2019-09-20 00:00:00')..Time.parse('2019-10-03 23:59:59')).include? Time.now
         .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
@@ -160,7 +160,7 @@
           = link_to(image_tag("https://www.deadstocktool.com/imgs/bids_27.png", alt: "マシンライフ 第27回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=27&r=bnr", target: "_blank")
 
 
-      - if (Time.parse('2019-08-09 00:00:00')..Time.parse('2019-08-30 23:59:59')).include? Time.now
+      - if (Time.parse('2019-08-08 00:00:00')..Time.parse('2019-08-30 23:59:59')).include? Time.now
         .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
           = link_to(image_tag("https://www.deadstocktool.com/imgs/omdc_188.png", alt: "大阪機械卸業団地協同組合 第188回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
