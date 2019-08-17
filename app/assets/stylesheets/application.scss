@@ -461,6 +461,8 @@ label.top-search {
     display: block;
     padding: 4px;
     border: 1px solid #FFF;
+    width: 100%;
+    height: 100%;
 
     &:hover {
       background: #FFFFE0;
@@ -475,13 +477,17 @@ label.top-search {
   }
 
   img {
-    max-width: 132px;
-    max-height: 98px;
+    // max-width: 132px;
+    // max-height: 98px;
+    max-width: 160px;
+    max-height: 120px;
   }
 
   .name {
-    height: 42px;
+    height: 18px;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .price {
