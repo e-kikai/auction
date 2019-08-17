@@ -460,10 +460,17 @@ label.top-search {
   a {
     display: block;
     padding: 4px;
+    border: 1px solid #FFF;
 
     &:hover {
       background: #FFFFE0;
       text-decoration: none;
+      border: 1px solid #cc64ff;
+
+      img {
+        opacity: 1;
+      }
+
     }
   }
 
