@@ -456,6 +456,7 @@ label.top-search {
   padding: 0;
   border-radius: 0;
   border: 0;
+  position: relative;
 
   a {
     display: block;
@@ -488,10 +489,14 @@ label.top-search {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    bottom: 24px;
+    width: 170px;
   }
 
   .price {
     color: #333;
+    position: absolute;
+    bottom: 0;
 
     &:hover {
       color: #333;
