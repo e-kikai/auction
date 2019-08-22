@@ -111,7 +111,7 @@ class ProductsController < ApplicationController
 
     # クエリ作成
     @products = Product.status(Product::STATUS[:start]).with_keywords(@keywords).includes(:product_images)
-    @products = @products.order(" CASE WHEN product_images.id IS NULL THEN 1 ELSE 9, RANDOM() ").limit(4)
+    @products = @products.order(" CASE WHEN product_images.id IS NULL THEN 1 ELSE 9 END, RANDOM() ").limit(4)
 
     @res = params[:res]
 
