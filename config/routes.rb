@@ -18,6 +18,10 @@ Rails.application.routes.draw do
     member do
       get 'bids'
     end
+
+    collection do
+      get 'ads'
+    end
   end
 
   get "searches/:search_id" => "products#index"
