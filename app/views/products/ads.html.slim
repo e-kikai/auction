@@ -13,5 +13,6 @@ html
       - if @products.present?
         - @products.each do |pr|
           = render "/main/product_panel", product: pr, r: "#{@res}_ads"
+      br style="clear:both;"
   .
     = link_to( image_tag("logo_02.png", alt: "工具・機械のものづくりオークション | ものオク"), "/", class: "navbar-brand omdc-logo")
