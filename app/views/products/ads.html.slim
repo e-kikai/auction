@@ -1,0 +1,19 @@
+
+/// タイトル ///
+- set_meta_tags title: "おすすめオークション"
+
+/// 概要 ///
+- desc = @description.presence || "#{title}の新品も中古も！ものづくりの現場で活躍する工具・機械を格安価格で安心安全な業者からオークションで購入！"
+- set_meta_tags description: desc
+
+.row
+  - if @products.present?
+    .row
+      label
+        span.glyphicon.glyphicon-ok.check-icon
+        span.btn-content おすすめ商品
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @products.each do |pr|
+              = render "/main/product_panel", product: pr, r: :src_chk

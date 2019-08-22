@@ -105,6 +105,16 @@ class ProductsController < ApplicationController
     @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
   end
 
+  def ads
+    ### 検索キーワード ###
+    @keywords = params[:keywords].to_s.normalize_charwidth.strip
+
+    # クエリ作成
+    @search = Product.status(Product::STATUS[:success]).with_keywords(@keywords)
+
+    @products  = @search.result.includes(:product_images).limit(4)
+  end
+
   private
 
   def get_product
