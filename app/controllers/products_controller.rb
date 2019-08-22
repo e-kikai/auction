@@ -110,7 +110,9 @@ class ProductsController < ApplicationController
     @keywords = params[:keywords].to_s.normalize_charwidth.strip
 
     # クエリ作成
-    @products = Product.status(Product::STATUS[:success]).with_keywords(@keywords).includes(:product_images).limit(4)
+    @products = Product.status(Product::STATUS[:start]).with_keywords(@keywords).includes(:product_images).limit(4)
+
+    render layout: false
   end
 
   private

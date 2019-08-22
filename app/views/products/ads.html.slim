@@ -1,19 +1,22 @@
+doctype html
+html
+  head
+    - set_meta_tags title: "おすすめオークション"
 
-/// タイトル ///
-- set_meta_tags title: "おすすめオークション"
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => :reload
+    = javascript_include_tag 'application', 'data-turbolinks-track' => :reload
+    = render 'application/favicon'
+    = csrf_meta_tags
 
-/// 概要 ///
-- desc = @description.presence || "#{title}の新品も中古も！ものづくりの現場で活躍する工具・機械を格安価格で安心安全な業者からオークションで購入！"
-- set_meta_tags description: desc
-
-.row
-  - if @products.present?
+  body
     .row
-      label
-        span.glyphicon.glyphicon-ok.check-icon
-        span.btn-content おすすめ商品
-      .panel.panel-default
-        .panel-body.toppage-contents
-          .toppage-scroll
-            - @products.each do |pr|
-              = render "/main/product_panel", product: pr, r: :src_chk
+      - if @products.present?
+        .row
+          label
+            span.glyphicon.glyphicon-ok.check-icon
+            span.btn-content おすすめ商品
+          .panel.panel-default
+            .panel-body.toppage-contents
+              .toppage-scroll
+                - @products.each do |pr|
+                  = render "/main/product_panel", product: pr, r: :src_chk
