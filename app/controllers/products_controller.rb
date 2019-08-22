@@ -111,7 +111,7 @@ class ProductsController < ApplicationController
 
     # クエリ作成
     @products = Product.status(Product::STATUS[:start]).with_keywords(@keywords).includes(:product_images)
-    @products = @products.order(" RANDOM() ").limit(4)
+    @products = @products.reorder(" RANDOM() ").limit(4)
 
     @res = params[:res]
 
