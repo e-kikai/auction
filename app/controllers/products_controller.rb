@@ -115,9 +115,7 @@ class ProductsController < ApplicationController
 
     @res = params[:res]
 
-    render :text => @products.to_sql
-
-#    render layout: false
+    render layout: false
   end
 
   private
