@@ -9,9 +9,8 @@ html
     = csrf_meta_tags
 
   body
-    .row
       - if @products.present?
-        .row
+        .
           label
             span.glyphicon.glyphicon-ok.check-icon
             span.btn-content おすすめ商品
@@ -19,4 +18,4 @@ html
             .panel-body.toppage-contents
               .toppage-scroll
                 - @products.each do |pr|
-                  = render "/main/product_panel", product: pr, r: :src_chk
+                  = render "/main/product_panel", product: pr, r: "#{@res}_ads"
