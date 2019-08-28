@@ -114,7 +114,7 @@ class ProductsController < ApplicationController
     @products = Product.status(Product::STATUS[:start]).with_keywords(@keywords).includes(:product_images)
     @products = @products.reorder(" RANDOM() ").limit(lim)
 
-    if lim < @products.count
+    if lim > @products.count
       @products += Product.status(Product::STATUS[:start]).reorder(" RANDOM() ").limit(lim - @products.count)
     end
 
