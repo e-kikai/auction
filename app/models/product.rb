@@ -145,7 +145,7 @@ class Product < ApplicationRecord
       res = self
 
       ors = []
-      keywords.gsub(/[[:space:]]*[\|｜][[:space:]]*/, OR_MARKER).split(/[[:space:]]/).reject(&:empty?).each do |keyword|
+      keywords.gsub(/[[:space:]]*[\|｜]+[[:space:]]*/, OR_MARKER).split(/[[:space:]]/).reject(&:empty?).each do |keyword|
         res = case
         when keyword.include?(OR_MARKER)
           res.where("search_keywords SIMILAR TO ?", "%(#{keyword.gsub(OR_MARKER, "|")})%")
