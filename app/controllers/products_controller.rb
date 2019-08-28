@@ -111,9 +111,11 @@ class ProductsController < ApplicationController
 
     # クエリ作成
     @products = Product.status(Product::STATUS[:start]).with_keywords(@keywords).includes(:product_images)
-    @products = @products.reorder(" RANDOM() ").limit(4)
+    @products = @products.reorder(" RANDOM() ").limit(6)
 
     @res = params[:res]
+
+    response.headers['X-Frame-Options'] = 'ALLOWALL'
 
     render layout: false
   end
