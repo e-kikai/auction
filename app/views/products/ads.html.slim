@@ -8,10 +8,9 @@ html
     = render 'application/favicon'
     = csrf_meta_tags
 
-  body style="border: 1px solid #cc64ff;"
+  body.ads_body
     .
       - if @products.present?
         - @products.each do |pr|
           = render "/main/product_panel", product: pr, r: "#{@res}_ads"
-  .
-    = link_to( image_tag("logo_02.png", alt: "工具・機械のものづくりオークション | ものオク", style: "height:50px;margin-left:16px;"), "/")
+    = link_to(image_tag("logo_02.png", alt: "工具・機械のものづくりオークション | ものオク", class: "ads_logo"), "/")
