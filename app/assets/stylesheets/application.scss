@@ -1032,8 +1032,11 @@ body.ads_body {
 
 }
 
-img.ads_logo {
+a.ads_logo {
   display: block;
-  height: 50px;
-  margin-left: 16px;
+
+  img {
+    height: 50px;
+    margin-left: 16px;
+  }  
 }
