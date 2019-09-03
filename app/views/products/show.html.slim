@@ -339,6 +339,10 @@ article itemscope="" itemtype="http://schema.org/Product"
           - @popular_products.each do |pr|
             = render "/main/product_panel", product: pr, r: :dtl_sca
 
+- orkeywords = "#{@product.name}|#{@product.category.name}".gsub(/[\s　|｜]+/, '|')
+iframe.machinelife_ads src="https://www.zenkiren.net/machine_ads.php?keywords=#{orkeywords}&res=mnok">
+
+
 /// 入札ダイアログ ////
 .modal.fade#bid-modal
   .modal-dialog

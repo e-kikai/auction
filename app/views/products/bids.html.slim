@@ -145,3 +145,7 @@ h1.product-title
         .toppage-scroll
           - @popular_products.each do |pr|
             = render "/main/product_panel", product: pr, r: :dtl_sca
+
+
+- orkeywords = "#{@product.name}|#{@product.category.name}".gsub(/[\s　|｜]+/, '|')
+iframe.machinelife_ads src="https://www.zenkiren.net/machine_ads.php?keywords=#{orkeywords}&res=mnok">
