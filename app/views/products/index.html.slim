@@ -198,6 +198,4 @@
               - @detaillog_products.each do |pr|
                 = render "/main/product_panel", product: pr, r: :src_chk
 
-
-- orkeywords = title.gsub(/[\s　|｜]+/, '|')
-iframe.machinelife_ads src="https://www.zenkiren.net/machine_ads.php?keywords=#{orkeywords}&res=mnok">
+= render "/main/ads_frames", okw: title
