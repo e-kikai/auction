@@ -13,5 +13,6 @@ html
       - if @products.present?
         - @products.each do |pr|
           = render "/main/product_panel", product: pr, r: "#{@res}_ads"
-    = link_to do
-      = image_tag("logo_02.png", alt: "工具・機械のものづくりオークション | ものオク"), "/", class: "ads_logo", target: "_blank")
+    = link_to "/", class: "ads_logo", target: "_blank" do
+      = image_tag("logo_02.png", alt: "工具・機械のものづくりオークション | ものオク")
+      .site by mnok.net
