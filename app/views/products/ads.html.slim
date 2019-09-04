@@ -12,7 +12,7 @@ html
     .
       - if @products.present?
         - @products.each do |pr|
-          = render "/main/product_panel", product: pr, r: "#{@res}_ads", target: "_blank"
+          = render "/main/product_panel", product: pr, r: "#{@res}_ads"
     = link_to do
       = image_tag("logo_02.png", alt: "工具・機械のものづくりオークション | ものオク"), "/", class: "ads_logo", target: "_blank")
       .site by mnok.net

@@ -1,5 +1,5 @@
 .thumbnail.product-pannel
-  = link_to "/products/#{product.id}?r=#{r}", target: (target || "") do
+  = link_to "/products/#{product.id}?r=#{r}", target: "_blank" do
     = image_tag(product.thumb_url, alt: product.name)
     .name = product.name
     .price
