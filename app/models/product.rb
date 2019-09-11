@@ -451,23 +451,27 @@ class Product < ApplicationRecord
   end
 
   # 消費税計算
-  def self.calc_tax(price)
-    (price.to_i * TAX_RATE / 100).floor
+  def self.calc_tax(price, day = "now")
+    # (price.to_i * TAX_RATE / 100).floor
+    (price.to_i * Product.tax_rate(day) / 100).floor
   end
 
   # 税込金額計算
-  def self.calc_price_with_tax(price)
-    price.to_i + self.calc_tax(price)
+  def self.calc_price_with_tax(price, day = "now")
+    # price.to_i + self.calc_tax(price)
+    price.to_i + self.calc_tax(price, day)
   end
 
   # 商品の消費税計算
   %w|start_price prompt_dicision_price max_price lower_price fee|.each do |price|
     define_method("#{price}_tax") do
-      Product.calc_tax(send(price))
+      # Product.calc_tax(send(price))
+      Product.calc_tax(send(price), dulation_end)
     end
 
     define_method("#{price}_with_tax") do
-      Product.calc_price_with_tax(send(price))
+      # Product.calc_price_with_tax(send(price))
+      Product.calc_price_with_tax(send(price), dulation_end)
     end
   end
 
@@ -513,6 +517,13 @@ class Product < ApplicationRecord
   # 閲覧ユニークユーザ数カウント
   def unique_user_count
     detail_logs.count('DISTINCT ip')
+  end
+
+  def self.tax_rate(day = "now")
+    case
+    when day.to_date >= "2010/10/01".to_date; 10
+    else;                                      8
+    end
   end
 
   private

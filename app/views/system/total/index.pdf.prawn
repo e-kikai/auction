@@ -93,7 +93,9 @@ prawn_document do |pdf|
     end + [
       [ {content: "", colspan: 2}, {content: "落札金額合計", colspan: 2}, {content: number_to_currency(price), colspan: 2},],
       [ {content: "", colspan: 2}, {content: "システム使用料", colspan: 2}, {content: number_to_currency(fee), colspan: 2},],
-      [ {content: "", colspan: 2}, {content: "消費税 (#{Product::TAX_RATE}%)", colspan: 2}, {content: number_to_currency(fee_tax), colspan: 2},],
+      # [ {content: "", colspan: 2}, {content: "消費税 (#{Product::TAX_RATE}%)", colspan: 2}, {content: number_to_currency(fee_tax), colspan: 2},],
+      [ {content: "", colspan: 2}, {content: "消費税 (#{Product.tax_rate(@date)}%)", colspan: 2}, {content: number_to_currency(fee_tax), colspan: 2},],
+
       [ {content: "", colspan: 2}, {content: "請求金額", colspan: 2}, {content: number_to_currency(fee_with_tax), colspan: 2},],
     ]
 
@@ -139,7 +141,8 @@ prawn_document do |pdf|
         pdf.text_box "記", size: 12, at: [2.mm, 80.mm], align: :center
 
         arr = [
-          ["システム使用料(税抜)", "消費税(#{Product::TAX_RATE}%)", "合計請求金額"],
+          # ["システム使用料(税抜)", "消費税(#{Product::TAX_RATE}%)", "合計請求金額"],
+          ["システム使用料(税抜)", "消費税(#{Product.tax_rate(@date)}%)", "合計請求金額"],
           [number_to_currency(fee), number_to_currency(fee_tax), number_to_currency(fee_with_tax)]
         ]
 
