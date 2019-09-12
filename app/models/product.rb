@@ -522,7 +522,7 @@ class Product < ApplicationRecord
   def self.tax_rate(day = Date.today)
     d = day.to_date
     case
-    when d >= "20109/10/01".to_date; 10
+    when d >= "2019/10/01".to_date; 10
     else;                             8
     end
   end
