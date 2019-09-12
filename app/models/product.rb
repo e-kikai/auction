@@ -525,7 +525,11 @@ class Product < ApplicationRecord
     # else;                              8
     # end
 
-    8
+    if day.to_date >= "2010/10/01".to_date
+      10
+    else
+      8
+    end
   end
 
   private
