@@ -78,15 +78,13 @@
           - @searches[0..2].each do |se|
             = render "search_panel", search: se
 
-      - if @follows_new_products.present?
-        label
-          span.glyphicon.glyphicon-heart.follow-heart
-          span.btn-content フォローした出品会社の新着商品
-        .panel.panel-default
-          .panel-body.toppage-contents
-            .toppage-scroll
-              - @follows_new_products.each do |pr|
-                = render "product_panel", product: pr, r: :top_flw
+    label
+      span.new-icon
+      span.btn-content 新着商品
+      = link_to "/news/#{Time.now.strftime("%Y-%m-%d")}", class: "btn btn-warning", style: "margin-left: 4px;" do
+        span.new-icon
+        span.btn-content すべての新着商品を見る
+        span.new-icon
 
       .toppage-searches
         - if @searches[3]
@@ -109,13 +107,15 @@
           - @searches[6..8].each do |se|
             = render "search_panel", search: se
 
-      label
-        span.new-icon
-        span.btn-content 新着商品
-        = link_to "/news/#{Time.now.strftime("%Y-%m-%d")}", class: "btn btn-warning", style: "margin-left: 4px;" do
-          span.new-icon
-          span.btn-content すべての新着商品を見る
-          span.new-icon
+      - if @follows_new_products.present?
+        label
+          span.glyphicon.glyphicon-heart.follow-heart
+          span.btn-content フォローした出品会社の新着商品
+        .panel.panel-default
+          .panel-body.toppage-contents
+            .toppage-scroll
+              - @follows_new_products.each do |pr|
+                = render "product_panel", product: pr, r: :top_flw
 
       .panel.panel-default
         .panel-body.toppage-contents
@@ -125,11 +125,11 @@
 
       .toppage-searches
         - if @searches[9]
-          - @searches[9..9].each do |se|
+          - @searches[9..10].each do |se|
             = render "search_panel", search: se
 
-        .thumbnail.search-panel style="border:0;"
-         = link_to(image_tag("deadstock_01.png", alt: "SALE 新古品 お買い得 即決 デッドストックエンドミル特集"), "/products?keywords=%E2%98%85%E3%83%87%E3%83%83%E3%83%89%E3%82%B9%E3%83%88%E3%83%83%E3%82%AF%E3%82%A8%E3%83%B3%E3%83%89%E3%83%9F%E3%83%AB%E7%89%B9%E9%9B%86%E2%98%85&r=top_bnr")
+        / .thumbnail.search-panel style="border:0;"
+        /  = link_to(image_tag("deadstock_01.png", alt: "SALE 新古品 お買い得 即決 デッドストックエンドミル特集"), "/products?keywords=%E2%98%85%E3%83%87%E3%83%83%E3%83%89%E3%82%B9%E3%83%88%E3%83%83%E3%82%AF%E3%82%A8%E3%83%B3%E3%83%89%E3%83%9F%E3%83%AB%E7%89%B9%E9%9B%86%E2%98%85&r=top_bnr")
 
         .thumbnail.search-panel style="border:0;"
           = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
@@ -160,9 +160,9 @@
           = link_to(image_tag("https://www.deadstocktool.com/imgs/bids_27.png", alt: "マシンライフ 第27回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=27&r=bnr", target: "_blank")
 
 
-      - if (Time.parse('2019-08-08 00:00:00')..Time.parse('2019-08-30 23:59:59')).include? Time.now
-        .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
-          = link_to(image_tag("https://www.deadstocktool.com/imgs/omdc_188.png", alt: "大阪機械卸業団地協同組合 第188回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+      / - if (Time.parse('2019-08-08 00:00:00')..Time.parse('2019-08-30 23:59:59')).include? Time.now
+      /   .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
+      /     = link_to(image_tag("https://www.deadstocktool.com/imgs/omdc_188.png", alt: "大阪機械卸業団地協同組合 第188回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
       - if (Time.parse('2019-11-11 00:00:00')..Time.parse('2019-11-29 23:59:59')).include? Time.now
         .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"

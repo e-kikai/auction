@@ -32,8 +32,8 @@ html
         = link_to( image_tag("logo_02.png", alt: "工具・機械のものづくりオークション | ものオク"), "/", class: "navbar-brand omdc-logo")
 
         - if user_signed_in?
-          p.navbar-text
-            span> ようこそ、
+          p.navbar-text.login
+            span> ようこそ
             strong #{current_user.company} #{current_user.name}
             span< さん [
             = link_to "/users/sign_out", method: :delete
@@ -41,7 +41,7 @@ html
               span.btn-content ログアウト
             | ]
         - else
-          p.navbar-text ものづくりの現場で活躍する機械・工具を安心安全な業者からオークションで購入！
+          p.navbar-text.logout ものづくりの現場で活躍する機械・工具を安心安全な業者からオークションで購入！
 
       /   button.navbar-toggle data-toggle="collapse" data-target="#navbar-collapse-1"
       /     span.sr-only Toggle navigation

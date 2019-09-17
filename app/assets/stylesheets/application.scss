@@ -47,6 +47,14 @@ header {}
 .navbar-text {
   display: inline-block;
   margin-left: 8px;
+
+  .logout {
+    color: #cc64ff;
+  }
+
+  .login {
+    color: #333;
+  }
 }
 /// キーワード検索 ///
 .search-area .input-group {
