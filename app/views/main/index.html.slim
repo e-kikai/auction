@@ -86,6 +86,12 @@
           span.btn-content すべての新着商品を見る
           span.new-icon
 
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @new_products.each do |pr|
+              = render "product_panel", product: pr, r: :top_new
+
       .toppage-searches
         - if @searches[3]
           - @searches[3..5].each do |se|
@@ -117,11 +123,6 @@
               - @follows_new_products.each do |pr|
                 = render "product_panel", product: pr, r: :top_flw
 
-      .panel.panel-default
-        .panel-body.toppage-contents
-          .toppage-scroll
-            - @new_products.each do |pr|
-              = render "product_panel", product: pr, r: :top_new
 
       .toppage-searches
         - if @searches[9]

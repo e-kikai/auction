@@ -48,11 +48,11 @@ header {}
   display: inline-block;
   margin-left: 8px;
 
-  .logout {
+  &.logout {
     color: #cc64ff;
   }
 
-  .login {
+  &.login {
     color: #333;
   }
 }
