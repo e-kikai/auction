@@ -78,13 +78,13 @@
           - @searches[0..2].each do |se|
             = render "search_panel", search: se
 
-    label
-      span.new-icon
-      span.btn-content 新着商品
-      = link_to "/news/#{Time.now.strftime("%Y-%m-%d")}", class: "btn btn-warning", style: "margin-left: 4px;" do
+      label
         span.new-icon
-        span.btn-content すべての新着商品を見る
-        span.new-icon
+        span.btn-content 新着商品
+        = link_to "/news/#{Time.now.strftime("%Y-%m-%d")}", class: "btn btn-warning", style: "margin-left: 4px;" do
+          span.new-icon
+          span.btn-content すべての新着商品を見る
+          span.new-icon
 
       .toppage-searches
         - if @searches[3]
