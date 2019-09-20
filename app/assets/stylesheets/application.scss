@@ -1069,7 +1069,7 @@ iframe.machinelife_ads {
   overflow: hidden;
 }
 
-@media (min-width: 991px) {
+@media (max-width: 991px) {
   iframe.machinelife_ads {
     width: 350px;
     height: 655px;
