@@ -1068,3 +1068,10 @@ iframe.machinelife_ads {
   border: none;
   overflow: hidden;
 }
+
+@media (min-width: 991px) {
+  iframe.machinelife_ads {
+    width: 350px;
+    height: 655px;
+  }
+}
