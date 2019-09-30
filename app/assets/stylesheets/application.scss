@@ -19,6 +19,7 @@
 // $icon-font-path: "bootstrap-sass/assets/fonts/bootstrap/";
 // @import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 $main-color: #edc9ff;
+$heavy-color: #707;
 
 .breadcrumb > li + li:before {
   content: "> ";
@@ -49,7 +50,7 @@ header {}
   margin-left: 8px;
 
   &.logout {
-    color: #cc64ff;
+    color: $heavy-color;
   }
 
   &.login {
@@ -184,9 +185,10 @@ label.required:after {
 
 .product-title {
   font-size: 25px;
-  background: $main-color;
+  // background: $main-color;
   padding: 6px;
   margin-top: 0;
+  border-bottom: 2px solid $main-color;
 }
 
 .product-table {
@@ -792,16 +794,26 @@ hr.detail-price-calc {
   h4,
   h5,
   h6 {
-    margin-top: 24px;
+    margin-top: 32px;
     margin-bottom: 8px;
     font-weight: bold;
+    border: 1px solid $heavy-color;
+    border-width: 0 0 1px 8px;
+    line-height: 1.4;
+    font-weight: normal;
+
+    padding: 0 8px;
+  }
+
+  h5, h6 {
     color: #707;
+    border-width: 0 0 0 12px;
   }
 
   b,
   strong {
-    font-size: 17px;
-    color: #700;
+    font-size: 19px;
+    color: #D00;
   }
 
   li {
@@ -831,7 +843,7 @@ hr.detail-price-calc {
     max-width: 100%;
     display: block;
     margin: 4px auto 32px auto;
-    border: 1px solid #777;
+    border: 1px solid #A3A392;
   }
 }
 /// マイ・オークション ///
@@ -1048,14 +1060,15 @@ a.ads_logo {
 
   .site {
     position: absolute;
-    top: 196px;
+    bottom: 8px;
     left: 310px;
   }
 
   .desc {
     position: absolute;
     color: #333;
-    top: 176px;
+    bottom: 8px;
+    bottom: 32px;
     left: 310px;
   }
 }

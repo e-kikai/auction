@@ -27,7 +27,7 @@ class System::TotalController < System::ApplicationController
     rend   = @date.end_of_month
     auto_sql = "DATE(dulation_end) + auto_resale * auto_resale_date"
     # @products  = Product.includes(:user).where(created_at: @date.beginning_of_month..@date.end_of_month, template: false)
-    @products = Product.includes(:user).where(template: false)
+    @products = Product.includes(:user).where(template: false).where(cancel: nil)
     @products = @products.where(user: @company) if @company.present?
 
     # 集計
