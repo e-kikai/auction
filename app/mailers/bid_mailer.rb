@@ -106,4 +106,8 @@ class BidMailer < ApplicationMailer
     mail(to: user.email, subject: "ものづくりオークション 今週の新着商品情報 (#{(@date - 6.day).strftime("%Y/%-m/%-d")} 〜 #{@date.strftime("%-m/%-d")})")
   end
 
+  # def reconfirm(user)
+  #   mail(to: user.email, subject: "ものづくりオークション 登録作業が完了していません")
+  # end
+
 end

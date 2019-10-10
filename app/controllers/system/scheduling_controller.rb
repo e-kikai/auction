@@ -69,12 +69,20 @@ class System::SchedulingController < ApplicationController
     product = res.limit(Product::NEWS_LIMIT)
     count   = res.count
 
-    User.where(allow_mail: true).each do |us|
+    User.where(allow_mail: true).where.not(confirmed_at: nil).reorder(id: :desc).each do |us|
       BidMailer.news_week(us, date, product, count).deliver
     end
 
     render plain: 'OK', status: 200
   end
+
+  # def reconfirm_mail
+  #   User.where(confirmed_at: false).reorder(id: :desc).each do |us|
+  #     BidMailer.reconfirm(us, date, product, count).deliver
+  #   end
+  #
+  #   render plain: 'OK', status: 200
+  # end
 
   private
 
