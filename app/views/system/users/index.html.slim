@@ -41,6 +41,7 @@ ul.nav.nav-pills
             th 業種
             th 出品
             th 案内
+            th 確認
             th 変更
             / th 代理ログイン
             th パスワード
@@ -59,6 +60,7 @@ ul.nav.nav-pills
                   . = ind.name
               td = us.seller? ? "◯" : "×"
               td = us.allow_mail? ? "◯" : "×"
+              td = us.confirmed_at? ? "◯" : "×"
 
               td = link_to({ action: :edit, id: us.id }, class: "btn btn-warning") do
                 span.glyphicon.glyphicon-edit

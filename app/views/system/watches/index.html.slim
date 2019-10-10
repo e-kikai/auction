@@ -12,6 +12,7 @@
   table.table.table-hover.table-condensed.table-striped
     tr
       th.num ID
+      th.num ユーザID
       th アカウント
       th.sepa 会社・ユーザ名
       th.num 商品ID
@@ -27,6 +28,7 @@
     - @pwatches.each do |wa|
       tr
         td.num = wa.id
+        td.num = wa.user.try(:id)
         td = wa.user.try(:account)
         td.sepa = "#{wa.user.try(:company)} #{wa.user.try(:name)}".strip
         td.num = wa.product_id
