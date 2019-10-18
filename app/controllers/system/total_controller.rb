@@ -27,7 +27,7 @@ class System::TotalController < System::ApplicationController
     rend   = @date.end_of_month
     auto_sql = "DATE(dulation_end) + auto_resale * auto_resale_date"
     # @products  = Product.includes(:user).where(created_at: @date.beginning_of_month..@date.end_of_month, template: false)
-    @products = Product.includes(:user).where(template: false).where(cancel: nil)
+    @products = Product.includes(:user).where(template: false)
     @products = @products.where(user: @company) if @company.present?
 
     # 集計
@@ -57,7 +57,7 @@ class System::TotalController < System::ApplicationController
 
     @user_counts        = User.group("DATE(created_at)").having("DATE(created_at) BETWEEN ? AND ?", rstart, rend).count
 
-    @start_count        = @products.where("dulation_start < ?", rstart).where("(max_bid_id IS NOT NULL AND dulation_end >= ?) OR (max_bid_id IS NULL AND #{auto_sql} >=?)", rstart, rstart).count
+    @start_count        = @products.where("dulation_start < ?", rstart).where("(max_bid_id IS NOT NULL AND dulation_end >= ?) OR (max_bid_id IS NULL", rstart).count
 
     @detail_user_counts = detail_logs.group("DATE(created_at)").having("DATE(created_at) BETWEEN ? AND ?", rstart, rend).count("DISTINCT ip")
 
