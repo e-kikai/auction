@@ -36,6 +36,8 @@ class Myauction::TotalController < Myauction::ApplicationController
 
     @bid_counts        = bids.group("DATE(created_at)").having("DATE(created_at) BETWEEN ? AND ?", rstart, rend).count
     @detail_log_counts = detail_logs.group("DATE(created_at)").having("DATE(created_at) BETWEEN ? AND ?", rstart, rend).count
+    @detail_user_counts = detail_logs.group("DATE(created_at)").having("DATE(created_at) BETWEEN ? AND ?", rstart, rend).count("DISTINCT ip")
+
     @watch_counts      = watches.group("DATE(created_at)").having("DATE(created_at) BETWEEN ? AND ?", rstart, rend).count
 
     @user_counts       = User.group("DATE(created_at)").having("DATE(created_at) BETWEEN ? AND ?", rstart, rend).count
