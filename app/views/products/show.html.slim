@@ -363,7 +363,7 @@ article itemscope="" itemtype="http://schema.org/Product"
           .row.detail-price-area.bid-area
             .detail-price-message 入札金額を入力して「入札確認」をクリックしてください。
 
-            - if @product.lower_price.present?
+            - if @product.lower_price.present? && @product.lower_price.to_i > @product.max_price
               p.detail-price-message
                 = link_to "/helps/lower_price", target: "_blank" do
                   span.glyphicon.glyphicon-question-sign

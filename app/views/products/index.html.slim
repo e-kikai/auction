@@ -160,7 +160,7 @@
                     = link_to(ca.name, "/products?category_id=#{ca.id}")
             td.price.absolute
               .max_price = number_to_currency(pr.max_price_with_tax)
-              - if pr.lower_price.present?
+              - if pr.lower_price.present? pr.lower_price.to_i > pr.max_price
                 .lower-label 最低落札価格あり
             td.price
               - if pr.prompt_dicision_price
