@@ -45,7 +45,10 @@ h1.product-title
         = f.hidden_field :amount
         = hidden_field_tag :id, params[:id]
 
-        p.text-center = link_to "ものづくりオークション利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
+        p.text-center
+          = link_to asset_path("terms_of_service_01.pdf"), target: "_blank" do
+            span.glyphicon.glyphicon-question-sign
+            span.btn-content ものづくりオークション利用規約
 
         .row
           = f.button class: "btn btn-warning btn-lg center-block" do
