@@ -57,7 +57,7 @@ class System::TotalController < System::ApplicationController
 
     @user_counts        = User.group("DATE(created_at)").having("DATE(created_at) BETWEEN ? AND ?", rstart, rend).count
 
-    @start_count        = @products.where("dulation_start < ?", rstart).where("(max_bid_id IS NOT NULL AND dulation_end >= ?) OR (max_bid_id IS NULL", rstart).count
+    @start_count        = @products.where("dulation_start < ?", rstart).where("(max_bid_id IS NOT NULL AND dulation_end >= ?) OR (max_bid_id IS NULL)", rstart).count
 
     @detail_user_counts = detail_logs.group("DATE(created_at)").having("DATE(created_at) BETWEEN ? AND ?", rstart, rend).count("DISTINCT ip")
 
