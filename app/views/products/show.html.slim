@@ -274,7 +274,10 @@ article itemscope="" itemtype="http://schema.org/Product"
             dd
               . = @product.state
               . = @product.state_comment
-            dt = link_to "自動延長", "/helps/auto_extension"
+            dt
+              = link_to "/helps/auto_extension" do
+                span.glyphicon.glyphicon-question-sign
+                span.btn-content 自動延長 
             dd = @product.auto_extension
             / dt 早期終了
             / dd = @product.early_termination ? 'あり' : 'なし'
@@ -354,19 +357,23 @@ article itemscope="" itemtype="http://schema.org/Product"
         = form_for @bid, url: "/myauction/bids/new", method: :get, html: { class: "form-inline" }  do |f|
           = hidden_field_tag :id, @product.id
           .row.detail-price-area.bid-area
-            .detail-price-message 入札金額を入力して「確認する」をクリックしてください。
+            .detail-price-message 入札金額を入力して「入札確認」をクリックしてください。
 
             - if @product.lower_price.present?
-              p.lower_message #{link_to "最低落札価格", "/helps/lower_price", target: "_blank"}が設定されています
+              p.detail-price-message
+                = link_to "/helps/lower_price", target: "_blank" do
+                  span.glyphicon.glyphicon-question-sign
+                  span.btn-content 最低落札価格
+                . が設定されています
 
-            .col-md-offset-2.col-md-3.h4 入札金額(税抜)
+            .col-md-5.h4.text-right 入札金額(税抜)
             .col-md-5.text-right
               .form-group.form-group-lg = f.text_field :amount, value: (@product.max_price + (@product.bids_count > 0 ? @product.bid_unit : 0)), class: "form-control price", required: "required"
             .col-md-1.h4 円
           .row
-            = f.button class: "btn btn-default btn-lg center-block" do
+            = f.button class: "btn btn-warning btn-lg center-block" do
               span.glyphicon.glyphicon-pencil
-              span.btn-content 確認する
+              span.btn-content 入札確認
 
 /// 即決ダイアログ ///
 .modal.fade#prompt-modal
@@ -393,6 +400,6 @@ article itemscope="" itemtype="http://schema.org/Product"
           = form_for @bid, url: "/myauction/bids/new", method: :get, html: { class: "form-inline" }  do |f|
             = hidden_field_tag :id, @product.id
             = f.hidden_field :amount, value: @product.prompt_dicision_price
-            = f.button class: "btn btn-default btn-lg center-block" do
+            = f.button class: "btn btn-danger btn-lg center-block" do
               span.glyphicon.glyphicon-jpy
-              span.btn-content 確認する
+              span.btn-content 入札確認
