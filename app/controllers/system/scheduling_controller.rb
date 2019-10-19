@@ -79,6 +79,18 @@ class System::SchedulingController < ApplicationController
     render plain: 'OK', status: 200
   end
 
+  def news_test
+    date    = Time.now
+    res     = Product.status(Product::STATUS[:start]).search(news_week: date.strftime("%F")).result
+    product = res.limit(Product::NEWS_LIMIT)
+    count   = res.count
+
+    us = User.find(19)
+    BidMailer.news_week(us, date, product, count).deliver
+
+    render plain: 'OK', status: 200
+  end
+
   # def reconfirm_mail
   #   User.where(confirmed_at: false).reorder(id: :desc).each do |us|
   #     BidMailer.reconfirm(us, date, product, count).deliver
