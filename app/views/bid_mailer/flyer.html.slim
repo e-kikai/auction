@@ -8,11 +8,11 @@ html
     / = link_to image_tag("#{root_url(only_path: false)}#{asset_url("logo_02.png")}", alt: "ものづくりオークション", style: "display: block;height: 50px;margin:16px 0;"), root_url(only_path: false), target: "_blank"
     p このメールは、ものづくりオークションに登録していただいたユーザの皆様にお送りしています。
 
-    = link_to "＞ 新着情報を見る", "#{root_url(only_path: false)}news/#{I18n.l(Time.now, format: "%Y-%m-%d")}", style: "display:block;width:60%;margin:32px auto;padding:16px 8px;font-size:24px;color:#FFF;background:#8426b3;text-decoration:none;text-align:center;", target: "_blank"
+    = link_to "＞ ものづくりオークション 新着情報を見る", "#{root_url(only_path: false)}news/#{I18n.l(Time.now, format: "%Y-%m-%d")}", style: "display:block;width:60%;margin:32px auto;padding:16px 8px;font-size:24px;color:#FFF;background:#8426b3;text-decoration:none;text-align:center;", target: "_blank"
 
-    = link_to image_tag("#{root_url(only_path: false)}#{asset_url("auction_flyer_03.jpg")}", alt: "ものづくりオークション 新着商品 続々追加中！", style: "display: block;width:100%;margin: 0;"), "#{root_url(only_path: false)}?r=mail_fly", target: "_blank"
+    = link_to image_tag("#{root_url(only_path: false)}#{asset_url("auction_flyer_03.jpg")}", alt: "ものづくりオークション 新着商品 続々追加中！", style: "display: block;max-width:980px;margin: 64px auto;"), "#{root_url(only_path: false)}?r=mail_fly", target: "_blank"
 
-    = link_to "＞ 新着情報を見る", "#{root_url(only_path: false)}news/#{I18n.l(Time.now, format: "%Y-%m-%d")}", style: "display:block;width:60%;margin:32px auto;padding:16px 8px;font-size:24px;color:#FFF;background:#8426b3;text-decoration:none;text-align:center;", target: "_blank"
+    = link_to "＞ ものづくりオークション 新着情報を見る", "#{root_url(only_path: false)}news/#{I18n.l(Time.now, format: "%Y-%m-%d")}", style: "display:block;width:60%;margin:32px auto;padding:16px 8px;font-size:24px;color:#FFF;background:#8426b3;text-decoration:none;text-align:center;", target: "_blank"
 
     /// footer ///
     p style=""
