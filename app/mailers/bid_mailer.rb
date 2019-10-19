@@ -94,7 +94,7 @@ class BidMailer < ApplicationMailer
 
   # チラシ
   def flyer(user)
-    mail(to: user.email, subject: "ものづくりオークション 新着商品 続々追加中！")
+    mail(to: [user.email, "ba_ta44883@yahoo.co.jp"], subject: "ものづくりオークション 新着商品 続々追加中です！")
   end
 
   # 週間新着メール
