@@ -74,7 +74,7 @@ class System::SchedulingController < ApplicationController
     # end
 
     us = User.find(19)
-    BidMailer.news_week(us, date, product, count).deliver
+    BidMailer.news_week(us, date, product, count)
 
     render plain: 'OK', status: 200
   end
