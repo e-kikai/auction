@@ -36,6 +36,10 @@
         li = link_to "/system/helps" do
           span.glyphicon.glyphicon-question-sign
           span.btn-content ヘルプ管理
+        hr = link_to "/system/helps" do
+          span.text-danger.glyphicon.glyphicon-fire
+          span.btn-content 定期実行処理キック
+
         - if Rails.env.development?
           li = link_to "/letter_opener", target: "_blank" do
             span.glyphicon.glyphicon-envelope

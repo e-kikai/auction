@@ -136,15 +136,15 @@ Rails.application.routes.draw do
 
     resources :scheduling, only: [:index] do
       collection do
-        get 'product_scheduling'
-        get 'alert_scheduling'
-        get 'watch_scheduling'
-        get 'twitter_new_product'
-        get 'twitter_toppage'
-        get 'twitter_news_week'
-        get 'flyer_mail'
-        get 'news_mail'
-        get 'news_test'
+        post 'product_scheduling'
+        post 'alert_scheduling'
+        post 'watch_scheduling'
+        post 'twitter_new_product'
+        post 'twitter_toppage'
+        post 'twitter_news_week'
+        post 'flyer_mail'
+        post 'news_mail'
+        post 'news_test'
       end
     end
   end

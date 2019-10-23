@@ -1,6 +1,9 @@
 class System::SchedulingController < ApplicationController
   # before_action :check_ip
 
+  def index
+  end
+
   # 定期実行処理
   def product_scheduling
     Product.scheduling

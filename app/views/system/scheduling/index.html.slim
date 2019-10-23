@@ -1,0 +1,36 @@
+- set_meta_tags title: "定期実行処理キック"
+- breadcrumb :system_something, "定期実行処理キック"
+
+.row
+  .col-md-offset-2.col-md-8
+    .table-responsive
+      table.table.table-hover.table-condensed.table-striped.product-table
+        tr
+          th 分類
+          th 処理
+          th 期間
+          th 実行
+
+        tr
+          td Twitter
+          td トップページ
+          td 毎週月曜日 午後6時
+          td = link_to({ action: :twitter_toppage }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default btn-xs") do
+            span.glyphicon.glyphicon-baby-formula
+            span.btn-content キック
+
+        tr
+          td Twitter
+          td 週間新着
+          td 毎週金曜日 午後5時
+          td = link_to({ action: :twitter_news_week }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default btn-xs") do
+            span.glyphicon.glyphicon-baby-formula
+            span.btn-content キック
+
+        tr
+          td Twitter
+          td 新着商品・商品紹介
+          td 毎日 0時、6時、12時、18時
+          td = link_to({ action: :twitter_new_product }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default btn-xs") do
+            span.glyphicon.glyphicon-baby-formula
+            span.btn-content キック
