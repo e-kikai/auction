@@ -15,22 +15,22 @@
           td Twitter
           td トップページ
           td 毎週月曜日 午後6時
-          td = link_to({ action: :twitter_toppage }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default btn-xs") do
-            span.glyphicon.glyphicon-baby-formula
+          td = link_to({ action: :twitter_toppage }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-success") do
+            span.text-danger.glyphicon.glyphicon-fire
             span.btn-content キック
 
         tr
           td Twitter
           td 週間新着
           td 毎週金曜日 午後5時
-          td = link_to({ action: :twitter_news_week }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default btn-xs") do
-            span.glyphicon.glyphicon-baby-formula
+          td = link_to({ action: :twitter_news_week }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-success") do
+            span.text-danger.glyphicon.glyphicon-fire
             span.btn-content キック
 
         tr
           td Twitter
           td 新着商品・商品紹介
-          td 毎日 0時、6時、12時、18時
-          td = link_to({ action: :twitter_new_product }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default btn-xs") do
-            span.glyphicon.glyphicon-baby-formula
+          td 毎日 0時、6時、12時、午後6時
+          td = link_to({ action: :twitter_toppage }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-success") do
+            span.text-danger.glyphicon.glyphicon-fire
             span.btn-content キック

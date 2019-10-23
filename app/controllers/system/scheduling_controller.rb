@@ -1,5 +1,6 @@
 class System::SchedulingController < ApplicationController
-  # before_action :check_ip
+  before_action :check_ip, only: [:index]
+  protect_from_forgery only: [:index]
 
   def index
   end
