@@ -14,8 +14,8 @@
 
 FactoryBot.define do
   factory :category do
-    id       1
-    name     "カテゴリ名"
-    order_no 100
+    # id       1
+    # name     "カテゴリ名"
+    # order_no 100
   end
 end

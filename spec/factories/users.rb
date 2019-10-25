@@ -46,14 +46,14 @@
 
 FactoryBot.define do
   factory :user do
-    id       1
-    name     "ユーザ名"
-
-    sequence :email do |i|
-      "test#{i}@test.com"
-    end
-    password "testtest"
-    password_confirmation "testtest"
-    encrypted_password "testtest"
+    # id       1
+    # name     "ユーザ名"
+    #
+    # sequence :email do |i|
+    #   "test#{i}@test.com"
+    # end
+    # password "testtest"
+    # password_confirmation "testtest"
+    # encrypted_password "testtest"
   end
 end

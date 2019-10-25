@@ -15,7 +15,7 @@
           td Twitter
           td トップページ
           td 毎週月曜日 午後6時
-          td = link_to({ action: :twitter_toppage }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-success") do
+          td = link_to({ action: :twitter_toppage }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default") do
             span.text-danger.glyphicon.glyphicon-fire
             span.btn-content キック
 
@@ -23,7 +23,7 @@
           td Twitter
           td 週間新着
           td 毎週金曜日 午後5時
-          td = link_to({ action: :twitter_news_week }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-success") do
+          td = link_to({ action: :twitter_news_week }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default") do
             span.text-danger.glyphicon.glyphicon-fire
             span.btn-content キック
 
@@ -31,6 +31,58 @@
           td Twitter
           td 新着商品・商品紹介
           td 毎日 0時、6時、12時、午後6時
-          td = link_to({ action: :twitter_toppage }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-success") do
+          td = link_to({ action: :twitter_new_product }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default") do
+            span.text-danger.glyphicon.glyphicon-fire
+            span.btn-content キック
+
+
+        tr
+          td 一括メール
+          td 週間新着
+          td -
+          td = link_to({ action: :news_mail }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default") do
+            span.text-danger.glyphicon.glyphicon-fire
+            span.btn-content キック
+
+
+        tr
+          td 一括メール
+          td チラシメール
+          td -
+          td = link_to({ action: :flyer_mail }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default") do
+            span.text-danger.glyphicon.glyphicon-fire
+            span.btn-content キック
+
+
+        tr
+          td メール
+          td テスト
+          td -
+          td = link_to({ action: :news_test }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default") do
+            span.text-danger.glyphicon.glyphicon-fire
+            span.btn-content キック
+
+
+        tr
+          td 定期処理
+          td 定期実行処理
+          td 毎分
+          td = link_to({ action: :product_scheduling }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default") do
+            span.text-danger.glyphicon.glyphicon-fire
+            span.btn-content キック
+
+        tr
+          td メール
+          td 新着メール通知
+          td -
+          td = link_to({ action: :alert_scheduling }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default") do
+            span.text-danger.glyphicon.glyphicon-fire
+            span.btn-content キック
+
+        tr
+          td メール
+          td ウォッチ新着
+          td -
+          td = link_to({ action: :watch_scheduling }, method: :post, data: { confirm: "この処理を実行しますか？", "disable-with" => "実行中..."}, class: "btn btn-default") do
             span.text-danger.glyphicon.glyphicon-fire
             span.btn-content キック
