@@ -32,14 +32,20 @@ SitemapGenerator::Sitemap.create do
   Category.all.select(:id).each do |ca|
     if ca.products.exists?
       add "/products?category_id=#{ca.id}", priority: 0.6, changefreq: 'daily'
+      add "/products?category_id=#{ca.id}&success=start", priority: 0.6, changefreq: 'daily'
     end
+
+    add "/products?category_id=#{ca.id}&success=success", priority: 0.6, changefreq: 'daily'
   end
 
   ### 出品会社 ###
   User.companies.select(:id).each do |co|
     if co.products.exists?
-      add "/products?company_id=#{co.id}", priority: 0.4, changefreq: 'daily'
+      add "/products?company_id=#{co.id}", priority: 0.6, changefreq: 'daily'
+      add "/products?company_id=#{co.id}&success=start", priority: 0.6, changefreq: 'daily'
     end
+    add "/products?company_id=#{co.id}&success=success", priority: 0.6, changefreq: 'daily'
+
   end
 
   ### ヘルプページ ###

@@ -4,6 +4,9 @@
 - title = "#{@company.company} #{title}" if @company.present?
 - title.strip!
 
+- title += " 落札相場" if @pms[:success] == "success"
+- title += " 出品中"   if @pms[:success] == "start"
+
 /// タイトル ///
 - set_meta_tags title: "#{@title.presence || (title + " 検索結果")}(#{@pproducts.current_page}/#{@pproducts.total_pages})"
 
@@ -140,9 +143,9 @@
           option value=url_for(@pms.deep_merge(q: {s: nil})) ▼ 並び順 ▼
           - @select_sort.each do |k, v|
             - if @pms[:q][:s] == v
-              option value=url_for(@pms.deep_merge(q: {s: v})) selected="selected" = k
+              option value==url_for(@pms.deep_merge(q: {s: v})) selected="selected" = k
             - else
-              option value=url_for(@pms.deep_merge(q: {s: v})) = k
+              option value==url_for(@pms.deep_merge(q: {s: v})) = k
 
         / = form_tag url_for(@pms), method: :get, class: "form-inline", id: "success_form_01" do
         /   = select_tag :success, options_for_select({"すべて表示": :mix, "出品中の商品を表示": :start, "落札相場を見る": :success}, selected: params[:success]), class: "form-control", onchange: "$('#success_form_01').submit();"

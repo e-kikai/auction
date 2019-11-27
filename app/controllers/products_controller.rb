@@ -72,6 +72,11 @@ class ProductsController < ApplicationController
 
     @products  = @search.result.includes(:product_images, :category, :user)
 
+    ### 残り時間並び順 ###
+    if @pms[:q][:s] == "dulation_end asc"
+      @products = @products.reorder(" CASE WHEN dulation_end <= CURRENT_TIMESTAMP THEN 2 ELSE 1 END, dulation_end ")
+    end
+
     ### ページャ ###
     @pproducts = @products.page(params[:page])
 
@@ -80,15 +85,15 @@ class ProductsController < ApplicationController
     @select_addr1      = @products.group(:addr_1).reorder(:addr_1).count
 
     @select_sort = {
-      "出品 : 新着" => "dulation_start+asc",
-      "出品 : 古い"   => "dulation_start+desc",
-      "価格 : 安い"   => "max_price+asc",
-      "価格 : 高い"   => "max_price+desc",
-      "即決 : 安い"   => "prompt_dicision_price+asc",
-      "即決 : 高い"   => "prompt_dicision_price+desc",
-      "入札 : 多い"   => "bids_count+asc",
-      "入札 : 少ない" => "bids_count+asc",
-      "残り時間"    => "dulation_end+asc",
+      "出品 : 新着"   => "dulation_start asc",
+      "出品 : 古い"   => "dulation_start desc",
+      "価格 : 安い"   => "max_price asc",
+      "価格 : 高い"   => "max_price desc",
+      "即決 : 安い"   => "prompt_dicision_price asc",
+      "即決 : 高い"   => "prompt_dicision_price desc",
+      "入札 : 多い"   => 'bids_count desc',
+      "入札 : 少ない" => "bids_count asc",
+      "残り時間"      => "dulation_end asc",
     }
 
     @roots = Category.roots.order(:order_no)
