@@ -63,7 +63,7 @@ class Product < ApplicationRecord
   default_scope { without_soft_destroyed }
 
   ### クラス定数 ###
-  STATUS                 = { before: -1, start: 0, failure: 1, success: 2, cancel: 3 }
+  STATUS                 = { before: -1, start: 0, failure: 1, success: 2, cancel: 3, mix: 4 }
   MACHINELIFE_URL        = "https://www.zenkiren.net"
   MACHINELIFE_CRAWL_URL  = "https://www.zenkiren.net/system/ajax/e-kikai_crawled_get.php"
   MACHINELIFE_MEDIA_PASS = "https://s3-ap-northeast-1.amazonaws.com/machinelife/machine/public/media/machine/"
@@ -171,8 +171,8 @@ class Product < ApplicationRecord
     when STATUS[:failure]; finished.where(max_bid_id: nil, cancel: nil) # 未落札
     when STATUS[:success]; finished.where(cancel: nil).where.not(max_bid_id: nil) # 落札済み
     when STATUS[:cancel];  finished.where.not(cancel: nil) # キャンセル
+    when STATUS[:mix];     where(cancel: nil, template: false).where("(dulation_start <= ? AND dulation_end > ?) OR (dulation_end < ? AND max_bid_id IS NOT NULL)", Time.now, Time.now, Time.now).order(dulation_start: :desc) # 出品中と落札済み
     else;                  where(template: false).where("dulation_start <= ? AND dulation_end > ?", Time.now, Time.now).order(:dulation_end)  # 公開中
-
     end
   }
 
@@ -284,7 +284,7 @@ class Product < ApplicationRecord
     elsif second > 0
       "#{second}秒"
     else
-      "終了"
+      "入札終了"
     end
   end
 
@@ -309,6 +309,11 @@ class Product < ApplicationRecord
     dulation_end <= Time.now
   end
 
+  def success?
+    dulation_end <= Time.now && max_bid_id.present?
+  end
+
+  ### キャンセルされたか ###
   def cancel?
     finished? && cancel.present?
   end

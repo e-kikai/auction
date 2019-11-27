@@ -39,7 +39,7 @@ class MainController < ApplicationController
     @products = Product.status(Product::STATUS[:start]).includes(:product_images, :category).search(news_week: Time.now.strftime("%F")).result.reorder(dulation_start: :desc)
 
     # 新着メール用
-    @products = @products.reorder("RANDOM()").limit(9) if params[:mail]
+    @products = @products.reorder("RANDOM()").limit(12) if params[:mail]
 
     respond_to do |format|
       format.rss

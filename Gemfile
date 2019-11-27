@@ -146,3 +146,5 @@ gem 'actionview-encoded_mail_to' # メールアドレスエンコード
 gem 'redcarpet' # Markdown
 
 gem 'twitter'
+
+gem "mailchimp-api", require: "mailchimp"

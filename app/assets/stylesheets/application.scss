@@ -82,9 +82,9 @@ header {}
 }
 
 .btn-search-save {
-  width: 172px;
+  width: 144px;
   margin-bottom: 4px;
-  margin-left: 8px;
+  margin-left: 4px;
 }
 
 .search-title {
@@ -250,6 +250,7 @@ table {
 
   th.price {
     width: 94px;
+    text-align: right;
   }
 
   td.total_price {
@@ -262,12 +263,13 @@ table {
   }
 
   td.num {
-    width: 50px;
+    width: 55px;
     text-align: right;
   }
 
   th.num {
     width: 55px;
+    text-align: right;
   }
 
   .lower-label {
@@ -746,6 +748,29 @@ hr.detail-price-calc {
   margin: 8px;
 }
 
+.success_date {
+  margin-bottom: 8px;
+  color: #833c14;
+}
+
+.success_label {
+  color: #833c14;
+  border: 1px solid #833c14;
+  background: #ff9;
+  border-radius: 4px;
+  width: 50px;
+  text-align: center;
+  margin: auto 0 auto auto;
+}
+
+.success_message {
+    background-color: #ff9;
+    border-color: #833c14;
+    color: #833c14;
+    font-size: 120%;
+    padding: 8px 20px;
+}
+
 .bid-message {
   background: #FFF;
   padding: 8px;
@@ -1091,4 +1116,13 @@ iframe.machinelife_ads {
 
 .btn-lg.center-block {
   margin: 24px auto 12px;
+}
+
+/// 検索結果 : 並び順 ///
+.sort_select {
+  margin: 0 8px 0 4px;
+}
+
+.pagination {
+  margin: 8px 0;
 }

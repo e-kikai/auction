@@ -99,6 +99,8 @@ class User < ApplicationRecord
 
   ### CALLBACK ###
   before_save :init_account
+  after_create :mailmagazine_create
+  after_update :mailmagazine_update
 
   def count_star
     products.where.not(star: nil).count
@@ -133,5 +135,26 @@ class User < ApplicationRecord
 
   def init_account
     self.account = SecureRandom.urlsafe_base64(6) if self.account.blank?
+  end
+
+  def mailmagazine_create
+    if self.allow_mail
+      mm = MailMagazine.new
+      mm.add_member(self, email)
+    end
+  rescue => e
+  end
+
+  def mailmagazine_update
+    if saved_change_to_allow_mail?
+      mm = MailMagazine.new
+
+      if self.allow_mail
+        mm.add_member(self, email)
+      else
+        mm.remove_member(email) if mm.member?(email)
+      end
+    end
+  rescue => e
   end
 end
