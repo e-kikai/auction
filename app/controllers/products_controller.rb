@@ -98,6 +98,11 @@ class ProductsController < ApplicationController
 
     @roots = Category.roots.order(:order_no)
 
+    ### 表示切り替え ###
+    if ["panel", "list"].include? params[:v]
+      session[:search_view] = params[:v]
+    end
+
     ### 最近チェックした商品 ###
     where_query = user_signed_in? ? {user_id: current_user.id} : {ip: ip}
 

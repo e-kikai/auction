@@ -458,6 +458,171 @@ label.top-search {
   }
 }
 
+.products_area {
+  margin-left: -6px;
+  margin-right: -6px;
+}
+
+.thumbnail.product-pannel_02 {
+    width: 200px;
+    height: 200px;
+    margin: 0;
+    white-space: normal;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0;
+    border-radius: 0;
+    border: 0;
+    position: relative;
+    /* border: 1px solid #EEE; */
+    margin: 0 6px 6px 0;
+
+    a.product_link {
+      display: block;
+      padding: 4px;
+      border: 1px solid #FFF;
+      width: 100%;
+      height: 100%;
+
+      &:hover {
+        background: #FFFFE0;
+        text-decoration: none;
+        border: 1px solid #cc64ff;
+
+        img {
+          opacity: 1;
+        }
+
+      }
+    }
+
+    .thumb_img {
+      width: 100%;
+      height: 120px;
+      background: #EEE;
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+        margin: auto;
+    }
+    }
+
+    img {
+      // max-width: 132px;
+      // max-height: 98px;
+      // max-width: 160px;
+      // max-height: 120px;
+    }
+
+    .name {
+      height: 18px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      position: absolute;
+      top: 128px;
+      width: 190px;
+    }
+
+    .price {
+      color: #333;
+      position: absolute;
+      top: 146px;
+      width: 190px;
+
+      &:hover {
+        color: #333;
+      }
+    }
+
+    .finish_price {
+      position: absolute;
+      top: 170px;
+      width: 190px;
+    }
+
+    .max_price_label,
+    .bid_label,
+    .end_label {
+      color: #333;
+      font-size: 11px;
+    }
+
+    .max_price {
+      font-size: 17px;
+      margin-left: 4px;
+    }
+
+    .success_label {
+      position: absolute;
+      top: 98px;
+      right: 8px;
+    }
+
+    .bids {
+      position: absolute;
+      top: 170px;
+      width: 190px;
+    }
+
+    .success_date {
+      top: 150px;
+      position: absolute;
+      margin: 0;
+    }
+
+    .bid {
+      margin-left: 4px;
+      color: #333;
+      margin-right: 8px;
+    }
+
+    .success_price {
+      margin-left: 4px;
+      color: #333;
+    }
+
+    .end {
+      margin-left: 4px;
+      color: #333;
+
+    }
+
+    a.btn-watch {
+      position: absolute;
+      top: 78px;
+      right: 8px;
+      width: 40px;
+      height: 40px;
+
+      .watch-star {
+        color: #DD0;
+        font-size: 20px;
+        position: absolute;
+        top: 3px;
+        left: 10px;
+      }
+
+      .btn-content {
+        margin: 0;
+        position: absolute;
+        top: 24px;
+        left: 2px;
+        font-size: 11px;
+        letter-spacing: -3px;
+      }
+    }
+
+    .state {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      margin: 0;
+    }
+}
+
 .thumbnail.product-pannel {
   width: 172px;
   height: 172px;
