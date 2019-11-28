@@ -1286,6 +1286,8 @@ iframe.machinelife_ads {
 /// 検索結果 : 並び順 ///
 .sort_select {
   margin: 0 8px 0 4px;
+  display: inline-block;
+  width: auto;
 }
 
 .pagination {

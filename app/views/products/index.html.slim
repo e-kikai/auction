@@ -137,24 +137,23 @@
         = link_to "出品中",   url_for(@pms.merge(success: :start)),   class: "btn btn-default#{if params[:success] == "start"; " active" end}"
         = link_to "落札相場", url_for(@pms.merge(success: :success)), class: "btn btn-default#{if params[:success] == "success"; " active" end}"
 
-      .form-inline.pull-right
+      .pull-right style="display:inline-block"
         span.glyphicon.glyphicon-sort
         select.form-control.sort_select onchange="window.location.href = $(this).val();"
           option value=url_for(@pms.deep_merge(q: {s: nil})) ▼ 並び順 ▼
           - @select_sort.each do |k, v|
             - if @pms[:q][:s] == v
-              option value==url_for(@pms.deep_merge(q: {s: v})) selected="selected" = k
+              option value=url_for(@pms.deep_merge(q: {s: v})) selected="selected" = k
             - else
-              option value==url_for(@pms.deep_merge(q: {s: v})) = k
+              option value=url_for(@pms.deep_merge(q: {s: v})) = k
 
-        / = form_tag url_for(@pms), method: :get, class: "form-inline", id: "success_form_01" do
-        /   = select_tag :success, options_for_select({"すべて表示": :mix, "出品中の商品を表示": :start, "落札相場を見る": :success}, selected: params[:success]), class: "form-control", onchange: "$('#success_form_01').submit();"
-
-      .btn-group.pull-right style="margin-right:8px;"
+      .btn-group.pull-right style="margin:0 8px 0 0;"
         = link_to url_for(@pms.merge(v: :panel)), class: "btn btn-default#{unless ["list"].include? session[:search_view]; " active" end}" do
           span.glyphicon.glyphicon-th-large
         = link_to  url_for(@pms.merge(v: :list)), class: "btn btn-default#{if session[:search_view] == "list"; " active" end}" do
           span.glyphicon.glyphicon-th-list
+
+      br style="clear:both;"
 
     = paginate @pproducts
 
@@ -278,7 +277,7 @@
         = link_to "出品中",   url_for(@pms.merge(success: :start)),   class: "btn btn-default#{if params[:success] == "start"; " active" end}"
         = link_to "落札相場", url_for(@pms.merge(success: :success)), class: "btn btn-default#{if params[:success] == "success"; " active" end}"
 
-      .form-inline.pull-right
+      .pull-right style="display:inline-block"
         span.glyphicon.glyphicon-sort
         select.form-control.sort_select onchange="window.location.href = $(this).val();"
           option value=url_for(@pms.deep_merge(q: {s: nil})) ▼ 並び順 ▼
@@ -288,11 +287,13 @@
             - else
               option value=url_for(@pms.deep_merge(q: {s: v})) = k
 
-      .btn-group.pull-right style="margin-right:8px;"
+      .btn-group.pull-right style="margin:0 8px 0 0;"
         = link_to url_for(@pms.merge(v: :panel)), class: "btn btn-default#{unless ["list"].include? session[:search_view]; " active" end}" do
           span.glyphicon.glyphicon-th-large
         = link_to  url_for(@pms.merge(v: :list)), class: "btn btn-default#{if session[:search_view] == "list"; " active" end}" do
           span.glyphicon.glyphicon-th-list
+
+      br style="clear:both;"
 
     - if @detaillog_products.present?
       .row
