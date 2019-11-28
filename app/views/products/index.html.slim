@@ -211,7 +211,7 @@
               tr
                 td.img = link_to image_tag(pr.thumb_url, alt: "#{pr.name}"), "/products/#{pr.id}?r=src_lst"
                 td.absolute
-                  = link_to "/products/#{pr.id}?r=src_lst" do
+                  = link_to("/products/#{pr.id}?r=src_lst", target: "_blank", title: pr.name) do
                     - if pr.dulation_start.present?
                       - if pr.dulation_start > Time.now.yesterday
                         span.new-icon
