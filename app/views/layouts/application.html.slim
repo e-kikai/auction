@@ -127,7 +127,10 @@ html
       = yield
 
     /// フッタ ///
-    footer.container-fluid Copyright &copy; #{Time.now.year} 任意団体ものづくりオークション委員会, All Rights reserved.
+    footer.container-fluid
+      | Copyright &copy; #{Time.now.year}
+      =<> link_to "任意団体ものづくりオークション委員会", "/helps/about"
+      | All Rights reserved.
 
     /// 一番上に戻るボタン ///
     = button_tag "", class: "btn btn-default btn-square", id: "page-top" do
