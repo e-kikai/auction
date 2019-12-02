@@ -148,3 +148,5 @@ gem 'redcarpet' # Markdown
 gem 'twitter'
 
 gem "mailchimp-api", require: "mailchimp"
+
+gem 'jb'

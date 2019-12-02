@@ -1,7 +1,9 @@
 - set_meta_tags title: "ヘルプ : #{@help.title}"
 - breadcrumb    :helps_show, @help
 
-- set_meta_tags description: "ものづくりオークションの「#{@help.title}」 について。新品も中古も！工具・機械ならものオク。"
+- set_meta_tags description: "ものづくりオークションの「#{@help.title}」 について。"
+
+= jsonld_script_tag
 
 .row
   .col-md-3
@@ -16,9 +18,8 @@
           p = link_to he.title, "/helps/#{he.uid}"
         p = link_to "利用規約(PDF)", asset_path("terms_of_service_01.pdf"), target: "_blank"
 
-
   .col-md-9
-    h1.product-title itemprop="name"
+    h1.product-title
       span.glyphicon.glyphicon-question-sign
       span.btn-content = @help.title
 

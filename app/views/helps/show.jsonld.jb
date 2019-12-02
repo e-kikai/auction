@@ -1,0 +1,39 @@
+res = [
+  {
+    '@context': 'https://schema.org',
+    '@type':    'FAQPage',
+    mainEntity: [{
+      '@type': 'Question',
+      name:    @help.title,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:    markdown(@help.content)
+      }
+    }]
+  }
+]
+
+if @help.uid == "about"
+  res << {
+    '@context': 'https://schema.org',
+    '@type':    'Organization',
+    url:        'https://www.mnok.net/',
+    logo:       image_url("logo_02.png"),
+    name:       "任意団体ものづくりオークション委員会",
+    contactPoint: {
+      "@type":       "ContactPoint",
+      "telephone":   "+81-6-6747-7521",
+      "faxNumber":   "+81-6-6747-7525",
+      "contactType": "Customer service"
+    },
+    address: {
+      "@type":        "PostalAddress",
+      postalCode:     "578-0965"
+      addressRegion:  "大阪府",
+      addressLoality: "東大阪市",
+      streetAddresss: "本庄西2丁目5番10号"
+    }
+  }
+end
+
+res
