@@ -21,17 +21,19 @@ if @help.uid == "about"
     logo:       image_url("logo_02.png"),
     name:       "任意団体ものづくりオークション委員会",
     contactPoint: {
-      "@type":       "ContactPoint",
-      "telephone":   "+81-6-6747-7521",
-      "faxNumber":   "+81-6-6747-7525",
-      "contactType": "Customer service"
+      "@type":     "ContactPoint",
+      telephone:   "+81-6-6747-7521",
+      faxNumber:   "+81-6-6747-7525",
+      contactType: "Customer service",
+      areaServed:  "JP",
+      availableLanguage: "Japanese",
     },
     address: {
       "@type":        "PostalAddress",
       postalCode:     "578-0965",
       addressRegion:  "大阪府",
-      addressLoality: "東大阪市",
-      streetAddresss: "本庄西2丁目5番10号",
+      addressLoclity: "東大阪市",
+      streetAddress:  "本庄西2丁目5番10号",
     }
   }
 end
