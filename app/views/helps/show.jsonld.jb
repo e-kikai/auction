@@ -28,10 +28,10 @@ if @help.uid == "about"
     },
     address: {
       "@type":        "PostalAddress",
-      postalCode:     "578-0965"
+      postalCode:     "578-0965",
       addressRegion:  "大阪府",
       addressLoality: "東大阪市",
-      streetAddresss: "本庄西2丁目5番10号"
+      streetAddresss: "本庄西2丁目5番10号",
     }
   }
 end
