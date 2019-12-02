@@ -70,12 +70,12 @@
           - @popular_products.each do |pr|
             = render "/main/product_panel", product: pr, r: :dtl_sca
 
-article itemscope="" itemtype="http://schema.org/Product"
+article
   h1.product-title
     span.glyphicon.glyphicon-wrench
     - if @product.dulation_start > Time.now.yesterday
       span.new-icon
-    span.btn-content itemprop="name" = @product.name
+    span.btn-content = @product.name
 
     /// 状態 ///
     span.state class="state_#{@product.state_before_type_cast}" = @product.state
@@ -138,16 +138,6 @@ article itemscope="" itemtype="http://schema.org/Product"
                 | 人がウォッチ登録しています
 
         .panel-body.detail-price-area
-          /// リッチスニペット ///
-          meta itemprop="sku" content="#{@product.id}"
-          . itemprop="offers" itemscope="" itemtype="http://schema.org/Offer"
-            meta itemprop="price" content="#{@product.max_price}"
-            meta itemprop="priceCurrency" content="JPY"
-            - if @product.state == "新品"
-              meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/NewCondition"
-            - elsif @product.state == "中古"
-              meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/UsedCondition"
-
           - unless @product.prompt_dicision?
             h4 現在価格
             - if @product.lower_price.to_i > @product.max_price
@@ -254,7 +244,7 @@ article itemscope="" itemtype="http://schema.org/Product"
           .carousel-inner
             - @product.product_images.each_with_index do |pi, i|
               - if i == 0
-                .item.active = image_tag pi.image.view.url, alt: "#{@product.name}_画像#{i+1}", itemprop: "image"
+                .item.active = image_tag pi.image.view.url, alt: "#{@product.name}_画像#{i+1}"
               - else
                 .item = image_tag pi.image.view.url, alt: "#{@product.name}_画像#{i+1}"
           a.left.carousel-control href="#product-carousel" data-slide="prev"
@@ -330,7 +320,7 @@ article itemscope="" itemtype="http://schema.org/Product"
     h4.product-description
       span.glyphicon.glyphicon-info-sign
       span.btn-content 商品説明
-    section itemprop="description" = markdown(@product.description)
+    section = markdown(@product.description)
     - if @product.additional.present?
       .additional-label <追記事項>
       section.additional = markdown(@product.additional)
