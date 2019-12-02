@@ -1,0 +1,23 @@
+res = {
+  '@context':  'https://schema.org',
+  "@type":     "Product",
+  name:        @product.name,
+  sku:         @product.id,
+  image:       @product.product_images.map { |i| i.image.view.url },
+  brand:       "-",
+  description: (@product.description || "-"),
+  offers: {
+    "@type":            "Offer",
+    price:              @product.max_price,
+    priceCurrency:      "JPY",
+    priceValidUntil:    @product.dulation_end.strftime('%Y-%m-%d'),
+    availabilityEnds:   @product.dulation_end.strftime('%Y-%m-%d'),
+    availabilityStarts: @product.dulation_start.strftime('%Y-%m-%d'),
+
+    itemCondition:      "https://schema.org/#{@product.state == "新品" ? 'NewCondition' : 'Usedcondition'}",
+    availability:       "https://schema.org/#{@product.finished? ? 'SoldOut' : 'InStock'}",
+    url:                product_url(@product),
+  }
+}
+
+res

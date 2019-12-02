@@ -24,6 +24,8 @@
   - set_meta_tags twitter: { image: @product.product_images.first.image.thumb.url }
   - set_meta_tags og: { image: @product.product_images.first.image.view.url }
 
+= jsonld_script_tag
+
 - if @product.finished?
   - if @product.success? && @product.max_bid.user == current_user
     .alert.success_message
