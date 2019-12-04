@@ -8,7 +8,7 @@ res = {
   description: (@product.description || "-"),
   offers: {
     "@type":            "Offer",
-    price:              @product.max_price,
+    price:              @product.max_price_with_tax,
     priceCurrency:      "JPY",
     priceValidUntil:    @product.dulation_end.strftime('%Y-%m-%d'),
     availabilityEnds:   @product.dulation_end.strftime('%Y-%m-%d'),
