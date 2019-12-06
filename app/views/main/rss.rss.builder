@@ -27,7 +27,7 @@ xml.rss(
     @products.each do |p|
       if params[:mail]
         desc = <<"EOS"
-<div style='font-size: 14px;display: inline-block;padding: 0 4px;line-height: 1.4;position: absolute;top: 8px;left: 8px;margin: 0;background:#FFF;border:1px solid #333;color:#333;'>#{p.state}</div>
+<div style='font-size: 14px;display: inline-block;padding: 0 4px;line-height: 1.4;position: absolute;top: 8px;left: 8px;margin: 0;background:#FFF;border:1px solid #333;color:#333;border-radius:4px;'>#{p.state}</div>
 <div style='color:#333;position: absolute;top: 146px;width: 190px;'>
   <span style='olor:#333;font-size: 11px;'>現在</span>
   <span style="font-size: 17px;margin-left: 4px;color: #E50;font-weight: normal;">#{number_to_currency(p.max_price_with_tax)}</span>
