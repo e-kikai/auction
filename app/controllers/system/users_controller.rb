@@ -10,7 +10,7 @@ class System::UsersController < System::ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        @users = @users.where(allow_mail: true, confirmed_at: nil)
+        @users = User.where(allow_mail: true)
         export_csv "mailaddress_list.csv"
       }
     end
