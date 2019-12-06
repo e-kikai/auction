@@ -26,15 +26,20 @@ xml.rss(
 
     @products.each do |p|
       if params[:mail]
-        desc = "<div>"
-        unless p.prompt_dicision?
-          desc += "現在価格 #{number_to_currency(p.max_price_with_tax)}"
-        end
-        if p.prompt_dicision_price.present?
-          desc += " 即決価格 #{number_to_currency(p.prompt_dicision_price_with_tax)}"
-        end
-        desc += " | #{I18n.l(p.dulation_end, format: :full_date)} 終了</div>"
-        desc += "<div>出品会社 : #{p.user.company}</div>"
+        desc = <<"EOS"
+<div style='font-size: 14px;display: inline-block;padding: 0 4px;line-height: 1.4;position: absolute;top: 8px;left: 8px;margin: 0;'>#{p.state}</div>
+<div style='color:#333;position: absolute;top: 146px;width: 190px;'>
+  <span style='olor:#333;font-size: 11px;'>現在</span>
+  <span style="font-size: 17px;margin-left: 4px;color: #E50;font-weight: normal;">#{number_to_currency(p.max_price_with_tax)}</span>
+</div>
+<div style="position: absolute;top: 170px;width: 190px;">
+  <span style="color: #333;font-size: 11px;">入札</span>
+  <span style="margin-left: 4px;color: #333;margin-right: 8px;">#{p.bids_count > 0 ? number_with_delimiter(p.bids_count) : "-"}</span>
+  <span style="color: #333;font-size: 11px;">残り時間</span>
+  <span style="margin-left: 4px;color: #333;">#{p.remaining_time}</span>
+</div>
+EOS
+
       else
         desc = ""
         unless p.prompt_dicision?

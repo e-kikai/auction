@@ -30,6 +30,8 @@ class DetailLog < ApplicationRecord
     "oss" => "おすすめ", "nws" => "新着通知", "sca" => "同じカテゴリ", "bfn" => "入札完了", "bck" => "戻る",
     "win" => "入札通知", "los" => "高値更新", "csl" => "キャンセル", "suc" => "落札通知", "trd" => "取引通知",
     "rmd" => "リマインダ",
+    "pnl" => "パネル表示", "lst" => "リスト表示",
+    "cmp" => "Mailchimp",
     "machinelife" => "マシンライフ", "dst" => "デッドストック", "ekikai" => "e-kikai",
   }
 
