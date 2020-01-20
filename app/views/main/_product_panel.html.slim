@@ -1,6 +1,10 @@
 .thumbnail.product-pannel
   = link_to "/products/#{product.id}?r=#{r}", target: "_blank", title: product.name do
     = image_tag(product.thumb_url, alt: product.name)
+
+    - if product.state_before_type_cast > 0
+      .state class="state_#{product.state_before_type_cast}" = product.state
+
     .name = product.name
     .price
       - if product.finished?
