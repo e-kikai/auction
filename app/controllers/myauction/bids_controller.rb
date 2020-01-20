@@ -32,7 +32,7 @@ class Myauction::BidsController < Myauction::ApplicationController
         # 入札成功
 
         mes = if @product.finished?
-          # 即決
+          # 即売
           BidMailer.success_user(current_user, @product).deliver
           BidMailer.success_company(@product).deliver
 

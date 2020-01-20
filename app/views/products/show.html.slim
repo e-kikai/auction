@@ -4,7 +4,7 @@
 /// 基本 ///
 - desc = "オークション現在価格 #{number_to_currency @product.max_price_with_tax}|"
 - if @product.prompt_dicision_price
-  - desc += "即決価格 #{number_to_currency @product.prompt_dicision_price_with_tax}|"
+  - desc += "即売価格 #{number_to_currency @product.prompt_dicision_price_with_tax}|"
 - desc += @product.description
 / - keywords = "オークション,ものオク,販売,中古,機械,工具,#{@product.search_keywords.gsub(/(\s|　)+/, ",")}"
 
@@ -159,7 +159,7 @@ article
                 span.btn-content 入札する
 
           - if @product.prompt_dicision_price
-            h4 即決価格
+            h4.prompt_dicision_h4 即売価格
             .product-price
               span.h2.prompt_dicision_price> #{number_to_currency @product.prompt_dicision_price}
               span.product-tax
@@ -286,7 +286,7 @@ article
             dd #{number_to_currency(@product.start_price)}
 
             - if @product.prompt_dicision_price.present?
-              dt 即決価格(税抜)
+              dt 即売価格(税抜)
               dd #{number_to_currency(@product.prompt_dicision_price)}
 
           dl.dl-horizontal.product-dl.product-dl-border
@@ -374,7 +374,7 @@ article
               span.glyphicon.glyphicon-pencil
               span.btn-content 入札確認
 
-/// 即決ダイアログ ///
+/// 即売ダイアログ ///
 .modal.fade#prompt-modal
   .modal-dialog
     .modal-content
@@ -386,7 +386,7 @@ article
       .modal-body.clearfix
         .row.detail-price-area
           .detail-price-message この金額で今すぐ落札されます。
-          .col-md-offset-2.col-md-3.h4 即決価格
+          .col-md-offset-2.col-md-3.h4.prompt_dicision_h4 即売価格
           .col-md-5.text-right.h4 = number_to_currency(@product.prompt_dicision_price)
         .row
           .col-md-offset-2.col-md-3.h4 消費税

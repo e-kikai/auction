@@ -8,7 +8,7 @@ h3.product-title itemprop="name"
   span.btn-content ものづくりオークション ヘルプ一覧
 
 .row
-  ul.col-md-offset-2.col-md-8.col-sm-12
+  ul.col-md-offset-2.col-md-8.col-sm-12.help-list
     li = link_to "ものづくりオークションとは", "/lp/index.html", target: "_blank"
     - @helps.each do |he|
       li = link_to he.title, "/helps/#{he.uid}"

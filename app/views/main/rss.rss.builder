@@ -45,7 +45,7 @@ EOS
           desc += "現在価格 : #{number_to_currency(p.max_price_with_tax)}"
         end
         if p.prompt_dicision_price.present?
-          desc += " 即決価格 : #{number_to_currency(p.prompt_dicision_price_with_tax)}"
+          desc += " 即売価格 : #{number_to_currency(p.prompt_dicision_price_with_tax)}"
         end
         desc += " 終了日時 : #{I18n.l(p.dulation_end, format: :full_date)}"
         desc += " 出品会社 : #{p.user.company}"

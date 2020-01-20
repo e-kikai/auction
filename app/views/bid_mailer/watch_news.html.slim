@@ -28,7 +28,7 @@ html
                 = "現在価格 "
                 span style="color: #E50;font-size: 130%;" = number_to_currency(pr.max_price_with_tax)
                 - if pr.prompt_dicision_price.present?
-                  = " / 即決価格 "
+                  = " / 即売価格 "
                   span style="font-size: 130%;" = number_to_currency(pr.prompt_dicision_price_with_tax)
 
                 = " / 残り時間 #{pr.remaining_time}"

@@ -159,7 +159,7 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
 
             / td
             /   - if pr.prompt_dicision_price.present?
-            /     = link_to({ action: :prompt, id: pr.id }, method: :post, data: { confirm: "#{pr.name}\n\nこの商品に即決価格で自社落札をおこないます。\n\nよろしいですか？", "disable-with" => "入札中..."}, class: "btn btn-success") do
+            /     = link_to({ action: :prompt, id: pr.id }, method: :post, data: { confirm: "#{pr.name}\n\nこの商品に即売価格で自社落札をおこないます。\n\nよろしいですか？", "disable-with" => "入札中..."}, class: "btn btn-success") do
             /       span.glyphicon.glyphicon-pencil
             /       =< "自社落札"
             / td = link_to({ action: :destroy, id: pr.id }, method: :delete, data: { confirm: "#{pr.name}\n\nこの商品の出品を取り消しますか？", "disable-with" => "取消中..."}, class: "btn btn-danger") do

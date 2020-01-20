@@ -84,10 +84,10 @@ table.table.table-hover.table-condensed.form-table
         p.help-block 【任意】設定すると、最低落札価格に達しない入札金額では、落札されなくなります
 
     tr.form-inline
-      th = f.label :prompt_dicision_price, "即決価格(税抜)"
+      th = f.label :prompt_dicision_price, "即売価格(税抜)"
       td
         . = (f.text_field :prompt_dicision_price, class: "form-control price") + " 円"
-        p.help-block 【任意】設定すると、即決価格で入札された時点で、入札終了・落札されます
+        p.help-block 【任意】設定すると、即売価格で入札された時点で、入札終了・落札されます
 
     tr
       th 画像

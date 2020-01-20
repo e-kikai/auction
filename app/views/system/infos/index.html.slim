@@ -8,8 +8,8 @@ ul.nav.nav-pills
 
   .btn-group role="group"
     = link_to "すべて",       "/system/infos/",                    class: "btn btn-default #{:active if params[:seller_eq].blank?}"
-    = link_to "ユーザのみ",   "/system/infos/?q[target_eq]=false", class: "btn btn-default #{:active if params[:seller_eq] == 0}"
-    = link_to "出品会社のみ", "/system/infos/?q[target_eq]=true",  class: "btn btn-default #{:active if params[:seller_eq] == 100}"
+    = link_to "ユーザのみ",   "/system/infos/?q[target_eq]=0", class: "btn btn-default #{:active if params[:seller_eq] == 0}"
+    = link_to "出品会社のみ", "/system/infos/?q[target_eq]=100",  class: "btn btn-default #{:active if params[:seller_eq] == 100}"
 
 = paginate @pinfos
 
@@ -37,6 +37,6 @@ ul.nav.nav-pills
               span.glyphicon.glyphicon-edit
               =< "変更"
             td = I18n.l(he.created_at, format: :full_date)
-            td = link_to({ action: :destroy, id: he.id }, method: :delete, data: { confirm: "#{he.title}\n\nこのお知らせを削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger") do
+            td = link_to({ action: :destroy, id: he.id }, method: :delete, data: { confirm: "#{he.title}\n\nこのお知らせを削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-danger btn-xs") do
               span.glyphicon.glyphicon-remove
               =< "削除"

@@ -3,7 +3,8 @@
     .thumb_img
       = image_tag(product.thumb_url, alt: product.name)
 
-    .state class="state_#{product.state_before_type_cast}" = product.state
+    - if product.state_before_type_cast > 0
+      .state class="state_#{product.state_before_type_cast}" = product.state
 
     .name
       - if product.dulation_start.present?
@@ -24,8 +25,12 @@
 
     - else
       .price
-        span.max_price_label 現在
-        span.max_price = number_to_currency(product.max_price_with_tax)
+        - if product.prompt_dicision_price
+          span.prompt_dicision_price_label 即売
+          span.max_price = number_to_currency(product.prompt_dicision_price_with_tax)
+        - else
+          span.max_price_label 現在
+          span.max_price = number_to_currency(product.max_price_with_tax)
       .bids
         span.bid_label 入札
         span.bid = product.bids_count > 0 ? number_with_delimiter(product.bids_count) : "-"

@@ -107,14 +107,14 @@ class Myauction::ProductsController < Myauction::ApplicationController
     redirect_to "/myauction/products/", notice: "#{@product.name}を削除しました"
   end
 
-  # # 自社即決
+  # # 自社即売
   # def prompt
   #   @bid = @product.bids.new(user: current_user, amount: @product.prompt_dicision_price)
   #
   #   if @bid.save
-  #     redirect_to "/myauction/products", notice: "#{@product.name}を即決価格で自社入札しました"
+  #     redirect_to "/myauction/products", notice: "#{@product.name}を即売価格で自社入札しました"
   #   else
-  #     redirect_to "/myauction/products", alert: "#{@product.name}を即決価格できませんでした"
+  #     redirect_to "/myauction/products", alert: "#{@product.name}を即売価格できませんでした"
   #   end
   # end
 

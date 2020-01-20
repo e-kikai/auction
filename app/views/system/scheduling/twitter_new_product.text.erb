@@ -10,7 +10,7 @@
 現在価格 <%=number_to_currency(@product.max_price_with_tax)%>
 <% end %>
 <% if @product.prompt_dicision_price.present? %>
-即決価格 <%=number_to_currency(@product.prompt_dicision_price_with_tax)%>
+即売価格 <%=number_to_currency(@product.prompt_dicision_price_with_tax)%>
 <% end %>
 
 https://www.mnok.net/products/<%=@product.id%>

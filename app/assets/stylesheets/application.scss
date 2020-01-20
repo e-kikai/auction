@@ -550,6 +550,13 @@ label.top-search {
       font-size: 11px;
     }
 
+    .prompt_dicision_price_label {
+      font-size: 14px;
+      padding: 1px 8px;
+      background: #3b3;
+      color: white;
+    }
+
     .max_price {
       font-size: 17px;
       margin-left: 4px;
@@ -1302,4 +1309,19 @@ iframe.machinelife_ads {
     margin: 8px;
     width: 360px;
   }
+}
+
+ul.help-list {
+  li {
+    margin: 0 0 10px;
+    list-style: none;
+  }
+}
+
+.prompt_dicision_h4 {
+  background: #3b3;
+  color: white;
+  padding: 4px 0;
+  width: 100px;
+  text-align: center;
 }
