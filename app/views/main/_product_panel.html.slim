@@ -4,7 +4,11 @@
     .name = product.name
     .price
       - if product.finished?
-        span.max_price_label 終了しました
+        span.success_date 終了しました
       - else
-        span.max_price_label 現在
-        span.max_price = number_to_currency(product.max_price_with_tax)
+        - if product.prompt_dicision_price
+          span.prompt_dicision_price_label 即売
+          span.max_price = number_to_currency(product.prompt_dicision_price_with_tax)
+        - else
+          span.max_price_label 現在
+          span.max_price = number_to_currency(product.max_price_with_tax)

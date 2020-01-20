@@ -506,7 +506,7 @@ label.top-search {
         max-height: 100%;
         display: block;
         margin: auto;
-    }
+      }
     }
 
     img {
@@ -666,6 +666,8 @@ label.top-search {
     // max-height: 98px;
     max-width: 160px;
     max-height: 120px;
+    background: #EEE;
+
   }
 
   .name {
@@ -687,6 +689,25 @@ label.top-search {
       color: #333;
     }
   }
+
+  .max_price_label,
+  .bid_label,
+  .end_label {
+    color: #333;
+    font-size: 11px;
+  }
+
+  .success_date {
+    color: #833c14;
+  }
+
+  .prompt_dicision_price_label {
+    font-size: 14px;
+    padding: 1px 8px;
+    background: #3b3;
+    color: white;
+  }
+
 
   .max_price {
     font-size: 18px;
