@@ -6,7 +6,7 @@
     = image_tag @company.header_image.url
 
 .row
-  .col-md-offset-2.col-md-8
+  .col-md-offset-3.col-md-6
     h1.product-title
       span.glyphicon.glyphicon-home
       span.btn-content #{@company.company} 出品会社情報
@@ -18,9 +18,9 @@
 
     - if @company.company =~ /^堀川機械/
       = link_to @company.url, target: "_blank" do
-        = image_tag(asset_url("e-kikai-header-logo.gif"), alt: "e-kikai", class: "sticker_img"
+        = image_tag asset_url("e-kikai-header-logo.gif"), alt: "e-kikai", class: "sticker_img"
         span.sticker_name = @company.company
-        
+
     table.table.table-striped.table-hover.table-condensed.company-table
       tr
         th
