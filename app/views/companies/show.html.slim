@@ -12,10 +12,15 @@
       span.btn-content #{@company.company} 出品会社情報
 
     .button-center
-      = link_to "/products?company_id=#{@company.id}", class: "btn btn-default" do
+      = link_to "/products?company_id=#{@company.id}&success=start", class: "btn btn-default" do
         span.glyphicon.glyphicon-list
         span.btn-content = "#{@company.company}の出品商品を見る"
 
+    - if @company.company =~ /^堀川機械/
+      = link_to @company.url, target: "_blank" do
+        = image_tag(asset_url("e-kikai-header-logo.gif"), alt: "e-kikai", class: "sticker_img"
+        span.sticker_name = @company.company
+        
     table.table.table-striped.table-hover.table-condensed.company-table
       tr
         th

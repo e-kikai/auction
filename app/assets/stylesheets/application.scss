@@ -1287,6 +1287,9 @@ a.ads_logo {
     position: absolute;
     bottom: 8px;
     left: 310px;
+    overflow: absolute;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .desc {
@@ -1295,6 +1298,9 @@ a.ads_logo {
     bottom: 8px;
     bottom: 32px;
     left: 310px;
+    overflow: absolute;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 
@@ -1352,4 +1358,29 @@ ul.help-list {
   padding: 4px 0;
   width: 100px;
   text-align: center;
+}
+
+a.e-kikai_sticker {
+  border: 3px double #009c0c;
+  background: #e9fee7;
+  margin: 8px 0;
+  text-decoration: none;
+  width: 394px;
+  display: block;
+
+  .sticker_img {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .sticker_name {
+    font-size: 21px;
+    color: #005f07;
+    display: inline-block;
+    line-height: 61px;
+    font-weight: bold;
+    vertical-align: top;
+    width: 222px;
+    text-align: center;
+  }
 }
