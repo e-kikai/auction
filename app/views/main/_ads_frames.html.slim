@@ -1,9 +1,9 @@
 - orkeywords = okw.gsub(/[\s|｜　]+/, '|')
 
-- case rand(0..2)
+- case rand(0..1)
+/ - when 1
+/   iframe.machinelife_ads src="https://www.deadstocktool.com/ads.php?keywords=#{orkeywords}&res=mnok" scrolling="no"
 - when 1
-  iframe.machinelife_ads src="https://www.deadstocktool.com/ads.php?keywords=#{orkeywords}&res=mnok" scrolling="no"
-- when 2
   iframe.machinelife_ads src="https://www.zenkiren.net/machine_ads.php?keywords=#{orkeywords}&res=mnok" scrolling="no"
 - else
   iframe.machinelife_ads src="https://www.e-kikai.com/ads?keywords=#{orkeywords}&res=mnok" scrolling="no"

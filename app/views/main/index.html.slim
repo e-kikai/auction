@@ -135,43 +135,39 @@
         .thumbnail.search-panel style="border:0;"
           = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
 
+    .col-md-3.col-sm-4.col-xs-12.bid-banner-area
+      - if (Time.parse('2020-03-20 00:00:00')..Time.parse('2020-04-02 23:59:59')).include? Time.now
+        .thumbnail.search-panel
+          = link_to(image_tag("https://www.zenkiren.net/imgs/bids_28.png", alt: "マシンライフ 第28回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=28&r=bnr", target: "_blank")
 
-    .col-md-3.col-sm-4.col-xs-12
-      / .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
-      /   = link_to(image_tag("omdc_184_sq.png", alt: "第184回 機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+      - if (Time.parse('2020-06-26 00:00:00')..Time.parse('2020-07-08 23:59:59')).include? Time.now
+        .thumbnail.search-panel
+          = link_to(image_tag("https://www.zenkiren.net/imgs/bids_29.png", alt: "マシンライフ 第29回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=29&r=bnr", target: "_blank")
 
-      / - if (Time.parse('2019-05-17 00:00:00')..Time.parse('2019-05-31 23:59:59')).include? Time.now
-      /   .thumbnail.search-panel style="border:0;padding:0;margin-bottom:4px;"
-      /     = link_to(image_tag("https://www.deadstocktool.com/imgs/omdc_187_sq.png", alt: "大阪機械卸業団地協同組合 第187回機械工具入札会", style: "width:100%;"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+      - if (Time.parse('2020-09-25 00:00:00')..Time.parse('2020-10-07 23:59:59')).include? Time.now
+        .thumbnail.search-panel
+          = link_to(image_tag("https://www.zenkiren.net/imgs/bids_30.png", alt: "マシンライフ 第30回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=30&r=bnr", target: "_blank")
 
-      / - if (Time.parse('2019-03-22 00:00:00')..Time.parse('2019-04-04 23:59:59')).include? Time.now
-      /   .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
-      /     = link_to(image_tag("https://www.deadstocktool.com/imgs/bids_24.png", alt: "マシンライフ 第24回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=24&r=bnr", target: "_blank")
-
-      / - if (Time.parse('2019-06-21 00:00:00')..Time.parse('2019-07-04 23:59:59')).include? Time.now
-      /   .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
-      /     = link_to(image_tag("https://www.deadstocktool.com/imgs/bids_25.png", alt: "マシンライフ 第25回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=25&r=bnr", target: "_blank")
-
-      - if (Time.parse('2019-09-20 00:00:00')..Time.parse('2019-10-03 23:59:59')).include? Time.now
-        .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
-          = link_to(image_tag("https://www.deadstocktool.com/imgs/bids_26.png", alt: "マシンライフ 第26回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=26&r=bnr", target: "_blank")
-
-      - if (Time.parse('2019-12-20 00:00:00')..Time.parse('2020-01-16 23:59:59')).include? Time.now
-        .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
-          = link_to(image_tag("https://www.deadstocktool.com/imgs/bids_27.png", alt: "マシンライフ 第27回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=27&r=bnr", target: "_blank")
+      - if (Time.parse('2020-12-18 00:00:00')..Time.parse('2021-01-14 23:59:59')).include? Time.now
+        .thumbnail.search-panel
+          = link_to(image_tag("https://www.zenkiren.net/imgs/bids_31.png", alt: "マシンライフ 第31回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=31&r=bnr", target: "_blank")
 
 
-      / - if (Time.parse('2019-08-08 00:00:00')..Time.parse('2019-08-30 23:59:59')).include? Time.now
-      /   .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
-      /     = link_to(image_tag("https://www.deadstocktool.com/imgs/omdc_188.png", alt: "大阪機械卸業団地協同組合 第188回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+      - if (Time.parse('2020-05-22 00:00:00')..Time.parse('2020-06-05 23:59:59')).include? Time.now
+        .thumbnail.search-panel
+          = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_191.png", alt: "大阪機械卸業団地協同組合 第191回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
-      - if (Time.parse('2019-11-11 00:00:00')..Time.parse('2019-11-29 23:59:59')).include? Time.now
-        .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
-          = link_to(image_tag("https://www.deadstocktool.com/imgs/omdc_189.png", alt: "大阪機械卸業団地協同組合 第189回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+      - if (Time.parse('2020-08-21 00:00:00')..Time.parse('2020-09-04 23:59:59')).include? Time.now
+        .thumbnail.search-panel
+          = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_192.png", alt: "大阪機械卸業団地協同組合 第192回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
-      - if (Time.parse('2020-02-10 00:00:00')..Time.parse('2020-02-28 23:59:59')).include? Time.now
-        .thumbnail.search-panel style="border:0;padding:0;max-width:300px;"
-          = link_to(image_tag("https://www.deadstocktool.com/imgs/omdc_190.png", alt: "大阪機械卸業団地協同組合 第190回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+      - if (Time.parse('2020-11-13 00:00:00')..Time.parse('2020-11-27 23:59:59')).include? Time.now
+        .thumbnail.search-panel
+          = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_193.png", alt: "大阪機械卸業団地協同組合 第193回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+
+      - if (Time.parse('2020-02-19 00:00:00')..Time.parse('2021-03-05 23:59:59')).include? Time.now
+        .thumbnail.search-panel
+          = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_195.png", alt: "大阪機械卸業団地協同組合 第194回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
       .panel.panel-default
         = link_to "#collapse_help", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
