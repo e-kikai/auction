@@ -52,6 +52,8 @@ class Myauction::ProductsController < Myauction::ApplicationController
           name:           @data["name"],
           description:    @data["spec"],
           youtube:        @data["youtube"],
+          start_price:           @data["start_price"],
+          prompt_dicision_price: @data["start_price"],
         }
 
         @data["images"].split.each do |img|
