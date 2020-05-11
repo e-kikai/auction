@@ -1397,3 +1397,14 @@ a.e-kikai_sticker {
     max-width:300px;
   }
 }
+
+#youtubeModal {
+  .modal-body {
+    padding: 0;
+
+    iframe {
+      width: 100%;
+      height: 480px;
+    }
+  }
+}

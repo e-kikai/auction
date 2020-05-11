@@ -97,16 +97,33 @@
             span.glyphicon.glyphicon-calendar
             span.btn-content 日別トータル、出品予定
 
+      .panel.panel-default
+        .panel-heading
+          span.glyphicon.glyphicon-info-sign
+          span.btn-content お知らせ・実績
+        .panel-body
+          - @infos.each do |inf|
+            p = link_to inf.title, "/myauction/infos/#{inf.uid}"
+          p = link_to ">> お知らせ一覧", "/myauction/infos"
+
   .col-md-3
     - if current_user.seller?
       .panel.panel-default
         .panel-heading
           span.glyphicon.glyphicon-info-sign
-          span.btn-content 出品会社向けヘルプ・お知らせ
+          span.btn-content 出品会社向けヘルプ
         ul.nav.nav-pills.nav-stacked
           li = link_to "/myauction/helps" do
             span.glyphicon.glyphicon-question-sign
-            span.btn-content 出品会社向けヘルプ
+            span.btn-content 出品会社向けヘルプ一覧
+
+          li = link_to "https://youtu.be/kOqxZacOpZ4", class: "youtube_viewer", target: "_blank", "data-video": "https://www.youtube.com/embed/GVYLP6pjnjQ?autoplay=1" do
+            span.text-danger.glyphicon.glyphicon-film
+            span.btn-content チュートリアル動画 : 商品の出品
+
+          li = link_to "https://youtu.be/kOqxZacOpZ4", class: "youtube_viewer", target: "_blank", "data-video": "https://www.youtube.com/embed/kOqxZacOpZ4?autoplay=1"
+            span.text-danger.glyphicon.glyphicon-film
+            span.btn-content チュートリアル動画 : 落札後の取引
 
           li = link_to asset_path("auction_flyer_02.pdf"), target: "_blank"  do
             span.glyphicon.glyphicon-file
@@ -117,14 +134,9 @@
           li = link_to asset_path("auction_02.jpg"), target: "_blank" do
             span.glyphicon.glyphicon-picture
             span.btn-content 宣伝用リンクバナーJPEG(正方形)
-          li = mail_to "bata44883@gmail.com" do
+          li = mail_to "admin@mnok.net" do
             span.glyphicon.glyphicon-send
             span.btn-content 開発者メール問い合わせ
-          hr
-        .panel-body
-          - @infos.each do |inf|
-            p = link_to inf.title, "/myauction/infos/#{inf.uid}"
-          p = link_to ">> お知らせ一覧", "/myauction/infos"
 
 
     .panel.panel-default

@@ -235,9 +235,11 @@ class Product < ApplicationRecord
       self.max_price = prompt_dicision_price
       self.max_bid   = bid
       self.dulation_end = Time.now
+
     elsif lower_price.present? && lower_price > bid.amount
       # 最低落札価格(落札はされない)
       self.max_price = bid.amount
+
     elsif max_bid.blank? # (有効)入札なしの場合
       if lower_price.present?
         self.max_price = lower_price
@@ -528,7 +530,7 @@ class Product < ApplicationRecord
     d = day.to_date
     case
     when d >= "2019/10/01".to_date; 10
-    else;                             8
+    else;                            8
     end
   end
 
@@ -537,7 +539,7 @@ class Product < ApplicationRecord
   # 現在価格を初期化
   def default_max_price
     # self.max_price = start_price if max_price < start_price
-    self.max_price = start_price if bids_count == 0
+    self.max_price = start_price if bids_count == 0 && start_price_changed?
   end
 
   # YoutubeID変換

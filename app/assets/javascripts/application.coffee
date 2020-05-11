@@ -113,6 +113,25 @@ $(document).on 'turbolinks:load', ->
   if window.matchMedia('(max-width: 991px)').matches
     console.log($(".sm-close").collapse('hide'))
 
+  # youtube modal #
+  $('.youtube_viewer').click ->
+    src = $(@).attr('data-video')
+
+    $('#youtubeModal').modal("show")
+    $('#youtubeModal iframe').attr("src", src)
+
+    return false
+
+  $('#youtubeModal').on 'hide.bs.modal', ->
+    $("#youtubeModal iframe").attr("src", '')
+
+  # スマートフォンのみcollapseを閉じておく
+  if window.matchMedia('(max-width: 767px)').matches
+    console.log($(".xs-close").collapse('hide'))
+  if window.matchMedia('(max-width: 991px)').matches
+    console.log($(".sm-close").collapse('hide'))
+
+
 priceUnformat = (str) ->
   num = new String(str).replace(/[^0-9]/g, "")
   num = "" if num == '0'
