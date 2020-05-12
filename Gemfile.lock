@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/activeadmin/activeadmin.git
+  remote: git://github.com/activeadmin/activeadmin.git
   revision: 67389d4cb8525c82457b75c604e4159f292d47d7
   specs:
     activeadmin (2.7.0)
@@ -713,4 +713,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   2.1.4
+   1.17.3
