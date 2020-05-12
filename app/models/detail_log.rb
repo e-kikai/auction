@@ -35,6 +35,23 @@ class DetailLog < ApplicationRecord
     "machinelife" => "マシンライフ", "dst" => "デッドストック", "ekikai" => "e-kikai",
   }
 
+  def referer_view
+    if r.present?
+      r.split("_").map { |kwd| DetailLog::KWDS[kwd] || kwd }.join(" | ")
+    else
+      case referer
+      when /\/www\.google\.com\//;      "Google"
+      when /\/search\.yahoo\.co\.jp\//; "Yahoo"
+      when /\/t\.co\//;                 "Twitter"
+      when /\/www\.bing\.com\//;        "bing"
+      when /\/www\.facebook\.com\//;    "Facebook"
+      when /\/www\.youtube\.com\//;     "YouTune"
+      when /\/\/(.*? )\//;              $1
+      else;                             "(不明)"
+      end
+    end
+  end
+
   private
 
   def check_robot
