@@ -26,8 +26,8 @@ class System::DetailLogsController < System::ApplicationController
     where_referer = "referer NOT LIKE 'https://www.mnok.net%'"
     group_by      = ["DATE(created_at)", :referer]
 
-    @detail_logs  = DetailLog.where(where_date, where_referer).group(group_by).count()
-    @toppage_logs = ToppageLog.where(where_date, where_referer).group(group_by).count()
+    @detail_logs  = DetailLog.where(where_date).where(where_referer).group(group_by).count()
+    @toppage_logs = ToppageLog.where(where_date).where(where_referer).group(group_by).count()
 
     @columns = %w|Google Yahoo Twitter Facebook bing YouTube (不明) その他|
 
