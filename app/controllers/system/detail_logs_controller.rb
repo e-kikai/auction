@@ -38,9 +38,9 @@ class System::DetailLogsController < System::ApplicationController
       li = DetailLog.link_source("", keys[1])
 
       col = case li
-      when @columns; li
-      when "";       "blank"
-      else;          "other"
+      when @columns.method(:include?); li
+      when "";                         "blank"
+      else;                            "other"
       end
 
       @total[keys[0].to_date][col] += val
@@ -50,15 +50,13 @@ class System::DetailLogsController < System::ApplicationController
       li = DetailLog.link_source("", keys[1])
 
       col = case li
-      when @columns; li
-      when "";       "blank"
-      else;          "other"
+      when @columns.method(:include?); li
+      when "";                         "blank"
+      else;                            "other"
       end
 
       @total[keys[0].to_date][col] += val
     end
-
-
 
   end
 end
