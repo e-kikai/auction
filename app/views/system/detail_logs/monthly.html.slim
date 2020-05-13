@@ -19,14 +19,17 @@
             th.price.sepa 日付
             - @columns.each do |col|
               th.num = col
+            th.num = ""
         tbody
           - @total.each do |day, datas|
             tr class="#{'danger' if day.strftime('%w') == '0'} #{'info' if day.strftime('%w') == '6'} #{'success' if day == Time.now.to_date}"
               td.price.sepa = I18n.l(day, format: "%e (%a)")
               - @columns.each do |col|
                 td.num = datas[col]
+              td.num title="#{datas["others"].join("\s")}" ★
 
         tfoot
           th.price.sepa 合計
           - @columns.each do |col|
             td.num = (@total.sum { |day, datas| datas[col].to_i }).to_s
+          td.num

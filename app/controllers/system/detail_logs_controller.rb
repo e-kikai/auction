@@ -23,16 +23,19 @@ class System::DetailLogsController < System::ApplicationController
 
     days          = @date.beginning_of_month..@date.end_of_month
     where_date    = {created_at: days}
-    where_referer = "referer NOT LIKE 'https://www.mnok.net/%'"
+    where_referer = "referer NOT LIKE 'https://www.mnok.net%'"
     group_by      = ["DATE(created_at)", :referer]
 
     @detail_logs  = DetailLog.where(where_date, where_referer).group(group_by).count()
     @toppage_logs = ToppageLog.where(where_date, where_referer).group(group_by).count()
 
-    @columns = %w|Google Yahoo Twitter Facebook bing YouTube 不明 その他|
+    @columns = %w|Google Yahoo Twitter Facebook bing YouTube (不明) その他|
 
     @total = Hash.new()
-    days.each { |day| @total[day] = @columns.map { |co| [co, 0] }.to_h }
+    days.each do |day|
+      @total[day] = @columns.map { |co| [co, 0] }.to_h
+      @total[day]["others"] = []
+    end
 
     @detail_logs.each do |keys, val|
       li = DetailLog.link_source("", keys[1])
@@ -43,9 +46,11 @@ class System::DetailLogsController < System::ApplicationController
       # else;                            "その他"
       # end
 
-      col = if li.in?(@columns); li
-      elsif li == "";            "不明"
-      else;                      "その他"
+     if li.in?(@columns)
+        col = li
+      else
+        col = "その他"
+        @total[keys[0].to_date]["others"] << li
       end
 
       @total[keys[0].to_date][col] += val
@@ -60,10 +65,12 @@ class System::DetailLogsController < System::ApplicationController
       # else;                            "その他"
       # end
 
-      col = if li.in?(@columns); li
-      elsif li == "";            "不明"
-      else;                      "その他"
-      end
+      if li.in?(@columns)
+         col = li
+       else
+         col = "その他"
+         @total[keys[0].to_date]["others"] << li
+       end
 
 
       @total[keys[0].to_date][col] += val
