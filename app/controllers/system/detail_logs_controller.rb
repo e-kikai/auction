@@ -29,7 +29,7 @@ class System::DetailLogsController < System::ApplicationController
     @detail_logs  = DetailLog.where(where_date, where_referer).group(group_by).count()
     @toppage_logs = ToppageLog.where(where_date, where_referer).group(group_by).count()
 
-    @columns = %w|Google Yahoo Twitter Facebook bing YouTube other blank|
+    @columns = %w|Google Yahoo Twitter Facebook bing YouTube 不明 その他|
 
     @total = Hash.new()
     days.each { |day| @total[day] = @columns.map { |co| [co, 0] }.to_h }
@@ -37,10 +37,15 @@ class System::DetailLogsController < System::ApplicationController
     @detail_logs.each do |keys, val|
       li = DetailLog.link_source("", keys[1])
 
-      col = case li
-      when @columns.method(:include?); li
-      when "";                         "blank"
-      else;                            "other"
+      # col = case li
+      # when @columns.method(:include?); li
+      # when "";                         "不明"
+      # else;                            "その他"
+      # end
+
+      col = if li.in?(@columns); li
+      elsif li == "";            "不明"
+      else;                      "その他"
       end
 
       @total[keys[0].to_date][col] += val
@@ -49,11 +54,17 @@ class System::DetailLogsController < System::ApplicationController
     @toppage_logs.each do |keys, val|
       li = DetailLog.link_source("", keys[1])
 
-      col = case li
-      when @columns.method(:include?); li
-      when "";                         "blank"
-      else;                            "other"
+      # col = case li
+      # when @columns.method(:include?); li
+      # when "";                         "不明"
+      # else;                            "その他"
+      # end
+
+      col = if li.in?(@columns); li
+      elsif li == "";            "不明"
+      else;                      "その他"
       end
+
 
       @total[keys[0].to_date][col] += val
     end
