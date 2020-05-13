@@ -67,8 +67,8 @@ gem 'devise-i18n'
 gem 'devise-i18n-views'
 gem 'devise-encryptable'
 
-gem 'activeadmin', '= 2.1.0' # 管理者ページ
-gem 'active_bootstrap_skin'
+# gem 'activeadmin', '= 2.1.0' # 管理者ページ
+# gem 'active_bootstrap_skin'
 
 gem 'gretel'         # パンくず
 gem 'charwidth'      # 全角半角自動変換

@@ -17,4 +17,48 @@ class System::DetailLogsController < System::ApplicationController
       format.csv { export_csv "detail_logs.csv" }
     end
   end
+
+  def monthly
+    @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now.to_date
+
+    days          = @date.beginning_of_month..@date.end_of_month
+    where_date    = {created_at: days}
+    where_referer = "referer NOT LIKE 'https://www.mnok.net/%'"
+    group_by      = ["DATE(created_at)", :referer]
+
+    @detail_logs  = DetailLog.where(where_date, where_referer).group(group_by).count()
+    @toppage_logs = ToppageLog.where(where_date, where_referer).group(group_by).count()
+
+    @columns = %w|Google Yahoo Twitter Facebook bing YouTube other blank|
+
+    @total = Hash.new()
+    days.each { |day| @total[day] = @columns.map { |co| [co, 0] }.to_h }
+
+    @detail_logs.each do |keys, val|
+      li = DetailLog.link_source("", keys[1])
+
+      col = case li
+      when @columns; li
+      when "";       "blank"
+      else;          "other"
+      end
+
+      @total[keys[0].to_date][col] += val
+    end
+
+    @toppage_logs.each do |keys, val|
+      li = DetailLog.link_source("", keys[1])
+
+      col = case li
+      when @columns; li
+      when "";       "blank"
+      else;          "other"
+      end
+
+      @total[keys[0].to_date][col] += val
+    end
+
+
+
+  end
 end

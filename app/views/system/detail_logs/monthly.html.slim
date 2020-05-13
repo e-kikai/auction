@@ -1,0 +1,32 @@
+- set_meta_tags title: "外部アクセス履歴集計"
+- breadcrumb :system_something, "外部アクセス履歴集計"
+
+= form_tag("/system/detail_logs/monthly", method: "get", class: "form-inline filtering-form") do
+  = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+
+  = button_tag class: "btn btn-info" do
+    span.glyphicon.glyphicon-search
+    span.btn-content 検索
+
+.row
+  / p = @total.to_s
+
+  .col-lg-12.col-md-12.col-sm-12
+    .table-responsive
+      table.table.table-hover.table-condensed.table-striped.product-table
+        thead
+          tr
+            th.price.sepa 日付
+            - @columns.each do |col|
+              th.num = col
+        tbody
+          - @total.each do |day, datas|
+            tr class="#{'danger' if day.strftime('%w') == '0'} #{'info' if day.strftime('%w') == '6'} #{'success' if day == Time.now.to_date}"
+              td.price.sepa = I18n.l(day, format: "%e (%a)")
+              - @columns.each do |col|
+                td.num = datas[col]
+
+        tfoot
+          th.price.sepa 合計
+          - @columns.each do |col|
+            td.num = (@total.sum { |day, datas| datas[col].to_i }).to_s

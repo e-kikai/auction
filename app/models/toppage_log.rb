@@ -17,6 +17,10 @@ class ToppageLog < ApplicationRecord
 
   before_save :check_robot
 
+  def link_source
+    DetailLog.link_source(r, referer)
+  end
+
   private
 
   def check_robot

@@ -35,20 +35,25 @@ class DetailLog < ApplicationRecord
     "machinelife" => "マシンライフ", "dst" => "デッドストック", "ekikai" => "e-kikai",
   }
 
-  def referer_view
+  def link_source
+    DetailLog.link_source(r, referer)
+  end
+
+  def self.link_source(r, referer)
     if r.present?
       r.split("_").map { |kwd| DetailLog::KWDS[kwd] || kwd }.join(" | ")
     else
       case referer
-      when /\/www\.google\.(com|co\.jp)\//; "Google"
-      when /\/search\.yahoo\.co\.jp\//;     "Yahoo"
-      when /\/t\.co\//;                     "Twitter"
-      when /\/www\.bing\.com\//;            "bing"
-      when /\/www\.facebook\.com\//;        "Facebook"
-      when /\/www\.youtube\.com\//;         "YouTube"
-      when /\/www\.mnok\.net(.*)$/;         $1
-      when /\/\/(.*?)\//;                   $1
-      else;                                 "(不明)"
+      when /\/www\.google\.(com|co\.jp)/;           "Google"
+      when /\/search\.yahoo\.co\.jp\//;             "Yahoo"
+      when /\/t\.co\//;                             "Twitter"
+      when /\/www\.bing\.com\//;                    "bing"
+      when /\/www\.facebook\.com\//;                "Facebook"
+      when /\/www\.youtube\.com\//;                 "YouTube"
+      when /\/www\.mnok\.net\/myauction\/products/; "出品会社出品商品一覧"
+      when /\/www\.mnok\.net(.*)$/;                 $1
+      when /\/\/(.*?)\//;                           $1
+      else;                                         "(不明)"
       end
     end
   end

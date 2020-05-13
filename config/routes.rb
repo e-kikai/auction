@@ -120,7 +120,11 @@ Rails.application.routes.draw do
     end
 
     resources :bids,        only: [:index]
-    resources :detail_logs, only: [:index]
+    resources :detail_logs, only: [:index] do
+      collection do
+        get 'monthly'
+      end
+    end
     resources :search_logs, only: [:index]
     resources :watches,     only: [:index]
     resources :searches,    only: [:index]
