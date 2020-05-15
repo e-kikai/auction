@@ -1,6 +1,11 @@
 - set_meta_tags title: "外部アクセス履歴集計"
 - breadcrumb :system_something, "外部アクセス履歴集計"
 
+javascript:
+  $(function () {
+  	$('[data-toggle="tooltip"]').tooltip();
+  });
+
 = form_tag("/system/detail_logs/monthly", method: "get", class: "form-inline filtering-form") do
   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
 
@@ -19,7 +24,7 @@
           tr
             th.num.sepa 日付
             th.sepa colspan="4" メール
-            th.sepa
+            th.sepa colspan="6" e-kikai
             th.sepa colspan="#{@columns_ads.count}" 相互枠
             th.sepa colspan="#{@columns_search.count}" 検索・SNS
             th
@@ -29,6 +34,9 @@
             th.num ウォッチ<br />新着
             th.num リマインダ
             th.num.sepa 通知
+
+            - @columns_ekikai.each_with_index do |col, i|
+              th.num = col
             th.num.sepa 出品会社<br />サイト
 
 
@@ -48,13 +56,17 @@
               td.num = datas[:alert_mail] > 0 ? number_with_delimiter(datas[:alert_mail]) : ""
               td.num = datas[:remind_mail] > 0 ? number_with_delimiter(datas[:alert_mail]) : ""
               td.num.sepa = datas[:trade_mail] > 0 ? number_with_delimiter(datas[:trade_mail]) : ""
+
+              - @columns_ekikai.each_with_index do |col, i|
+                td.num = datas[:ekikai][col] > 0 ? number_with_delimiter(datas[:ekikai][col]) : ""
               td.num.sepa = datas[:sellers] > 0 ? number_with_delimiter(datas[:sellers]) : ""
 
               - @columns_ads.each_with_index do |col, i|
                 td.num class="#{"sepa" if i == @columns_ads.size - 1}" = datas[:ads][col] > 0 ? number_with_delimiter(datas[:ads][col]) : ""
               - @columns_search.each_with_index do |col, i|
                 td.num class="#{"sepa" if i == @columns_search.size - 1}" = datas[:search][col] > 0 ? number_with_delimiter(datas[:search][col]) : ""
-              td.num title="#{datas[:others_urls].join("\s")}" = datas[:others] > 0 ? number_with_delimiter(datas[:others]) : ""
+              td.num
+               . data-toggle="tooltip" data-placement="left" title="#{datas[:others_urls].join("\s")}" = datas[:others] > 0 ? number_with_delimiter(datas[:others]) : ""
 
         thead
           tr
@@ -63,6 +75,9 @@
             th.num ウォッチ<br />新着
             th.num リマインダ
             th.num.sepa 通知
+
+            - @columns_ekikai.each_with_index do |col, i|
+              th.num = col
             th.num.sepa 出品会社<br />サイト
 
 
@@ -79,6 +94,9 @@
           td.num = (@total.sum { |day, datas| datas[:alert_mail].to_i })
           td.num = (@total.sum { |day, datas| datas[:remind_mail].to_i })
           td.num.sepa = (@total.sum { |day, datas| datas[:trade_mail].to_i })
+
+          - @columns_ekikai.each_with_index do |col, i|
+            td.num = (@total.sum { |day, datas| datas[:ekikai][col].to_i })
           td.num.sepa = (@total.sum { |day, datas| datas[:sellers].to_i })
 
           - @columns_ads.each_with_index do |col, i|

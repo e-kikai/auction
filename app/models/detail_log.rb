@@ -50,6 +50,13 @@ class DetailLog < ApplicationRecord
       when /bing\.com\//;                           "bing"
       when /\/www\.facebook\.com\//;                "Facebook"
       when /\/www\.youtube\.com\//;                 "YouTube"
+
+      when /\/www\.zenkiren\.net\//;                "マシンライフ"
+      when /\/www\.zenkiren\.org\//;                "全機連"
+      when /\/www\.e-kikai\.com\//;                 "e-kikai"
+      when /\/www\.xn--4bswgw9cs82at4b485i\.jp \//; "電子入札システム"
+      when /\/www\.deadstocktool\.com\//;           "デッドストック"
+
       when /\/www\.mnok\.net\/myauction\/products/; "出品会社出品商品一覧"
       when /\/www\.mnok\.net(.*)$/;                 $1
       when /\/\/(.*?)(\/|$)/;                       $1

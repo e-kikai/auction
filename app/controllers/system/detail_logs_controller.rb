@@ -29,11 +29,10 @@ class System::DetailLogsController < System::ApplicationController
     @detail_logs  = DetailLog.where(where_date).where(where_referer).group(["DATE(created_at)", :referer, :r]).count()
     @toppage_logs = ToppageLog.where(where_date).where(where_referer).group(["DATE(created_at)", :referer]).count()
 
-    @columns_ekikai = %w|マシンライフ e-kikai OMDC DST| # e-kikaiサイト郡
+    @columns_ekikai = %w|マシンライフ 全機連 e-kikai 電子入札システム デッドストック| # e-kikaiサイト郡
     @columns_ads    = %w|マシンライフ e-kikai| # 広告枠
     @columns_search = %w|Google Yahoo Twitter Facebook bing YouTube (不明)| # 検索・SNS
 
-    # @sellers_url = User.where(seller: true).where.not(url: "").pluck(:url).map {|url| url.gsub(/\/\/(.*?)\//, $1) } # 出品会社サイト
     @sellers_url = User.where(seller: true).where.not(url: "").pluck(:url) # 出品会社サイト
     @urls = @sellers_url.map { |url| url =~ /\/\/(.*?)(\/|$)/ ? $1 : nil }.compact
 
@@ -42,6 +41,7 @@ class System::DetailLogsController < System::ApplicationController
       @total[day] = {
         search:      @columns_search.map { |co| [co, 0] }.to_h,
         ads:         @columns_ads.map { |co| [co, 0] }.to_h,
+        ekikai:      @columns_ekikai.map { |co| [co, 0] }.to_h,
         sellers:     0,
         others:      0,
         mailchimp:   0,
@@ -84,9 +84,20 @@ class System::DetailLogsController < System::ApplicationController
         @total[keys[0].to_date][:sellers] += val
 
       elsif keys[2] !~ /mnok\.net/
+        # e-kikaiメンバー
+        tmp = false
+        @columns_ekikai.each do |col|
+          if li.include?(col)
+            @total[keys[0].to_date][:ekikai][col] += val
+            tmp = true
+          end
+        end
+
         # その他
-        @total[keys[0].to_date][:others_urls] << li
-        @total[keys[0].to_date][:others] += val
+        if tmp == false
+          @total[keys[0].to_date][:others_urls] << keys[1]
+          @total[keys[0].to_date][:others] += val
+        end
       end
 
     end
