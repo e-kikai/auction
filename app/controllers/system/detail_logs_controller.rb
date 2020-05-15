@@ -22,12 +22,13 @@ class System::DetailLogsController < System::ApplicationController
     @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now.to_date
 
     days          = @date.beginning_of_month..@date.end_of_month
-    where_date    = {created_at: days}
+    where_date    = {"DATE(created_at)" => days}
+
     where_referer = "(referer NOT LIKE 'https://www.mnok.net%' OR referer LIKE 'https://www.mnok.net/products/ads%')"
     group_by      = ["DATE(created_at)", :referer, :r]
 
-    @detail_logs  = DetailLog.where(where_date).where(where_referer).group(["DATE(created_at)", :referer, :r]).count()
-    @toppage_logs = ToppageLog.where(where_date).where(where_referer).group(["DATE(created_at)", :referer]).count()
+    @detail_logs  = DetailLog.where("DATE(created_at) BETWEEN ? AND ?", @date.beginning_of_month, @date.end_of_month ).where(where_referer).group(["DATE(created_at)", :referer, :r]).count()
+    @toppage_logs = ToppageLog.where("DATE(created_at) BETWEEN ? AND ?", @date.beginning_of_month, @date.end_of_month ).where(where_referer).group(["DATE(created_at)", :referer]).count()
 
     @columns_ekikai = %w|マシンライフ 全機連 e-kikai 電子入札システム デッドストック| # e-kikaiサイト郡
     @columns_ads    = %w|マシンライフ e-kikai| # 広告枠
@@ -35,6 +36,7 @@ class System::DetailLogsController < System::ApplicationController
 
     @sellers_url = User.where(seller: true).where.not(url: "").pluck(:url) # 出品会社サイト
     @urls = @sellers_url.map { |url| url =~ /\/\/(.*?)(\/|$)/ ? $1 : nil }.compact
+    @urls << "kkmt.co.jp"
 
     @total = Hash.new()
     days.each do |day|
@@ -55,48 +57,49 @@ class System::DetailLogsController < System::ApplicationController
     logs = @detail_logs.merge(@toppage_logs)
 
     logs.each do |keys, val|
-      li = DetailLog.link_source(keys[2], keys[1])
+      li  = DetailLog.link_source(keys[2], keys[1])
+      day = keys[0].to_date
 
       if li.in?(@columns_search)
         # 検索・SNS
-        @total[keys[0].to_date][:search][li] += val
+        @total[day][:search][li] += val
       elsif li.include?("ads")
         # 広告枠
         @columns_ads.each do |site|
           if li.include?(site)
-            @total[keys[0].to_date][:ads][site] += val
+            @total[day][:ads][site] += val
           end
         end
       elsif li.include?("Mailchimp")
         # Mailchimp
-        @total[keys[0].to_date][:mailchimp] += val
+        @total[day][:mailchimp] += val
       elsif li.include?("メール") && li.include?("新着")
         # 新着メール
-        @total[keys[0].to_date][:alert_mail] += val
+        @total[day][:alert_mail] += val
       elsif li.include?("メール") && li.include?("通知")
         # 通知メール
-        @total[keys[0].to_date][:trade_mail] += val
+        @total[day][:trade_mail] += val
       elsif li.include?("メール") && li.include?("リマインダ")
         # リマインダ
-        @total[keys[0].to_date][:remind_mail] += val
+        @total[day][:remind_mail] += val
       elsif li.in?(@urls)
         # 出品会社サイト
-        @total[keys[0].to_date][:sellers] += val
+        @total[day][:sellers] += val
 
       elsif keys[2] !~ /mnok\.net/
         # e-kikaiメンバー
         tmp = false
         @columns_ekikai.each do |col|
           if li.include?(col)
-            @total[keys[0].to_date][:ekikai][col] += val
+            @total[day][:ekikai][col] += val
             tmp = true
           end
         end
 
         # その他
         if tmp == false
-          @total[keys[0].to_date][:others_urls] << keys[1]
-          @total[keys[0].to_date][:others] += val
+          @total[day][:others_urls] << keys[1]
+          @total[day][:others] += val
         end
       end
 
