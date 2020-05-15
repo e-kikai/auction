@@ -52,7 +52,7 @@ class DetailLog < ApplicationRecord
       when /\/www\.youtube\.com\//;                 "YouTube"
       when /\/www\.mnok\.net\/myauction\/products/; "出品会社出品商品一覧"
       when /\/www\.mnok\.net(.*)$/;                 $1
-      when /\/\/(.*?)\//;                           $1
+      when /\/\/(.*?)(\/|$)/;                       $1
       else;                                         "(不明)"
       end
     end

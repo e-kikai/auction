@@ -35,7 +35,7 @@ class System::DetailLogsController < System::ApplicationController
 
     # @sellers_url = User.where(seller: true).where.not(url: "").pluck(:url).map {|url| url.gsub(/\/\/(.*?)\//, $1) } # 出品会社サイト
     @sellers_url = User.where(seller: true).where.not(url: "").pluck(:url) # 出品会社サイト
-    @urls = @sellers_url.map { |url| url =~ /\/\/(.*?)\// ? $1 : nil }.compact
+    @urls = @sellers_url.map { |url| url =~ /\/\/(.*?)(\/|$)/ ? $1 : nil }.compact
 
     @total = Hash.new()
     days.each do |day|
