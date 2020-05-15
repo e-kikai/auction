@@ -44,8 +44,8 @@ class DetailLog < ApplicationRecord
       r.split("_").map { |kwd| DetailLog::KWDS[kwd] || kwd }.join(" | ")
     else
       case referer
-      when /\/www\.google\.(com|co\.jp)/;           "Google"
-      when /\/search\.yahoo\.co\.jp\//;             "Yahoo"
+      when /\/www\.google\.(com|co)/;           "Google"
+      when /\/search\.yahoo\.co/;             "Yahoo"
       when /\/t\.co\//;                             "Twitter"
       when /bing\.com\//;                           "bing"
       when /\/www\.facebook\.com\//;                "Facebook"
@@ -54,8 +54,8 @@ class DetailLog < ApplicationRecord
       when /\/www\.zenkiren\.net\//;                "マシンライフ"
       when /\/www\.zenkiren\.org\//;                "全機連"
       when /\/www\.e-kikai\.com\//;                 "e-kikai"
-      when /\/www\.xn\-\-4bswgw9cs82at4b485i\.jp \//; "電子入札システム"
-      when /\/www\.大阪機械団地\.jp \//;              "電子入札システム"
+      when /\/www\.xn\-\-4bswgw9cs82at4b485i\.jp\//; "電子入札システム"
+      when /\/www\.大阪機械団地\.jp\//;              "電子入札システム"
       when /\/www\.deadstocktool\.com\//;           "デッドストック"
 
       when /\/www\.mnok\.net\/myauction\/products/; "出品会社出品商品一覧"
