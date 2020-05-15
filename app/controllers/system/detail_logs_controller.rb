@@ -33,17 +33,19 @@ class System::DetailLogsController < System::ApplicationController
     @columns_ads    = %w|マシンライフ e-kikai| # 広告枠
     @columns_search = %w|Google Yahoo Twitter Facebook bing YouTube (不明)| # 検索・SNS
 
+    # @sellers_url = User.where(seller: true).where.not(url: "").pluck(:url).map {|url| url.gsub(/\/\/(.*?)\//, $1) } # 出品会社サイト
     @sellers_url = User.where(seller: true).where.not(url: "").pluck(:url) # 出品会社サイト
-
+    @urls = @sellers_url.map { |url| url =~ /\/\/(.*?)\// ? $1 : nil }.compact
 
     @total = Hash.new()
     days.each do |day|
       @total[day] = {
         search:      @columns_search.map { |co| [co, 0] }.to_h,
         ads:         @columns_ads.map { |co| [co, 0] }.to_h,
-        sellers_url: 0,
+        sellers:     0,
         others:      0,
         mailchimp:   0,
+        remind_mail: 0,
         alert_mail:  0,
         trade_mail:  0,
         others_urls: [],
@@ -74,6 +76,13 @@ class System::DetailLogsController < System::ApplicationController
       elsif li.include?("メール") && li.include?("通知")
         # 通知メール
         @total[keys[0].to_date][:trade_mail] += val
+      elsif li.include?("メール") && li.include?("リマインダ")
+        # リマインダ
+        @total[keys[0].to_date][:remind_mail] += val
+      elsif li.in?(@urls)
+        # 出品会社サイト
+        @total[keys[0].to_date][:sellers] += val
+
       elsif keys[2] !~ /mnok\.net/
         # その他
         @total[keys[0].to_date][:others_urls] << li

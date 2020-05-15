@@ -10,22 +10,27 @@
 
 .row
   / p = @total.to_s
+  / p = @urls
 
   .col-lg-12.col-md-12.col-sm-12
     .table-responsive
       table.table.table-hover.table-condensed.table-striped.product-table
         thead
           tr
-            th.price.sepa 日付
-            th.sepa colspan="3" メール
+            th.num.sepa 日付
+            th.sepa colspan="4" メール
+            th.sepa
             th.sepa colspan="#{@columns_ads.count}" 相互枠
             th.sepa colspan="#{@columns_search.count}" 検索・SNS
             th
           tr
-            th.price.sepa
+            th.num.sepa
             th.num Mailchimp
-            th.num 新着
+            th.num ウォッチ<br />新着
+            th.num リマインダ
             th.num.sepa 通知
+            th.num.sepa 出品会社<br />サイト
+
 
             - @columns_ads.each_with_index do |col, i|
               th.num class="#{"sepa" if i == @columns_ads.size - 1}" = col
@@ -37,11 +42,13 @@
         tbody
           - @total.each do |day, datas|
             tr class="#{'danger' if day.strftime('%w') == '0'} #{'info' if day.strftime('%w') == '6'} #{'success' if day == Time.now.to_date}"
-              td.price.sepa = I18n.l(day, format: "%e (%a)")
+              td.num.sepa = I18n.l(day, format: "%e (%a)")
 
               td.num = datas[:mailchimp] > 0 ? number_with_delimiter(datas[:mailchimp]) : ""
               td.num = datas[:alert_mail] > 0 ? number_with_delimiter(datas[:alert_mail]) : ""
+              td.num = datas[:remind_mail] > 0 ? number_with_delimiter(datas[:alert_mail]) : ""
               td.num.sepa = datas[:trade_mail] > 0 ? number_with_delimiter(datas[:trade_mail]) : ""
+              td.num.sepa = datas[:sellers] > 0 ? number_with_delimiter(datas[:sellers]) : ""
 
               - @columns_ads.each_with_index do |col, i|
                 td.num class="#{"sepa" if i == @columns_ads.size - 1}" = datas[:ads][col] > 0 ? number_with_delimiter(datas[:ads][col]) : ""
@@ -51,10 +58,13 @@
 
         thead
           tr
-            th.price.sepa
+            th.num.sepa
             th.num Mailchimp
-            th.num 新着
+            th.num ウォッチ<br />新着
+            th.num リマインダ
             th.num.sepa 通知
+            th.num.sepa 出品会社<br />サイト
+
 
             - @columns_ads.each_with_index do |col, i|
               th.num class="#{"sepa" if i == @columns_ads.size - 1}" = col
@@ -63,12 +73,13 @@
               th.num class="#{"sepa" if i == @columns_search.size - 1}"  = col
             th.num その他
         tfoot
-          th.price.sepa 合計
+          th.num.sepa 合計
 
           td.num = (@total.sum { |day, datas| datas[:mailchimp].to_i })
           td.num = (@total.sum { |day, datas| datas[:alert_mail].to_i })
+          td.num = (@total.sum { |day, datas| datas[:remind_mail].to_i })
           td.num.sepa = (@total.sum { |day, datas| datas[:trade_mail].to_i })
-
+          td.num.sepa = (@total.sum { |day, datas| datas[:sellers].to_i })
 
           - @columns_ads.each_with_index do |col, i|
             td.num class="#{"sepa" if i == @columns_ads.size - 1}" = (@total.sum { |day, datas| datas[:ads][col].to_i })
