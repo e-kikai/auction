@@ -23,58 +23,51 @@ class System::DetailLogsController < System::ApplicationController
 
     days          = @date.beginning_of_month..@date.end_of_month
     where_date    = {created_at: days}
-    where_referer = "referer NOT LIKE 'https://www.mnok.net%'"
-    group_by      = ["DATE(created_at)", :referer]
+    where_referer = "(referer NOT LIKE 'https://www.mnok.net%' OR referer LIKE 'https://www.mnok.net/products/ads%')"
+    group_by      = ["DATE(created_at)", :referer, :r]
 
-    @detail_logs  = DetailLog.where(where_date).where(where_referer).group(group_by).count()
-    @toppage_logs = ToppageLog.where(where_date).where(where_referer).group(group_by).count()
+    @detail_logs  = DetailLog.where(where_date).where(where_referer).group(["DATE(created_at)", :referer, :r]).count()
+    @toppage_logs = ToppageLog.where(where_date).where(where_referer).group(["DATE(created_at)", :referer]).count()
 
-    @columns = %w|Google Yahoo Twitter Facebook bing YouTube (不明) その他|
+    @columns_ekikai = %w|マシンライフ e-kikai OMDC DST| # e-kikaiサイト郡
+    @columns_ads    = %w|マシンライフ e-kikai| # 広告枠
+    @columns_search = %w|Google Yahoo Twitter Facebook bing YouTube (不明)| # 検索・SNS
+
+    @sellers_url = User.where(seller: true).where.not(url: "").pluck(:url) # 出品会社サイト
+
 
     @total = Hash.new()
     days.each do |day|
-      @total[day] = @columns.map { |co| [co, 0] }.to_h
-      @total[day]["others"] = []
+      @total[day] = {
+        search:      @columns_search.map { |co| [co, 0] }.to_h,
+        ads:         @columns_ads.map { |co| [co, 0] }.to_h,
+        sellers_url: 0,
+        others:      0,
+        others_urls: [],
+      }
     end
 
-    @detail_logs.each do |keys, val|
-      li = DetailLog.link_source("", keys[1])
+    logs = @detail_logs.merge(@toppage_logs)
 
-      # col = case li
-      # when @columns.method(:include?); li
-      # when "";                         "不明"
-      # else;                            "その他"
-      # end
+    logs.each do |keys, val|
+      li = DetailLog.link_source(keys[2], keys[1])
 
-     if li.in?(@columns)
-        col = li
+      if li.in?(@columns_search)
+        # 検索・SNS
+        @total[keys[0].to_date][:search][li] += val
+      elsif li.include?("ads")
+        # 広告枠
+        @columns_ads.each do |site|
+          if li.include?(site)
+            @total[keys[0].to_date][:ads][site] += val
+          end
+        end
       else
-        col = "その他"
-        @total[keys[0].to_date]["others"] << li
+        # その他
+        @total[keys[0].to_date][:others_urls] << li
+        @total[keys[0].to_date][:others] += val
       end
 
-      @total[keys[0].to_date][col] += val
     end
-
-    @toppage_logs.each do |keys, val|
-      li = DetailLog.link_source("", keys[1])
-
-      # col = case li
-      # when @columns.method(:include?); li
-      # when "";                         "不明"
-      # else;                            "その他"
-      # end
-
-      if li.in?(@columns)
-         col = li
-       else
-         col = "その他"
-         @total[keys[0].to_date]["others"] << li
-       end
-
-
-      @total[keys[0].to_date][col] += val
-    end
-
   end
 end

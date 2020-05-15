@@ -47,7 +47,7 @@ class DetailLog < ApplicationRecord
       when /\/www\.google\.(com|co\.jp)/;           "Google"
       when /\/search\.yahoo\.co\.jp\//;             "Yahoo"
       when /\/t\.co\//;                             "Twitter"
-      when /\/www\.bing\.com\//;                    "bing"
+      when /bing\.com\//;                           "bing"
       when /\/www\.facebook\.com\//;                "Facebook"
       when /\/www\.youtube\.com\//;                 "YouTube"
       when /\/www\.mnok\.net\/myauction\/products/; "出品会社出品商品一覧"

@@ -17,19 +17,35 @@
         thead
           tr
             th.price.sepa 日付
-            - @columns.each do |col|
-              th.num = col
-            th.num = ""
+            th.sepa colspan="#{@columns_ads.count}" 相互枠
+            th.sepa colspan="#{@columns_search.count}" 検索・SNS
+            th
+          tr
+            th.price.sepa
+            - @columns_ads.each_with_index do |col, i|
+              th.num class="#{"sepa" if i == @columns_ads.size - 1}" = col
+
+            - @columns_search.each_with_index do |col, i|
+              th.num class="#{"sepa" if i == @columns_search.size - 1}"  = col
+            th.num その他
+
+          tr
         tbody
           - @total.each do |day, datas|
             tr class="#{'danger' if day.strftime('%w') == '0'} #{'info' if day.strftime('%w') == '6'} #{'success' if day == Time.now.to_date}"
               td.price.sepa = I18n.l(day, format: "%e (%a)")
-              - @columns.each do |col|
-                td.num = datas[col]
-              td.num title="#{datas["others"].join("\s")}" ★
+
+              - @columns_ads.each_with_index do |col, i|
+                td.num class="#{"sepa" if i == @columns_ads.size - 1}" = datas[:ads][col] > 0 ? number_with_delimiter(datas[:ads][col]) : ""
+              - @columns_search.each_with_index do |col, i|
+                td.num class="#{"sepa" if i == @columns_search.size - 1}" = datas[:search][col] > 0 ? number_with_delimiter(datas[:search][col]) : ""
+              td.num title="#{datas[:others_urls].join("\s")}" = datas[:others]
 
         tfoot
           th.price.sepa 合計
-          - @columns.each do |col|
-            td.num = (@total.sum { |day, datas| datas[col].to_i }).to_s
+
+          - @columns_ads.each_with_index do |col, i|
+            td.num class="#{"sepa" if i == @columns_ads.size - 1}" = (@total.sum { |day, datas| datas[:ads][col].to_i })
+          - @columns_search.each_with_index do |col, i|
+            td.num class="#{"sepa" if i == @columns_search.size - 1}" = (@total.sum { |day, datas| datas[:search][col].to_i }).to_s
           td.num
