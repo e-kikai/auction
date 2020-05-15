@@ -43,6 +43,9 @@ class System::DetailLogsController < System::ApplicationController
         ads:         @columns_ads.map { |co| [co, 0] }.to_h,
         sellers_url: 0,
         others:      0,
+        mailchimp:   0,
+        alert_mail:  0,
+        trade_mail:  0,
         others_urls: [],
       }
     end
@@ -62,7 +65,16 @@ class System::DetailLogsController < System::ApplicationController
             @total[keys[0].to_date][:ads][site] += val
           end
         end
-      else
+      elsif li.include?("Mailchimp")
+        # Mailchimp
+        @total[keys[0].to_date][:mailchimp] += val
+      elsif li.include?("メール") && li.include?("新着")
+        # 新着メール
+        @total[keys[0].to_date][:alert_mail] += val
+      elsif li.include?("メール") && li.include?("通知")
+        # 通知メール
+        @total[keys[0].to_date][:trade_mail] += val
+      elsif keys[2] !~ /mnok\.net/
         # その他
         @total[keys[0].to_date][:others_urls] << li
         @total[keys[0].to_date][:others] += val
