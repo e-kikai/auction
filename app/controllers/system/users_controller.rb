@@ -18,6 +18,7 @@ class System::UsersController < System::ApplicationController
 
   def new
     @user = User.new
+    @user.confirmed_at = Time.now
   end
 
   def create

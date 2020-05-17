@@ -22,7 +22,7 @@
           = f.label :password, class: :required
           = f.text_field :password, required: "required", class: 'form-control'
 
-          = f.hidden_field :confirmed_at, value: Time.now
+          / = f.hidden_field :confirmed_at, value: Time.now
 
       .form-group
         = f.label :account, class: :required
@@ -67,6 +67,10 @@
         .
           label.radio-inline = f.radio_button(:allow_mail, true)  + "送る"
           label.radio-inline = f.radio_button(:allow_mail, false) + "送らない"
+
+      .form-group
+        = f.label :confirmed_at, "登録確認"
+        = f.text_field :confirmed_at, class: 'form-control short'
 
       hr
 

@@ -44,8 +44,8 @@ class DetailLog < ApplicationRecord
       r.split("_").map { |kwd| DetailLog::KWDS[kwd] || kwd }.join(" | ")
     else
       case referer
-      when /\/www\.google\.(com|co)/;           "Google"
-      when /\/search\.yahoo\.co/;             "Yahoo"
+      when /\/www\.google\.(com|co)/;               "Google"
+      when /\/search\.yahoo\.co/;                   "Yahoo"
       when /\/t\.co\//;                             "Twitter"
       when /bing\.com\//;                           "bing"
       when /\/www\.facebook\.com\//;                "Facebook"

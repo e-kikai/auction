@@ -86,7 +86,7 @@ class System::DetailLogsController < System::ApplicationController
         # 出品会社サイト
         @total[day][:sellers] += val
 
-      elsif keys[2] !~ /mnok\.net/
+      elsif keys[1] !~ /mnok\.net/
         # e-kikaiメンバー
         tmp = false
         @columns_ekikai.each do |col|
