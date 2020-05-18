@@ -2,8 +2,10 @@ doctype html
 html
   head
     - set_meta_tags title: "おすすめオークション"
-
     - set_meta_tags nofollow: false, noindex: true
+
+    = display_meta_tags site: "ものづくりオークション", reverse: true, separator: "｜", charset: "utf-8", viewport: "width=device-width, initial-scale=1"
+
 
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => :reload
     = javascript_include_tag 'application', 'data-turbolinks-track' => :reload
@@ -15,7 +17,8 @@ html
       - if @products.present?
         - @products.each do |pr|
           = render "/main/product_panel", product: pr, r: "#{@res}_ads"
-    = link_to "/", class: "ads_logo", target: "_blank" do
-      = image_tag("logo_02.png", alt: "工具・機械のものづくりオークション | ものオク")
-      .site by mnok.net
-      .desc ものづくりの現場で活躍する機械・工具を安心安全な業者からオークションで購入！
+
+    / = link_to "/", class: "ads_logo", target: "_blank" do
+    /   = image_tag("logo_02.png", alt: "工具・機械のものづくりオークション | ものオク")
+    /   .site by mnok.net
+    /   .desc ものづくりの現場で活躍する機械・工具を安心安全な業者からオークションで購入！
