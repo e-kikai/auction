@@ -12,6 +12,11 @@ class System::ProductsController < System::ApplicationController
     @pproducts = @products.page(params[:page]).per(100)
 
     @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
+
+    respond_to do |format|
+      format.html
+      format.csv { export_csv "products_#{@date.strftime('%Y_%m')}.csv" }
+    end
   end
 
   def finished
@@ -35,6 +40,11 @@ class System::ProductsController < System::ApplicationController
     @pproducts = @products.page(params[:page]).per(100)
 
     @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
+
+    respond_to do |format|
+      format.html
+      format.csv { export_csv "finished_month_#{@date.strftime('%Y_%m_%d')}.csv" }
+    end
   end
 
   def finished_month
@@ -58,6 +68,11 @@ class System::ProductsController < System::ApplicationController
     @pproducts = @products.page(params[:page]).per(100)
 
     @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
+
+    respond_to do |format|
+      format.html
+      format.csv { export_csv "finished_month_#{@date.strftime('%Y_%m')}.csv" }
+    end
   end
 
   def results
