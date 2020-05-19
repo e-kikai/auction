@@ -94,7 +94,6 @@ group :development do
   gem 'web-console', '~> 2.0'
 
   gem 'rails-erd' # ER図書き出し
-  gem 'annotate'  # DBスキーマ書き出し
 
   gem 'html2slim'
 
@@ -103,6 +102,9 @@ group :development do
 
   gem 'rails_real_favicon' # favicon
 end
+
+gem 'annotate'  # DBスキーマ書き出し
+
 
 # assets
 # source 'https://rails-assets.org' do
