@@ -22,7 +22,9 @@
       th.sepa ユーザID・アカウント/<br/>会社・ユーザ名
       th.num 商品ID
       th 商品名
+      th 出品会社
       th.price 最高金額
+      th.num 入札数product.bids_count
       th リンク元
     - @pdetail_logs.each do |lo|
       tr
@@ -34,21 +36,15 @@
           . = "#{lo.user.try(:id)} #{lo.user.try(:account)}"
           . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip
         td.num = lo.product_id
-        td = lo.product ? (link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank") : "× (削除された商品)"
-        td.price = lo.product ? number_to_currency(lo.product.max_price) : ""
-        td title="#{lo.referer}"
-          / - if lo.r.present?
-          /   = lo.r.split("_").map { |kwd| DetailLog::KWDS[kwd] || kwd }.join(" | ")
-          / / - elsif lo.referer =~ /https\:\/\/www.mnok.net/
-          / /   | 内部リンク
-          / - elsif lo.referer =~ /https\:\/\/google\.com/
-          /   | Google
-          / - elsif lo.referer =~ /https\:\/\/www\.facebook\.com/
-          /   | facebook
-          / - elsif lo.referer =~ /https\:\/\/t\.co/
-          /   | Twitter
-          / - elsif lo.referer =~ /http\:\/\/search\.yahoo\.co\.jp/
-          /   | Yahoo
-          / - elsif lo.referer =~ /https\:\/\/www\.bing\.com/
-          /   | bing
-          = lo.link_source
+        - if lo.product
+          td = link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank"
+          td = lo.product.user_company
+          td.price = number_to_currency(lo.product.max_price)
+          td.num = lo.product.bids_count
+        - else
+          td × (削除された商品)
+          td
+          td.price
+          td.num
+
+        td title="#{lo.referer}" = lo.link_source

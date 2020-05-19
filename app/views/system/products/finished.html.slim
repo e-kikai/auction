@@ -6,7 +6,7 @@
   = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
   = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
 
-  = button_tag class: "btn btn-default btn-square" do
+  = button_tag class: "btn btn-info" do
     span.glyphicon.glyphicon-search
     span.btn-content 検索
   = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
