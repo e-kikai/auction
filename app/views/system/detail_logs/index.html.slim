@@ -38,7 +38,7 @@
         td.num = lo.product_id
         - if lo.product
           td = link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank"
-          td = lo.product.user_company
+          td = lo.product.user.company
           td.price = number_to_currency(lo.product.max_price)
           td.num = lo.product.bids_count
         - else
