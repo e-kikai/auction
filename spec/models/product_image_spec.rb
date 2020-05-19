@@ -2,12 +2,16 @@
 #
 # Table name: product_images
 #
-#  id         :bigint(8)        not null, primary key
-#  product_id :bigint(8)        not null
+#  id         :bigint           not null, primary key
 #  image      :text             not null
 #  order_no   :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  product_id :bigint           not null
+#
+# Indexes
+#
+#  index_product_images_on_product_id  (product_id)
 #
 
 require 'rails_helper'

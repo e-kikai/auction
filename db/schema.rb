@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_31_161344) do
+ActiveRecord::Schema.define(version: 2020_05_19_075329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -240,6 +240,12 @@ ActiveRecord::Schema.define(version: 2018_08_31_161344) do
     t.integer "auto_resale_date", default: 7, null: false
     t.integer "stock"
     t.integer "dst_id"
+    t.string "maker", default: "", null: false
+    t.string "model", default: "", null: false
+    t.string "year", default: "", null: false
+    t.boolean "commision", default: false
+    t.string "accesory", default: ""
+    t.datetime "suspend"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["soft_destroyed_at"], name: "index_products_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_products_on_user_id"
@@ -270,6 +276,7 @@ ActiveRecord::Schema.define(version: 2018_08_31_161344) do
     t.string "ua"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "r", default: "", null: false
     t.index ["category_id"], name: "index_search_logs_on_category_id"
     t.index ["search_id"], name: "index_search_logs_on_search_id"
     t.index ["user_id"], name: "index_search_logs_on_user_id"
@@ -331,6 +338,7 @@ ActiveRecord::Schema.define(version: 2018_08_31_161344) do
     t.string "ua"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "r", default: "", null: false
     t.index ["user_id"], name: "index_toppage_logs_on_user_id"
   end
 
@@ -386,6 +394,7 @@ ActiveRecord::Schema.define(version: 2018_08_31_161344) do
     t.text "result_message", default: "", null: false
     t.text "header_image"
     t.integer "machinelife_company_id"
+    t.boolean "special", default: false
     t.index ["email", "soft_destroyed_at"], name: "index_users_on_email_and_soft_destroyed_at", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["soft_destroyed_at"], name: "index_users_on_soft_destroyed_at"

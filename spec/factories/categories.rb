@@ -2,14 +2,19 @@
 #
 # Table name: categories
 #
-#  id                :bigint(8)        not null, primary key
-#  name              :string
+#  id                :bigint           not null, primary key
 #  ancestry          :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  soft_destroyed_at :datetime
+#  name              :string
 #  order_no          :integer          default(999999999), not null
 #  search_order_no   :string           default(""), not null
+#  soft_destroyed_at :datetime
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+# Indexes
+#
+#  index_categories_on_ancestry           (ancestry)
+#  index_categories_on_soft_destroyed_at  (soft_destroyed_at)
 #
 
 FactoryBot.define do

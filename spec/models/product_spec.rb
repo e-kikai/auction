@@ -2,58 +2,70 @@
 #
 # Table name: products
 #
-#  id                    :bigint(8)        not null, primary key
-#  user_id               :bigint(8)        not null
-#  category_id           :bigint(8)        not null
-#  name                  :string           default(""), not null
-#  description           :text
-#  dulation_start        :datetime
-#  dulation_end          :datetime
-#  sell_type             :integer          default(0), not null
-#  start_price           :integer
-#  prompt_dicision_price :integer
-#  ended_at              :datetime
+#  id                    :bigint           not null, primary key
+#  accesory              :string           default("")
+#  additional            :text             default(""), not null
 #  addr_1                :string
 #  addr_2                :string
-#  shipping_user         :integer          default("落札者"), not null
-#  shipping_type         :integer
-#  shipping_comment      :string
+#  auto_extension        :boolean          default("自動延長する"), not null
+#  auto_resale           :integer          default(8)
+#  auto_resale_date      :integer          default(7), not null
+#  bids_count            :integer          default(0)
+#  cancel                :text
+#  code                  :string
+#  commision             :boolean          default(FALSE)
 #  delivery_date         :integer          default("未設定"), not null
-#  state                 :integer          default("中古"), not null
-#  state_comment         :string
+#  description           :text
+#  detail_logs_count     :integer          default(0), not null
+#  dulation_end          :datetime
+#  dulation_start        :datetime
+#  early_termination     :boolean          default(FALSE), not null
+#  ended_at              :datetime
+#  fee                   :integer
+#  hashtags              :text             default(""), not null
+#  international         :boolean          default("海外発送不可"), not null
+#  lower_price           :integer
+#  machinelife_images    :text
+#  maker                 :string           default(""), not null
+#  max_price             :integer          default(0)
+#  model                 :string           default(""), not null
+#  name                  :string           default(""), not null
+#  note                  :text
+#  packing               :text             default(""), not null
+#  prompt_dicision_price :integer
+#  resaled               :integer
 #  returns               :boolean          default("返品不可"), not null
 #  returns_comment       :string
-#  auto_extension        :boolean          default("自動延長する"), not null
-#  early_termination     :boolean          default(FALSE), not null
-#  auto_resale           :integer          default(8)
-#  resaled               :integer
-#  lower_price           :integer
+#  search_keywords       :text             default(""), not null
+#  sell_type             :integer          default(0), not null
+#  shipping_comment      :string
+#  shipping_no           :integer
+#  shipping_type         :integer
+#  shipping_user         :integer          default("落札者"), not null
+#  soft_destroyed_at     :datetime
+#  star                  :integer
+#  start_price           :integer
+#  state                 :integer          default("中古"), not null
+#  state_comment         :string
+#  stock                 :integer
+#  suspend               :datetime
+#  template              :boolean          default(FALSE), not null
+#  watches_count         :integer          default(0), not null
+#  year                  :string           default(""), not null
+#  youtube               :string           default(""), not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
-#  soft_destroyed_at     :datetime
-#  max_price             :integer          default(0)
-#  bids_count            :integer          default(0)
-#  max_bid_id            :integer
-#  fee                   :integer
-#  code                  :string
-#  template              :boolean          default(FALSE), not null
-#  machinelife_id        :integer
-#  machinelife_images    :text
-#  shipping_no           :integer
-#  cancel                :text
-#  hashtags              :text             default(""), not null
-#  star                  :integer
-#  note                  :text
-#  watches_count         :integer          default(0), not null
-#  detail_logs_count     :integer          default(0), not null
-#  additional            :text             default(""), not null
-#  packing               :text             default(""), not null
-#  youtube               :string           default(""), not null
-#  international         :boolean          default("海外発送不可"), not null
-#  search_keywords       :text             default(""), not null
-#  auto_resale_date      :integer          default(7), not null
-#  stock                 :integer
+#  category_id           :bigint           not null
 #  dst_id                :integer
+#  machinelife_id        :integer
+#  max_bid_id            :integer
+#  user_id               :bigint           not null
+#
+# Indexes
+#
+#  index_products_on_category_id        (category_id)
+#  index_products_on_soft_destroyed_at  (soft_destroyed_at)
+#  index_products_on_user_id            (user_id)
 #
 
 require 'rails_helper'

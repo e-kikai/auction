@@ -10,6 +10,7 @@ class SearchLogsController < ApplicationController
       user_id:    user_signed_in? ? current_user.id : nil,
       host:       (Resolv.getname(ip) rescue ""),
       ip:          ip,
+      r:           params[:r],
       referer:     params[:referer],
       ua:          request.user_agent,
     ) ? "success" : "error"

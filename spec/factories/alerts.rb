@@ -2,16 +2,23 @@
 #
 # Table name: alerts
 #
-#  id                :bigint(8)        not null, primary key
-#  user_id           :bigint(8)
-#  category_id       :bigint(8)
-#  product_image_id  :bigint(8)
+#  id                :bigint           not null, primary key
 #  keywords          :text
+#  name              :string           default("")
+#  soft_destroyed_at :datetime
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  soft_destroyed_at :datetime
+#  category_id       :bigint
 #  company_id        :integer
-#  name              :string           default("")
+#  product_image_id  :bigint
+#  user_id           :bigint
+#
+# Indexes
+#
+#  index_alerts_on_category_id        (category_id)
+#  index_alerts_on_product_image_id   (product_image_id)
+#  index_alerts_on_soft_destroyed_at  (soft_destroyed_at)
+#  index_alerts_on_user_id            (user_id)
 #
 
 FactoryBot.define do

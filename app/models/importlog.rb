@@ -2,15 +2,20 @@
 #
 # Table name: importlogs
 #
-#  id         :bigint(8)        not null, primary key
-#  user_id    :bigint(8)
-#  product_id :bigint(8)
-#  status     :integer
+#  id         :bigint           not null, primary key
 #  code       :string
 #  message    :text
+#  status     :integer
+#  url        :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  url        :string
+#  product_id :bigint
+#  user_id    :bigint
+#
+# Indexes
+#
+#  index_importlogs_on_product_id  (product_id)
+#  index_importlogs_on_user_id     (user_id)
 #
 
 class Importlog < ApplicationRecord

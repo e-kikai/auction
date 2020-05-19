@@ -20,7 +20,8 @@
       th.sepa キーワード
       th.num 検索ID
       th 公開
-      th タイトル
+      th.sepa タイトル
+      th リンク元
     - @psearch_logs.each do |lo|
       tr
         td = lo.created_at
@@ -35,4 +36,5 @@
         td.sepa = lo.keywords
         td.num #{lo.search_id}
         td = "○" if lo.search.try(:publish)
-        td = lo.search.try(:name)
+        td.sepa = lo.search.try(:name)
+        td title="#{lo.referer}" = lo.link_source

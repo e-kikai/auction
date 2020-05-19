@@ -2,18 +2,25 @@
 #
 # Table name: search_logs
 #
-#  id          :bigint(8)        not null, primary key
-#  user_id     :bigint(8)
-#  category_id :bigint(8)
-#  company_id  :integer
-#  keywords    :string
-#  search_id   :bigint(8)
-#  ip          :string
+#  id          :bigint           not null, primary key
 #  host        :string
+#  ip          :string
+#  keywords    :string
+#  r           :string           default(""), not null
 #  referer     :string
 #  ua          :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  category_id :bigint
+#  company_id  :integer
+#  search_id   :bigint
+#  user_id     :bigint
+#
+# Indexes
+#
+#  index_search_logs_on_category_id  (category_id)
+#  index_search_logs_on_search_id    (search_id)
+#  index_search_logs_on_user_id      (user_id)
 #
 
 require 'rails_helper'

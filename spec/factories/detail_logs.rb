@@ -2,16 +2,21 @@
 #
 # Table name: detail_logs
 #
-#  id         :bigint(8)        not null, primary key
-#  user_id    :bigint(8)
-#  product_id :bigint(8)
-#  ip         :string
+#  id         :bigint           not null, primary key
 #  host       :string
+#  ip         :string
+#  r          :string           default(""), not null
+#  referer    :string
 #  ua         :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  referer    :string
-#  r          :string           default(""), not null
+#  product_id :bigint
+#  user_id    :bigint
+#
+# Indexes
+#
+#  index_detail_logs_on_product_id  (product_id)
+#  index_detail_logs_on_user_id     (user_id)
 #
 
 FactoryBot.define do

@@ -2,19 +2,26 @@
 #
 # Table name: searches
 #
-#  id                :bigint(8)        not null, primary key
-#  user_id           :bigint(8)
-#  category_id       :bigint(8)
-#  product_image_id  :bigint(8)
-#  name              :string
+#  id                :bigint           not null, primary key
+#  description       :text             default("")
 #  keywords          :text
-#  q                 :text
+#  name              :string
 #  publish           :boolean
+#  q                 :text
+#  soft_destroyed_at :datetime
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  soft_destroyed_at :datetime
+#  category_id       :bigint
 #  company_id        :integer
-#  description       :text             default("")
+#  product_image_id  :bigint
+#  user_id           :bigint
+#
+# Indexes
+#
+#  index_searches_on_category_id        (category_id)
+#  index_searches_on_product_image_id   (product_image_id)
+#  index_searches_on_soft_destroyed_at  (soft_destroyed_at)
+#  index_searches_on_user_id            (user_id)
 #
 
 FactoryBot.define do

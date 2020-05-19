@@ -2,12 +2,18 @@
 #
 # Table name: blacklists
 #
-#  id                :bigint(8)        not null, primary key
-#  user_id           :bigint(8)        not null
-#  to_user_id        :integer          not null
+#  id                :bigint           not null, primary key
+#  soft_destroyed_at :datetime
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  soft_destroyed_at :datetime
+#  to_user_id        :integer          not null
+#  user_id           :bigint           not null
+#
+# Indexes
+#
+#  index_blacklists_on_soft_destroyed_at  (soft_destroyed_at)
+#  index_blacklists_on_to_user_id         (to_user_id)
+#  index_blacklists_on_user_id            (user_id)
 #
 
 class Blacklist < ApplicationRecord

@@ -2,13 +2,17 @@
 #
 # Table name: shipping_fees
 #
-#  id          :bigint(8)        not null, primary key
-#  user_id     :bigint(8)
-#  shipping_no :integer
+#  id          :bigint           not null, primary key
 #  addr_1      :string
 #  price       :integer
+#  shipping_no :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  user_id     :bigint
+#
+# Indexes
+#
+#  index_shipping_fees_on_user_id  (user_id)
 #
 
 class ShippingFee < ApplicationRecord
