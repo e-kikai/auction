@@ -26,7 +26,8 @@ class System::UsersController < System::ApplicationController
     @user.skip_confirmation!
 
     if @user.save
-      redirect_to "/system/users/", notice: "#{@user.name}を登録しました"
+      q = @user.seller? ? "?q[seller_eq]=true" : ""
+      redirect_to "/system/users/#{q}", notice: "#{@user.name}を登録しました"
     else
       render :new
     end
@@ -41,7 +42,8 @@ class System::UsersController < System::ApplicationController
     @user.skip_reconfirmation!
 
     if @user.update(user_params)
-      redirect_to "/system/users/", notice: "#{@user.name}を変更しました"
+      q = @user.seller? ? "?q[seller_eq]=true" : ""
+      redirect_to "/system/users/#{q}", notice: "#{@user.name}を変更しました"
     else
       render :edit
     end
@@ -51,7 +53,9 @@ class System::UsersController < System::ApplicationController
     @user = User.find(params[:id])
 
     @user.soft_destroy!
-    redirect_to "/system/users/", notice: "#{@user.name}を削除しました"
+
+    q = @user.seller? ? "?q[seller_eq]=true" : ""
+    redirect_to "/system/users/#{q}", notice: "#{@user.name}を削除しました"
   end
 
   def signin
@@ -71,7 +75,8 @@ class System::UsersController < System::ApplicationController
     @user.skip_reconfirmation!
 
     if @user.update(password_params)
-      redirect_to "/system/users/", notice: "#{@user.name}をのパスワード変更しました"
+      q = @user.seller? ? "?q[seller_eq]=true" : ""
+      redirect_to "/system/users/#{q}", notice: "#{@user.name}をのパスワード変更しました"
     else
       render :edit_password
     end
@@ -112,7 +117,7 @@ class System::UsersController < System::ApplicationController
     # params.require(:user).permit(%w|email password name company tel zip addr_1 addr_2 addr_3 account bank seller charge fax url license business_hours note allow_mail confirmed_at result_message machinelife_company_id header_image|)
 
     params.require(:user).permit(:email, :password, :name, :company, :tel, :zip, :addr_1, :addr_2, :addr_3, :account,
-       :bank, :seller, :charge, :fax, :url, :license, :business_hours, :note, :allow_mail, :confirmed_at,
+       :bank, :seller, :special, :charge, :fax, :url, :license, :business_hours, :note, :allow_mail, :confirmed_at,
        :result_message, :machinelife_company_id, :header_image, :remove_header_image, industry_ids: [])
   end
 

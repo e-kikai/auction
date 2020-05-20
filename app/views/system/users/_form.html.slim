@@ -79,6 +79,10 @@
       .
         label.radio-inline = f.radio_button(:seller, true)  + "出品会社"
         label.radio-inline = f.radio_button(:seller, false) + "入札ユーザ"
+      = f.label :special
+      .
+        label.radio-inline = f.radio_button(:special, true)  + "スペシャル出品会社"
+        label.radio-inline = f.radio_button(:special, false) + "通常"
 
       .form-group
         = f.label :machinelife_company_id

@@ -11,6 +11,9 @@
         li = link_to "/system/users" do
           span.glyphicon.glyphicon-thumbs-up
           span.btn-content ユーザ管理
+        li = link_to "/system/users/?q[seller_eq]=true" do
+          span.glyphicon.glyphicon-thumbs-up
+          span.btn-content 出品会社管理
         li = link_to "/system/total" do
           span.glyphicon.glyphicon-jpy
           span.btn-content システム使用料集計

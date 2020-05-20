@@ -16,22 +16,20 @@
     tr
       th アクセス日時
       th IP/ホスト名
-      th.name.sepa アカウント/会社・ユーザ名
+      th.sepa アカウント/会社・ユーザ名
       th.name リンク元
-      th.name リファラ
+      th リファラ
     - @ptoppage_logs.each do |lo|
       tr
         td = lo.created_at
         td
           . = lo.ip
           . = lo.host
-        td.name.sepa
+        td.sepa
           . = lo.user.try(:account)
           . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip
 
-        td.name title="#{URI.unescape(lo.referer)}"
-          . = URI.unescape(lo.link_source)
-          . = lo.r
-        td.name
+        td.name title="#{URI.unescape(lo.referer)}" = URI.unescape(lo.link_source)
+        td
           - if lo.referer.present?
             = link_to URI.unescape(lo.referer), lo.referer, target: "_blank"

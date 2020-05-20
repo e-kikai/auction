@@ -58,7 +58,13 @@ ul.nav.nav-pills
               td
                 - us.industries.each do |ind|
                   . = ind.name
-              td = us.seller? ? "◯" : "×"
+              td
+                - if us.special?
+                  | SP
+                - elsif us.seller?
+                  | ◯
+                - else
+                  | ×
               td = us.allow_mail? ? "◯" : "×"
               td = us.confirmed_at? ? "◯" : "×"
 
