@@ -7,6 +7,6 @@
     lo.user.try(:account), "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip,
 
     lo.product ? lo.product.bids_count : "",
-    lo.link_source, lo.referer,
+    lo.link_source, URI.unescape(lo.referer),
   ].to_csv
 end

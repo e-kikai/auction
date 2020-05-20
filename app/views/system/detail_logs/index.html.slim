@@ -47,4 +47,4 @@
           td.price
           td.num
 
-        td.name title="#{lo.referer}" = lo.link_source
+        td.name title="#{URI.unescape(lo.referer)}" = lo.link_source

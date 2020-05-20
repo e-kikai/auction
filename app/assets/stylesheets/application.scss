@@ -274,7 +274,8 @@ table {
 
   th.name,
   td.name {
-    width: 220px;
+    width: 200px;
+    line-break: anywhere;
   }
 
   .lower-label {

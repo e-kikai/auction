@@ -15,6 +15,6 @@
     lo.search.try(:name)
 
     lo.product ? lo.product.bids_count : "",
-    lo.link_source, lo.referer,
+    lo.link_source, URI.unescape(lo.referer),
   ].to_csv
 end
