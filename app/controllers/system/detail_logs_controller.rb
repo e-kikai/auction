@@ -13,8 +13,7 @@ class System::DetailLogsController < System::ApplicationController
       format.html {
         @pdetail_logs = @detail_logs.page(params[:page]).per(500)
       }
-
-      format.csv { export_csv "detail_logs.csv" }
+      format.csv { export_csv "detail_logs_#{@date.strftime('%Y_%m')}.csv" }
     end
   end
 

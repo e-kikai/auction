@@ -5,6 +5,13 @@ class System::ToppageLogsController < System::ApplicationController
       .where(created_at: @date.beginning_of_month..@date.end_of_month).order(created_at: :desc)
 
     @ptoppage_logs = @toppage_logs.page(params[:page]).per(500)
+
+    respond_to do |format|
+      format.html {
+        @pdetail_logs = @detail_logs.page(params[:page]).per(500)
+      }
+      format.csv { export_csv "toppage_logs_#{@date.strftime('%Y_%m')}.csv" }
+    end
   end
 
 end

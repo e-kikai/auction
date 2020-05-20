@@ -63,7 +63,17 @@ class DetailLog < ApplicationRecord
       when /\/www\.大阪機械団地\.jp\//;              "電子入札システム"
       when /\/www\.deadstocktool\.com\//;           "デッドストック"
 
+      # ものオクサイト内
       when /\/www\.mnok\.net\/myauction\/products/; "出品会社出品商品一覧"
+      when /\/www\.mnok\.net\/(r=.*)+$/;            "トップページ"
+      when /\/www\.mnok\.net\/products(\?)+/;       "検索結果"
+      when /\/www\.mnok\.net\/products\/[0-9]/;     "詳細"
+      when /\/www\.mnok\.net\/myauction(\?)+/;      "マイ・オークション"
+      when /\/www\.mnok\.net\/helps/;               "ヘルプ"
+      when /\/www\.mnok\.net\/news/;                "新着商品"
+      when /\/www\.mnok\.net\/myauction\/watches+/; "ウォッチリスト"
+      when /\/www\.mnok\.net\/companies/;           "出品会社詳細"
+
       when /\/www\.mnok\.net(.*)$/;                 $1
       when /\/\/(.*?)(\/|$)/;                       $1
       else;                                         "(不明)"
