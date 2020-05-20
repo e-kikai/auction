@@ -22,7 +22,6 @@
       th.name.sepa ユーザID・アカウント/<br/>会社・ユーザ名
       th.num 商品ID
       th 商品名
-      th 出品会社
       th.price 最高金額
       th.num 入札数
       th.name リンク元
@@ -37,8 +36,9 @@
           . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip
         td.num = lo.product_id
         - if lo.product
-          td = link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank"
-          td = lo.product.user.company_remove_kabu
+          td
+            . = link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank"
+            . = = lo.product.user.company_remove_kabu
           td.price = number_to_currency(lo.product.max_price)
           td.num = lo.product.bids_count > 0 ? lo.product.bids_count : ""
         - else
