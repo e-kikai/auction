@@ -12,7 +12,7 @@
 
     lo.product ? number_to_currency(lo.product.max_price) : "",
     lo.product ? lo.product.bids_count : "",
-    lo.link_source, URI.unescape(lo.referer),
+    URI.unescape(lo.link_source), URI.unescape(lo.referer),
 
     lo.product ? lo.product.category_id : "",
     lo.product ? lo.product.category.name : "",

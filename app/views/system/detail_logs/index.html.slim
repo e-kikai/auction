@@ -38,7 +38,7 @@
         - if lo.product
           td
             . = link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank"
-            . = = lo.product.user.company_remove_kabu
+            . = lo.product.user.company_remove_kabu
           td.price = number_to_currency(lo.product.max_price)
           td.num = lo.product.bids_count > 0 ? lo.product.bids_count : ""
         - else
@@ -47,4 +47,4 @@
           td.price
           td.num
 
-        td.name title="#{URI.unescape(lo.referer)}" = lo.link_source
+        td.name title="#{URI.unescape(lo.referer)}" = URI.unescape(lo.link_source)

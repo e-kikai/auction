@@ -40,4 +40,4 @@
         td.num #{lo.search_id}
         td = "○" if lo.search.try(:publish)
         td.sepa = lo.search.try(:name)
-        td.name title="#{URI.unescape(lo.referer)}" = lo.link_source
+        td.name title="#{URI.unescape(lo.referer)}" = URI.unescape(lo.link_source)

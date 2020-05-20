@@ -29,7 +29,9 @@
           . = lo.user.try(:account)
           . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip
 
-        td.name title="#{URI.unescape(lo.referer)}" = lo.link_source
+        td.name title="#{URI.unescape(lo.referer)}"
+          . = URI.unescape(lo.link_source)
+          . = lo.r
         td.name
           - if lo.referer.present?
             = link_to URI.unescape(lo.referer), lo.referer, target: "_blank"
