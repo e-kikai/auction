@@ -12,9 +12,8 @@
     lo.keywords,
     lo.search_id,
     ("○" if lo.search.try(:publish)),
-    lo.search.try(:name)
+    lo.search.try(:name),
 
-    lo.product ? lo.product.bids_count : "",
     URI.unescape(lo.link_source), URI.unescape(lo.referer),
   ].to_csv
 end
