@@ -272,6 +272,11 @@ table {
     text-align: right;
   }
 
+  th.name,
+  td.name {
+    width: 220px;
+  }
+
   .lower-label {
     color: #999;
     font-size: 80%;

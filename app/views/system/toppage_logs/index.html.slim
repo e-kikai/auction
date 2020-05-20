@@ -9,27 +9,27 @@
   = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
     span.glyphicon.glyphicon-download-alt
     span.btn-content CSV出力
-      
+
 = paginate @ptoppage_logs
 .table-responsive
   table.table.table-hover.table-condensed.table-striped
     tr
       th アクセス日時
       th IP/ホスト名
-      th.sepa アカウント/会社・ユーザ名
-      th リンク元
-      th リファラ
+      th.name.sepa アカウント/会社・ユーザ名
+      th.name リンク元
+      th.name リファラ
     - @ptoppage_logs.each do |lo|
       tr
         td = lo.created_at
         td
           . = lo.ip
           . = lo.host
-        td.sepa
+        td.name.sepa
           . = lo.user.try(:account)
           . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip
 
-        td title="#{lo.referer}" = lo.link_source
-        td
+        td.name title="#{lo.referer}" = lo.link_source
+        td.name
           - if lo.referer.present?
             = link_to lo.referer, lo.referer, target: "_blank"

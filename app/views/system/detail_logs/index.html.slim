@@ -19,20 +19,20 @@
     tr
       th アクセス日時
       th IP/ホスト名
-      th.sepa ユーザID・アカウント/<br/>会社・ユーザ名
+      th.name.sepa ユーザID・アカウント/<br/>会社・ユーザ名
       th.num 商品ID
       th 商品名
       th 出品会社
       th.price 最高金額
       th.num 入札数
-      th リンク元
+      th.name リンク元
     - @pdetail_logs.each do |lo|
       tr
         td = lo.created_at
         td
           . = lo.ip
           . = lo.host
-        td.sepa
+        td.name.sepa
           . = "#{lo.user.try(:id)} #{lo.user.try(:account)}"
           . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip
         td.num = lo.product_id
@@ -47,4 +47,4 @@
           td.price
           td.num
 
-        td title="#{lo.referer}" = lo.link_source
+        td.name title="#{lo.referer}" = lo.link_source
