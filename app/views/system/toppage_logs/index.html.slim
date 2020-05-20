@@ -1,8 +1,7 @@
-- set_meta_tags title: "検索履歴"
-- breadcrumb :system_something, "検索履歴"
+- set_meta_tags title: "トップページアクセス履歴"
+- breadcrumb :system_something, "トップページアクセス履歴"
 
-= form_tag("/system/search_logs", method: "get", class: "form-inline filtering-form") do
-  / = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
+= form_tag("/system/toppage_logs", method: "get", class: "form-inline filtering-form") do
   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
   = button_tag class: "btn btn-info" do
     span.glyphicon.glyphicon-search
@@ -10,22 +9,17 @@
   = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
     span.glyphicon.glyphicon-download-alt
     span.btn-content CSV出力
-
-= paginate @psearch_logs
+      
+= paginate @ptoppage_logs
 .table-responsive
   table.table.table-hover.table-condensed.table-striped
     tr
       th アクセス日時
       th IP/ホスト名
       th.sepa アカウント/会社・ユーザ名
-      th 出品会社
-      th カテゴリ
-      th.sepa キーワード
-      th.num 検索ID
-      th 公開
-      th.sepa タイトル
       th リンク元
-    - @psearch_logs.each do |lo|
+      th リファラ
+    - @ptoppage_logs.each do |lo|
       tr
         td = lo.created_at
         td
@@ -34,10 +28,8 @@
         td.sepa
           . = lo.user.try(:account)
           . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip
-        td = lo.company.try(:company_remove_kabu)
-        td = lo.category.try(:name)
-        td.sepa = lo.keywords
-        td.num #{lo.search_id}
-        td = "○" if lo.search.try(:publish)
-        td.sepa = lo.search.try(:name)
+
         td title="#{lo.referer}" = lo.link_source
+        td
+          - if lo.referer.present?
+            = link_to lo.referer, lo.referer, target: "_blank"

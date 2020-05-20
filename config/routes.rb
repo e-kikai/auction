@@ -125,13 +125,14 @@ Rails.application.routes.draw do
         get 'monthly'
       end
     end
-    resources :search_logs, only: [:index]
-    resources :watches,     only: [:index]
-    resources :searches,    only: [:index]
-    resources :alerts,      only: [:index]
-    resources :follows,     only: [:index]
+    resources :search_logs,  only: [:index]
+    resources :toppage_logs, only: [:index]
+    resources :watches,      only: [:index]
+    resources :searches,     only: [:index]
+    resources :alerts,       only: [:index]
+    resources :follows,      only: [:index]
 
-    resources :total,       only: [:index] do
+    resources :total,        only: [:index] do
       collection do
         get 'products'
         get 'formula'
