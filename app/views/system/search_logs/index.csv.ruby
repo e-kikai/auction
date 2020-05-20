@@ -1,7 +1,7 @@
 %w[ID アクセス日時 IP ホスト名 アカウント 会社・ユーザ名
   出品会社 カテゴリ キーワード 検索ID 公開 タイトル
   リンク元 リファラ].to_csv +
-@detail_logs.sum do |lo|
+@search_logs.sum do |lo|
 
   [
     lo.id, lo.created_at, lo.ip, lo.host,
