@@ -1,4 +1,6 @@
 class System::ToppageLogsController < System::ApplicationController
+  include Exports
+
   def index
     @date = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
     @toppage_logs  = ToppageLog.includes(:user)
