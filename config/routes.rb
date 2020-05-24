@@ -135,6 +135,7 @@ Rails.application.routes.draw do
     resources :total,        only: [:index] do
       collection do
         get 'products'
+        get 'products_monthly'
         get 'formula'
       end
     end

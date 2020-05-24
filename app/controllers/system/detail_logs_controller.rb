@@ -16,14 +16,15 @@ class System::DetailLogsController < System::ApplicationController
   def monthly
     @date    = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now.to_date
 
-    days          = @date.beginning_of_month..@date.end_of_month
-    where_date    = {"DATE(created_at)" => days}
+    startd = @date.beginning_of_month
+    endd   = @date.end_of_month
+    days   = startd..endd
+    where_ref  = "(referer NOT LIKE 'https://www.mnok.net%' OR referer LIKE 'https://www.mnok.net/products/ads%')"
+    where_date = ["DATE(created_at) BETWEEN ? AND ?", startd, endd]
+    group_by   = ["DATE(created_at)", :referer, :r]
 
-    where_referer = "(referer NOT LIKE 'https://www.mnok.net%' OR referer LIKE 'https://www.mnok.net/products/ads%')"
-    group_by      = ["DATE(created_at)", :referer, :r]
-
-    @detail_logs  = DetailLog.where("DATE(created_at) BETWEEN ? AND ?", @date.beginning_of_month, @date.end_of_month ).where(where_referer).group(["DATE(created_at)", :referer, :r]).count()
-    @toppage_logs = ToppageLog.where("DATE(created_at) BETWEEN ? AND ?", @date.beginning_of_month, @date.end_of_month ).where(where_referer).group(["DATE(created_at)", :referer]).count()
+    @detail_logs  = DetailLog.where(where_date).where(where_ref).group(group_by).count()
+    @toppage_logs = ToppageLog.where(where_date).where(where_ref).group(group_by).count()
 
     @columns_ekikai = %w|マシンライフ 全機連 e-kikai 電子入札システム デッドストック| # e-kikaiサイト郡
     @columns_ads    = %w|マシンライフ e-kikai| # 広告枠

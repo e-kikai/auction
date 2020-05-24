@@ -1,0 +1,64 @@
+- set_meta_tags title: "日別トータル、出品予定(月別)"
+- breadcrumb :system_something, "日別トータル、出品予定(月別)"
+
+= form_tag("/system/total/products_monthly", method: "get", class: "form-inline filtering-form") do
+  = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
+
+  = button_tag class: "btn btn-info" do
+    span.glyphicon.glyphicon-search
+    span.btn-content 検索
+
+.row
+  .col-lg-12.col-md-12.col-sm-12
+    .table-responsive
+      table.table.table-hover.table-condensed.table-striped.product-table
+        tr
+          th.num.sepa 年月
+          th.num 出品件数
+          th.num 開始数
+          th.num 未落札数<br />(延長含)
+          th.num キャンセル
+          th.num 落札数
+          th.total_price.sepa 落札金額
+          th.num 入札数
+          th.num 入札<br />人数
+          th.num 閲覧数
+          th.num 閲覧<br />人数
+          th.num ウォ<br />ッチ
+          th.num.sepa ウォッチ<br />人数
+          th.num 登録<br />人数
+
+        - total = @start_count
+        - @monthes.each do |month|
+          - total += @start_counts[month].to_i
+
+          tr class="#{'success' if month == Time.now.strftime("%Y/%m")}"
+            td.num.sepa = month
+            td.num = number_with_delimiter(total)
+            - total -= (@success_counts[month].to_i + @end_counts[month].to_i + @cancel_counts[month].to_i)
+
+            td.num = number_with_delimiter(@start_counts[month])
+
+            td.num
+              - if @end_counts[month].present?
+                = number_with_delimiter(@end_counts[month])
+
+            td.num
+              - if @cancel_counts[month].present?
+                = number_with_delimiter(@cancel_counts[month])
+
+            td.num
+              - if @success_counts[month].present?
+                = number_with_delimiter(@success_counts[month])
+            td.total_price.sepa = number_to_currency @success_prices[month]
+
+            td.num
+              - if @bid_counts[month].present?
+                = number_with_delimiter(@bid_counts[month])
+            td.num = number_with_delimiter @bid_user_counts[month]
+            td.num = number_with_delimiter @detail_log_counts[month]
+            td.num = number_with_delimiter @detail_user_counts[month]
+            td.num = number_with_delimiter @watch_counts[month]
+            td.num.sepa = number_with_delimiter @watch_user_counts[month]
+
+            td.num = number_with_delimiter @user_counts[month]
