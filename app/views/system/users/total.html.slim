@@ -29,12 +29,11 @@
       thead
         tr
           th.num
-          th.num ID
+          th.nm ID
           th アカウント
-          th 会社名
-          th ユーザ名
+          th.name 会社名・ユーザ名
+          th 出品
           th.sepa 都道府県
-          / th.sepa 出品
           th.num 入札<br />件数
           th.num 落札<br />件数
           th.total_price.sepa 落札金額
@@ -45,38 +44,18 @@
           th ユーザ登録日時
 
       - @user_ids.each.with_index(1) do |uid, i|
-        / - total = us.products.where(template: false).where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
-        / - total_total += total
-        /
-        / - month_products = us.products.where(template: false).where(dulation_end: @date.beginning_of_month..@date.end_of_month)
-        /
-        / - fee_products   = month_products.where.not(fee: nil)
-        /
-        / - count          = month_products.count
-        / - total_conunt   += count
-        / - success        = fee_products.count
-        / - total_success  += success
-        / - access         = month_products.sum(:detail_logs_count)
-        / - total_access   += access
-        / - watch          = month_products.sum(:watches_count)
-        / - total_watch    += watch
-        /
-        / - price          = fee_products.sum(:max_price)
-        / - total_price    += price
-        / - fee            = price * Product::FEE_RATE / 100
-        / / - fee            = fee_products.sum(:fee)
-        /
-        / / - total_fee      += fee
-        / - total_fee      += fee
-
         - us = @users.find { |u| u.id == uid } || next
 
         tr
           td.num = number_with_delimiter(i)
           td.num = us.id
           td = us.account
-          td = us.company
-          td = us.name
+          td #{us.company} #{us.name}
+          td
+            - if us.special?
+              | SP
+            - elsif us.seller?
+              | ◯
           td.sepa = us.addr_1
           / td.sepa = us.seller? ? "◯" : "×"
           td.num = number_with_delimiter(@bids_count[us.id])
@@ -93,8 +72,8 @@
           th.num
           th.num ID
           th アカウント
-          th 会社名
-          th ユーザ名
+          th.name 会社名。ユーザ名
+          th 出品
           th.sepa 都道府県
           / th.sepa 出品
           th.num 入札<br />件数

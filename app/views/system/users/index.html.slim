@@ -63,10 +63,8 @@ ul.nav.nav-pills
                   | SP
                 - elsif us.seller?
                   | ◯
-                - else
-                  | ×
-              td = us.allow_mail? ? "◯" : "×"
-              td = us.confirmed_at? ? "◯" : "×"
+              td = us.allow_mail? ? "◯" : ""
+              td = us.confirmed_at? ? "◯" : ""
 
               td = link_to({ action: :edit, id: us.id }, class: "btn btn-warning") do
                 span.glyphicon.glyphicon-edit
