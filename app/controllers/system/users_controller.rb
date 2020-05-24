@@ -100,8 +100,9 @@ class System::UsersController < System::ApplicationController
     @watches_count   = Watch.where(created_at: rstart..rend).group(:user_id).order("count_all DESC").count
     @follows_count   = Follow.where(created_at: rstart..rend).group(:user_id).order("count_all DESC").count
     @searches_count  = Search.where(created_at: rstart..rend).group(:user_id).order("count_all DESC").count
+    @detail_count    = DetailLog.where(created_at: rstart..rend).group(:user_id).order("count_all DESC").count
 
-    @user_ids = (@sum_max_price.keys + @bids_count.keys + @watches_count.keys + @follows_count.keys).uniq
+    @user_ids = (@sum_max_price.keys + @bids_count.keys + @watches_count.keys + @follows_count.keys + @detail_count.keys).uniq
 
     @users = User.where(id: @user_ids)
 

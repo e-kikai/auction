@@ -72,7 +72,7 @@ class System::TotalController < System::ApplicationController
     @products = @products.where(user: @company) if @company.present? # 会社別
 
 
-    endd = @products.maximum(:dulation_end)
+    endd = Product.maximum(:dulation_end)
     @monthes = (Date.new(2018, 3, 1) .. endd).select{|date| date.day == 1}.map { |d| d.strftime('%Y/%m')}
 
     # 商品集計

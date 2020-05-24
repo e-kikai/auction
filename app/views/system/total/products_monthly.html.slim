@@ -33,7 +33,7 @@
           - total += @start_counts[month].to_i
 
           tr class="#{'success' if month == Time.now.strftime("%Y/%m")}"
-            td.num.sepa = month
+            td.num.sepa = link_to month, "/system/total/products?date[year]=#{month.gsub(/(\/.*)/, "")}&date[month]=#{month.gsub(/(.*\/)/, "")}&date[day]=1&company=#{@company}"
             td.num = number_with_delimiter(total)
             - total -= (@success_counts[month].to_i + @end_counts[month].to_i + @cancel_counts[month].to_i)
 

@@ -26,21 +26,23 @@
         span.btn-content CSV出力
 
     table.table.table-hover.table-condensed.table-striped.product-table
-      tr
-        th.num
-        th.num ID
-        th アカウント
-        th 会社名
-        th ユーザ名
-        th.sepa 都道府県
-        / th.sepa 出品
-        th.num 入札<br />件数
-        th.num 落札<br />件数
-        th.total_price.sepa 落札金額
-        th.num ウォッ<br />チ数
-        th.num お気に<br />いり数
-        th.num.sepa フォロ<br />ー数
-        th ユーザ登録日時
+      thead
+        tr
+          th.num
+          th.num ID
+          th アカウント
+          th 会社名
+          th ユーザ名
+          th.sepa 都道府県
+          / th.sepa 出品
+          th.num 入札<br />件数
+          th.num 落札<br />件数
+          th.total_price.sepa 落札金額
+          th.num 詳細<br />閲覧
+          th.num ウォ<br />ッチ
+          th.num お気に<br />いり
+          th.num.sepa フォ<br />ロー
+          th ユーザ登録日時
 
       - @user_ids.each.with_index(1) do |uid, i|
         / - total = us.products.where(template: false).where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
@@ -80,19 +82,43 @@
           td.num = number_with_delimiter(@bids_count[us.id])
           td.num = number_with_delimiter(@count_max_price[us.id])
           td.total_price.sepa = number_to_currency(@sum_max_price[us.id])
+          td.num = number_with_delimiter(@detail_count[us.id])
           td.num = number_with_delimiter(@watches_count[us.id])
           td.num = number_with_delimiter(@searches_count[us.id])
           td.num.sepa = number_with_delimiter(@follows_count[us.id])
           td = I18n.l(us.created_at, format: :full_date)
 
-      / tfooter
-      /   tr
-      /     td
-      /     th 合計
-      /     td.num = number_with_delimiter(total_total)
-      /     td.num = number_with_delimiter(total_conunt)
-      /     td.num = number_with_delimiter(total_success)
-      /     td.num = number_with_delimiter(total_access)
-      /     td.num = number_with_delimiter(total_watch)
-      /     td.total_price = number_to_currency(total_price)
-      /     td.total_price = number_to_currency(total_fee)
+      thead
+        tr
+          th.num
+          th.num ID
+          th アカウント
+          th 会社名
+          th ユーザ名
+          th.sepa 都道府県
+          / th.sepa 出品
+          th.num 入札<br />件数
+          th.num 落札<br />件数
+          th.total_price.sepa 落札金額
+          th.num 詳細<br />閲覧
+          th.num ウォ<br />ッチ
+          th.num お気に<br />いり
+          th.num.sepa フォ<br />ロー
+          th ユーザ登録日時
+
+      tfooter
+        tr
+          td
+          td
+          td
+          td
+          td
+          th.sepa 合計
+          td.num = number_with_delimiter(@bids_count.sum { |k, v| v.to_i })
+          td.num = number_with_delimiter(@count_max_price.sum { |k, v| v.to_i })
+          td.total_price.sepa = number_to_currency(@sum_max_price.sum { |k, v| v.to_i })
+          td.num = number_with_delimiter(@detail_count.sum { |k, v| v.to_i })
+          td.num = number_with_delimiter(@watches_count.sum { |k, v| v.to_i })
+          td.num = number_with_delimiter(@searches_count.sum { |k, v| v.to_i })
+          td.num = number_with_delimiter(@follows_count.sum { |k, v| v.to_i })
+          td
