@@ -93,4 +93,11 @@ class System::ProductsController < System::ApplicationController
       format.csv { export_csv "results_#{@date.strftime('%Y_%m')}.csv" }
     end
   end
+
+  def image
+    @products = Product.where(template: false).reject { |pr| pr.thumb_url == "noimage.png" }
+    respond_to do |format|
+      format.csv { export_csv "products_image_#{Time.now.strftime('%Y%m%d')}.csv" }
+    end
+  end
 end

@@ -116,6 +116,7 @@ Rails.application.routes.draw do
         get 'finished'
         get 'finished_month'
         get 'results'
+        get 'image'
       end
     end
 
