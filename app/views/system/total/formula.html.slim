@@ -12,22 +12,22 @@
 
 .row
   .col-md-12
-    li = "出品について、出品総数は #{number_with_delimiter(@products.count)}件、"
-    li = "うち、落札総数は #{number_with_delimiter(@success_products.count)}件、"
-    li = "1日平均 #{number_with_delimiter(@success_products.count.fdiv(@day).round(2))}件でした。"
+    li = "出品について、出品総数は #{number_with_delimiter(@now_count)}件、"
+    li = "落札総数は #{number_with_delimiter(@success_count)}件、"
+    li = "1日平均 #{number_with_delimiter(@success_count.fdiv(@day).round(2))}件でした。"
 
     hr
-    li = "金額について、落札総額は #{number_to_currency(@success_products.sum(:max_price))}、"
-    li = "平均落札金額は #{number_to_currency(@success_products.sum(:max_price).fdiv(@success_products.count).round(2))}、"
+    li = "金額について、落札総額は #{number_to_currency(@success_price)}、"
+    li = "平均落札金額は #{number_to_currency(@success_price.fdiv(@success_count).round(2))}、"
 
     - if @max_product
       li = "最高落札金額の商品は「#{@max_product.name}」の #{number_to_currency(@max_product.max_price)}(入札件数#{@max_product.bids_count}件)でした。"
 
     hr
 
-    li = "合計入札数は #{number_with_delimiter(@success_products.sum(:bids_count))}件、"
-    li = "日平均は #{number_with_delimiter(@success_products.sum(:bids_count).fdiv(@day).round(2))}件、"
-    li = "落札商品平均は #{number_with_delimiter(@success_products.sum(:bids_count).fdiv(@success_products.count).round(2))}件、"
+    li = "合計入札数は #{number_with_delimiter(@bid_count)}件、"
+    li = "日平均は #{number_with_delimiter(@bid_count.fdiv(@day).round(2))}件、"
+    li = "落札商品平均は #{number_with_delimiter(@bid_count.fdiv(@success_count).round(2))}件、"
 
     - if @max_bid_product
       li = "最多入札の商品は「#{@max_bid_product.name}」の #{@max_bid_product.bids_count}件、参加人数は #{@max_bid_product.bids.count('DISTINCT user_id')}人でした。"
@@ -35,15 +35,15 @@
     hr
 
     li = "出品していただいた会社について、出品を行った会社数は #{@products.count("DISTINCT products.user_id")}社、"
-    li = "うち落札があったのが #{@success_products.count("DISTINCT products.user_id")}社でした。"
+    li = "うち落札があったのが #{@success.count("DISTINCT products.user_id")}社でした。"
 
     hr
 
     li = "入札ユーザ数では、新規ユーザ登録数は #{number_with_delimiter(@users.count)}人、"
     li = "総登録人数は #{number_with_delimiter(User.all.count)}人、"
-    li = "うち入札参加人数は #{number_with_delimiter(@bids.count('DISTINCT user_id'))}人、"
-    li = "1人平均の入札数は #{number_with_delimiter(@success_products.sum(:bids_count).fdiv(@bids.count('DISTINCT user_id')).round(2))}件、"
-    li = "平均落札金額は #{number_to_currency(@success_products.sum(:max_price).fdiv(@bids.count('DISTINCT user_id')).round(2))}でした。"
+    li = "うち入札参加人数は #{number_with_delimiter(@bid_user)}人、"
+    li = "1人平均の入札数は #{number_with_delimiter(@success_count.fdiv(@bid_user).round(2))}件、"
+    li = "平均落札金額は #{number_to_currency(@success_price.fdiv(@bid_user).round(2))}でした。"
 
     hr
 
