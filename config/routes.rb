@@ -138,6 +138,7 @@ Rails.application.routes.draw do
         get 'products'
         get 'products_monthly'
         get 'formula'
+        get 'categories'
       end
     end
 

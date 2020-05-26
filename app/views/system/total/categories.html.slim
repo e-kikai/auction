@@ -1,0 +1,88 @@
+- set_meta_tags title: "カテゴリ集計"
+- breadcrumb :system_something, "カテゴリ集計"
+
+= form_tag("/system/total/genres", method: "get", class: "form-inline filtering-form") do
+  = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+  = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
+
+  = button_tag class: "btn btn-info" do
+    span.glyphicon.glyphicon-search
+    span.btn-content 検索
+
+.row
+  .col-lg-12.col-md-12.col-sm-12
+    .table-responsive
+      table.table.table-hover.table-condensed.table-striped.product-table
+        thead
+          tr
+            th.num.sepa
+            th.num ID
+            th.sepa カテゴリ
+            th.num 出品件数
+            th.num 出品<br />会社数
+            th.num 開始数
+            th.num 開始<br />会社数
+            th.num 落札数
+            th.total_price.sepa 落札金額
+            th.num 入札数
+            th.num 入札<br />人数
+            th.num 閲覧数
+            th.num 閲覧<br />人数
+            th.num ウォ<br />ッチ
+            th.num ウォッチ<br />人数
+
+        - @csort.each_with_index do |category_id ,i|
+          tr
+            td.num.sepa = i + 1
+            td.num = category_id
+            td.sepa = @categories[category_id].name
+
+            td.num = number_with_delimiter(@now_counts[category_id])
+            td.num = number_with_delimiter(@now_companies_counts[category_id])
+            td.num = number_with_delimiter(@start_counts[category_id])
+            td.num = number_with_delimiter(@start_companies_counts[category_id])
+            td.num = number_with_delimiter(@success_counts[category_id])
+            td.total_price.sepa = number_to_currency(@success_prices[category_id])
+
+
+            td.num = number_with_delimiter @bid_counts[category_id]
+            td.num = number_with_delimiter @bid_user_counts[category_id]
+            td.num = number_with_delimiter @detail_log_counts[category_id]
+            td.num = number_with_delimiter @detail_user_counts[category_id]
+            td.num = number_with_delimiter @watch_counts[category_id]
+            td.num = number_with_delimiter @watch_user_counts[category_id]
+
+        thead
+          tr
+            th.num.sepa
+            th.num ID
+            th.sepa カテゴリ
+            th.num 出品件数
+            th.num 出品<br />会社数
+            th.num 開始数
+            th.num 開始<br />会社数
+            th.num 落札数
+            th.total_price.sepa 落札金額
+            th.num 入札数
+            th.num 入札<br />人数
+            th.num 閲覧数
+            th.num 閲覧<br />人数
+            th.num ウォ<br />ッチ
+            th.num ウォッチ<br />人数
+        tfoot
+          tr
+            td.num.sepa
+            td.num
+            th.sepa 合計
+            td.num = number_with_delimiter(@now_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@now_companies_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@start_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@start_companies_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@success_counts.sum { |k, v| v.to_i })
+            td.total_price.sepa = number_to_currency(@success_prices.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@bid_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@bid_user_total)
+            td.num = number_with_delimiter(@detail_log_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@detail_user_total)
+            td.num = number_with_delimiter(@watch_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@watch_user_total)

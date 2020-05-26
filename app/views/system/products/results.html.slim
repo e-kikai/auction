@@ -1,5 +1,5 @@
-- set_meta_tags title: "月別商品結果一覧"
-- breadcrumb :system_something, "月別商品結果一覧"
+- set_meta_tags title: "月間商品結果一覧"
+- breadcrumb :system_something, "月間商品結果一覧"
 
 = form_tag("/system/products/results", method: "get", class: "form-inline filtering-form") do
   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}

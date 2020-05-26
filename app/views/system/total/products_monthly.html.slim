@@ -1,5 +1,5 @@
-- set_meta_tags title: "日別トータル、出品予定(月別)"
-- breadcrumb :system_something, "日別トータル、出品予定(月別)"
+- set_meta_tags title: "トータル、出品予定(月別)"
+- breadcrumb :system_something, "トータル、出品予定(月別)"
 
 = form_tag("/system/total/products_monthly", method: "get", class: "form-inline filtering-form") do
   = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}

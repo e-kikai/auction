@@ -62,7 +62,11 @@
           span.btn-content トータル、出品予定(月別)
         li = link_to "/system/products/results" do
           span.glyphicon.glyphicon-calendar
-          span.btn-content 月別商品結果一覧
+          span.btn-content 月間商品結果一覧
+
+        li = link_to "/system/total/categories" do
+          span.glyphicon.glyphicon-calendar
+          span.btn-content 月間カテゴリランキング
         hr
         li = link_to "/system/products" do
           span.glyphicon.glyphicon-plus
