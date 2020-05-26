@@ -18,7 +18,8 @@
             th.num.sepa 日付
             th.num 出品件数
             th.num 開始数
-            th.num 未落札数<br />(延長含)
+            th.num 終了数
+            th.num 未落札<br />(延長含)
             th.num キャンセル
             th.num 落札数
             th.total_price.sepa 落札金額
@@ -38,13 +39,13 @@
           tr class=dow
             td.num.sepa = I18n.l(day, format: "%e (%a)")
             td.num = number_with_delimiter total
-            - total -= (@success_counts[day].to_i - @end_counts[day].to_i - @cancel_counts[day].to_i)
+            - total -= (@success_counts[day].to_i + @fin_counts[day].to_i + @cancel_counts[day].to_i)
 
             td.num = number_with_delimiter(@start_counts[day])
-
+            td.num = number_with_delimiter(@end_counts[day])
             td.num
-              - if @end_counts[day].present?
-                = link_to(number_with_delimiter(@end_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}&cond=1")
+              - if @fin_counts[day].present?
+                = link_to(number_with_delimiter(@fin_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}&cond=1")
 
             td.num
               - if @cancel_counts[day].present?
@@ -71,7 +72,8 @@
             th.num.sepa 日付
             th.num 出品件数
             th.num 開始数
-            th.num 未落札数<br />(延長含)
+            th.num 終了数
+            th.num 未落札<br />(延長含)
             th.num キャンセル
             th.num 落札数
             th.total_price.sepa 落札金額
@@ -89,6 +91,7 @@
             td.num = number_with_delimiter(@start_count + @start_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@start_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@end_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@fin_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@cancel_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@success_counts.sum { |k, v| v.to_i })
             td.total_price.sepa = number_to_currency(@success_prices.sum { |k, v| v.to_i })
