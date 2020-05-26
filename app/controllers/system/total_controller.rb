@@ -88,7 +88,7 @@ class System::TotalController < System::ApplicationController
     # 期間内に出品されていた商品
     @products = Product.includes(:user).where(template: false)
 
-    @products = Product.includes(:user, :max_bid).where(template: false, cancel: nil).where("dulation_start < ? AND dulation_end > ?", @rend, @rstart)
+    @products = Product.includes(:user, :max_bid).where(template: false).where("dulation_start < ? AND dulation_end > ?", @rend, @rstart).where("cancel IS NULL OR cancel > ? ", @rend)
 
     @now_count = @products.where("dulation_start < ? AND dulation_end > ?", @rend, @rstart).count
 
