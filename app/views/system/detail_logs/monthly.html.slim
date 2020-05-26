@@ -49,7 +49,8 @@ javascript:
 
         tbody
           - @total.each do |day, datas|
-            tr class="#{'danger' if day.strftime('%w') == '0'} #{'info' if day.strftime('%w') == '6'} #{'success' if day == Time.now.to_date}"
+            - dow = case when day == Date.today; "success" when day.strftime('%w') == '0'; 'danger' when day.strftime('%w') == '6'; "info" end
+            tr class="dow
               td.num.sepa = I18n.l(day, format: "%e (%a)")
 
               td.num = datas[:mailchimp] > 0 ? number_with_delimiter(datas[:mailchimp]) : ""
