@@ -76,15 +76,15 @@
             td.num
             th.sepa 合計
             td.num = number_with_delimiter(@counts[:now].sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@counts[:now_co].sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@now_co_total)
             td.num = number_with_delimiter(@counts[:start].sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@counts[:start_co].sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@start_co_total)
             td.num = number_with_delimiter(@counts[:success].sum { |k, v| v.to_i })
             td.total_price.sepa = number_to_currency(@counts[:success_price].sum { |k, v| v.to_i })
 
             td.num = number_with_delimiter(@counts[:bid].sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@counts[:bid_user])
+            td.num = number_with_delimiter(@bid_user_total)
             td.num = number_with_delimiter(@counts[:log].sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@counts[:log_user])
+            td.num = number_with_delimiter(@log_user_total)
             td.num = number_with_delimiter(@counts[:watch].sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@counts[:watch_user])
+            td.num = number_with_delimiter(@watch_user_total)

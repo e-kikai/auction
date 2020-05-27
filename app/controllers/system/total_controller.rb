@@ -118,26 +118,36 @@ class System::TotalController < System::ApplicationController
 
     @products     = Product.where(template: false)
 
-    @now_products = @products.where("dulation_start < ? AND dulation_end > ?", @rend, @rstart)
+    @now_products    = @products.where("dulation_start < ? AND dulation_end > ?", @rend, @rstart)
     @counts[:now]    = @now_products.group(:category_id).order("count_all DESC").count
     @counts[:now_co] = @now_products.group(:category_id).distinct.count(:user_id)
+    @now_co_total    = @now_products.distinct.count(:user_id)
 
-    @counts[:start]    = @products.where(@where_str).group(:category_id).count
-    @counts[:start_co] = @products.where(@where_str).group(:category_id).distinct.count(:user_id)
+    @start_products    = @products.where(@where_str)
+    @counts[:start]    = @start_products.group(:category_id).order("count_all DESC").count
+    @counts[:start_co] = @start_products.group(:category_id).distinct.count(:user_id)
+    @start_co_total    = @start_products.distinct.count(:user_id)
 
     @success                = @products.where(cancel: nil).where.not(max_bid_id: nil).where(@where_end)
     @counts[:success]       = @success.group(:category_id).order("count_all DESC").count
     @counts[:success_price] = @success.group(:category_id).order("sum_max_price DESC").sum(:max_price)
 
-    @counts[:bid]         = Bid.where(@where_cr).joins(:product).group(:category_id).order("count_all DESC").count
-    @counts[:bid_user]    = Bid.where(@where_cr).joins(:product).group(:category_id).distinct.count(:user_id)
-    @counts[:watch]       = Watch.where(@where_cr).joins(:product).group(:category_id).order("count_all DESC").count
-    @counts[:watch_user]  = Watch.where(@where_cr).joins(:product).group(:category_id).distinct.count(:user_id)
-    @counts[:log]         = DetailLog.where(@where_cr).joins(:product).group(:category_id).order("count_all DESC").count
-    @counts[:log_user]    = DetailLog.where(@where_cr).joins(:product).group(:category_id).distinct.count(:user_id)
+    @bids              = Bid.where(@where_cr).joins(:product)
+    @counts[:bid]      = @bids.group(:category_id).order("count_all DESC").count
+    @counts[:bid_user] = @bids.group(:category_id).distinct.count(:user_id)
+    @bid_user_total    = @bids.distinct.count(:user_id)
+
+    @watches              = Watch.where(@where_cr).joins(:product)
+    @counts[:watch]       = @watches.group(:category_id).order("count_all DESC").count
+    @counts[:watch_user]  = @watches.group(:category_id).distinct.count(:user_id)
+    @watch_user_total     = @watches.distinct.count(:user_id)
+
+    @detail_logs       = DetailLog.where(@where_cr).joins(:product)
+    @counts[:log]      = @detail_logs.group(:category_id).order("count_all DESC").count
+    @counts[:log_user] = @detail_logs.group(:category_id).distinct.count(:user_id)
+    @log_user_total    = @detail_logs.distinct.count(:user_id)
 
     @csort = (@counts[:success_price].keys + @counts[:watch].keys + @counts[:log].keys  + @counts[:now].keys + @categories.keys).uniq
-
     if params[:s].present? && @counts[params[:s].intern].present?
       @csort = (@counts[params[:s].intern].keys + @csort).uniq
     end
