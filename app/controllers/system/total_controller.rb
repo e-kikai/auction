@@ -114,29 +114,43 @@ class System::TotalController < System::ApplicationController
 
   def categories
     @categories   = Category.all.order(:id).index_by(&:id)
+    @counts = {}
 
     @products     = Product.where(template: false)
 
     @now_products = @products.where("dulation_start < ? AND dulation_end > ?", @rend, @rstart)
-    @now_counts = @now_products.group(:category_id).order("count_all DESC").count
-    @now_companies_counts = @now_products.group(:category_id).distinct.count(:user_id)
+    @counts[:now]    = @now_products.group(:category_id).order("count_all DESC").count
+    @counts[:now_co] = @now_products.group(:category_id).distinct.count(:user_id)
 
-    @start_counts       = @products.where(@where_str).group(:category_id).count
-    @start_companies_counts = @products.where(@where_str).group(:category_id).distinct.count(:user_id)
+    @counts[:start]    = @products.where(@where_str).group(:category_id).count
+    @counts[:start_co] = @products.where(@where_str).group(:category_id).distinct.count(:user_id)
 
-    @success        = @products.where(cancel: nil).where.not(max_bid_id: nil).where(@where_end)
-    @success_counts = @success.group(:category_id).count
-    @success_prices = @success.group(:category_id).order("sum_max_price DESC").sum(:max_price)
+    @success                = @products.where(cancel: nil).where.not(max_bid_id: nil).where(@where_end)
+    @counts[:success]       = @success.group(:category_id).order("count_all DESC").count
+    @counts[:success_price] = @success.group(:category_id).order("sum_max_price DESC").sum(:max_price)
 
+    @counts[:bid]         = Bid.where(@where_cr).joins(:product).group(:category_id).order("count_all DESC").count
+    @counts[:bid_user]    = Bid.where(@where_cr).joins(:product).group(:category_id).distinct.count(:user_id)
+    @counts[:watch]       = Watch.where(@where_cr).joins(:product).group(:category_id).order("count_all DESC").count
+    @counts[:watch_user]  = Watch.where(@where_cr).joins(:product).group(:category_id).distinct.count(:user_id)
+    @counts[:log]         = DetailLog.where(@where_cr).joins(:product).group(:category_id).order("count_all DESC").count
+    @counts[:log_user]    = DetailLog.where(@where_cr).joins(:product).group(:category_id).distinct.count(:user_id)
 
-    @bid_counts         = Bid.where(@where_cr).joins(:product).group(:category_id).count
-    @bid_user_counts    = Bid.where(@where_cr).joins(:product).group(:category_id).distinct.count(:user_id)
-    @watch_counts       = Watch.where(@where_cr).joins(:product).group(:category_id).order("count_all DESC").count
-    @watch_user_counts  = Watch.where(@where_cr).joins(:product).group(:category_id).distinct.count(:user_id)
-    @detail_log_counts  = DetailLog.where(@where_cr).joins(:product).group(:category_id).order("count_all DESC").count
-    @detail_user_counts = DetailLog.where(@where_cr).joins(:product).group(:category_id).distinct.count(:user_id)
+    @csort = (@counts[:success_price].keys + @counts[:watch].keys + @counts[:log].keys  + @counts[:now].keys + @categories.keys).uniq
 
-    @csort = (@success_prices.keys + @watch_counts.keys + @detail_log_counts.keys  + @now_counts.keys + @categories.keys).uniq
+    if params[:s].present? && @counts[params[:s].intern].present?
+      @csort = (@counts[params[:s].intern].keys + @csort).uniq
+    end
+
+    # 項目セレクタ
+    @column_selectors = {
+      "落札金額"   => :success_price,
+      "落札数"     => :success,
+      "ウォッチ数" => :watch,
+      "詳細閲覧数" => :log,
+      "出品件数"   => :now,
+      "開始数"     => :start,
+    }
   end
 
   private
