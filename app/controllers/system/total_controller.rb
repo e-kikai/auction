@@ -174,8 +174,8 @@ class System::TotalController < System::ApplicationController
   def date_selectors
     @date = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Date.today
 
-    @rstart = @date.beginning_of_month
-    @rend   = @date.end_of_month
+    @rstart = @date.to_time.beginning_of_month
+    @rend   = @date.to_time.end_of_month
 
     @where_cr  = {created_at: @rstart..@rend}
     @where_str = {dulation_start: @rstart..@rend}
