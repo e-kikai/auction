@@ -26,21 +26,22 @@
         span.btn-content CSV出力
 
     table.table.table-hover.table-condensed.table-striped.product-table
-      tr
-        th.num ID
-        th 出品会社名
-        th.num 出品<br />件数
-        th.num 終了<br />件数
-        th.num 落札<br />件数
-        th.num 閲覧<br />総数
-        th.num ウォッ<br />チ総数
-        th.total_price 落札金額合計
-        th.total_price システム使用料<br />(#{Product::FEE_RATE}%)
+      thead
+        tr
+          th.num ID
+          th 出品会社名
+          th.num 出品<br />件数
+          th.num 終了<br />件数
+          th.num 落札<br />件数
+          th.num 閲覧<br />総数
+          th.num ウォッ<br />チ総数
+          th.total_price 落札金額合計
+          th.total_price システム使用料<br />(#{Product::FEE_RATE}%)
       - @companies.each do |co|
         - total = co.products.where(template: false).where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
         - total_total += total
 
-        - month_products = co.products.where(template: false).where(dulation_end: @date.beginning_of_month..@date.end_of_month)
+        - month_products = co.products.where(template: false).where(dulation_end: @rstart..@rend)
 
         - fee_products   = month_products.where.not(fee: nil)
 

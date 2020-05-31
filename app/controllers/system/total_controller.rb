@@ -10,7 +10,7 @@ class System::TotalController < System::ApplicationController
     respond_to do |format|
       format.html
       format.pdf {
-        send_data @render_to_string,
+        send_data render_to_string,
           filename:     "total_#{@date.strftime('%Y%m')}.pdf",
           content_type: "application/pdf",
           disposition:  "inline"

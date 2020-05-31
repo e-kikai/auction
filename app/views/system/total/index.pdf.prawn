@@ -1,6 +1,6 @@
 prawn_document do |pdf|
   @companies.each do |co|
-    month_products = co.products.where(dulation_end: @date.beginning_of_month..@date.end_of_month)
+    month_products = co.products.where(dulation_end: @rstart..@rend)
     fee_products   = month_products.where.not(fee: nil).order(:dulation_end)
 
     # count        = month_products.count
