@@ -145,6 +145,8 @@ class Product < ApplicationRecord
   validates :machinelife_id, uniqueness: { scope: [ :soft_destroyed_at, :cancel ] }, allow_blank: true
   validates :star,           numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 } , allow_blank: true
 
+  validate :check_price
+
   ### nest ###
   accepts_nested_attributes_for :product_images, allow_destroy: true
 
@@ -563,6 +565,16 @@ class Product < ApplicationRecord
 
   def self.ransackable_scopes(auth_object = nil)
     %i(news_day news_week)
+  end
+
+  def check_price
+    if prompt_dicision_price.present? && prompt_dicision_price < start_price
+      errors.add(:prompt_dicision_price, ": 即売価格は開始価格以上に設定してください")
+    end
+
+    if lower_price.present? && prompt_dicision_price.present? && prompt_dicision_price < lower_price
+      errors.add(:lower_price, ": 即売価格は最低入札価格以上に設定してください")
+    end
   end
 
 end

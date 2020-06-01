@@ -52,8 +52,8 @@ class Myauction::ProductsController < Myauction::ApplicationController
           name:           @data["name"],
           description:    @data["spec"],
           youtube:        @data["youtube"],
-          start_price:           @data["start_price"],
-          prompt_dicision_price: @data["start_price"],
+          start_price:    @data["start_price"],
+          # prompt_dicision_price: @data["start_price"],
         }
 
         @data["images"].split.each do |img|
@@ -199,7 +199,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
     if @product.update(additional_params)
       redirect_to "/myauction/products", notice: "#{@product.name}の追記を変更しました"
     else
-      render :edit
+      render :additional
     end
   end
 
@@ -217,6 +217,6 @@ class Myauction::ProductsController < Myauction::ApplicationController
   end
 
   def additional_params
-    params.require(:product).permit(:category_id, :code, :additional, :hashtags, :youtube, :auto_resale, :auto_resale_date)
+    params.require(:product).permit(:category_id, :code, :additional, :hashtags, :youtube, :auto_resale, :auto_resale_date, :prompt_dicision_price)
   end
 end
