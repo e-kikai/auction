@@ -26,9 +26,9 @@ class System::DetailLogsController < System::ApplicationController
     @detail_logs  = DetailLog.where(where_date).where(where_ref).group(group_by).count()
     @toppage_logs = ToppageLog.where(where_date).where(where_ref).group(group_by).count()
 
-    @columns_ekikai = %w|マシンライフ 全機連 e-kikai 電子入札システム デッドストック| # e-kikaiサイト郡
+    @columns_ekikai = %w|マシンライフ 全機連 e-kikai 電子入札システム DST| # e-kikaiサイト郡
     @columns_ads    = %w|マシンライフ e-kikai| # 広告枠
-    @columns_search = %w|Google Yahoo Twitter Facebook bing YouTube (不明)| # 検索・SNS
+    @columns_search = %w|Google Yahoo bing 百度 Twitter FB YouTube 広告 (不明)| # 検索・SNS
 
     @sellers_url = User.where(seller: true).where.not(url: "").pluck(:url) # 出品会社サイト
     @urls = @sellers_url.map { |url| url =~ /\/\/(.*?)(\/|$)/ ? $1 : nil }.compact

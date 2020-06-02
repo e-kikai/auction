@@ -273,6 +273,12 @@ table {
     text-align: right;
   }
 
+  &.product-table thead  th {
+    padding: 5px 1px;
+    font-size: 12.2px;
+    line-break: anywhere;
+  }
+
   th.name,
   td.name {
     width: 200px;

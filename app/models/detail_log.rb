@@ -36,7 +36,7 @@ class DetailLog < ApplicationRecord
     "win" => "入札通知", "los" => "高値更新", "csl" => "キャンセル", "suc" => "落札通知", "trd" => "取引通知",
     "rmd" => "リマインダ",
     "pnl" => "パネル表示", "lst" => "リスト表示",
-    "cmp" => "Mailchimp",
+    "cmp" => "Mailchimp", "mailchimp" => "Mailchimp",
     "machinelife" => "マシンライフ", "dst" => "デッドストック", "ekikai" => "e-kikai",
   }
 
@@ -49,19 +49,25 @@ class DetailLog < ApplicationRecord
       r.split("_").map { |kwd| DetailLog::KWDS[kwd] || kwd }.join(" | ")
     else
       case referer
+
+      # 検索・SNS
       when /\/www\.google\.(com|co)/;               "Google"
       when /\/search\.yahoo\.co/;                   "Yahoo"
-      when /\/t\.co\//;                             "Twitter"
       when /bing\.com\//;                           "bing"
-      when /\/www\.facebook\.com\//;                "Facebook"
-      when /\/www\.youtube\.com\//;                 "YouTube"
+      when /baidu\.com\//;                          "百度"
 
-      when /\/www\.zenkiren\.net\//;                "マシンライフ"
-      when /\/www\.zenkiren\.org\//;                "全機連"
-      when /\/www\.e-kikai\.com\//;                 "e-kikai"
+      when /\/t\.co\//;                             "Twitter"
+      when /\/www\.facebook\.com\//;                "FB"
+      when /\/www\.youtube\.com\//;                 "YouTube"
+      when /\/www\.googleadservices\.com\//;        "広告"
+
+      # e-kikai
+      when /\/www\.zenkiren\.net\//;                 "マシンライフ"
+      when /\/www\.zenkiren\.org\//;                 "全機連"
+      when /\/www\.e-kikai\.com\//;                  "e-kikai"
       when /\/www\.xn\-\-4bswgw9cs82at4b485i\.jp\//; "電子入札システム"
       when /\/www\.大阪機械団地\.jp\//;              "電子入札システム"
-      when /\/www\.deadstocktool\.com\//;           "デッドストック"
+      when /\/www\.deadstocktool\.com\//;            "DST"
 
       # ものオクサイト内
       when /\/www\.mnok\.net\/myauction\/products/; "出品会社出品商品一覧"
