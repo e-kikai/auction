@@ -146,6 +146,8 @@ class System::UsersController < System::ApplicationController
       li   = DetailLog.link_source(keys[2], keys[1])
       user = keys[0]
 
+      next unless @total[user]
+
       if li =~ Regexp.new(@columns_search.join('|'))
         # 検索
         @total[user][:search] += val
