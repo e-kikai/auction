@@ -71,7 +71,7 @@
           td.num.sepa = number_with_delimiter(@follows_count[us.id])
 
           td.num = @total[us.id][:mailchimp] > 0 ? number_with_delimiter(@total[us.id][:mailchimp]) : ""
-          td.num.sepa = @total[us.id][:mailchimp] > 0 ? number_with_delimiter(@total[us.id][:mail]) : ""
+          td.num.sepa = @total[us.id][:mail] > 0 ? number_with_delimiter(@total[us.id][:mail]) : ""
           td.num = @total[us.id][:ekikai] > 0 ? number_with_delimiter(@total[us.id][:ekikai]) : ""
           td.num.sepa = @total[us.id][:sellers] > 0 ? number_with_delimiter(@total[us.id][:sellers]) : ""
           td.num.sepa = @total[us.id][:ads] > 0 ? number_with_delimiter(@total[us.id][:ads]) : ""
