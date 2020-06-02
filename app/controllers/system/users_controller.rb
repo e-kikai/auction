@@ -148,13 +148,13 @@ class System::UsersController < System::ApplicationController
 
       if li =~ Regexp.new(@columns_search.join('|'))
         # 検索
-        @total[user][:search][li] += val
+        @total[user][:search] += val
       elsif li =~ Regexp.new(@columns_sns.join('|'))
         # SNS
-        @total[user][:sns][li] += val
+        @total[user][:sns] += val
       elsif li.include?("ads")
         # 相互枠
-        @total[user][:ads][li] += val
+        @total[user][:ads] += val
       elsif li.include?("Mailchimp")
         # Mailchimp
         @total[user][:mailchimp] += val
@@ -172,7 +172,7 @@ class System::UsersController < System::ApplicationController
         @total[user][:sellers] += val
       elsif li =~ Regexp.new(@columns_ekikai.join('|'))
         # e-kikai
-        @total[user][:ekikai][li] += val
+        @total[user][:ekikai] += val
       elsif keys[1] !~ /mnok\.net/
         # その他
         @total[user][:others_urls] << keys[1]
