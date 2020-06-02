@@ -21,8 +21,8 @@
       thead
         tr
           th.num
-          th.nm ID
-          th アカウント
+          th.num ID
+          / th アカウント
           th.name 会社名・ユーザ名
           th 出品
           th.sepa 都道府県
@@ -33,6 +33,18 @@
           th.num ウォ<br />ッチ
           th.num お気に<br />いり
           th.num.sepa フォ<br />ロー
+
+          th.num Mailchimp
+          th.num.sepa 通知メール
+          th.num e-kikai
+          th.num.sepa 出品会社
+          th.num.sepa 相互枠
+          th.num 検索
+          th.num SNS
+          th.num 広告
+          th.num.sepa = "(不明)"
+          th.num.sepa その他
+
           th ユーザ登録日時
 
       - @user_ids.each.with_index(1) do |uid, i|
@@ -41,7 +53,7 @@
         tr
           td.num = number_with_delimiter(i)
           td.num = us.id
-          td = us.account
+          / td = us.account
           td #{us.company} #{us.name}
           td
             - if us.special?
@@ -57,17 +69,28 @@
           td.num = number_with_delimiter(@watches_count[us.id])
           td.num = number_with_delimiter(@searches_count[us.id])
           td.num.sepa = number_with_delimiter(@follows_count[us.id])
-          td = I18n.l(us.created_at, format: :full_date)
 
+          td.num = @total[us.id][:mailchimp] > 0 ? number_with_delimiter(@total[us.id][:mailchimp]) : ""
+          td.num.sepa = @total[us.id][:mailchimp] > 0 ? number_with_delimiter(@total[us.id][:mail]) : ""
+          td.num = @total[us.id][:ekikai] > 0 ? number_with_delimiter(@total[us.id][:ekikai]) : ""
+          td.num.sepa = @total[us.id][:sellers] > 0 ? number_with_delimiter(@total[us.id][:sellers]) : ""
+          td.num.sepa = @total[us.id][:ads] > 0 ? number_with_delimiter(@total[us.id][:ads]) : ""
+          td.num = @total[us.id][:search] > 0 ? number_with_delimiter(@total[us.id][:search]) : ""
+          td.num = @total[us.id][:sns] > 0 ? number_with_delimiter(@total[us.id][:sns]) : ""
+          td.num = @total[us.id][:google_ads] > 0 ? number_with_delimiter(@total[us.id][:google_ads]) : ""
+
+          td.num.sepa = @total[us.id][:unknown] > 0 ? number_with_delimiter(@total[us.id][:unknown]) : ""
+          td.num.sepa = @total[us.id][:others] > 0 ? number_with_delimiter(@total[us.id][:others]) : ""
+          / td = I18n.l(us.created_at, format: :full_date)
+          td = I18n.l(us.created_at, format: :date)
       thead
         tr
           th.num
           th.num ID
-          th アカウント
-          th.name 会社名。ユーザ名
+          / th アカウント
+          th.name 会社名・ユーザ名
           th 出品
           th.sepa 都道府県
-          / th.sepa 出品
           th.num 入札<br />件数
           th.num 落札<br />件数
           th.total_price.sepa 落札金額
@@ -75,13 +98,25 @@
           th.num ウォ<br />ッチ
           th.num お気に<br />いり
           th.num.sepa フォ<br />ロー
-          th ユーザ登録日時
+
+          th.num Mailchimp
+          th.num.sepa 通知メール
+          th.num e-kikai
+          th.num.sepa 出品会社
+          th.num.sepa 相互枠
+          th.num 検索
+          th.num SNS
+          th.num 広告
+          th.num.sepa = "(不明)"
+          th.num.sepa その他
+
+          th 登録日
 
       tfooter
         tr
           td
           td
-          td
+          / td
           td
           td
           th.sepa 合計
@@ -92,4 +127,15 @@
           td.num = number_with_delimiter(@watches_count.sum { |k, v| v.to_i })
           td.num = number_with_delimiter(@searches_count.sum { |k, v| v.to_i })
           td.sepa.num = number_with_delimiter(@follows_count.sum { |k, v| v.to_i })
+
+          td.num = (@total.sum { |user, datas| datas[:mailchimp].to_i })
+          td.num.sepa = (@total.sum { |user, datas| datas[:mail].to_i })
+          td.num = (@total.sum { |user, datas| datas[:ekikai].to_i })
+          td.num.sepa = (@total.sum { |user, datas| datas[:sellers].to_i })
+          td.num.sepa = (@total.sum { |user, datas| datas[:ads].to_i })
+          td.num = (@total.sum { |user, datas| datas[:search].to_i })
+          td.num = (@total.sum { |user, datas| datas[:sns].to_i })
+          td.num = (@total.sum { |user, datas| datas[:google_ads].to_i })
+          td.num.sepa = (@total.sum { |user, datas| datas[:unknown].to_i })
+          td.num.sepa = (@total.sum { |user, datas| datas[:others].to_i })
           td

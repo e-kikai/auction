@@ -106,6 +106,80 @@ class System::UsersController < System::ApplicationController
 
     @users = User.where(id: @user_ids)
 
+    # アクセス取得
+    where_ref  = "(referer NOT LIKE 'https://www.mnok.net%' OR referer LIKE 'https://www.mnok.net/products/ads%')"
+    where_date = ["created_at BETWEEN ? AND ?", rstart, rend]
+    group_by   = [:user_id, :referer, :r]
+
+    @detail_logs  = DetailLog.where(where_date).where(where_ref).where.not(user_id: nil).group(group_by).count()
+    @toppage_logs = ToppageLog.where(where_date).where(where_ref).where.not(user_id: nil).group(group_by).count()
+
+    @columns_ekikai = %w|マシンライフ 全機連 e-kikai 電子入札システム DST| # e-kikaiサイト郡
+    @columns_ads    = %w|マシンライフ e-kikai| # 広告枠
+    @columns_search = %w|Google Yahoo bing 百度| # 検索
+    @columns_sns    = %w|Twitter FB YouTube| # SNS
+
+    @sellers_url = User.where(seller: true).where.not(url: "").pluck(:url) # 出品会社サイト
+    @urls = @sellers_url.map { |url| url =~ /\/\/(.*?)(\/|$)/ ? $1 : nil }.compact
+    @urls << "kkmt.co.jp"
+
+    @total = Hash.new()
+    @user_ids.each do |user|
+      @total[user] = {
+        search:      0,
+        sns:         0,
+        ads:         0,
+        ekikai:      0,
+        sellers:     0,
+        others:      0,
+        google_ads:  0,
+        mailchimp:   0,
+        mail:        0,
+        unknown:     0,
+        others_urls: [],
+      }
+    end
+
+    logs = @detail_logs.merge(@toppage_logs)
+
+    logs.each do |keys, val|
+      li   = DetailLog.link_source(keys[2], keys[1])
+      user = keys[0]
+
+      if li =~ Regexp.new(@columns_search.join('|'))
+        # 検索
+        @total[user][:search][li] += val
+      elsif li =~ Regexp.new(@columns_sns.join('|'))
+        # SNS
+        @total[user][:sns][li] += val
+      elsif li.include?("ads")
+        # 相互枠
+        @total[user][:ads][li] += val
+      elsif li.include?("Mailchimp")
+        # Mailchimp
+        @total[user][:mailchimp] += val
+      elsif li.include?("メール")
+        # 新着ほかメール
+        @total[user][:mail] += val
+      elsif li.include?("広告")
+        # 広告
+        @total[user][:google_ads] += val
+      elsif li.include?("(不明)")
+        # 不明
+        @total[user][:unknown] += val
+      elsif li.in?(@urls)
+        # 出品会社サイト
+        @total[user][:sellers] += val
+      elsif li =~ Regexp.new(@columns_ekikai.join('|'))
+        # e-kikai
+        @total[user][:ekikai][li] += val
+      elsif keys[1] !~ /mnok\.net/
+        # その他
+        @total[user][:others_urls] << keys[1]
+        @total[user][:others] += val
+      end
+    end
+
     respond_to do |format|
       format.html
       format.csv { export_csv "users_total.csv" }
