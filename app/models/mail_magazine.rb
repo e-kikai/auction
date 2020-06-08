@@ -21,7 +21,8 @@ class MailMagazine
   # リストに追加
   def add_member(user, email)
     @mailchimp.lists.subscribe(
-      @list_id, {email: email}, {USER_ID: user.id, NAME: user.name, COMPANY: user.company}, "html", false)
+      # @list_id, {email: email}, {USER_ID: user.id, NAME: user.name, COMPANY: user.company}, "html", false)
+      @list_id, {email: email}, {USER_ID: user.id, NAME: user.name, COMPANY: user.company, SELLER: (user.seller? ? :company : :user)}, "html", false)
   end
 
   # リストから削除

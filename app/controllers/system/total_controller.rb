@@ -1,8 +1,8 @@
 class System::TotalController < System::ApplicationController
   include Exports
 
-   before_action :company_selectors, exsist: [:index]
-   before_action :date_selectors,    exsist: [:products_monthly]
+  before_action :company_selectors, exsist: [:index]
+  before_action :date_selectors,    exsist: [:products_monthly]
 
   def index
     @companies = User.companies.order(:id)

@@ -27,7 +27,14 @@
 = jsonld_script_tag
 
 - if @product.finished?
-  - if @product.success? && @product.max_bid.user == current_user
+  - if @product.cancel?
+    .alert.alert-danger
+      .
+        span.glyphicon.glyphicon-remove
+        span.btn-content このオークションは、以下の理由により出品キャンセルされました。
+      . = markdown(@product.cancel)
+
+  - elsif @product.success? && @product.max_bid.user == current_user
     .alert.success_message
       span.glyphicon.glyphicon-ok
       span.btn-content おめでとうございます！あなたが落札しました。
@@ -38,12 +45,7 @@
     .alert.success_message
       span.glyphicon.glyphicon-ok
       span.btn-content  このオークションは終了しました。たくさんの入札ありがとうございました。
-  - elsif @product.cancel?
-    .alert.alert-danger
-      .
-        span.glyphicon.glyphicon-remove
-        span.btn-content このオークションは、以下の理由により出品キャンセルされました。
-      . = markdown(@product.cancel)
+
 
   - elsif @product.lower_price.to_i > @product.max_price
     .alert.alert-danger

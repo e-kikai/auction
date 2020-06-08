@@ -41,7 +41,7 @@
         - total = co.products.where(template: false).where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
         - total_total += total
 
-        - month_products = co.products.where(template: false).where(dulation_end: @rstart..@rend)
+        - month_products = co.products.where(template: false).where(cancel: nil, dulation_end: @rstart..@rend)
 
         - fee_products   = month_products.where.not(fee: nil)
 
