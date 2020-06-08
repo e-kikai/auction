@@ -45,6 +45,12 @@ class Myauction::TotalController < Myauction::ApplicationController
     # # @start_count    = @products.where(cancel: nil).where("dulation_start < ?", rstart).where("(max_bid_id IS NOT NULL AND dulation_end >= ?) OR (max_bid_id IS NULL AND #{auto_sql} >=?)", rstart, rstart).count
     # @start_count        = @products.where("dulation_start <= ? AND dulation_end > ?", rstart, rstart).count
 
+    @rstart = @date.to_time.beginning_of_month
+    @rend   = @date.to_time.end_of_month
+
+    @where_cr  = {created_at: @rstart..@rend}
+    @where_str = {dulation_start: @rstart..@rend}
+    @where_end = {dulation_end: @rstart..@rend}
 
     # 取得
     auto_sql = "DATE(dulation_end) + auto_resale * auto_resale_date"
