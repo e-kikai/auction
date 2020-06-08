@@ -46,20 +46,18 @@
             td.num = number_with_delimiter(@end_counts[day])
             td.num
               - if @fin_counts[day].present?
-                = link_to(number_with_delimiter(@fin_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}&cond=1")
-
+                = number_with_delimiter(@fin_counts[day])
             td.num
               - if @cancel_counts[day].present?
-                = link_to(number_with_delimiter(@cancel_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}&cond=3")
-
+                = number_with_delimiter(@cancel_counts[day])
             td.num
               - if @success_counts[day].present?
-                = link_to(number_with_delimiter(@success_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}&cond=2")
+                = number_with_delimiter(@success_counts[day])
             td.total_price.sepa = number_to_currency @success_prices[day]
 
             td.num
               - if @bid_counts[day].present?
-                = link_to(number_with_delimiter(@bid_counts[day]), "/system/bids?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}")
+                = number_with_delimiter(@bid_counts[day])
 
             td.num = number_with_delimiter @bid_user_counts[day]
             td.num = number_with_delimiter @detail_log_counts[day]
