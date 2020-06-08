@@ -58,9 +58,10 @@ class DetailLog < ApplicationRecord
 
       when /\/t\.co\//;                             "Twitter"
       when /\/www\.facebook\.com\//;                "FB"
-      when /\/www\.youtube\.com\//;                 "YouTube"
-      when /\/www\.googleadservices\.com\//;        "広告"
-
+      when /youtube\.com\//;                        "YouTube"
+      when /googleads\.g\.doubleclick\.net/;        "広告"
+      when /tpc\.googlesyndication\.com/;           "広告"
+      when /\/www\.googleadservices\.com/;          "広告"
       # e-kikai
       when /\/www\.zenkiren\.net\//;                 "マシンライフ"
       when /\/www\.zenkiren\.org\//;                 "全機連"

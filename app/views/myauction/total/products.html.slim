@@ -9,52 +9,97 @@
     span.glyphicon.glyphicon-search
     span.btn-content 検索
 
+
 .row
   .col-lg-12.col-md-12.col-sm-12
     .table-responsive
       table.table.table-hover.table-condensed.table-striped.product-table
-        tr
-          th.price.sepa 日付
-          th.price 出品件数
-          th.price 開始数
-          th.price 未落札数<br />(延長含)
-          th.price キャンセル
-          th.price 落札数
-          th.total_price.sepa 落札金額
-          th.num 入札数
-          th.num 閲覧数
-          th.num 閲覧<br />人数
-          th.num.sepa ウォ<br />ッチ
-          th.num 登録<br />人数
+        thead
+          tr
+            th.num.sepa 日付
+            th.num 出品件数
+            th.num 開始数
+            th.num 終了数
+            th.num 未落札<br />(延長含)
+            th.num キャンセル
+            th.num 落札数
+            th.total_price.sepa 落札金額
+            th.num 入札数
+            th.num 入札<br />人数
+            th.num 閲覧数
+            th.num 閲覧<br />人数
+            th.num ウォ<br />ッチ
+            th.num.sepa ウォッチ<br />人数
+            th.num 登録<br />人数
 
         - total = @start_count
         - (@date.beginning_of_month..@date.end_of_month).each do |day|
-          - total += (@start_counts[day].to_i - @success_counts[day].to_i - @end_counts[day].to_i - @cancel_counts[day].to_i)
+          - total += @start_counts[day].to_i
 
-          tr class="#{'danger' if day.strftime('%w') == '0'} #{'info' if day.strftime('%w') == '6'} #{'success' if day == Time.now.to_date}"
-            td.price.sepa = I18n.l(day, format: "%e (%a)")
-            td.price = number_with_delimiter total
-            td.price = number_with_delimiter(@start_counts[day])
+          - dow = case when day == Date.today; "success" when day.strftime('%w') == '0'; 'danger' when day.strftime('%w') == '6'; "info" end
+          tr class=dow
+            td.num.sepa = I18n.l(day, format: "%e (%a)")
+            td.num = number_with_delimiter total
+            - total -= (@success_counts[day].to_i + @fin_counts[day].to_i + @cancel_counts[day].to_i)
 
-            td.price
-              - if @end_counts[day].present?
-                = number_with_delimiter(@end_counts[day])
+            td.num = number_with_delimiter(@start_counts[day])
+            td.num = number_with_delimiter(@end_counts[day])
+            td.num
+              - if @fin_counts[day].present?
+                = link_to(number_with_delimiter(@fin_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}&cond=1")
 
-            td.price
+            td.num
               - if @cancel_counts[day].present?
-                = number_with_delimiter(@cancel_counts[day])
+                = link_to(number_with_delimiter(@cancel_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}&cond=3")
 
-            td.price
+            td.num
               - if @success_counts[day].present?
-                = number_with_delimiter(@success_counts[day])
+                = link_to(number_with_delimiter(@success_counts[day]), "/system/products/finished?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}&cond=2")
             td.total_price.sepa = number_to_currency @success_prices[day]
 
             td.num
               - if @bid_counts[day].present?
-                = number_with_delimiter(@bid_counts[day])
+                = link_to(number_with_delimiter(@bid_counts[day]), "/system/bids?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}")
 
+            td.num = number_with_delimiter @bid_user_counts[day]
             td.num = number_with_delimiter @detail_log_counts[day]
             td.num = number_with_delimiter @detail_user_counts[day]
-
-            td.num.sepa = number_with_delimiter @watch_counts[day]
+            td.num = number_with_delimiter @watch_counts[day]
+            td.num.sepa = number_with_delimiter @watch_user_counts[day]
             td.num = number_with_delimiter @user_counts[day]
+
+        thead
+          tr
+            th.num.sepa 日付
+            th.num 出品件数
+            th.num 開始数
+            th.num 終了数
+            th.num 未落札<br />(延長含)
+            th.num キャンセル
+            th.num 落札数
+            th.total_price.sepa 落札金額
+            th.num 入札数
+            th.num 入札<br />人数
+            th.num 閲覧数
+            th.num 閲覧<br />人数
+            th.num ウォ<br />ッチ
+            th.num.sepa ウォッチ<br />人数
+            th.num 登録<br />人数
+
+        tfoot
+          tr
+            th.num.sepa 合計
+            td.num = number_with_delimiter(@start_count + @start_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@start_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@end_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@fin_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@cancel_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@success_counts.sum { |k, v| v.to_i })
+            td.total_price.sepa = number_to_currency(@success_prices.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@bid_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@bid_user_total)
+            td.num = number_with_delimiter(@detail_log_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@detail_user_total)
+            td.num = number_with_delimiter(@watch_counts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@watch_user_total)
+            td.num = number_with_delimiter(@user_counts.sum { |k, v| v.to_i })
