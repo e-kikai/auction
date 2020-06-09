@@ -57,7 +57,7 @@ class DetailLog < ApplicationRecord
       when /baidu\.com\//;                          "百度"
 
       when /\/t\.co\//;                             "Twitter"
-      when /\/www\.facebook\.com\//;                "FB"
+      when /facebook\.com\//;                       "FB"
       when /youtube\.com\//;                        "YouTube"
       when /googleads\.g\.doubleclick\.net/;        "広告"
       when /tpc\.googlesyndication\.com/;           "広告"

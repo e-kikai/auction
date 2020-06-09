@@ -1,0 +1,63 @@
+- set_meta_tags title: "問い合わせ履歴"
+- breadcrumb :system_something, "問い合わせ履歴"
+
+= form_tag("/system/trades", method: "get", class: "form-inline filtering-form") do
+  / = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
+  = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+
+  = button_tag "検索",  class: "btn btn-info" do
+    span.glyphicon.glyphicon-search
+    span.btn-content 検索
+
+  = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+    span.glyphicon.glyphicon-download-alt
+    span.btn-content CSV出力
+
+= paginate @ptrades
+.table-responsive
+  table.table.table-hover.table-condensed.table-striped.product-table
+    thead
+      tr
+        th.num ID
+        th.sepa 日時
+        th.name.sepa 商品 入札数/開始金額/最高金額
+        th.name.sepa 出品会社
+        th.sepa
+        th.name.sepa ユーザ
+        th 内容
+
+    - @ptrades.each do |tr|
+      tr class="f_#{tr.id}"
+        td.num = tr.id
+        td.sepa = tr.created_at
+
+        td.name.sepa
+          . = tr.product_id
+          . = link_to tr.product.name, "/products/#{tr.product_id}", target: "_blank"
+          . = "#{number_with_delimiter(tr.product.bids_count)} / #{number_to_currency(tr.product.start_price)} / #{number_to_currency(tr.product.max_price)}"
+
+        td.name.sepa
+          . = tr.product.try(:user_id)
+          . = tr.product.try(:user).try(:company)
+
+        td.sepa
+          = (tr.user_id == tr.product.try(:user_id) ? "→" : "←")
+
+        td.name.sepa
+          . = tr.user_id
+          . = "#{tr.user.try(:company)} #{tr.user.try(:name)}".strip
+
+        td = simple_format(tr.comment)
+
+
+    thead
+      tr
+        th.num ID
+        th.sepa 日時
+        th.name.sepa 商品
+        th.name.sepa 出品会社
+        th.sepa
+        th.name.sepa ユーザ
+        th 内容
+
+= paginate @ptrades

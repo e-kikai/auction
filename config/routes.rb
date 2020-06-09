@@ -132,6 +132,7 @@ Rails.application.routes.draw do
     resources :searches,     only: [:index]
     resources :alerts,       only: [:index]
     resources :follows,      only: [:index]
+    resources :trades,       only: [:index]
 
     resources :total,        only: [:index] do
       collection do

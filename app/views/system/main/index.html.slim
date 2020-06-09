@@ -54,20 +54,6 @@
         span.glyphicon.glyphicon-list
         span.btn-content 履歴
       ul.nav.nav-pills.nav-stacked
-        li = link_to "/system/total/products" do
-          span.glyphicon.glyphicon-calendar
-          span.btn-content トータル、出品予定(日別)
-        li = link_to "/system/total/products_monthly" do
-          span.glyphicon.glyphicon-calendar
-          span.btn-content トータル、出品予定(月別)
-        li = link_to "/system/products/results" do
-          span.glyphicon.glyphicon-calendar
-          span.btn-content 月間商品結果一覧
-
-        li = link_to "/system/total/categories" do
-          span.glyphicon.glyphicon-calendar
-          span.btn-content 月間カテゴリランキング
-        hr
         li = link_to "/system/products" do
           span.glyphicon.glyphicon-plus
           span.btn-content 出品商品履歴
@@ -89,9 +75,6 @@
         li = link_to "/system/search_logs" do
           span.glyphicon.glyphicon-search
           span.btn-content 検索履歴
-        li = link_to "/system/detail_logs/monthly" do
-          span.glyphicon.glyphicon-gift
-          span.btn-content 外部アクセス履歴集計
 
         hr
         li = link_to "/system/watches" do
@@ -106,6 +89,36 @@
         li = link_to "/system/follows" do
           span.glyphicon.glyphicon-heart
           span.btn-content フォロー利用履歴
+
+        hr
+          li = link_to "/system/trades" do
+            span.glyphicon.glyphicon-transfer
+            span.btn-content 問い合わせ履歴
+
+
+  .col-md-3
+    .panel.panel-default
+      .panel-heading
+        span.glyphicon.glyphicon-gift
+        span.btn-content 集計
+      ul.nav.nav-pills.nav-stacked
+        li = link_to "/system/total/products" do
+          span.glyphicon.glyphicon-calendar
+          span.btn-content トータル、出品予定(日別)
+        li = link_to "/system/total/products_monthly" do
+          span.glyphicon.glyphicon-calendar
+          span.btn-content トータル、出品予定(月別)
+        li = link_to "/system/products/results" do
+          span.glyphicon.glyphicon-calendar
+          span.btn-content 月間商品結果一覧
+
+        li = link_to "/system/total/categories" do
+          span.glyphicon.glyphicon-calendar
+          span.btn-content 月間カテゴリランキング
+
+        li = link_to "/system/detail_logs/monthly" do
+          span.glyphicon.glyphicon-gift
+          span.btn-content 外部アクセス履歴集計
         hr
         li = link_to "https://analytics.google.com/analytics/web/#embed/report-home/a115918166w172183137p171747763/", target: "_blank" do
           span.glyphicon.glyphicon-stats
