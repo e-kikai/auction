@@ -1,6 +1,24 @@
 - set_meta_tags title: "問い合わせ履歴"
 - breadcrumb :system_something, "問い合わせ履歴"
 
+javascript:
+  $(function() {
+      $('tr').on("mouseenter", function() {
+          thread = $(this).data("thread")
+          $('tr.' + thread + ' td.title').css("background", "#ffd700")
+      });
+
+      $('tr').on("mouseleave", function() {
+          thread = $(this).data("thread")
+          $('tr.' + thread + ' td.title').css("background", "")
+      });
+  });
+
+css:
+  tr {
+    transition: 0.5s;
+  }
+
 = form_tag("/system/trades", method: "get", class: "form-inline filtering-form") do
   / = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
@@ -20,32 +38,47 @@
       tr
         th.num ID
         th.sepa 日時
-        th.name.sepa 商品 入札数/開始金額/最高金額
-        th.name.sepa 出品会社
+        th.name 商品 入札数/開始金額/最高金額
+        th.sepa 状況
+        th.name.text-danger 出品会社
         th.sepa
-        th.name.sepa ユーザ
+        th
+        th.name.sepa.text-info ユーザ
         th 内容
 
     - @ptrades.each do |tr|
-      tr class="f_#{tr.id}"
+      - if tr.owner_id
+        - owner_id = owner_id
+        - owner    = owner
+      - else
+        - owner_id = tr.product.try(:max_bid).try(:user_id)
+        - owner    = tr.product.try(:max_bid).try(:user)
+
+      tr class="#{tr.product_id}_#{owner_id}" data-thread="#{tr.product_id}_#{owner_id}"
         td.num = tr.id
         td.sepa = tr.created_at
 
-        td.name.sepa
+        td.name.title
           . = tr.product_id
           . = link_to tr.product.name, "/products/#{tr.product_id}", target: "_blank"
           . = "#{number_with_delimiter(tr.product.bids_count)} / #{number_to_currency(tr.product.start_price)} / #{number_to_currency(tr.product.max_price)}"
 
-        td.name.sepa
-          . = tr.product.try(:user_id)
+        td.sepa
+
+        td.name
+          .text-danger = tr.product.try(:user_id)
           . = tr.product.try(:user).try(:company)
 
         td.sepa
-          = (tr.user_id == tr.product.try(:user_id) ? "→" : "←")
+          - if tr.user_id == tr.product.try(:user_id)
+            span.glyphicon.glyphicon-arrow-right.text-danger
+        td
+          - unless tr.user_id == tr.product.try(:user_id)
+            span.glyphicon.glyphicon-arrow-left.text-info
 
         td.name.sepa
-          . = tr.user_id
-          . = "#{tr.user.try(:company)} #{tr.user.try(:name)}".strip
+          .text-info = owner_id
+          . = "#{owner.try(:company)} #{owner.try(:name)}".strip
 
         td = simple_format(tr.comment)
 
@@ -54,10 +87,12 @@
       tr
         th.num ID
         th.sepa 日時
-        th.name.sepa 商品
-        th.name.sepa 出品会社
+        th.name 商品 入札数/開始金額/最高金額
+        th.sepa 状況
+        th.name.text-danger 出品会社
         th.sepa
-        th.name.sepa ユーザ
+        th
+        th.name.sepa.text-info ユーザ
         th 内容
 
 = paginate @ptrades

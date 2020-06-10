@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_19_075329) do
+ActiveRecord::Schema.define(version: 2020_06_10_112715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -349,6 +349,8 @@ ActiveRecord::Schema.define(version: 2020_05_19_075329) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "soft_destroyed_at"
+    t.bigint "owner_id"
+    t.index ["owner_id"], name: "index_trades_on_owner_id"
     t.index ["product_id"], name: "index_trades_on_product_id"
     t.index ["soft_destroyed_at"], name: "index_trades_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_trades_on_user_id"
@@ -413,4 +415,5 @@ ActiveRecord::Schema.define(version: 2020_05_19_075329) do
 
   add_foreign_key "industry_users", "industries"
   add_foreign_key "industry_users", "users"
+  add_foreign_key "trades", "users", column: "owner_id"
 end

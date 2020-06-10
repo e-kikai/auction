@@ -105,7 +105,8 @@ class Product < ApplicationRecord
   ### relations ###
   belongs_to :user,     required: true
   belongs_to :category, required: true
-  belongs_to :max_bid,  class_name: "Bid", required: false
+  belongs_to :max_bid,  class_name: "Bid",  required: false
+  belongs_to :owner,    class_name: "User", required: false
 
   has_many   :product_images, -> { order(:id) }, inverse_of: :product
   # has_many   :product_images
