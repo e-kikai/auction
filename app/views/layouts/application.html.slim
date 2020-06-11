@@ -9,6 +9,9 @@ html
     = render 'application/favicon'
     = csrf_meta_tags
 
+    = render partial: '/layouts/breadcrumbs_json_ld', breadcrumbs: breadcrumbs
+    = jsonld_script_tag
+
     / = analytics_init if Rails.env.production?
 
     /// Analytics(turbolinks5対応) ///
@@ -108,7 +111,8 @@ html
                 span.btn-content 初めての方はこちら
 
       /// パンくずリスト ///
-      = raw breadcrumbs style: :bootstrap, semantic: true
+      / = raw breadcrumbs style: :bootstrap, semantic: true
+      = raw breadcrumbs style: :bootstrap, semantic: false
 
       /// アラート表示 ///
       - if notice.present?
