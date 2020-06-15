@@ -1,98 +1,156 @@
 - set_meta_tags title: "問い合わせ履歴"
 - breadcrumb :system_something, "問い合わせ履歴"
 
-javascript:
-  $(function() {
-      $('tr').on("mouseenter", function() {
-          thread = $(this).data("thread")
-          $('tr.' + thread + ' td.title').css("background", "#ffd700")
-      });
+// javascript:
+//   $(function() {
+//       $('tr').on("mouseenter", function() {
+//           thread = $(this).data("thread")
+//           $('tr.' + thread + ' td.title').css("background", "#ffd700")
+//       });
+//
+//       $('tr').on("mouseleave", function() {
+//           thread = $(this).data("thread")
+//           $('tr.' + thread + ' td.title').css("background", "")
+//       });
+//   });
 
-      $('tr').on("mouseleave", function() {
-          thread = $(this).data("thread")
-          $('tr.' + thread + ' td.title').css("background", "")
-      });
-  });
+/ css:
+/   td.title {
+/     transition: 0.5s;
+/   }
 
-css:
-  td.title {
-    transition: 0.5s;
-  }
+/ = form_tag("/system/trades", method: "get", class: "form-inline filtering-form") do
+/   / = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
+/   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+/
+/   = button_tag "検索",  class: "btn btn-info" do
+/     span.glyphicon.glyphicon-search
+/     span.btn-content 検索
+/
+/   = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+/     span.glyphicon.glyphicon-download-alt
+/     span.btn-content CSV出力
 
-= form_tag("/system/trades", method: "get", class: "form-inline filtering-form") do
-  / = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
-  = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+.row
+  .col-lg-12.col-md-12.col-sm-12
+    = paginate @paginatable_array
+    .table-responsive
+      table.table.table-hover.table-condensed.table-striped.product-table
+        thead
+          tr
+            th.num 商品ID
+            th.name 商品 入札数/開始金額/最高金額
+            th.sepa 状況
+            th.name.sepa 出品会社
+            th.name.sepa ユーザ
+            th.sepa 閲覧
+            th.sepa 書込数
+            th 開始日時
+            th 最終更新
 
-  = button_tag "検索",  class: "btn btn-info" do
-    span.glyphicon.glyphicon-search
-    span.btn-content 検索
+        - @pthread_lasts.each do |key, val|
+          - product = @products[key[0]]
+          - if @owners[key[1]]
+            - owner_id = key[1]
+            - owner    = @owners[key[1]]
+          - else
+            - owner_id = product.try(:max_bid).try(:user_id)
+            - owner    = product.try(:max_bid).try(:user)
 
-  = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
-    span.glyphicon.glyphicon-download-alt
-    span.btn-content CSV出力
+          tr
+            td.num = key[0]
+            td.name
+              . = product.name
+              . = "#{number_to_currency(product.start_price)} / #{number_with_delimiter(product.bids_count)} / #{number_to_currency(product.max_price)}"
+            td.sepa = product.try(:status) rescue "-"
+            td.name.sepa
+              . = product.user_id
+              . = product.user.try(:name)
+            td.name.sepa
+              . = "#{owner_id}"
+              . = " #{owner.try(:company)} #{owner.try(:name)}".strip
+            td.sepa = link_to "/system/trades/#{key[0]}/#{key[1]}", class: "btn btn-info" do
+              span.glyphicon.glyphicon-comment
+            td.num.sepa = @thread_counts[key]
+            td = @thread_starts[key]
+            td = @thread_lasts[key]
 
-= paginate @ptrades
-.table-responsive
-  table.table.table-hover.table-condensed.table-striped.product-table
-    thead
-      tr
-        th.num ID
-        th.sepa 日時
-        th.name 商品 入札数/開始金額/最高金額
-        th.sepa 状況
-        th.name.text-danger 出品会社
-        th.sepa
-        th
-        th.name.sepa.text-info ユーザ
-        th 内容
+        thead
+          tr
+            th.num 商品ID
+            th.name 商品 入札数/開始金額/最高金額
+            th.sepa 状況
+            th.name.sepa 出品会社
+            th.name.sepa ユーザ
+            th.sepa 閲覧
+            th.sepa 書込数
+            th 開始日時
+            th 最終更新
 
-    - @ptrades.each do |tr|
-      - if tr.owner_id
-        - owner_id = owner_id
-        - owner    = owner
-      - else
-        - owner_id = tr.product.try(:max_bid).try(:user_id)
-        - owner    = tr.product.try(:max_bid).try(:user)
+    = paginate @paginatable_array
 
-      tr class="#{tr.product_id}_#{owner_id}" data-thread="#{tr.product_id}_#{owner_id}"
-        td.num = tr.id
-        td.sepa = tr.created_at
-
-        td.name.title
-          . = tr.product_id
-          . = link_to tr.product.name, "/products/#{tr.product_id}", target: "_blank"
-          . = "#{number_with_delimiter(tr.product.bids_count)} / #{number_to_currency(tr.product.start_price)} / #{number_to_currency(tr.product.max_price)}"
-
-        td.sepa
-
-        td.name
-          .text-danger = tr.product.try(:user_id)
-          . = tr.product.try(:user).try(:company)
-
-        td.sepa
-          - if tr.user_id == tr.product.try(:user_id)
-            span.glyphicon.glyphicon-arrow-right.text-danger
-        td
-          - unless tr.user_id == tr.product.try(:user_id)
-            span.glyphicon.glyphicon-arrow-left.text-info
-
-        td.name.sepa
-          .text-info = owner_id
-          . = "#{owner.try(:company)} #{owner.try(:name)}".strip
-
-        td = simple_format(tr.comment)
-
-
-    thead
-      tr
-        th.num ID
-        th.sepa 日時
-        th.name 商品 入札数/開始金額/最高金額
-        th.sepa 状況
-        th.name.text-danger 出品会社
-        th.sepa
-        th
-        th.name.sepa.text-info ユーザ
-        th 内容
-
-= paginate @ptrades
+/ = paginate @ptrades
+/ .table-responsive
+/   table.table.table-hover.table-condensed.table-striped.product-table
+/     thead
+/       tr
+/         th.num ID
+/         th.sepa 日時
+/         th.name 商品 入札数/開始金額/最高金額
+/         th.sepa 状況
+/         th.name.text-danger 出品会社
+/         th.sepa
+/         th
+/         th.name.sepa.text-info ユーザ
+/         th 内容
+/
+/     - @ptrades.each do |tr|
+/       - if tr.owner_id
+/         - owner_id = owner_id
+/         - owner    = owner
+/       - else
+/         - owner_id = tr.product.try(:max_bid).try(:user_id)
+/         - owner    = tr.product.try(:max_bid).try(:user)
+/
+/       tr class="#{tr.product_id}_#{owner_id}" data-thread="#{tr.product_id}_#{owner_id}"
+/         td.num = tr.id
+/         td.sepa = tr.created_at
+/
+/         td.name.title
+/           . = tr.product_id
+/           . = link_to tr.product.name, "/products/#{tr.product_id}", target: "_blank"
+/           . = "#{number_with_delimiter(tr.product.bids_count)} / #{number_to_currency(tr.product.start_price)} / #{number_to_currency(tr.product.max_price)}"
+/
+/         td.sepa
+/
+/         td.name
+/           .text-danger = tr.product.try(:user_id)
+/           . = tr.product.try(:user).try(:company)
+/
+/         td.sepa
+/           - if tr.user_id == tr.product.try(:user_id)
+/             span.glyphicon.glyphicon-arrow-right.text-danger
+/         td
+/           - unless tr.user_id == tr.product.try(:user_id)
+/             span.glyphicon.glyphicon-arrow-left.text-info
+/
+/         td.name.sepa
+/           .text-info = owner_id
+/           . = "#{owner.try(:company)} #{owner.try(:name)}".strip
+/
+/         td = simple_format(tr.comment)
+/
+/
+/     thead
+/       tr
+/         th.num ID
+/         th.sepa 日時
+/         th.name 商品 入札数/開始金額/最高金額
+/         th.sepa 状況
+/         th.name.text-danger 出品会社
+/         th.sepa
+/         th
+/         th.name.sepa.text-info ユーザ
+/         th 内容
+/
+/ = paginate @ptrades

@@ -133,6 +133,7 @@ Rails.application.routes.draw do
     resources :alerts,       only: [:index]
     resources :follows,      only: [:index]
     resources :trades,       only: [:index]
+    get "trades/:product_id/:owner_id" => "trades#show"
 
     resources :total,        only: [:index] do
       collection do
