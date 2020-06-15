@@ -41,7 +41,7 @@
             th.num 商品ID
             th.name 商品 入札数/開始金額/最高金額
             th.sepa 状況
-            th.name.sepa 出品会社
+            th.sepa 出品会社
             th.name.sepa ユーザ
             th.sepa 閲覧
             th.sepa 書込数
@@ -63,13 +63,13 @@
               . = product.name
               . = "#{number_to_currency(product.start_price)} / #{number_with_delimiter(product.bids_count)} / #{number_to_currency(product.max_price)}"
             td.sepa = product.try(:status) rescue "-"
-            td.name.sepa
+            td.sepa
               . = product.user_id
-              . = product.user.try(:name)
+              . = product.user.try(:company_remove_kabu)
             td.name.sepa
               . = "#{owner_id}"
               . = " #{owner.try(:company)} #{owner.try(:name)}".strip
-            td.sepa = link_to "/system/trades/#{key[0]}/#{key[1]}", class: "btn btn-info" do
+            td.sepa = link_to "/system/trades/#{key[0]}/#{owner_id}", class: "btn btn-info" do
               span.glyphicon.glyphicon-comment
             td.num.sepa = @thread_counts[key]
             td = @thread_starts[key]
@@ -80,7 +80,7 @@
             th.num 商品ID
             th.name 商品 入札数/開始金額/最高金額
             th.sepa 状況
-            th.name.sepa 出品会社
+            th.sepa 出品会社
             th.name.sepa ユーザ
             th.sepa 閲覧
             th.sepa 書込数
