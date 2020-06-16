@@ -78,9 +78,9 @@
           dd = simple_format(@product.user.bank)
         br style="clear:both;"
 
-        = link_to "/products?company_id=#{@product.user_id}", target: "_blank" do
-          span.glyphicon.glyphicon-list
-          span.btn-content = "#{@product.user.company}のそのほかの出品商品を見る"
+        / = link_to "/products?company_id=#{@product.user_id}", target: "_blank" do
+        /   span.glyphicon.glyphicon-list
+        /   span.btn-content = "#{@product.user.company}のそのほかの出品商品を見る"
 
         .trade-button-area
           = link_to "/myauction/alerts/new?alert[company_id]=#{@product.user_id}&alert[name]=◆#{@product.user.company} 新着通知", method: :get, class: "btn btn-default" do
