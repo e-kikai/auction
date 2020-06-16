@@ -43,8 +43,7 @@
             th.sepa 状況
             th.sepa 出品会社
             th.name.sepa ユーザ
-            th.sepa 閲覧
-            th.sepa 書込数
+            th.num.sepa 書込数
             th 開始日時
             th 最終更新
 
@@ -67,11 +66,11 @@
               . = product.user_id
               . = product.user.try(:company_remove_kabu)
             td.name.sepa
-              . = "#{owner_id}"
-              . = " #{owner.try(:company)} #{owner.try(:name)}".strip
-            td.sepa = link_to "/system/trades/#{key[0]}/#{owner_id}", class: "btn btn-info" do
+              . = "#{owner_id} | #{owner.account}"
+              . = "#{owner.try(:company_remove_kabu)} #{owner.try(:name)}".strip
+            td.num.sepa = link_to "/system/trades/#{key[0]}/#{owner_id}", class: "btn btn-success btn-md" do
               span.glyphicon.glyphicon-comment
-            td.num.sepa = @thread_counts[key]
+              span.btn-content = "#{@thread_counts[key]}"
             td = @thread_starts[key]
             td = @thread_lasts[key]
 
@@ -82,8 +81,7 @@
             th.sepa 状況
             th.sepa 出品会社
             th.name.sepa ユーザ
-            th.sepa 閲覧
-            th.sepa 書込数
+            th.num.sepa 書込数
             th 開始日時
             th 最終更新
 

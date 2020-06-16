@@ -32,22 +32,23 @@ ul.nav.nav-pills
     .col-md-12
       .table-responsive
         table.table.table-hover.table-condensed.table-striped.product-table
-          tr
-            th.num ID
-            th ユーザ名
-            th 会社名
-            th アカウント
-            th 都道府県
-            th 業種
-            th 出品
-            th 案内
-            th 確認
-            th 変更
-            / th 代理ログイン
-            th パスワード
-            th 代理ログイン
-            th 登録日時
-            th 削除
+          thead
+            tr
+              th.num ID
+              th ユーザ名
+              th 会社名
+              th アカウント
+              th 都道府県
+              th 業種
+              th 出品
+              th 案内
+              th 確認
+              th 変更
+              / th 代理ログイン
+              th パスワード
+              th 代理ログイン
+              th 登録日時
+              th 削除
           - @pusers.each do |us|
             tr
               td.num = us.id
@@ -66,13 +67,13 @@ ul.nav.nav-pills
               td = us.allow_mail? ? "◯" : ""
               td = us.confirmed_at? ? "◯" : ""
 
-              td = link_to({ action: :edit, id: us.id }, class: "btn btn-warning") do
+              td = link_to({ action: :edit, id: us.id }, class: "btn btn-warning btn-sm") do
                 span.glyphicon.glyphicon-edit
                 =< "変更"
-              td = link_to({ action: :edit_password, id: us.id }, class: "btn btn-success") do
+              td = link_to({ action: :edit_password, id: us.id }, class: "btn btn-success btn-sm") do
                 span.glyphicon.glyphicon-lock
                 =< "PW変"
-              td = link_to({ action: :signin, id: us.id }, method: :post, class: "btn btn-info") do
+              td = link_to({ action: :signin, id: us.id }, method: :post, class: "btn btn-info btn-sm") do
                 span.glyphicon.glyphicon-log-in
                 =< "ログイン"
               / td = link_to({ action: :sign_in, id: us.id }, method: :post, class: "btn btn-primary") do
@@ -82,3 +83,21 @@ ul.nav.nav-pills
               td = link_to({ action: :destroy, id: us.id }, method: :delete, data: { confirm: "#{us.name} #{us.company}\n\nこのユーザを削除しますか？", "disable-with" => "削除中..."}, class: "btn btn-default btn-xs") do
                 span.glyphicon.glyphicon-remove
                 =< "削除"
+
+          thead
+            tr
+              th.num ID
+              th ユーザ名
+              th 会社名
+              th アカウント
+              th 都道府県
+              th 業種
+              th 出品
+              th 案内
+              th 確認
+              th 変更
+              / th 代理ログイン
+              th パスワード
+              th 代理ログイン
+              th 登録日時
+              th 削除

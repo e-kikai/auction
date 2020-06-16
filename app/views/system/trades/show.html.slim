@@ -116,12 +116,15 @@
           dt 住所
           dd #{@owner.addr_1} #{@owner.addr_2} #{@owner.addr_3}
 
-        /// 出品会社のみ表示 ///
-        - if @product.user_id == current_user.id
-          br style="clear:both;"
+          - if @product.user.blacklists.exists?(to_user_id: @owner_id)
+            p = ※ このユーザはブラックリストに登録されています
 
-          - if current_user.blacklists.exists?(to_user_id: @owner_id)
-            = link_to "※ このユーザはブラックリストに登録されています", "/myauction/blacklists"
+        /// 出品会社のみ表示 ///
+        / - if @product.user_id == current_user.id
+        /   br style="clear:both;"
+        /
+        /   - if current_user.blacklists.exists?(to_user_id: @owner_id)
+        /     = link_to "※ このユーザはブラックリストに登録されています", "/myauction/blacklists"
           / - else
           /   .trade-button-area
           /     = form_tag("/myauction/blacklists", method: :post, class: "form-inline filtering-form") do
@@ -131,16 +134,16 @@
           /         span.glyphicon.glyphicon-thumbs-down
           /         span.btn-content このユーザをブラックリストに追加
 
-          .trade-button-area
-            = link_to "/system/users/#{@owner.id}/edit", class: "btn btn-warning" do
-              span.glyphicon.glyphicon-edit
-              span.btn-content 変更
-            = link_to "/system/users/#{@owner.id}/edit_password", class: "btn btn-success" do
-              span.glyphicon.glyphicon-lock
-              span.btn-content PW変
-            = link_to "/system/users/#{@owner.id}/sign_in", method: :post, class: "btn btn-info" do
-              span.glyphicon.glyphicon-log-in
-              span.btn-content ログイン
+        .trade-button-area
+          = link_to "/system/users/#{@owner.id}/edit", class: "btn btn-warning" do
+            span.glyphicon.glyphicon-edit
+            span.btn-content 変更
+          = link_to "/system/users/#{@owner.id}/edit_password", class: "btn btn-success" do
+            span.glyphicon.glyphicon-lock
+            span.btn-content PW変
+          = link_to "/system/users/#{@owner.id}/sign_in", method: :post, class: "btn btn-info" do
+            span.glyphicon.glyphicon-log-in
+            span.btn-content ログイン
 
   .col-md-7
     / .alert.alert-danger
