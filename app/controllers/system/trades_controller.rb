@@ -8,7 +8,7 @@ class System::TradesController < System::ApplicationController
 
     @threads       = Trade.group(:product_id, :owner_id)
     @thread_lasts  = @threads.maximum(:created_at)
-    @pthread_lasts = @threads.order("maximum_created_at").page(params[:page]).per(50).maximum(:created_at)
+    @pthread_lasts = @threads.order("maximum_created_at DESC").page(params[:page]).per(50).maximum(:created_at)
 
     product_ids = @pthread_lasts.map { |k, v| k[0] }
     owner_ids   = @pthread_lasts.map { |k, v| k[1] }
