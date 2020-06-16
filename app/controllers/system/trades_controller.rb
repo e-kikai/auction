@@ -34,6 +34,7 @@ class System::TradesController < System::ApplicationController
   def show
     @owner   = User.find(params[:owner_id])
     @product = Product.includes(:user).find(params[:product_id])
-    @trades = Trade.where(product_id: params[:product_id], owner_id: params[:owner_id])
+    # @trades = Trade.where(product_id: params[:product_id], owner_id: params[:owner_id]).order(id: :desc)
+    @trades = Trade.where(product_id: params[:product_id], owner_id: nil).order(id: :desc)
   end
 end

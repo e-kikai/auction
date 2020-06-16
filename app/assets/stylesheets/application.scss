@@ -839,18 +839,51 @@ label.top-search {
 }
 
 .trade {
-  margin-bottom: 4px;
-  border-radius: 4px;
-  padding: 8px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  padding: 12px;
 
   &.mine {
     background: #CFC;
+    margin-right: 12px;
   }
 
   &.other {
     background: #ededec;
+    margin-left: 12px;
+  }
+
+  p {
+    margin: 0;
   }
 }
+
+.trade.other::before{
+  content: '';
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  left: 15px;
+  top: 32px;
+  border-right: 12px solid #ededec;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+
+.trade.mine::before{
+  content: '';
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  right: 15px;
+  top: 32px;
+  border-left: 12px solid #CFC;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+
 
 .detail-company-area {
   div {

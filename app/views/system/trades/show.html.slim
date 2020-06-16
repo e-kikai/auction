@@ -1,0 +1,157 @@
+- set_meta_tags title: "#{@product.name} | #{@owner.company} #{@owner.name} 問い合わせ"
+- breadcrumb :system_trades_show, @product, @owner
+
+.row
+  .col-md-5.trade-left
+    - if current_user.id != @product.user_id
+    .panel.panel-default
+      .panel-body.trade-product
+        .trade-product = link_to @product.name, "/products/#{@product.id}", target: "_blank"
+        .row
+          .col-md-5.col-sm-5.text-center
+            = link_to image_tag(@product.thumb_url), "/products/#{@product.id}", alt: @product.name, target: "_blank"
+          .col-md-7.col-sm-7
+            dl.dl-horizontal.trade-dl.product
+              dt 落札金額(税抜)
+              dd = number_to_currency(@product.max_price)
+              / dt 消費税(#{Product::TAX_RATE}%)
+              dt 消費税(#{Product.tax_rate(@product.dulation_end)}%)
+              dd.text-right = number_to_currency(@product.max_price_tax)
+
+              - if @shipping_label
+                dt 発送方法
+                dd.text-right = @shipping_label.name
+              - if @shipping_fee
+                dt 送料(税込、目安)
+                dd = number_to_currency(@shipping_fee.price)
+
+              hr.detail-price-calc
+              dt 合計金額
+              dd.text-right = number_to_currency(@product.max_price_with_tax + (@shipping_fee.try(:price) || 0))
+        / p.text-danger
+        /   | <注意事項>
+        /   br
+        /   | 合計金額には送料・梱包費・諸経費が含まれていない場合があります。
+        /   br
+        /   | ご入金の前に、必ず「取引」でお支払い金額の確認を行ってください。
+
+
+        .trade-button-area
+          - if @product.star
+            | 受取確認・評価しました。
+            span.star = @product.star_view
+          - else
+            | 受取確認・評価前
+
+    .panel.panel-default
+      = link_to "#collapse_company", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
+        span.glyphicon.glyphicon-home
+        span.btn-content 出品会社情報
+        span.glyphicon.glyphicon-chevron-down
+
+      .panel-body#collapse_company.panel-collapse.collapse.in.sm-close
+        dl.dl-horizontal.trade-dl
+          dt.dt-first 会社名
+          dd
+            = @product.user.company
+            = " ("
+            = link_to "/companies/#{@product.user_id}", target: "_blank" do
+              span.glyphicon.glyphicon-home
+              span.btn-content 出品会社情報
+            = ")"
+          dt 〒
+          dd = @product.user.zip
+          dt 住所
+          dd #{@product.user.addr_1} #{@product.user.addr_2} #{@product.user.addr_3}
+          dt 振込先情報
+          dd = simple_format(@product.user.bank)
+        br style="clear:both;"
+
+        / = link_to "/products?company_id=#{@product.user_id}", target: "_blank" do
+        /   span.glyphicon.glyphicon-list
+        /   span.btn-content = "#{@product.user.company}のそのほかの出品商品を見る"
+        /
+        / .trade-button-area
+        /   = link_to "/myauction/alerts/new?alert[company_id]=#{@product.user_id}&alert[name]=◆#{@product.user.company} 新着通知", method: :get, class: "btn btn-default" do
+        /     span.glyphicon.glyphicon-bell.alert-bell
+        /     span.btn-content この出品会社の新着メール通知
+        /
+        /   = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
+        /     span.glyphicon.glyphicon-heart.follow-heart
+        /     span.btn-content 出品会社をフォロー
+
+    .panel.panel-default
+      = link_to "#collapse_user", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
+        span.glyphicon.glyphicon-user
+        span.btn-content 問い合わせユーザ情報
+        span.glyphicon.glyphicon-chevron-down
+
+      .panel-body#collapse_user.panel-collapse.collapse.in.sm-close
+        dl.dl-horizontal.trade-dl
+          dt.dt-first アカウント
+          dd = @owner.account
+          dt 名前
+          dd = @owner.name
+          dt 会社名
+          dd = @owner.company
+          dt 電話番号
+          dd = @owner.tel
+          dt FAX
+          dd = @owner.fax
+          dt 〒
+          dd = @owner.zip
+          dt 住所
+          dd #{@owner.addr_1} #{@owner.addr_2} #{@owner.addr_3}
+
+        /// 出品会社のみ表示 ///
+        - if @product.user_id == current_user.id
+          br style="clear:both;"
+
+          - if current_user.blacklists.exists?(to_user_id: @owner_id)
+            = link_to "※ このユーザはブラックリストに登録されています", "/myauction/blacklists"
+          / - else
+          /   .trade-button-area
+          /     = form_tag("/myauction/blacklists", method: :post, class: "form-inline filtering-form") do
+          /       = hidden_field_tag :account, @owner.account
+          /
+          /       = button_tag class: "btn btn-danger" do
+          /         span.glyphicon.glyphicon-thumbs-down
+          /         span.btn-content このユーザをブラックリストに追加
+
+  .col-md-7
+    / .alert.alert-danger
+    /   .
+    /     span.glyphicon.glyphicon-alert
+    /     span.btn-content 取引に関する注意事項 - 必ずお読みください
+    /   ul
+    /     li 取引開始は、落札後1週間以内にお願いいたします。
+    /     li 発送方法、送料、梱包などの確認は必ず行ってください。入金確認後に商品の発送します。
+    /     li 商品到着後、左のボタンから受取確認・評価を行ってください。
+
+    / = form_for @trade, url: "/myauction/trades/?product_id=#{params[:product_id]}", html: { method: :post, class: 'form-horizontal' } do |f|
+    /   = f.label :comment, "こちらで取引コメントを入力して「投稿する」をクリックしてください。"
+    /   = f.text_area :comment, class: "form-control", style: "height: 240px;margin-bottom:4px;"
+    /
+    /   = f.button :button, data: { "disable-with" => "投稿中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+    /     span.glyphicon.glyphicon-send
+    /     span.btn-content 投稿する
+
+    .row
+      - @trades.each do |tr|
+        - if tr.user_id == current_user.id
+          .col-md-offset-2.col-md-10
+            . = I18n.l(tr.created_at, format: :full_date)
+            .trade.mine = simple_format(tr.comment)
+        - else
+          .col-md-10
+            . = I18n.l(tr.created_at, format: :full_date)
+            .trade.other = simple_format(tr.comment)
+
+      - if current_user.id == @product.user_id
+        .col-md-offset-2.col-md-10
+          . = I18n.l(@product.dulation_end, format: :full_date)
+          .trade.mine = simple_format(@product.user.result_message)
+      - else
+        .col-md-10
+          . = I18n.l(@product.dulation_end, format: :full_date)
+          .trade.other = simple_format(@product.user.result_message)

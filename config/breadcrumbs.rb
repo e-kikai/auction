@@ -257,6 +257,16 @@ crumb :system_infos_edit do |info|
   parent :system_infos
 end
 
+crumb :system_trades do
+  link   "問い合わせ履歴", "/system/trades/"
+  parent :system
+end
+
+crumb :system_trades_show do |product, owner|
+  link   "#{product.name} | #{owner.company} #{owner.name} 問い合わせ", "/system/trades/#{product.id}/#{owner.id}"
+  parent :system_trades
+end
+
 crumb :system_something do |title|
   link   title
   parent :system
