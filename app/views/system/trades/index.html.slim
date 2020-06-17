@@ -19,13 +19,12 @@
 /     transition: 0.5s;
 /   }
 
-/ = form_tag("/system/trades", method: "get", class: "form-inline filtering-form") do
-/   / = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
-/   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
-/
-/   = button_tag "検索",  class: "btn btn-info" do
-/     span.glyphicon.glyphicon-search
-/     span.btn-content 検索
+= form_tag("/system/trades", method: "get", class: "form-inline filtering-form") do
+  = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
+
+  = button_tag "検索",  class: "btn btn-info" do
+    span.glyphicon.glyphicon-search
+    span.btn-content 検索
 /
 /   = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
 /     span.glyphicon.glyphicon-download-alt
