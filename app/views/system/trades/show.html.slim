@@ -164,7 +164,28 @@
     /     span.btn-content 投稿する
 
     .row
+      - time = Time.now
+
       - @trades.each do |tr|
+        - if @product.dulation_end === tr.created_at..time
+          - if @product.max_bid.user_id == @owner.id
+            - if @product.user.result_message.present?
+              .col-md-10
+                .trade_time = "#{@product.user.company_remove_kabu} | #{I18n.l(@product.dulation_end, format: :full_date)}"
+                .trade.other = simple_format(@product.user.result_message)
+
+            .col-md-12
+              .alert.success_message
+                span.glyphicon.glyphicon-ok
+                span.btn-content おめでとうございます！あなたが落札しました。
+          - else
+            .col-md-12
+              .alert.alert-primary
+                span.glyphicon.glyphicon-ok
+                span.btn-content  このオークションは終了しました。
+
+        - time = tr.created_at
+
         - if tr.user_id == @owner.id
           .col-md-offset-2.col-md-10
             .trade_time = "#{@owner.company_remove_kabu} #{@owner.name} | #{I18n.l(tr.created_at, format: :full_date)}"
@@ -174,6 +195,21 @@
             .trade_time = "#{@product.user.company_remove_kabu} | #{I18n.l(tr.created_at, format: :full_date)}"
             .trade.other = simple_format(tr.comment)
 
-      .col-md-10
-        .trade_time = "#{@product.user.company_remove_kabu} | #{I18n.l(@product.dulation_end, format: :full_date)}"
-        .trade.other = simple_format(@product.user.result_message)
+
+
+      - if @product.dulation_end < time
+        - if @product.max_bid.user_id == @owner.id
+          - if @product.user.result_message.present?
+            .col-md-10
+              .trade_time = "#{@product.user.company_remove_kabu} | #{I18n.l(@product.dulation_end, format: :full_date)}"
+              .trade.other = simple_format(@product.user.result_message)
+
+          .col-md-12
+            .alert.success_message
+              span.glyphicon.glyphicon-ok
+              span.btn-content おめでとうございます！あなたが落札しました。
+        - else
+          .col-md-12
+            .alert.alert-primary
+              span.glyphicon.glyphicon-ok
+              span.btn-content  このオークションは終了しました。
