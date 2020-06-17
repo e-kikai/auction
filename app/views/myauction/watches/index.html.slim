@@ -18,17 +18,18 @@ h4 ウォッチリスト
 
   .table-responsive
     table.table.table-hover.table-condensed.table-striped.product-table
-      tr
-        th.img_mini
-        th = sort_link(@search, :name)
-        th.price = sort_link(@search, :max_price, params[:result].blank? ? "現在価格" : "落札価格")
-        th.price = sort_link(@search, :prompt_dicision_price)
-        th.num = sort_link(@search, :bids_count, default_order: :desc)
-        th 出品者
-        th = params[:result].blank? ? "最高入札者" : "落札者"
-        th = sort_link(@search, :dulation_end, (params[:result].blank? ? "残り時間" : "終了日時"))
-        th メール通知設定
-        th
+      thead
+        tr
+          th.img_mini
+          th = sort_link(@search, :name)
+          th.price = sort_link(@search, :max_price, params[:result].blank? ? "現在価格" : "落札価格")
+          th.price = sort_link(@search, :prompt_dicision_price)
+          th.num = sort_link(@search, :bids_count, default_order: :desc)
+          th 出品者
+          th = params[:result].blank? ? "最高入札者" : "落札者"
+          th = sort_link(@search, :dulation_end, (params[:result].blank? ? "残り時間" : "終了日時"))
+          th メール通知設定
+          th
       - @pproducts.each do |pr|
         tr
           td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}?r=wtc_lst"
@@ -39,7 +40,7 @@ h4 ウォッチリスト
               .lower-label 最低落札価格あり
           td.price = pr.prompt_dicision_price ? number_to_currency(pr.prompt_dicision_price_with_tax) : "-"
           td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
-          td = link_to pr.user.company, "/products?company_id=#{pr.user_id}"
+          td = link_to pr.user.company_remove_kabu, "/products?company_id=#{pr.user_id}"
           td
             - if pr.max_bid.blank?
               = "-"
@@ -59,6 +60,18 @@ h4 ウォッチリスト
               = link_to({ action: :destroy, id: pr.id }, method: :delete, class: "btn btn-default btn-xs") do
                 span.glyphicon.glyphicon-remove
                 =< "削除"
+      thead
+        tr
+          th.img_mini
+          th = sort_link(@search, :name)
+          th.price = sort_link(@search, :max_price, params[:result].blank? ? "現在価格" : "落札価格")
+          th.price = sort_link(@search, :prompt_dicision_price)
+          th.num = sort_link(@search, :bids_count, default_order: :desc)
+          th 出品者
+          th = params[:result].blank? ? "最高入札者" : "落札者"
+          th = sort_link(@search, :dulation_end, (params[:result].blank? ? "残り時間" : "終了日時"))
+          th メール通知設定
+          th
 
   . = paginate @pproducts
 

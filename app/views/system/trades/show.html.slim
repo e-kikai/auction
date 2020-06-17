@@ -39,8 +39,8 @@
         .trade-button-area
           - if @product.trade_status(@owner) == "落札"
             span = "落札 : "
-            - if product.star
-              span.star = product.star_view
+            - if @product.star
+              span.star = @product.star_view
             - else
               | 受取確認・評価前
           - else

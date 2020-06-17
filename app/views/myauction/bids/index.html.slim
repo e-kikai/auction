@@ -21,22 +21,23 @@ h4 = title
   . = paginate @pproducts
   .table-responsive
     table.table.table-hover.table-condensed.table-striped.product-table
-      tr
-        th.img_mini
-        th = sort_link(@search, :name)
-        th = sort_link(@search, :dulation_end, "終了日時")
+      thead
+        tr
+          th.img_mini
+          th = sort_link(@search, :name)
+          th = sort_link(@search, :dulation_end, "終了日時")
 
-        - if params[:cond] == "2"
-          th.price = sort_link(@search, :max_price, "落札金額")
-          th = sort_link(@search, :user_id, "出品会社")
-          th 取引
-          th 受取確認・評価
-        - else
-          th.price = sort_link(@search, :max_price, "現在価格")
-          th 出品会社
-          th.num =  sort_link(@search, :bids_count)
-          th 最高入札者
-          th = sort_link(@search, :dulation_end, "残り時間")
+          - if params[:cond] == "2"
+            th.price = sort_link(@search, :max_price, "落札金額")
+            th = sort_link(@search, :user_id, "出品会社")
+            th 取引
+            th 受取確認・評価
+          - else
+            th.price = sort_link(@search, :max_price, "現在価格")
+            th 出品会社
+            th.num =  sort_link(@search, :bids_count)
+            th 最高入札者
+            th = sort_link(@search, :dulation_end, "残り時間")
       - @pproducts.each do |pr|
         tr
           td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}?r=#{params[:cond] == "2" ? :fin_lst : :bds_lst}"
@@ -44,7 +45,7 @@ h4 = title
           td = I18n.l(pr.dulation_end, format: :full_date)
           td.price
             strong = number_to_currency(pr.max_price_with_tax)
-          td = link_to pr.user.company, "/products?company_id=#{pr.user_id}"
+          td = link_to pr.user.company_remove_kabu, "/products?company_id=#{pr.user_id}"
           - if params[:cond] == "2"
             - if pr.max_bid.user_id != pr.user_id
               td = link_to("/myauction/trades?product_id=#{pr.id}", class: "btn btn-success") do
@@ -76,6 +77,24 @@ h4 = title
                 = "-"
 
             td = pr.remaining_time
+
+      thead
+        tr
+          th.img_mini
+          th = sort_link(@search, :name)
+          th = sort_link(@search, :dulation_end, "終了日時")
+
+          - if params[:cond] == "2"
+            th.price = sort_link(@search, :max_price, "落札金額")
+            th = sort_link(@search, :user_id, "出品会社")
+            th 取引
+            th 受取確認・評価
+          - else
+            th.price = sort_link(@search, :max_price, "現在価格")
+            th 出品会社
+            th.num =  sort_link(@search, :bids_count)
+            th 最高入札者
+            th = sort_link(@search, :dulation_end, "残り時間")
 
   . = paginate @pproducts
 
