@@ -37,11 +37,14 @@
 
 
         .trade-button-area
-          - if @product.star
-            | 受取確認・評価しました。
-            span.star = @product.star_view
+          - if @product.trade_status(@owner) == "落札"
+            span = "落札 : "
+            - if product.star
+              span.star = product.star_view
+            - else
+              | 受取確認・評価前
           - else
-            | 受取確認・評価前
+            = @product.trade_status(@owner)
 
     .panel.panel-default
       = link_to "#collapse_company", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
@@ -169,7 +172,13 @@
       - @trades.each do |tr|
         - if @product.dulation_end === tr.created_at..time
           - if @product.max_bid.user_id == @owner.id
-            - if @product.user.result_message.present?
+            - if @product.cancel.present?
+              .col-md-12
+                .alert.alert-danger
+                  span.glyphicon.glyphicon-remove
+                  span.btn-content このオークションは、以下の理由により出品キャンセルされました。
+                  . = markdown(@product.cancel)
+            - elsif @product.user.result_message.present?
               .col-md-10
                 .trade_time = "#{@product.user.company_remove_kabu} | #{I18n.l(@product.dulation_end, format: :full_date)}"
                 .trade.other = simple_format(@product.user.result_message)
@@ -198,7 +207,13 @@
 
 
       - if @product.dulation_end < time
-        - if @product.max_bid.user_id == @owner.id
+        - if @product.cancel.present?
+          .col-md-12
+            .alert.alert-danger
+              span.glyphicon.glyphicon-remove
+              span.btn-content このオークションは、以下の理由により出品キャンセルされました。
+              . = markdown(@product.cancel)
+        - elsif @product.max_bid.user_id == @owner.id
           - if @product.user.result_message.present?
             .col-md-10
               .trade_time = "#{@product.user.company_remove_kabu} | #{I18n.l(@product.dulation_end, format: :full_date)}"

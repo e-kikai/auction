@@ -339,10 +339,28 @@ class Product < ApplicationRecord
   def status
     case
     when cancel?;                       "キャンセル"
+    when dulation_start.blank?;         "-"
     when dulation_start > Time.now;     "開始前"
     when finished? && max_bid.present?; "終了(落札済)"
     when finished? && max_bid.blank?;   "終了(未落札)"
     else                                "出品中"
+    end
+  end
+
+  ### 取引用(対人)状況 ###
+  def trade_status(user)
+    case
+    when user.blank?;               "ログインしていません"
+    when dulation_start.blank?;     "-"
+    when cancel?;                   "キャンセル"
+    when dulation_start > Time.now; "開始前"
+    when finished?
+      if    max_bid.blank?;             "終了(未落札)"
+      elsif max_bid.user_id == user.id; "落札"
+      else                              "終了(未落札)"
+      end
+    when max_bid.user_id == user.id; "出品中 :: 現在最高入札"
+    else                             "出品中"
     end
   end
 

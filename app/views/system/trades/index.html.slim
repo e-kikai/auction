@@ -38,7 +38,7 @@
         thead
           tr
             th.num 商品ID
-            th.name 商品 入札数/開始金額/最高金額
+            th 商品 入札数/開始金額/最高金額
             th.sepa 状況
             th.sepa 出品会社
             th.name.sepa ユーザ
@@ -57,10 +57,18 @@
 
           tr
             td.num = key[0]
-            td.name
+            td
               . = product.name
               . = "#{number_to_currency(product.start_price)} / #{number_with_delimiter(product.bids_count)} / #{number_to_currency(product.max_price)}"
-            td.sepa = product.try(:status) rescue "-"
+            td.sepa
+              - if product.trade_status(owner) == "落札"
+                span = "落札 : "
+                - if product.star
+                  span.star = product.star_view
+                - else
+                  | 受取確認・評価前
+              - else
+                = product.trade_status(owner)
             td.sepa
               . = product.user_id
               . = product.user.try(:company_remove_kabu)
@@ -76,7 +84,7 @@
         thead
           tr
             th.num 商品ID
-            th.name 商品 入札数/開始金額/最高金額
+            th 商品 入札数/開始金額/最高金額
             th.sepa 状況
             th.sepa 出品会社
             th.name.sepa ユーザ
