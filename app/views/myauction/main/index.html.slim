@@ -27,12 +27,28 @@
         li = link_to "/myauction/bids?cond=2" do
           span.glyphicon.glyphicon-transfer.text-success
           span.btn-content 落札した商品 (取引)
-        hr
-        li = link_to "/myauction/contacts" do
-          span.glyphicon.glyphicon-comment.text-success
-          span.btn-content 商品問合せ・取引一覧
 
+    - if current_user.seller?
+      .panel.panel-default
+        .panel-heading
+          span.glyphicon.glyphicon-comment
+          span.btn-content 商品問い合せ
+        ul.nav.nav-pills.nav-stacked
+          li = link_to "/myauction/contacts" do
+            span.glyphicon.glyphicon-comment.text-success
+            span.btn-content 商品問合せ・取引一覧
 
+  - unless current_user.seller?
+    .col-md-3
+      .panel.panel-default
+        .panel-heading
+          span.glyphicon.glyphicon-comment
+          span.btn-content 商品問い合せ
+        ul.nav.nav-pills.nav-stacked
+          li = link_to "/myauction/contacts" do
+            span.glyphicon.glyphicon-comment.text-success
+            span.btn-content 商品問合せ・取引一覧
+        
   - if current_user.seller?
     .col-md-3
       .panel.panel-default
@@ -80,8 +96,6 @@
           li = link_to "/myauction/answers" do
             span.glyphicon.glyphicon-comment.text-success
             span.btn-content ユーザからの問合せ・取引一覧
-
-
 
       .panel.panel-default
         .panel-heading

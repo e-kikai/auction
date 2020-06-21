@@ -27,8 +27,10 @@ class Myauction::AnswersController < Myauction::ApplicationController
 
   ### 問合せ回答 ###
   def show
-    @shipping_label = ShippingLabel.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no)
-    @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: @product.max_bid.user.addr_1)
+    if @product.max_bid.present?
+      @shipping_label = ShippingLabel.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no)
+      @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: @product.max_bid.user.addr_1)
+    end
 
     @trades = Trade.where(product_id: params[:product_id], owner_id: [nil, params[:owner_id]]).order(id: :desc)
 

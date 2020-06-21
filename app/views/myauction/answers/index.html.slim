@@ -58,14 +58,12 @@
               - if product.trade_status(owner) == "落札"
                 . = "#{owner.try(:company_remove_kabu)} #{owner.try(:name)}".strip
             td.num.sepa = link_to "/myauction/answers/#{key[0]}/#{owner_id}", class: "btn btn-success btn-md" do
-              span.glyphicon.glyphicon-comment
-              span.btn-content
-                - if product.trade_success?(owner)
-                  span.glyphicon.glyphicon-transfer
-                  span.btn-content 取引 : #{@thread_counts[key]}
-                - else
-                  span.glyphicon.glyphicon-comment
-                  span.btn-content 問合せ : #{@thread_counts[key]}
+              - if product.trade_success?(owner)
+                span.glyphicon.glyphicon-transfer
+                span.btn-content 取引 : #{@thread_counts[key]}
+              - else
+                span.glyphicon.glyphicon-comment
+                span.btn-content 問合せ : #{@thread_counts[key]}
             td = @thread_starts[key]
             td = val
 
