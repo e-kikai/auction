@@ -1,0 +1,30 @@
+問い合わせについての回答メッセージ投稿のお知らせ
+
+<%= @owner.company %> <%= @owner.name %> 様
+
+あなたが落札した商品について、
+出品会社の<%= @product.user.company %>から取引メッセージの投稿がありました。
+
+<%= @product.name %>
+
+<取引メッセージ>
+============================
+<%= @trade.comment %>
+============================
+
+出品会社への返信は、以下のリンクから行ってください。
+<%= root_url(only_path: false) %>myauction/contacts/<%= @product.id %>
+
+商品詳細は、以下のリンクから確認できます。
+<%= root_url(only_path: false) %>products/<%= @product.id %>?r=mail_trd
+
+
+今後とも、ものづくりオークションをよろしくお願いいたします。
+
+ものづくりオークション
+<%= root_url(only_path: false) %>
+
+※	この自動通知メールは、ものづくりオークションより自動的に送信されています。
+※ このメールに返信しないようお願いいたします。
+
+Copyright (C) <%= Time.now.year %> 任意団体ものづくりオークション委員会, All Rights reserved.

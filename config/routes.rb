@@ -81,6 +81,12 @@ Rails.application.routes.draw do
     end
 
     resources :trades, only: [:index, :create, :destroy]
+
+    resources :answers, only: [:index, :create]
+    get "answers/:product_id/:owner_id" => "answers#show"
+
+    resources :contacts, only: [:index, :show, :create]
+
     resources :stars,  only: [:edit, :update]
     resources :helps,  only: [:index, :show]
     resources :infos,  only: [:index, :show]

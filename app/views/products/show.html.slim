@@ -34,13 +34,13 @@
         span.btn-content このオークションは、以下の理由により出品キャンセルされました。
       . = markdown(@product.cancel)
 
-  - elsif @product.success? && @product.max_bid.user == current_user
+  - elsif @product.trade_success?(current_user)
     .alert.success_message
       span.glyphicon.glyphicon-ok
       span.btn-content おめでとうございます！あなたが落札しました。
-      = link_to("/myauction/trades?product_id=#{@product.id}", class: "btn btn-success") do
+      = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
         span.glyphicon.glyphicon-transfer
-        =< "出品会社と取引する"
+        span.btn-content 出品会社と取引する
   - elsif @product.success?
     .alert.success_message
       span.glyphicon.glyphicon-ok
@@ -218,6 +218,16 @@ article
             = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
               span.glyphicon.glyphicon-heart.follow-heart
               span.btn-content 出品会社をフォロー
+
+            .contact-button-area
+              - if @product.trade_success?(current_user)
+                = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
+                  span.glyphicon.glyphicon-transfer
+                  span.btn-content 出品会社と取引する
+              - else
+                = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
+                  span.glyphicon.glyphicon-comment
+                  span.btn-content この商品について問合せする
 
       //// SNSボタン ///
       .sns-area

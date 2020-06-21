@@ -1,0 +1,33 @@
+商品問い合わせメッセージ投稿のお知らせ
+
+<%= @product.user.company %> <%= @product.user.name %> 様
+
+あなたが出品した商品について、
+ユーザから問合せメッセージの投稿がありました。
+
+管理番号 : <%= @product.code %>
+<%= @product.name %>
+
+<問合せユーザ>
+アカウント : <%=@owner.account %>
+
+<取引メッセージ>
+============================
+<%= @trade.comment %>
+============================
+
+以下のリンクから、問合せを行ったユーザに回答を行ってください。
+<%= root_url(only_path: false) %>myauction/answers/<%= @product.id %>/<%= @owner.id %>
+
+商品情報は、以下のリンクから確認できます。
+<%= root_url(only_path: false) %>products/<%= @product.id %>?r=mail_cmp_trd
+
+
+
+ものづくりオークション
+<%= root_url(only_path: false) %>
+
+※	この自動通知メールは、ものづくりオークションより自動的に送信されています。
+※ このメールに返信しないようお願いいたします。
+
+Copyright (C) <%= Time.now.year %> 任意団体ものづくりオークション委員会, All Rights reserved.

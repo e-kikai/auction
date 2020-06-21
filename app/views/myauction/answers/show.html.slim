@@ -1,0 +1,228 @@
+- set_meta_tags title: "#{@product.name} | #{@owner.company} #{@owner.name} からの問い合わせ"
+- breadcrumb :myauction_answer, @product, @owner
+
+.row
+  .col-md-5.trade-left
+    - if current_user.id != @product.user_id
+    .panel.panel-default
+      .panel-body.trade-product
+        .trade-product = link_to @product.name, "/products/#{@product.id}", target: "_blank"
+        .row
+          .col-md-5.col-sm-5.text-center
+            = link_to image_tag(@product.thumb_url), "/products/#{@product.id}", alt: @product.name, target: "_blank"
+          .col-md-7.col-sm-7
+            dl.dl-horizontal.trade-dl.product
+              - if @product.trade_success?(@owner)
+                dt 落札金額(税抜)
+                dd = number_to_currency(@product.max_price)
+                / dt 消費税(#{Product::TAX_RATE}%)
+                dt 消費税(#{Product.tax_rate(@product.dulation_end)}%)
+                dd.text-right = number_to_currency(@product.max_price_tax)
+
+                - if @shipping_label
+                  dt 発送方法
+                  dd.text-right = @shipping_label.name
+                - if @shipping_fee
+                  dt 送料(税込、目安)
+                  dd = number_to_currency(@shipping_fee.price)
+
+                hr.detail-price-calc
+                dt 合計金額
+                dd.text-right = number_to_currency(@product.max_price_with_tax + (@shipping_fee.try(:price) || 0))
+              - else
+
+                dt 現在価格(税抜)
+                dd = number_to_currency(@product.max_price)
+                dt 税込価格
+                dd = number_to_currency(@product.max_price_with_tax)
+                - if @product.prompt_dicision_price.present?
+                  dt 即売価格(税込)
+                  dd = number_to_currency(@product.prompt_dicision_price_with_tax)
+                dt 入札件数
+                dd = "#{@product.bids_count} 件"
+                dt 残り時間
+                dd = "#{@product.remaining_time.gsub(/[^0-9,]*/, "")} #{@product.remaining_time.gsub(/[0-9,]*/, "")}"
+
+        - if @product.trade_success?(@owner)
+          p.text-danger
+            span <注意事項>
+            br
+            span 合計金額には送料・梱包費・諸経費が含まれていない場合があります。
+            br
+            span ご入金の前に、必ず「取引」でお支払い金額の確認を行ってください。
+
+        .trade-button-area
+          - if @product.trade_success?(@owner)
+            span = "落札 : "
+            - if @product.star
+              span = "受取確認済 "
+              span.star = @product.star_view
+            - else
+              | 受取確認・評価前
+          - else
+            = @product.trade_status(@owner)
+
+    / .panel.panel-default
+    /   = link_to "#collapse_company", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
+    /     span.glyphicon.glyphicon-home
+    /     span.btn-content 出品会社情報
+    /     span.glyphicon.glyphicon-chevron-down
+    /
+    /   .panel-body#collapse_company.panel-collapse.collapse.in.sm-close
+    /     dl.dl-horizontal.trade-dl
+    /       dt.dt-first 会社名
+    /       dd = @product.user.company
+        /   .company-button-area
+        /     = link_to "/companies/#{@product.user_id}", class: "btn btn-default" do
+        /       span.glyphicon.glyphicon-home
+        /       span.btn-content 会社情報
+        /     = link_to "/products/?company_id=#{@product.user_id}", class: "btn btn-default"  do
+        /       span.glyphicon.glyphicon-list
+        /       span.btn-content 出品商品を見る
+        /
+        /   dt 〒
+        /   dd = @product.user.zip
+        /   dt 住所
+        /   dd #{@product.user.addr_1} #{@product.user.addr_2} #{@product.user.addr_3}
+        /   dt 振込先情報
+        /   dd = simple_format(@product.user.bank)
+        / br style="clear:both;"
+
+        / = link_to "/products?company_id=#{@product.user_id}", target: "_blank" do
+        /   span.glyphicon.glyphicon-list
+        /   span.btn-content = "#{@product.user.company}のそのほかの出品商品を見る"
+        /
+        / .trade-button-area
+        /   = link_to "/myauction/alerts/new?alert[company_id]=#{@product.user_id}&alert[name]=◆#{@product.user.company} 新着通知", method: :get, class: "btn btn-default" do
+        /     span.glyphicon.glyphicon-bell.alert-bell
+        /     span.btn-content この出品会社の新着メール通知
+        /
+        /   = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
+        /     span.glyphicon.glyphicon-heart.follow-heart
+        /     span.btn-content 出品会社をフォロー
+
+    .panel.panel-default
+      = link_to "#collapse_user", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
+        span.glyphicon.glyphicon-user
+        span.btn-content 問い合わせユーザ情報
+        span.glyphicon.glyphicon-chevron-down
+
+      .panel-body#collapse_user.panel-collapse.collapse.in.sm-close
+        dl.dl-horizontal.trade-dl
+          dt.dt-first アカウント
+          dd = @owner.account
+          - if @product.trade_success?(@owner)
+            dt 名前
+            dd = @owner.name
+            dt 会社名
+            dd = @owner.company
+            dt 電話番号
+            dd = @owner.tel
+            dt FAX
+            dd = @owner.fax
+            dt 〒
+            dd = @owner.zip
+            dt 住所
+            dd #{@owner.addr_1} #{@owner.addr_2} #{@owner.addr_3}
+          - else
+            dt 都道府県
+            dd #{@owner.addr_1}
+
+        /// 出品会社のみ表示 ///
+        br style="clear:both;"
+
+        - if current_user.blacklists.exists?(to_user_id: @owner_id)
+          = link_to "※ このユーザはブラックリストに登録されています", "/myauction/blacklists"
+        - else
+          .trade-button-area
+            = form_tag("/myauction/blacklists", method: :post, class: "form-inline filtering-form") do
+              = hidden_field_tag :account, @owner.account
+
+              = button_tag class: "btn btn-danger" do
+                span.glyphicon.glyphicon-thumbs-down
+                span.btn-content このユーザをブラックリストに追加
+
+  .col-md-7
+    - if @product.trade_success?(@owner)
+      .alert.alert-danger
+        .
+          span.glyphicon.glyphicon-alert
+          span.btn-content 取引に関する注意事項 - 必ずお読みください
+        ul
+          li 取引開始は、落札後1週間以内にお願いいたします。
+          li 発送方法、送料、梱包などの確認は必ず行ってください。入金確認後に商品の発送します。
+          li 商品到着後、左のボタンから受取確認・評価を行ってください。
+
+    = form_for @trade, url: "/myauction/answers/", html: { method: :post, class: 'form-horizontal' } do |f|
+      = hidden_field_tag :product_id, params[:product_id]
+      = hidden_field_tag :owner_id, params[:owner_id]
+
+      = f.label :comment, "このフォームにコメントを入力して「投稿する」をクリックしてください。"
+      = f.text_area :comment, class: "form-control", style: "height: 200px;margin-bottom:4px;"
+
+      = f.button :button, data: { "disable-with" => "投稿中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+        span.glyphicon.glyphicon-send
+        span.btn-content 投稿する
+
+    .row
+      - time = Time.now
+
+      - @trades.each do |tr|
+        - if @product.dulation_end === tr.created_at..time
+          - if @product.max_bid.user_id == @owner.id
+            - if @product.cancel.present?
+              .col-md-12
+                .alert.alert-danger
+                  span.glyphicon.glyphicon-remove
+                  span.btn-content このオークションは、以下の理由により出品キャンセルされました。
+                  . = markdown(@product.cancel)
+            - elsif @product.user.result_message.present?
+              .col-md-offset-2.col-md-10
+                .trade_time = "#{I18n.l(@product.dulation_end, format: :full_date)}"
+                .trade.mine = simple_format(@product.user.result_message)
+
+            .col-md-12
+              .alert.success_message
+                span.glyphicon.glyphicon-ok
+                span.btn-content おめでとうございます！あなたが落札しました。
+          - else
+            .col-md-12
+              .alert.alert-info
+                span.glyphicon.glyphicon-ok
+                span.btn-content  このオークションは終了しました。
+
+        - time = tr.created_at
+
+        /// 投稿を表示 ///
+        - if tr.user_id == @owner.id
+          .col-md-10
+            .trade_time = "#{@owner.company_remove_kabu} #{@owner.name} | #{I18n.l(tr.created_at, format: :full_date)}"
+            .trade.other = simple_format(tr.comment)
+        - else
+          .col-md-offset-2.col-md-10
+            .trade_time = "#{I18n.l(tr.created_at, format: :full_date)}"
+            .trade.mine = simple_format(tr.comment)
+
+
+      - if @product.dulation_end < time
+        - if @product.cancel.present?
+          .col-md-12
+            .alert.alert-danger
+              span.glyphicon.glyphicon-remove
+              span.btn-content このオークションは、以下の理由により出品キャンセルされました。
+              . = markdown(@product.cancel)
+        - elsif @product.max_bid.user_id == @owner.id
+          - if @product.user.result_message.present?
+            .col-md-offset-2.col-md-10
+              .trade_time = "#{I18n.l(@product.dulation_end, format: :full_date)}"
+              .trade.mine = simple_format(@product.user.result_message)
+
+          .col-md-12
+            .alert.success_message
+              span.glyphicon.glyphicon-ok
+              span.btn-content おめでとうございます！あなたが落札しました。
+        - else
+          .col-md-12
+            .alert.alert-info
+              span.glyphicon.glyphicon-ok
+              span.btn-content  このオークションは終了しました。

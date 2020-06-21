@@ -1,0 +1,84 @@
+- set_meta_tags title: "ユーザからの問い合わせ一覧"
+- breadcrumb :myauction_answers
+
+/ = form_tag("/system/trades", method: "get", class: "form-inline filtering-form") do
+/   = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
+/
+/   = button_tag "検索",  class: "btn btn-info" do
+/     span.glyphicon.glyphicon-search
+/     span.btn-content 検索
+/
+/   = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+/     span.glyphicon.glyphicon-download-alt
+/     span.btn-content CSV出力
+
+.row
+  .col-lg-12.col-md-12.col-sm-12
+    = paginate @paginatable_array
+    .table-responsive
+      table.table.table-hover.table-condensed.table-striped.product-table
+        thead
+          tr
+            th.num 商品ID
+            th 商品
+            th.num 入札数
+            th.price 開始金額
+            th.price 最高金額
+            th.sepa 状況
+            th.name.sepa ユーザ
+            th.num.sepa 書込数
+            th 開始日時
+            th 最終更新
+
+        - @pthread_lasts.each do |key, val|
+          - product = @products[key[0]]
+          - if @owners[key[1]]
+            - owner_id = key[1]
+            - owner    = @owners[key[1]]
+          - else
+            - owner_id = product.try(:max_bid).try(:user_id)
+            - owner    = product.try(:max_bid).try(:user)
+
+          tr
+            td.num = key[0]
+            td
+              . = product.name
+              . = "#{number_to_currency(product.start_price)} / #{number_with_delimiter(product.bids_count)} / #{number_to_currency(product.max_price)}"
+            td.sepa
+              - if product.trade_success?(owner)
+                span = "落札 : "
+                - if product.star
+                  span.star = product.star_view
+                - else
+                  | 受取確認・評価前
+              - else
+                = product.trade_status(owner)
+            td.name.sepa
+              . = "#{owner.account}"
+              - if product.trade_status(owner) == "落札"
+                . = "#{owner.try(:company_remove_kabu)} #{owner.try(:name)}".strip
+            td.num.sepa = link_to "/myauction/answers/#{key[0]}/#{owner_id}", class: "btn btn-success btn-md" do
+              span.glyphicon.glyphicon-comment
+              span.btn-content
+                - if product.trade_success?(owner)
+                  = "取引"
+                - else
+                  = "問合せ"
+                = " : #{@thread_counts[key]}"
+            td = @thread_starts[key]
+            td = val
+
+        thead
+          tr
+            th.num 商品ID
+            th 商品
+            th.num 入札数
+            th.price 開始金額
+            th.price 最高金額
+            th.sepa 状況
+            th.name.sepa ユーザ
+            th.num.sepa 書込数
+            th 開始日時
+            th 最終更新
+
+    = paginate @paginatable_array

@@ -330,6 +330,11 @@ class Product < ApplicationRecord
     dulation_end <= Time.now && max_bid_id.present?
   end
 
+  ### ユーザが落札者か? ###
+  def trade_success?(user)
+    success? && max_bid.user_id == user.id
+  end
+
   ### キャンセルされたか ###
   def cancel?
     finished? && cancel.present?
@@ -359,8 +364,8 @@ class Product < ApplicationRecord
       elsif max_bid.user_id == user.id; "落札"
       else                              "終了(未落札)"
       end
-    when max_bid.user_id == user.id; "出品中 :: 現在最高入札"
-    else                             "出品中"
+    when max_bid.try(:user_id) == user.id; "出品中 :: 現在最高入札"
+    else                                   "出品中"
     end
   end
 

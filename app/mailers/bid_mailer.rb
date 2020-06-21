@@ -54,6 +54,38 @@ class BidMailer < ApplicationMailer
     mail(to: trade.product.user.email, subject: "ものオク ユーザからの取引通知 : #{@trade.product.code} #{@trade.product.name}")
   end
 
+  def answer(trade, product, owner)
+    @trade   = trade
+    @product = product
+    @owner   = owner
+
+    mail(to: @owner.email, subject: "ものオク 出品会社からの問合せ回答通知 : #{@product.name}")
+  end
+
+  def answer_success(trade, product, owner)
+    @trade   = trade
+    @product = product
+    @owner   = owner
+
+    mail(to: @owner.email, subject: "ものオク 出品会社からの取引通知 : #{@product.name}")
+  end
+
+  def contact(trade, product, owner)
+    @trade   = trade
+    @product = product
+    @owner   = owner
+
+    mail(to: @product.user.email, subject: "ものオク 商品についての問合せ通知 : #{@product.name}")
+  end
+
+  def contact_success(trade, product, owner)
+    @trade   = trade
+    @product = product
+    @owner   = owner
+
+    mail(to: @product.user.email, subject: "ものオク ユーザからの取引通知 : #{@product.name}")
+  end
+
   # 出品会社、評価
   def star_company(product)
     @product = product

@@ -173,6 +173,29 @@ crumb :myauction_infos_show do |inf|
   parent :myauction_infos
 end
 
+crumb :myauction_answers do
+  link   "ユーザからの問合せ・取引一覧", "/myauction/answers"
+  parent :myauction
+end
+
+crumb :myauction_answer do |product, owner|
+  label = product.trade_success?(owner) ? "取引" : "問合せ"
+  link   "#{product.name} | #{owner.company} #{owner.name} からの#{label}", "/myauction/answers/#{product.id}/#{owner.id}"
+  parent :myauction_answers
+end
+
+crumb :myauction_contacts do
+  link   "商品についての問合せ・取引一覧", "/myauction/trades/threads"
+  parent :myauction
+end
+
+crumb :myauction_contact do |product, owner|
+  label = product.trade_success?(owner) ? "取引" : "問合せ"
+  link   "#{product.name} についての#{label}", "/myauction/trades/#{product.id}"
+  parent :myauction_contacts
+end
+
+
 crumb :myauction_something do |title|
   link   title
   parent :myauction

@@ -39,7 +39,11 @@ class System::TradesController < System::ApplicationController
   def show
     @owner   = User.find(params[:owner_id])
     @product = Product.includes(:user).find(params[:product_id])
+
+    @shipping_label = ShippingLabel.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no)
+    @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: @product.max_bid.user.addr_1)
+
     # @trades = Trade.where(product_id: params[:product_id], owner_id: params[:owner_id]).order(id: :desc)
-    @trades = Trade.where(product_id: params[:product_id], owner_id: nil).order(id: :desc)
+    @trades = Trade.where(product_id: params[:product_id], owner_id: [nil, params[:product_id]]).order(id: :desc)
   end
 end
