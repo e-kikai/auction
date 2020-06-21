@@ -155,7 +155,7 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
 
             td = link_to({ action: :additional, id: pr.id }, class: "btn btn-success") do
               span.glyphicon.glyphicon-edit
-              =< "変更"
+              span.btn-content 変更
             td.num = pr.remaining_time
 
             / td
@@ -167,9 +167,9 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
             /     span.glyphicon.glyphicon-remove
             /     =< "取消"
 
-            td = button_tag class: "btn btn-danger btn-cancel", data: { toggle: :modal, target: "#cancel-modal-#{pr.id}"} do
+            td = button_tag class: "btn btn-danger btn-cancel btn-xs", data: { toggle: :modal, target: "#cancel-modal-#{pr.id}"} do
               span.glyphicon.glyphicon-remove
-              =< "cancle"
+              span.btn-content cancle
 
       thead
         tr

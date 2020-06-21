@@ -22,7 +22,8 @@
 ============================
 
 以下のリンクから、落札したユーザとの取引を行ってください。
-<%= root_url(only_path: false) %>myauction/trades?product_id=<%= @product.id %>
+<%= root_url(only_path: false) %>myauction/answers/<%= @product.id %>/<%=@product.max_bid.user_id %>
+
 
 商品情報は、以下のリンクから確認できます。
 <%= root_url(only_path: false) %>products/<%= @product.id %>?r=mail_cmp_suc

@@ -9,23 +9,23 @@
         span.btn-content 入札メニュー
       ul.nav.nav-pills.nav-stacked
         li = link_to "/myauction/watches" do
-          span.glyphicon.glyphicon-star
+          span.glyphicon.glyphicon-star.watch-star
           span.btn-content ウォッチリスト
         li = link_to "/myauction/searches" do
-          span.glyphicon.glyphicon-paperclip
+          span.glyphicon.glyphicon-paperclip.search-pushpin
           span.btn-content 検索条件のお気に入り一覧
         li = link_to "/myauction/alerts" do
-          span.glyphicon.glyphicon-bell
+          span.glyphicon.glyphicon-bell.alert-bell
           span.btn-content 新着メール通知設定一覧
         li = link_to "/myauction/follows" do
-          span.glyphicon.glyphicon-heart
+          span.glyphicon.glyphicon-heart.follow-heart
           span.btn-content フォローリスト
         hr
         li = link_to "/myauction/bids" do
-          span.glyphicon.glyphicon-pencil
+          span.glyphicon.glyphicon-pencil.color-black
           span.btn-content 入札中
         li = link_to "/myauction/bids?cond=2" do
-          span.glyphicon.glyphicon-transfer
+          span.glyphicon.glyphicon-transfer.text-success
           span.btn-content 落札した商品 (取引)
         hr
         li = link_to "/myauction/contacts" do

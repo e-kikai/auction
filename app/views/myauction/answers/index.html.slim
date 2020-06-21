@@ -61,10 +61,11 @@
               span.glyphicon.glyphicon-comment
               span.btn-content
                 - if product.trade_success?(owner)
-                  = "取引"
+                  span.glyphicon.glyphicon-transfer
+                  span.btn-content 取引 : #{@thread_counts[key]}
                 - else
-                  = "問合せ"
-                = " : #{@thread_counts[key]}"
+                  span.glyphicon.glyphicon-comment
+                  span.btn-content 問合せ : #{@thread_counts[key]}
             td = @thread_starts[key]
             td = val
 

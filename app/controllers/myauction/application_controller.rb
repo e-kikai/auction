@@ -18,6 +18,6 @@ class Myauction::ApplicationController < ApplicationController
 
   # 出品会社チェック
   def check_seller
-    render "/myauction/" unless current_user.seller?
+    redirect_to "/myauction/", alert: "このページは表示できません" unless current_user.seller?
   end
 end

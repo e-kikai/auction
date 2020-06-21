@@ -52,13 +52,12 @@
               - else
                 = product.trade_status(owner)
             td.num.sepa = link_to "/myauction/contacts/#{key[0]}", class: "btn btn-success btn-md" do
-              span.glyphicon.glyphicon-comment
-              span.btn-content
-                - if product.trade_success?(owner)
-                  = "取引"
-                - else
-                  = "問合せ"
-                = " : #{@thread_counts[key]}"
+              - if product.trade_success?(owner)
+                span.glyphicon.glyphicon-transfer
+                span.btn-content 取引 : #{@thread_counts[key]}
+              - else
+                span.glyphicon.glyphicon-comment
+                span.btn-content 問合せ : #{@thread_counts[key]}
             td = @thread_starts[key]
             td = val
 
