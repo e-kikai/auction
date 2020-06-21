@@ -332,7 +332,7 @@ class Product < ApplicationRecord
 
   ### ユーザが落札者か? ###
   def trade_success?(user)
-    success? && max_bid.user_id == user.id
+    success? && max_bid.user_id == user.try(:id)
   end
 
   ### キャンセルされたか ###

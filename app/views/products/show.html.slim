@@ -220,7 +220,11 @@ article
               span.btn-content 出品会社をフォロー
 
             .contact-button-area
-              - if @product.trade_success?(current_user)
+              - if current_user.blank?
+                = link_to "/users/sign_in" do
+                  span.glyphicon.glyphicon-log-in
+                  span.btn-content ログインすると、商品についての問合せができます
+              - elsif @product.trade_success?(current_user)
                 = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
                   span.glyphicon.glyphicon-transfer
                   span.btn-content 出品会社と取引する
