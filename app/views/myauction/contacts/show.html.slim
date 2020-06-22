@@ -208,7 +208,7 @@
               span.glyphicon.glyphicon-remove
               span.btn-content このオークションは、以下の理由により出品キャンセルされました。
               . = markdown(@product.cancel)
-        - elsif @product.max_bid.user_id == @owner.id
+        - elsif @product.try(:max_bid).try(:user_id) == @owner.id
           - if @product.user.result_message.present?
             .col-md-10
               .trade_time = "#{@product.user.company_remove_kabu} | #{I18n.l(@product.dulation_end, format: :full_date)}"
