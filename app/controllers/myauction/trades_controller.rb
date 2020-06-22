@@ -35,6 +35,8 @@ class Myauction::TradesController < Myauction::ApplicationController
   private
 
   def check_product
+    @product = Product.status(Product::STATUS[:success]).find(params[:product_id])
+
     ### 新ページリダイレクト ###
     if @product.user_id == current_user.id
       redirect_to "/myauction/answers/#{@product.id}/#{@product.max_bid.user_id}"
@@ -42,8 +44,6 @@ class Myauction::TradesController < Myauction::ApplicationController
       redirect_to "/myauction/contacts/#{@product.id}"
     end
     
-    @product = Product.status(Product::STATUS[:success]).find(params[:product_id])
-
     if @product.user_id != current_user.id && @product.max_bid.user_id != current_user.id
       redirect_to "/myauction/bids?cond=2", notice: "#{@product.name}はあなたが落札した商品ではありません"
     end
