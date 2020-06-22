@@ -40,10 +40,20 @@ class System::TradesController < System::ApplicationController
     @owner   = User.find(params[:owner_id])
     @product = Product.includes(:user).find(params[:product_id])
 
-    @shipping_label = ShippingLabel.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no)
-    @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: @product.max_bid.user.addr_1)
+    if @product.max_bid.present?
+      @shipping_label = ShippingLabel.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no)
+      @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: @product.max_bid.user.addr_1)
+    end
 
     # @trades = Trade.where(product_id: params[:product_id], owner_id: params[:owner_id]).order(id: :desc)
     @trades = Trade.where(product_id: params[:product_id], owner_id: [nil, params[:product_id]]).order(id: :desc)
+  end
+
+  def remake_owner
+    trades = Trade.where(owner_id: nil)
+
+    trades.each { |t| t.owner_id = t.product.max_bid.user_id; t.save }
+
+    render plain: 'OK', status: 200
   end
 end

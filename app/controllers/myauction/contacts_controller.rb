@@ -25,7 +25,11 @@ class Myauction::ContactsController < Myauction::ApplicationController
   end
 
   def show
-    # @trades = Trade.where(product_id: params[:product_id], owner_id: params[:owner_id]).order(id: :desc)
+    if @product.max_bid.present?
+      @shipping_label = ShippingLabel.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no)
+      @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: @product.max_bid.user.addr_1)
+    end
+
     @trades = Trade.where(product_id: params[:id], owner_id: [nil, @owner.id]).order(id: :desc)
 
     @trade  = @product.trades.new
