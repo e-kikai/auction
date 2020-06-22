@@ -46,7 +46,7 @@ class System::TradesController < System::ApplicationController
     end
 
     # @trades = Trade.where(product_id: params[:product_id], owner_id: params[:owner_id]).order(id: :desc)
-    @trades = Trade.where(product_id: params[:product_id], owner_id: [nil, params[:product_id]]).order(id: :desc)
+    @trades = Trade.where(product_id: params[:product_id], owner_id: [nil, params[:owner_id]]).order(id: :desc)
   end
 
   def remake_owner

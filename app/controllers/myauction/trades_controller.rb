@@ -2,13 +2,6 @@ class Myauction::TradesController < Myauction::ApplicationController
   before_action :check_product, only: [ :index, :create, :destroy ]
 
   def index
-    ### 新ページリダイレクト ###
-    if @product.user_id == current_user.id
-      redirect_to "/myauction/answers/#{@product.id}/#{@product.max_bid.user_id}"
-    else
-      redirect_to "/myauction/contacts/#{@product.id}"
-    end
-
     @shipping_label = ShippingLabel.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no)
     @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: @product.max_bid.user.addr_1)
 
@@ -42,6 +35,13 @@ class Myauction::TradesController < Myauction::ApplicationController
   private
 
   def check_product
+    ### 新ページリダイレクト ###
+    if @product.user_id == current_user.id
+      redirect_to "/myauction/answers/#{@product.id}/#{@product.max_bid.user_id}"
+    else
+      redirect_to "/myauction/contacts/#{@product.id}"
+    end
+    
     @product = Product.status(Product::STATUS[:success]).find(params[:product_id])
 
     if @product.user_id != current_user.id && @product.max_bid.user_id != current_user.id
