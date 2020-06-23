@@ -49,11 +49,11 @@ class System::TradesController < System::ApplicationController
     @trades = Trade.where(product_id: params[:product_id], owner_id: [nil, params[:owner_id]]).order(id: :desc)
   end
 
-  def remake_owner
-    trades = Trade.where(owner_id: nil)
-
-    trades.each { |t| t.owner_id = t.product.max_bid.user_id; t.save }
-
-    render plain: 'OK', status: 200
-  end
+  # def remake_owner
+  #   trades = Trade.where(owner_id: nil)
+  #
+  #   trades.each { |t| t.owner_id = t.product.max_bid.user_id; t.save }
+  #
+  #   render plain: 'OK', status: 200
+  # end
 end

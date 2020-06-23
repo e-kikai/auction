@@ -127,10 +127,12 @@
             span.glyphicon.glyphicon-calendar
             span.btn-content 日別トータル、出品予定
 
+  .col-md-3
+    - if current_user.seller?
       .panel.panel-default
         .panel-heading
           span.glyphicon.glyphicon-info-sign
-          span.btn-content お知らせ・実績
+          span.btn-content 出品会社向けお知らせ・実績
         .panel-body
           - @infos.each do |inf|
             p
@@ -139,8 +141,6 @@
               = link_to inf.title, "/myauction/infos/#{inf.uid}"
           p = link_to ">> お知らせ一覧", "/myauction/infos"
 
-  .col-md-3
-    - if current_user.seller?
       .panel.panel-default
         .panel-heading
           span.glyphicon.glyphicon-info-sign
