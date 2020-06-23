@@ -70,7 +70,7 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
             th.num = sort_link(@search, :bids_count)
             th.num = sort_link(@search, :detail_logs_count)
             th.num = sort_link(@search, :watches_count)
-            th.sns SNSシェア
+            / th.sns SNSシェア
             th 追記<br />変更
             th.num 残り<br />時間
             / th 自社落札
@@ -141,17 +141,17 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
             td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
             td.num = pr.detail_logs_count
             td.num = pr.watches_count
-            td.sns
-
-              = link_to "http://www.facebook.com/sharer.php?u=#{root_url}products/#{pr.id}", target: "_blank", class: "facebook-button" do
-                = image_tag "fb_icon.png"
-                span シェア
-
-              = link_to "http://twitter.com/share?hashtags=ものオク&text=#{pr.name}｜ものづくりオークション&url=#{root_url}products/#{pr.id}", target: "_blank", class: "twitter-button" do
-                = image_tag "twitter_icon.png"
-                span Tweet
-
-              = link_to "LINEで送る", "http://line.me/R/msg/text/?#{pr.name}｜ものづくりオークション #{root_url}products/#{pr.id}",target: "_blank", class: "line-button"
+            / td.sns
+            /
+            /   = link_to "http://www.facebook.com/sharer.php?u=#{root_url}products/#{pr.id}", target: "_blank", class: "facebook-button" do
+            /     = image_tag "fb_icon.png"
+            /     span シェア
+            /
+            /   = link_to "http://twitter.com/share?hashtags=ものオク&text=#{pr.name}｜ものづくりオークション&url=#{root_url}products/#{pr.id}", target: "_blank", class: "twitter-button" do
+            /     = image_tag "twitter_icon.png"
+            /     span Tweet
+            /
+            /   = link_to "LINEで送る", "http://line.me/R/msg/text/?#{pr.name}｜ものづくりオークション #{root_url}products/#{pr.id}",target: "_blank", class: "line-button"
 
             td = link_to({ action: :additional, id: pr.id }, class: "btn btn-success") do
               span.glyphicon.glyphicon-edit

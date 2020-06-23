@@ -196,8 +196,10 @@ class Myauction::ProductsController < Myauction::ApplicationController
   end
 
   def additional_update
+    params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
+
     if @product.update(additional_params)
-      redirect_to "/myauction/products", notice: "#{@product.name}の追記を変更しました"
+      redirect_to "/myauction/products", notice: "#{@product.name}の追記を変更しました" and return
     else
       render :additional
     end
@@ -217,6 +219,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
   end
 
   def additional_params
-    params.require(:product).permit(:category_id, :code, :additional, :hashtags, :youtube, :auto_resale, :auto_resale_date, :prompt_dicision_price)
+    params.require(:product).permit(:category_id, :code, :additional, :hashtags, :youtube, :auto_resale, :auto_resale_date, :prompt_dicision_price,
+    product_images_attributes: [:id, :image, :remote_image_url, :_destroy])
   end
 end

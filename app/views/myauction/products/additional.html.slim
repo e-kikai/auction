@@ -1,7 +1,28 @@
 - set_meta_tags title: "追記"
 - breadcrumb    :myauction_something, "追記"
 
-= form_for @product, url: "/myauction/products/#{params[:id]}/additional_update", html: { method: :patch, class: 'form-horizontal' } do |f|
+coffee:
+  $ ->
+    $('.js-csv-upload').fileinput
+      showPreview: false
+      maxFileCount: 20
+      browseClass: 'btn btn-info fileinput-browse-button'
+      browseIcon: '<span class="glyphicon glyphicon-folder-open"></span>'
+      browseLabel: ' ファイル選択'
+      removeClass: 'btn btn-warning'
+      removeIcon: '<span class="glyphicon glyphicon-remove"></span>'
+      removeLabel: ' キャンセル'
+      uploadClass: 'btn btn-success fileinput-upload-button'
+      uploadIcon: '<i class="fa fa-upload"></i>'
+      uploadLabel: ' アップロード'
+      allowedFileExtensions: ['jpeg', 'jpg', 'png', 'gif']
+      msgValidationError: '''
+        <span class="text-danger">
+          <span class="glyphicon glyphicon-alert"></span>アップロードできるファイル形式はJPEG,GIF,PNGです。
+        </span>
+      '''
+
+= form_for @product, url: "/myauction/products/#{params[:id]}/additional_update", html: { multipart: true, method: :patch, class: 'form-horizontal' } do |f|
   - if f.object.errors.full_messages.present?
     .col-md-offset-2.col-md-8
       .alert.alert-danger
@@ -47,6 +68,22 @@
       th = f.label :additional, class: :additional
       td = f.text_area :additional, class: "form-control description additional"
 
+    tr
+      th 画像
+      td
+        . = file_field_tag "images[]", multiple: true, class: "js-csv-upload"
+        p.help-block 20枚まで複数選択可。JPEG、GIF、PNGファイル
+
+        = f.fields_for :product_images do |pi|
+          .form_img
+            - if pi.object.remote_image_url
+              = image_tag pi.object.remote_image_url, style: "max-width:160px;max-height:120px;"
+              = pi.hidden_field :remote_image_url
+            - else
+              = image_tag pi.object.image.thumb.url
+              = pi.hidden_field :id
+              = pi.check_box :_destroy, {}, 1, 0
+              = pi.label :_destroy, "削除"
 
     tr
       th = f.label :youtube

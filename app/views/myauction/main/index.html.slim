@@ -48,7 +48,7 @@
           li = link_to "/myauction/contacts" do
             span.glyphicon.glyphicon-comment.text-success
             span.btn-content 商品問合せ・取引一覧
-        
+
   - if current_user.seller?
     .col-md-3
       .panel.panel-default
@@ -133,7 +133,10 @@
           span.btn-content お知らせ・実績
         .panel-body
           - @infos.each do |inf|
-            p = link_to inf.title, "/myauction/infos/#{inf.uid}"
+            p
+              - if inf.start_at > Time.now.ago(14.days)
+                span.new-icon
+              = link_to inf.title, "/myauction/infos/#{inf.uid}"
           p = link_to ">> お知らせ一覧", "/myauction/infos"
 
   .col-md-3

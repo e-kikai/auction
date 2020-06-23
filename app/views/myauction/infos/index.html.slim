@@ -7,5 +7,7 @@ h3.product-title itemprop="name" 出品会社向けお知らせ一覧
 ul.col-md-offset-2.col-md-8.help-list
   - @infos.each do |inf|
     li
+      - if inf.start_at > Time.now.ago(14.days)
+        span.new-icon
       = "#{I18n.l(inf.start_at, format: :full_date)} "
       = link_to(inf.title, "/myauction/infos/#{inf.uid}")
