@@ -41,9 +41,10 @@
 
           tr
             td.num = key[0]
-            td
-              . = product.name
-              . = "#{number_to_currency(product.start_price)} / #{number_with_delimiter(product.bids_count)} / #{number_to_currency(product.max_price)}"
+            td = product.name
+            td.num = number_with_delimiter(product.bids_count)
+            td.price = number_to_currency(product.start_price)
+            td.price = number_to_currency(product.max_price)
             td.sepa
               - if product.trade_success?(owner)
                 span = "落札 : "
