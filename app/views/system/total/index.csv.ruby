@@ -1,6 +1,6 @@
-["ID", "会社名", "出品件数", "落札件数", "閲覧総数", "ウォッチ総数", "落札総額", "システム使用料(10%"].to_csv +
+["ID", "会社名", "出品件数", "落札件数", "閲覧総数", "ウォッチ総数", "落札総額", "システム使用料(10%)"].to_csv +
 @companies.sum do |co|
-  month_products = co.products.where(dulation_end: @rstart..@rend)
+  month_products = co.products.where(cancel: nil, dulation_end: @rstart..@rend)
   fee_products   = month_products.where.not(fee: nil).order(:dulation_end)
 
   count        = month_products.count
