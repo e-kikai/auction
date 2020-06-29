@@ -41,8 +41,10 @@ set :keep_releases, 5
 
 set :default_env, {
   # rbenv_root: "/usr/local/rbenv",
+  # path: "/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH"
+
   rbenv_root: "~/.rbenv/",
-  path: "/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH"
+  path: "~/.rbenv/shims:~/.rbenv/bin:$PATH"
 }
 
 # Uncomment the following to require manually verifying the host key before first deploy.
