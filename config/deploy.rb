@@ -1,6 +1,8 @@
 # config valid for current version and patch releases of Capistrano
 lock '3.8.1'
 
+set :rbenv_ruby, '2.6.0'
+
 set :application, "auction"
 set :repo_url, 'git@github.com:e-kikai/auction.git'
 
