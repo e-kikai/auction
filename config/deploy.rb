@@ -40,7 +40,8 @@ set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/sys
 set :keep_releases, 5
 
 set :default_env, {
-  rbenv_root: "/usr/local/rbenv",
+  # rbenv_root: "/usr/local/rbenv",
+  rbenv_root: "~/.rbenv/",
   path: "/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH"
 }
 
