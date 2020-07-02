@@ -148,8 +148,9 @@ class System::PlaygroundController < ApplicationController
     case Rails.env
     when "production"; redirect_to "/"
     when "staging"
-      establish_connection(:production)
-      @img_base = "https://s3-ap-northeast-1.amazonaws.com/mnok/uploads/product_image/image"
+      # establish_connection(:production)
+      # @img_base = "https://s3-ap-northeast-1.amazonaws.com/mnok/uploads/product_image/image"
+      @img_base = "https://s3-ap-northeast-1.amazonaws.com/staging.auction/uploads/product_image/image"
     else
       @img_base = "https://s3-ap-northeast-1.amazonaws.com/development.auction/uploads/product_image/image"
     end
