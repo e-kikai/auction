@@ -1,5 +1,6 @@
 .thumbnail.product-pannel_02 style="height: 240px;"
-  = link_to "/products/#{product.id}?r=#{r}", target: "_blank", title: product.name, class: "product_link" do
+  / = link_to "/products/#{product.id}?r=#{r}", target: "_blank", title: product.name, class: "product_link" do
+  = link_to "#{@link_base}/products/#{product.id}?r=#{r}", target: "_blank", title: product.name, class: "product_link" do
     .thumb_img
       / = image_tag(product.thumb_url, alt: product.name)
       - if product.product_images.first.present?
@@ -44,10 +45,10 @@
           - unless product.prompt_dicision?
             = product.remaining_time
 
-  - unless product.finished?
-    = link_to "/myauction/watches?id=#{product.id}", method: :post, class: "btn btn-default btn-watch" do
-      span.glyphicon.glyphicon-star.watch-star
-      span.btn-content ウォッチ
+  / - unless product.finished?
+  /   = link_to "/myauction/watches?id=#{product.id}", method: :post, class: "btn btn-default btn-watch" do
+  /     span.glyphicon.glyphicon-star.watch-star
+  /     span.btn-content ウォッチ
 
   - if product.product_images.present?
     = button_tag name: :product_id, value: product.id, class: "btn btn-warning btn-xs btn-sort-img" do

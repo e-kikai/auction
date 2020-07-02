@@ -158,9 +158,11 @@ class System::PlaygroundController < ApplicationController
     when "production"; redirect_to "/"
     when "staging"
       ActiveRecord::Base.establish_connection(:production)
-      @img_base = "https://s3-ap-northeast-1.amazonaws.com/mnok/uploads/product_image/image"
+      @img_base   = "https://s3-ap-northeast-1.amazonaws.com/mnok/uploads/product_image/image"
+      @link_base = "https://www.mnok.net/"
     else
-      @img_base = "https://s3-ap-northeast-1.amazonaws.com/development.auction/uploads/product_image/image"
+      @img_base  = "https://s3-ap-northeast-1.amazonaws.com/development.auction/uploads/product_image/image"
+      @link_base = "http://192.168.33.110:8087/"
     end
   end
 
