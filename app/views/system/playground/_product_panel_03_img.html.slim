@@ -1,0 +1,58 @@
+.thumbnail.product-pannel_02 style="height: 240px;"
+  = link_to "/products/#{product.id}?r=#{r}", target: "_blank", title: product.name, class: "product_link" do
+    .thumb_img
+      / = image_tag(product.thumb_url, alt: product.name)
+      - if product.product_images.first.present?
+        = image_tag("#{@img_base}/#{product.product_images.first.id}/thumb_#{product.product_images.first.image_identifier}", alt: product.name)
+      - else
+        = image_tag(ProductImage::NOIMAGE_THUMB, alt: product.name)
+
+    - if product.state_before_type_cast > 0
+      .state class="state_#{product.state_before_type_cast}" = product.state
+
+    .name
+      - if product.dulation_start.present?
+        - if product.dulation_start > Time.now.yesterday
+          span.new-icon
+      = product.name
+
+    - if product.finished?
+      .success_date = I18n.l(product.dulation_end, format: :full_date) + "に落札"
+      .finish_price
+        span.bid_label 入札
+        span.bid = product.bids_count > 0 ? number_with_delimiter(product.bids_count) : "-"
+
+        span.max_price_label 価格
+        span.success_price = number_to_currency(product.max_price_with_tax)
+
+      .success_label 落札
+
+    - else
+      .price
+        - if product.prompt_dicision_price
+          span.prompt_dicision_price_label 即売
+          span.max_price = number_to_currency(product.prompt_dicision_price_with_tax)
+        - else
+          span.max_price_label 現在
+          span.max_price = number_to_currency(product.max_price_with_tax)
+      .bids
+        span.bid_label 入札
+        span.bid = product.bids_count > 0 ? number_with_delimiter(product.bids_count) : "-"
+
+        span.end_label 残り時間
+        span.end
+          - unless product.prompt_dicision?
+            = product.remaining_time
+
+  - unless product.finished?
+    = link_to "/myauction/watches?id=#{product.id}", method: :post, class: "btn btn-default btn-watch" do
+      span.glyphicon.glyphicon-star.watch-star
+      span.btn-content ウォッチ
+
+  - if product.product_images.present?
+    = button_tag name: :product_id, value: product.id, class: "btn btn-warning btn-xs btn-sort-img" do
+      span.glyphicon.glyphicon-sort
+      span.btn-content 似た見た目ソート
+
+  - if params[:product_id] && @sorts[product.id] > 0
+    .dist-label = @sorts[product.id]

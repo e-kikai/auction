@@ -323,7 +323,7 @@ class Product < ApplicationRecord
 
   ### 終了後か ###
   def finished?
-    dulation_end <= Time.now
+    dulation_end && dulation_end <= Time.now
   end
 
   def success?
@@ -565,6 +565,7 @@ class Product < ApplicationRecord
   end
 
   def self.tax_rate(day = Date.today)
+    day ||= Date.today
     d = day.to_date
     case
     when d >= "2019/10/01".to_date; 10

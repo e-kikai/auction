@@ -167,5 +167,12 @@ Rails.application.routes.draw do
         post 'news_test'
       end
     end
+
+    resources :playground, only: [:index] do
+      collection do
+        get 'search_01'
+        get 'vector_maker'
+      end
+    end
   end
 end

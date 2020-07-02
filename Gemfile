@@ -152,3 +152,5 @@ gem 'twitter'
 gem "mailchimp-api", require: "mailchimp"
 
 gem 'jb'
+
+gem 'npy'
