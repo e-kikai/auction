@@ -1,4 +1,4 @@
-["ID". "product_image_id", "filename"].to_csv +
+["ID", "product_image_id", "filename"].to_csv +
 @products.sum do |pr|
   if pr.product_images.blank?
     [

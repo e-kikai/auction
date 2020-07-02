@@ -151,10 +151,13 @@ class System::PlaygroundController < ApplicationController
   end
 
   def change_db
+    Thread.current[:request] = request
+
     case Rails.env
     when "production"; redirect_to "/"
     when "staging"
       # establish_connection(:production)
+      ActiveRecord::Base.establish_connection(:production)
       # @img_base = "https://s3-ap-northeast-1.amazonaws.com/mnok/uploads/product_image/image"
       @img_base = "https://s3-ap-northeast-1.amazonaws.com/staging.auction/uploads/product_image/image"
     else
