@@ -3,6 +3,7 @@ class System::PlaygroundController < ApplicationController
   include Exports
 
   before_action :change_db
+  after_action  :restore_db
 
   UTILS_PATH   = "/var/www/yoshida/utils"
   VECTORS_PATH = "#{UTILS_PATH}/static/image_vectors"
@@ -156,11 +157,16 @@ class System::PlaygroundController < ApplicationController
     case Rails.env
     when "production"; redirect_to "/"
     when "staging"
-      # establish_connection(:production)
       ActiveRecord::Base.establish_connection(:production)
       @img_base = "https://s3-ap-northeast-1.amazonaws.com/mnok/uploads/product_image/image"
     else
       @img_base = "https://s3-ap-northeast-1.amazonaws.com/development.auction/uploads/product_image/image"
+    end
+  end
+
+  def restore_db
+    if Rails.env == "staging"
+      ActiveRecord::Base.establish_connection(:staging)
     end
   end
 end

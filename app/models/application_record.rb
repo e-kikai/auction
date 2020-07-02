@@ -3,10 +3,6 @@ class ApplicationRecord < ActiveRecord::Base
 
   self.abstract_class = true
 
-  if Rails.env == "staging"
-    establish_connection(:staging)
-  end
-
   private
 
   # string, textで変更のあったカラムを変換
