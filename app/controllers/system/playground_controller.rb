@@ -13,9 +13,15 @@ class System::PlaygroundController < ApplicationController
 
     # 初期検索クエリ作成
     # @search = Product.status(Product::STATUS[:start]).with_keywords(@keywords).search(params[:q])
-    @search = Product.status(Product::STATUS[:mix]).with_keywords(@keywords).search(params[:q])
+    @products = Product.status(Product::STATUS[:mix]).with_keywords(@keywords)
 
-    @products  = @search.result.includes(:product_images, :category, :user).order(id: :desc)
+    # カテゴリ
+    if params[:category_id].present?
+      @category = Category.find(params[:category_id])
+      @products = @products.search(category_id_in: @category.subtree_ids).result
+    end
+
+    @products  = @products.includes(:product_images, :category, :user).order(id: :desc)
 
     ### 画像ベクトルソート処理 ###
     if params[:product_id]
