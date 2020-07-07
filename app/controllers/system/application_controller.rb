@@ -10,5 +10,12 @@ class System::ApplicationController < ApplicationController
 
     ### 管理者はログを取得しない ###
     session[:system_account] = (Rails.env.development? ? false : true);
+
+    ### 管理者ユーザ ###
+    @system_user_id = case Rails.env
+    when "production"; 19
+    when "staging";    2
+    else;              5
+    end
   end
 end
