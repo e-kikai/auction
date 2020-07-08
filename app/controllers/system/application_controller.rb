@@ -12,10 +12,6 @@ class System::ApplicationController < ApplicationController
     session[:system_account] = (Rails.env.development? ? false : true);
 
     ### 管理者ユーザ ###
-    @system_user_id = case Rails.env
-    when "production"; 19
-    when "staging";    2
-    else;              5
-    end
+    @system_user_id = Rails.application.secrets.system_user_id
   end
 end
