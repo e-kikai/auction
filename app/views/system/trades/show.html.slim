@@ -204,7 +204,7 @@
         - else
           .col-md-10
             .trade_time = "#{@product.user.company_remove_kabu} | #{I18n.l(tr.created_at, format: :full_date)}"
-            .trade.other = simple_format(tr.comment)
+            .trade.res = simple_format(tr.comment)
 
 
 
@@ -219,7 +219,7 @@
           - if @product.user.result_message.present?
             .col-md-10
               .trade_time = "#{@product.user.company_remove_kabu} | #{I18n.l(@product.dulation_end, format: :full_date)}"
-              .trade.other = simple_format(@product.user.result_message)
+              .trade.res = simple_format(@product.user.result_message)
 
           .col-md-12
             .alert.success_message
