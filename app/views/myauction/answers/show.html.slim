@@ -1,5 +1,17 @@
-- set_meta_tags title: "#{@product.name} | #{@owner.company} #{@owner.name} からの問い合わせ"
+- set_meta_tags title: "#{@product.name} | #{@owner.company} #{@owner.name} からの#{@product.trade_success?(@owner) ? "取引" : "問合せ"}"
 - breadcrumb :myauction_answer, @product, @owner
+
+javascript:
+  $(function() {
+    $('form').on('submit', function() {
+      if (!$('#trade_comment').val().match(/[^\s]+/)) {
+        alert('コメントを入力してください。');
+        return false;
+      } else {
+        return confirm("コメントの投稿を行います。よろしいですか？");
+      }
+    });
+  });
 
 .row
   .col-md-5.trade-left
@@ -168,7 +180,9 @@
       - time = Time.now
 
       - @trades.each do |tr|
-        - if @product.dulation_end === tr.created_at..time
+        - next if tr.comment.strip.blank?
+
+        - if @product.dulation_end.between?(tr.created_at, time)
           - if @product.max_bid.user_id == @owner.id
             - if @product.cancel.present?
               .col-md-12
@@ -197,7 +211,7 @@
         - if tr.user_id == @owner.id
           .col-md-10
             .trade_time = "#{@owner.company_remove_kabu} #{@owner.name} | #{I18n.l(tr.created_at, format: :full_date)}"
-            .trade.other = simple_format(tr.comment)
+            .trade.res = simple_format(tr.comment)
         - else
           .col-md-offset-2.col-md-10
             .trade_time = "#{I18n.l(tr.created_at, format: :full_date)}"

@@ -842,25 +842,42 @@ label.top-search {
   margin-bottom: 12px;
   border-radius: 12px;
   padding: 12px;
+  padding-bottom: 2px;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.4);
 
   &.mine {
     background: #CFC;
     margin-right: 12px;
   }
 
-  &.other {
-    background: #ededec;
+  &.res {
+    background: #cff;
     margin-left: 12px;
   }
 
-  p {
-    margin: 0;
+  &.other {
+    background: #ededec;
+    margin-left: 12px;
   }
 }
 
 .trade_time {
   margin-left: 24px;
 }
+
+.trade.res::before{
+  content: '';
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  left: 15px;
+  top: 32px;
+  border-right: 12px solid #cff;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+
 
 .trade.other::before{
   content: '';

@@ -170,7 +170,9 @@
       - time = Time.now
 
       - @trades.each do |tr|
-        - if @product.dulation_end === tr.created_at..time
+        - next if tr.comment.strip.blank?
+
+        - if @product.dulation_end.between?(tr.created_at, time)
           - if @product.max_bid.user_id == @owner.id
             - if @product.cancel.present?
               .col-md-12
@@ -181,7 +183,7 @@
             - elsif @product.user.result_message.present?
               .col-md-10
                 .trade_time = "#{@product.user.company_remove_kabu} | #{I18n.l(@product.dulation_end, format: :full_date)}"
-                .trade.other = simple_format(@product.user.result_message)
+                .trade.res = simple_format(@product.user.result_message)
 
             .col-md-12
               .alert.success_message

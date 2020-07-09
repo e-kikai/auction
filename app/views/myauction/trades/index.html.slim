@@ -4,6 +4,18 @@
 - else
   - breadcrumb :myauction_bids_trade, @product
 
+javascript:
+  $(function() {
+    $('form').on('submit', function() {
+      if (!$('#trade_comment').val().match(/[^\s]+/)) {
+        alert('コメントを入力してください。');
+        return false;
+      } else {
+        return confirm("コメントの投稿を行います。よろしいですか？");
+      }
+    });
+  });
+
 .row
   .col-md-5.trade-left
     - if current_user.id != @product.user_id
@@ -156,7 +168,7 @@
         - else
           .col-md-10
             .trade_time = I18n.l(tr.created_at, format: :full_date)
-            .trade.other = simple_format(tr.comment)
+            .trade.res = simple_format(tr.comment)
 
       - if current_user.id == @product.user_id
         .col-md-offset-2.col-md-10
@@ -165,4 +177,4 @@
       - else
         .col-md-10
           .trade_time = I18n.l(@product.dulation_end, format: :full_date)
-          .trade.other = simple_format(@product.user.result_message)
+          .trade.res = simple_format(@product.user.result_message)
