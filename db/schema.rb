@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_10_112715) do
+ActiveRecord::Schema.define(version: 2020_07_09_072733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,18 @@ ActiveRecord::Schema.define(version: 2020_06_10_112715) do
     t.string "search_order_no", default: "", null: false
     t.index ["ancestry"], name: "index_categories_on_ancestry"
     t.index ["soft_destroyed_at"], name: "index_categories_on_soft_destroyed_at"
+  end
+
+  create_table "company_chats", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "res_id"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "soft_destroyed_at"
+    t.index ["res_id"], name: "index_company_chats_on_res_id"
+    t.index ["soft_destroyed_at"], name: "index_company_chats_on_soft_destroyed_at"
+    t.index ["user_id"], name: "index_company_chats_on_user_id"
   end
 
   create_table "detail_logs", force: :cascade do |t|
@@ -413,6 +425,7 @@ ActiveRecord::Schema.define(version: 2020_06_10_112715) do
     t.index ["user_id"], name: "index_watches_on_user_id"
   end
 
+  add_foreign_key "company_chats", "company_chats", column: "res_id"
   add_foreign_key "industry_users", "industries"
   add_foreign_key "industry_users", "users"
   add_foreign_key "trades", "users", column: "owner_id"

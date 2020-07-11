@@ -1,0 +1,27 @@
+出品会社チャット返信のお知らせ
+
+<%= @user.company %> <%= @user.name %> 様
+
+あなたが投稿したチャットメッセージに、
+返信がありました。
+
+
+<返信元>
+会社名 : <%=@company_chat.user.company %>
+
+<返信メッセージ>
+============================
+<%= @company_chat.comment %>
+============================
+
+以下のリンクから、チャットページにアクセスして、返信を行ってください。
+<%= root_url(only_path: false) %>myauction/company_chats?res_id=<%=@company_chat.id %>
+
+
+ものづくりオークション
+<%= root_url(only_path: false) %>
+
+※	この自動通知メールは、ものづくりオークションより自動的に送信されています。
+※ このメールに返信しないようお願いいたします。
+
+Copyright (C) <%= Time.now.year %> 任意団体ものづくりオークション委員会, All Rights reserved.

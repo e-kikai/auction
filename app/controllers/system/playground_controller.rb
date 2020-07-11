@@ -14,7 +14,7 @@ class System::PlaygroundController < ApplicationController
 
     # 初期検索クエリ作成
     # @search = Product.status(Product::STATUS[:start]).with_keywords(@keywords).search(params[:q])
-    @products = Product.status(Product::STATUS[:mix]).with_keywords(@keywords)
+    @products = Product.status(Product::STATUS[:mix]).with_keywords(@keywords).where("products.created_at <= ?", Date.new(2020, 7, 3).to_time)
 
     # カテゴリ
     if params[:category_id].present?
@@ -26,13 +26,11 @@ class System::PlaygroundController < ApplicationController
 
     ### 画像ベクトルソート処理 ###
     if params[:product_id]
-      @target = Product.find(params[:product_id])
-
-      @sorts = sort_by_vector(@target, @products)
-      logger.debug @sorts
-      # @products = @products.sort_by { |pr| @sorts[pr.id] }.first(101)
-
-      @products = @products.where(id: @sorts.keys).sort_by { |pr| @sorts[pr.id] }
+      @time = Benchmark.realtime do
+        @target = Product.find(params[:product_id])
+        @sorts = sort_by_vector(@target, @products)
+        @products = @products.where(id: @sorts.keys).sort_by { |pr| @sorts[pr.id] }
+      end
     else
       ### ページャ ###
       @pproducts = @products.page(params[:page])

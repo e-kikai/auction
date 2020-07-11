@@ -138,6 +138,22 @@ class BidMailer < ApplicationMailer
     mail(to: user.email, subject: "ものづくりオークション 今週の新着商品情報 (#{(@date - 6.day).strftime("%Y/%-m/%-d")} 〜 #{@date.strftime("%-m/%-d")})")
   end
 
+  # 出品会社チャット返信通知
+  def company_chat(company_chat, user)
+    @company_chat = company_chat
+    @user         = user
+
+    mail(to: user.email, subject: "ものオク 出品会社チャット通知")
+  end
+
+  # 出品会社チャット管理者通知
+  def company_chat_system(company_chat, user)
+    @company_chat = company_chat
+    @user         = user
+
+    mail(to: user.email, subject: "ものオク 出品会社チャット書き込み通知")
+  end
+
   # def reconfirm(user)
   #   mail(to: user.email, subject: "ものづくりオークション 登録作業が完了していません")
   # end
