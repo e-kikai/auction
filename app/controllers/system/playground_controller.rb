@@ -13,7 +13,6 @@ class System::PlaygroundController < ApplicationController
     @keywords = params[:keywords].to_s
 
     # 初期検索クエリ作成
-    # @search = Product.status(Product::STATUS[:start]).with_keywords(@keywords).search(params[:q])
     @products = Product.status(Product::STATUS[:mix]).with_keywords(@keywords).where("products.created_at <= ?", Date.new(2020, 7, 3).to_time)
 
     # カテゴリ
@@ -97,19 +96,11 @@ class System::PlaygroundController < ApplicationController
   def sort_by_vector(target, products)
     ### targetのベクトル取得 ###
     if  File.exist? "#{VECTORS_PATH}/vector_#{target.id}.npy"
-      tmp = Npy.load("#{VECTORS_PATH}/vector_#{target.id}.npy")
-      target_vector = Vector.elements(tmp.to_a)
+      target_narray  = Npy.load("#{VECTORS_PATH}/vector_#{target.id}.npy")
+      target_vector = Vector.elements(target_narray.to_a)
     else
 
     end
-
-    # dummy #
-    # target_vector = Rails.cache.fetch("/Products/#{target.id}/vector") do
-    #   target_array  = 4096.times.map { |a| rand(0.0..1.0) }
-    #   Vector.elements(target_array)
-    # end
-    # target_array  = 4096.times.map { |a| rand(0.0..1.0) }
-    # target_vector = Vector.elements(target_array)
 
     pids = products.pluck(:id).uniq
 
@@ -120,28 +111,25 @@ class System::PlaygroundController < ApplicationController
       elsif File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
 
         ### ベクトル取得 ###
-        # dummy #
-        # pr_vector = Rails.cache.fetch("/Products/#{pr.id}/vector") do
-        #   atmp      = 4096.times.map { |a| rand(0.0..1.0) }
-        #   Vector.elements(atmp)
-        # end
-        tmp       = Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
-        pr_vector = Vector.elements(tmp.to_a)
-
-        # atmp      = 4096.times.map { |a| rand(0.0..1.0) }
-        # pr_vector = Vector.elements(atmp)
+        pr_narray  = Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
+        #
 
         res = case params[:type]
         when "angle" # 角度計算
+          pr_vector = Vector.elements(pr_narray.to_a)
           target_vector.angle_with(pr_vector)
-        else # norm計算
+        when "norm" # norm計算
+          pr_vector = Vector.elements(pr_narray.to_a)
           (target_vector - pr_vector).r
+        else # Narrayでnorm計算
+          sub_nayyar = pr_narray - target_narray
+          (sub_nayyar * sub_nayyar).sum
         end
+
 
         logger.debug "[[ #{pid}, #{res} ]]"
         [pid, res]
       else
-        # [pid, 2048.0]
         nil
       end
 
