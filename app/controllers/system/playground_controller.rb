@@ -23,14 +23,16 @@ class System::PlaygroundController < ApplicationController
 
     @products  = @products.includes(:product_images, :category, :user).order(id: :desc)
 
-    ### 画像ベクトルソート処理 ###
+
     if params[:product_id]
+      ### 似たものサーチ ###
       @time = Benchmark.realtime do
         @target = Product.find(params[:product_id])
         @sorts = sort_by_vector(@target, @products)
         @products = @products.where(id: @sorts.keys).sort_by { |pr| @sorts[pr.id] }
       end
     else
+      ### 通常サーチ
       ### ページャ ###
       @pproducts = @products.page(params[:page])
     end

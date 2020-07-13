@@ -53,7 +53,7 @@
   - if product.product_images.present?
     = button_tag name: :product_id, value: product.id, class: "btn btn-warning btn-xs btn-sort-img" do
       span.glyphicon.glyphicon-sort
-      span.btn-content 似た見た目ソート
+      span.btn-content 似たものサーチ
 
   - if params[:product_id] && @sorts[product.id].present? && @sorts[product.id] > 0
     .dist-label = @sorts[product.id]
