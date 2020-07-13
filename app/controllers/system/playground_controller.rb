@@ -9,19 +9,11 @@ class System::PlaygroundController < ApplicationController
   VECTORS_PATH = "#{UTILS_PATH}/static/image_vectors"
 
   def search_01
-    ### 検索キーワード ###
-    @keywords = params[:keywords].to_s
-
     # 初期検索クエリ作成
-    @products = Product.status(Product::STATUS[:mix]).with_keywords(@keywords).where("products.created_at <= ?", Date.new(2020, 7, 3).to_time)
-
-    # カテゴリ
-    if params[:category_id].present?
-      @category = Category.find(params[:category_id])
-      @products = @products.search(category_id_in: @category.subtree_ids).result
-    end
-
-    @products  = @products.includes(:product_images, :category, :user).order(id: :desc)
+    @products = Product.status(Product::STATUS[:mix])
+      .where("products.created_at <= ?", Date.new(2020, 7, 3).to_time)
+      .includes(:product_images, :category, :user)
+      .order(id: :desc)
 
 
     if params[:product_id]
@@ -32,7 +24,19 @@ class System::PlaygroundController < ApplicationController
         @products = @products.where(id: @sorts.keys).sort_by { |pr| @sorts[pr.id] }
       end
     else
-      ### 通常サーチ
+      ### 通常サーチ ###
+      ### 検索キーワード ###
+      @keywords = params[:keywords].to_s
+
+      # 初期検索クエリ作成
+      @products = @products.with_keywords(@keywords)
+
+      # カテゴリ
+      if params[:category_id].present?
+        @category = Category.find(params[:category_id])
+        @products = @products.search(category_id_in: @category.subtree_ids).result
+      end
+
       ### ページャ ###
       @pproducts = @products.page(params[:page])
     end
