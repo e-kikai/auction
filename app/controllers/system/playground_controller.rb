@@ -131,8 +131,11 @@ class System::PlaygroundController < ApplicationController
           pr_vector = Vector.elements(pr_narray.to_a)
           (target_vector - pr_vector).r
         else # Narrayでnorm計算
-          sub_nayyar = pr_narray - target_narray
-          (sub_nayyar * sub_nayyar).sum
+          ta = [pid, target.id].sort
+          Rails.cache.fetch("norm_#{ta[0]}_#{ta[1]}") do
+            sub_nayyar = pr_narray - target_narray
+            (sub_nayyar * sub_nayyar).sum
+          end
         end
 
 
