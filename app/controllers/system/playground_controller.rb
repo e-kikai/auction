@@ -102,7 +102,9 @@ class System::PlaygroundController < ApplicationController
   def sort_by_vector(target, products)
     ### targetのベクトル取得 ###
     if  File.exist? "#{VECTORS_PATH}/vector_#{target.id}.npy"
-      target_narray  = Npy.load("#{VECTORS_PATH}/vector_#{target.id}.npy")
+      target_narray = Rails.cache.fetch("vector_#{target.id}") do
+        Npy.load("#{VECTORS_PATH}/vector_#{target.id}.npy")
+      end
       target_vector = Vector.elements(target_narray.to_a)
     else
 
@@ -117,8 +119,9 @@ class System::PlaygroundController < ApplicationController
       elsif File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
 
         ### ベクトル取得 ###
-        pr_narray  = Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
-        #
+        pr_narray = Rails.cache.fetch("vector_#{pid}") do
+          Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
+        end
 
         res = case params[:type]
         when "angle" # 角度計算
