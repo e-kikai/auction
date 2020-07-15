@@ -154,3 +154,5 @@ gem "mailchimp-api", require: "mailchimp"
 gem 'jb'
 
 gem 'npy'
+
+gem "dalli"

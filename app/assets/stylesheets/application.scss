@@ -1515,9 +1515,182 @@ tr.bronze {
 
 /// ///
 
-/// @ohashi 20200 ///
+/// @ohashi 202007 ///
 
-.navbar {
+// .navbar {
+//     border-top: 10px solid #248b00;
+// }
+// .navbar-default {
+//     background-color: #fff !important;
+// }
+// .main-container.container-fluid {
+//     background-color: whitesmoke;
+//     margin: 0;
+//     padding-top: 15px;
+// }
+// .navbar {
+//     margin-bottom: 6px;
+// }
+// .input-group .form-control {
+//     border: 2px solid #258a01;
+// }
+// .input-group .btn {
+//     border: 2px solid #258a01 !important;
+//     padding: 5px 12px;
+//     background-color: #dff0d8;
+// }
+// .panel-heading {
+//     line-height: 1.5em;
+//     border-top-left-radius: 0;
+//     border-top-right-radius: 0;
+// }
+// .panel-warning>.panel-heading {
+//     color: #fff;
+//     background-color: #258a01;
+//     border-color: #258a01;
+// }
+// .panel-warning {
+//     border-color: #258a01 !important;
+//     font-size: 12px;
+// }
+// .panel {
+//     border: 3px solid lightgrey;
+// }
+// .panel-success {
+//     border-color: #258a01;
+//     font-size: 12px;
+// }
+// a.accordion-toggle>span.glyphicon-chevron-down {
+//     top: 13px;
+// }
+// .list-group-item {
+//     padding: 10px;
+// }
+// .toppage-searches {
+//     margin-bottom: 1em;
+//     display: flex;
+// }
+// .toppage-searches .search-panel {
+//     width: 32%;
+//     margin-right: 2%;
+//     border-radius: 5px;
+//     -webkit-border-radius: 5px;
+//     -moz-border-radius: 5px;
+// }
+// .toppage-searches .search-panel:nth-of-type(3n) {
+//     margin-right: 0;
+// }
+// .toppage-searches .search-panel .name {
+//     font-size: 13px;
+//     line-height: 1.35em;
+//     padding: 5px;
+// }
+// .col-md-7 .panel.panel-default {
+//     border-color: #258a01;
+// }
+// .col-md-7 label {
+//     margin-bottom: 1.4em;
+//     width: auto;
+//     margin: 0 auto 1.4em auto;
+//     display: table;
+// }
+// .toppage-searches .search-panel .img img {
+//     -webkit-border-radius: 5px 5px 0 0 / 5px 5px 0 0;
+//     -moz-border-radius: 5px 5px 0 0 / 5px 5px 0 0;
+//     border-radius: 5px 5px 0 0 / 5px 5px 0 0;
+// }
+// .toppage-searches .search-panel .img {
+//     background-color: #e7e7e7;
+// }
+// .toppage-searches .search-panel a {
+//     display: inline;
+// }
+// .col-md-3 #collapse_help p {
+//     font-size: 12px;
+// }
+// .thumbnail.product-pannel .name {
+//     font-size: 13px;
+//     bottom: 20px;
+// }
+// .thumbnail.product-pannel .max_price {
+//     font-size: 15px;
+//     font-weight: 700;
+//     color: #cb5201;
+// }
+// .row:last-child {
+//     padding-bottom: 1.5em;
+// }
+// footer {
+//     margin-bottom: 48px;
+// }
+// .glyphicon-log-in:before {
+//     font-size: 16px;
+// }
+// .glyphicon-thumbs-up:before {
+//     font-size: 16px;
+// }
+// .banner-area img {
+//     min-width: 100%;
+// }
+//
+// @media (min-width:768px){
+//   .col-md-7 {
+//       width: 60.3333333333%;
+//   }
+//   .col-md-3 {
+//       width: 23%;
+//   }
+//   .header-menu a {
+//       margin-left: 10px;
+//   }
+//   navbar {
+//       padding-top: 10px;
+//   }
+// }
+// @media (max-width:767px){
+//   .header-menu {
+//       display: block;
+//       text-align: center;
+//       margin-bottom: 10px;
+//   }
+//   .header-menu a {
+//       display: inline-block;
+//       margin: 0 5px;
+//   }
+//   .bid-banner-area {
+//       width: 90%;
+//       margin: 0 5%;
+//       padding-top: 15px;
+//       border-top: 1px solid rgba(0,0,0,0.1);
+//       box-shadow: 0 1px 0 rgba(255,255,255,1);
+//   }
+//   p.navbar-text.logout {
+//       display: none;
+//   }
+//   .navbar {
+//       padding-top: 15px;
+//   }
+//   a.navbar-brand.omdc-logo img {
+//       width: 80%;
+//       margin: 0 10%;
+//       height: auto !important;
+//   }
+//   .button-center .btn {
+//       width: 100%;
+//   }
+//   a.btn.btn-default {
+//       white-space: normal;
+//       padding: 15px;
+//   }
+//   .button-center:last-child {
+//       margin-bottom: 1.5em;
+//   }
+// }
+
+/// @ohashi 202007 end ///
+
+/// @ohashi 20200715 ///
+navbar {
     border-top: 10px solid #248b00;
 }
 .navbar-default {
@@ -1530,6 +1703,7 @@ tr.bronze {
 }
 .navbar {
     margin-bottom: 6px;
+    padding-top: 15px;
 }
 .input-group .form-control {
     border: 2px solid #258a01;
@@ -1632,7 +1806,15 @@ footer {
 .banner-area img {
     min-width: 100%;
 }
-
+.table-striped>tbody>tr:nth-child(even) {
+    background-color: #fff;
+}
+.product-table td.img {
+    text-align: center;
+}
+.table-hover>tbody>tr:hover {
+    background-color: #f5f5f5 !important;
+}
 @media (min-width:768px){
   .col-md-7 {
       width: 60.3333333333%;
@@ -1667,9 +1849,6 @@ footer {
   p.navbar-text.logout {
       display: none;
   }
-  .navbar {
-      padding-top: 15px;
-  }
   a.navbar-brand.omdc-logo img {
       width: 80%;
       margin: 0 10%;
@@ -1680,11 +1859,60 @@ footer {
   }
   a.btn.btn-default {
       white-space: normal;
-      padding: 15px;
+      padding: 10px 15px;
+  }
+  .td-under.right a.btn.btn-default {
+      white-space: inherit;
   }
   .button-center:last-child {
       margin-bottom: 1.5em;
   }
-}
+  select.form-control.sort_select {
+      margin-right: 0;
+  }
+  .btn-group.pull-right {
+      margin-bottom: 0.5em;
+      display: table;
+  }
 
-/// ///
+  .btn-search-save:nth-of-type(2n) {
+      margin-right: 0;
+  }
+  .btn-search-save {
+      width: 49.5%;
+      margin-bottom: 0.5em;
+      margin-right: 1%;
+      margin-left: 0;
+  }
+  .search-bottons span {
+      width: 100%;
+      display: inline-block;
+      margin-bottom: 0.5em;
+      text-align: center;
+  }
+  .search-bottons a span {
+      width: auto;
+      display: unset;
+      margin-bottom: 0;
+      text-align: left;
+  }
+  span.glyphicon.glyphicon-sort {
+      width: auto;
+      display: unset;
+      margin-bottom: 0;
+      text-align: left;
+  }
+  iframe.machinelife_ads {
+      max-width: 100%;
+  }
+  select.form-control.sort_select {
+      padding: 0 15px;
+      height: 42px;
+  }
+  .row:last-child {
+      width: 100%;
+      margin: 2em 0 0 0;
+      padding: 0;
+  }
+}
+/// @ohashi 20200715 end ///
