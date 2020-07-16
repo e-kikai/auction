@@ -121,28 +121,28 @@ class System::PlaygroundController < ApplicationController
       elsif File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
 
         ### ベクトル取得 ###
-        pr_narray = if params[:type] == "redis"
-          Rails.cache.fetch("vector_#{pid}") do
-            Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
-          end
-        else
-          Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
-        end
 
         res = case params[:type]
         when "angle" # 角度計算
+          pr_narray = Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
           pr_vector = Vector.elements(pr_narray.to_a)
           target_vector.angle_with(pr_vector)
         when "norm" # norm計算
+          pr_narray = Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
           pr_vector = Vector.elements(pr_narray.to_a)
           (target_vector - pr_vector).r
         when "redis" # Narrayでnorm計算 + Redisでキャッシュ
           ta = [pid, target.id].sort
           Rails.cache.fetch("norm_#{ta[0]}_#{ta[1]}") do
+            pr_narray = Rails.cache.fetch("vector_#{pid}") do
+              Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
+            end
+
             sub_nayyar = pr_narray - target_narray
             (sub_nayyar * sub_nayyar).sum
           end
         else # Narrayでnorm計算
+          pr_narray  = Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
           sub_nayyar = pr_narray - target_narray
           (sub_nayyar * sub_nayyar).sum
         end
