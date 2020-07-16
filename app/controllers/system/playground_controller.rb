@@ -101,14 +101,16 @@ class System::PlaygroundController < ApplicationController
 
   def sort_by_vector(target, products)
     ### targetのベクトル取得 ###
-    if  File.exist? "#{VECTORS_PATH}/vector_#{target.id}.npy"
-      target_narray = Rails.cache.fetch("vector_#{target.id}") do
+    if File.exist? "#{VECTORS_PATH}/vector_#{target.id}.npy"
+      target_narray = if params[:type] == "redis"
+        Rails.cache.fetch("vector_#{target.id}") do
+          Npy.load("#{VECTORS_PATH}/vector_#{target.id}.npy")
+        end
+      else
         Npy.load("#{VECTORS_PATH}/vector_#{target.id}.npy")
       end
-      target_vector = Vector.elements(target_narray.to_a)
-    else
-
     end
+    target_vector = Vector.elements(target_narray.to_a)
 
     pids = products.pluck(:id).uniq
 
@@ -119,7 +121,11 @@ class System::PlaygroundController < ApplicationController
       elsif File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
 
         ### ベクトル取得 ###
-        pr_narray = Rails.cache.fetch("vector_#{pid}") do
+        pr_narray = if params[:type] == "redis"
+          Rails.cache.fetch("vector_#{pid}") do
+            Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
+          end
+        else
           Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
         end
 
@@ -130,12 +136,15 @@ class System::PlaygroundController < ApplicationController
         when "norm" # norm計算
           pr_vector = Vector.elements(pr_narray.to_a)
           (target_vector - pr_vector).r
-        else # Narrayでnorm計算
+        when "redis" # Narrayでnorm計算 + Redisでキャッシュ
           ta = [pid, target.id].sort
           Rails.cache.fetch("norm_#{ta[0]}_#{ta[1]}") do
             sub_nayyar = pr_narray - target_narray
             (sub_nayyar * sub_nayyar).sum
           end
+        else # Narrayでnorm計算
+          sub_nayyar = pr_narray - target_narray
+          (sub_nayyar * sub_nayyar).sum
         end
 
 

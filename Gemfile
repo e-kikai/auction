@@ -153,6 +153,9 @@ gem "mailchimp-api", require: "mailchimp"
 
 gem 'jb'
 
+### 似たものサーチ ###
 gem 'npy'
 
-gem "dalli"
+# gem "dalli"
+gem 'redis'
+gem 'redis-rails'
