@@ -103,34 +103,36 @@ class System::PlaygroundController < ApplicationController
     pids = products.pluck(:id).uniq
 
     if params[:type] == "redis" # Narrayでnorm計算 + Redisでキャッシュ
-      vectors = Rails.cache.read("vectors") || {}
+      Rails.cache.fetch("sort_result_#{target.id}") do
+        vectors = Rails.cache.read("vectors") || {}
 
-      if vectors.blank?
-        pids.each do |pid|
-          vectors[pid] ||= if File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
-            Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
-          else
-            nil
+        if vectors.blank?
+          pids.each do |pid|
+            vectors[pid] ||= if File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
+              Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
+            else
+              nil
+            end
           end
+
+          Rails.cache.write("vectors", vectors)
         end
 
-        Rails.cache.write("vectors", vectors)
+        ### targetのベクトル取得 ###
+        target_narray = vectors[target.id]
+
+        ### 各ベクトル比較 ###
+        pids.map do |pid|
+          if pid == target.id || vectors[pid].blank?
+            nil
+          else
+            sub_nayyar = vectors[pid] - target_narray
+            res        = (sub_nayyar * sub_nayyar).sum
+
+            [pid, res]
+          end
+        end.compact.sort_by { |v| v[1] }.first(30).to_h
       end
-
-      ### targetのベクトル取得 ###
-      target_narray = vectors[target.id]
-
-      ### 各ベクトル比較 ###
-      pids.map do |pid|
-        if pid == target.id || vectors[pid].blank?
-          nil
-        else
-          sub_nayyar = vectors[pid] - target_narray
-          res        = (sub_nayyar * sub_nayyar).sum
-
-          [pid, res]
-        end
-      end.compact.sort_by { |v| v[1] }.first(30).to_h
 
     else
       ### targetのベクトル取得 ###
