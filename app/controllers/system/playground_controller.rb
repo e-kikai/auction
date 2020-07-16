@@ -105,11 +105,13 @@ class System::PlaygroundController < ApplicationController
     if params[:type] == "redis" # Narrayでnorm計算 + Redisでキャッシュ
       vectors = Rails.cache.read("vectors") || {}
 
-      pids.each do |pid|
-        vectors[pid] ||= if File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
-          Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
-        else
-          nil
+      if vectors.blank?
+        pids.each do |pid|
+          vectors[pid] ||= if File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
+            Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
+          else
+            nil
+          end
         end
       end
 
