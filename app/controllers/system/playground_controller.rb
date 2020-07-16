@@ -113,9 +113,9 @@ class System::PlaygroundController < ApplicationController
             nil
           end
         end
-      end
 
-      Rails.cache.write("vectors", vectors)
+        Rails.cache.write("vectors", vectors)
+      end
 
       ### targetのベクトル取得 ###
       target_narray = vectors[target.id]
