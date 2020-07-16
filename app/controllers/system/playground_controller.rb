@@ -100,61 +100,71 @@ class System::PlaygroundController < ApplicationController
   end
 
   def sort_by_vector(target, products)
-    ### targetのベクトル取得 ###
-    if File.exist? "#{VECTORS_PATH}/vector_#{target.id}.npy"
-      target_narray = if params[:type] == "redis"
-        Rails.cache.fetch("vector_#{target.id}") do
-          Npy.load("#{VECTORS_PATH}/vector_#{target.id}.npy")
-        end
-      else
-        Npy.load("#{VECTORS_PATH}/vector_#{target.id}.npy")
-      end
-    end
-    target_vector = Vector.elements(target_narray.to_a)
-
     pids = products.pluck(:id).uniq
 
-    sorts = pids.map do |pid|
-      ### ファイルの存否を確認 ###
-      if pid == target.id # ターゲットを除外
-        nil
-      elsif File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
+    if params[:type] == "redis" # Narrayでnorm計算 + Redisでキャッシュ
+      vectors = Rails.cache.read("vectors") || {}
 
-        ### ベクトル取得 ###
+      pids.each do |pid|
+        vectors[pid] ||= if File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
+          Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
+        else
+          nil
+        end
+      end
 
-        res = case params[:type]
-        when "angle" # 角度計算
+      Rails.cache.write("vectors", vectors)
+
+      ### targetのベクトル取得 ###
+      target_narray = vectors[target.id]
+
+      ### 各ベクトル比較 ###
+      pids.map do |pid|
+        if pid == target.id || vectors[pid].blank?
+          nil
+        else
+          sub_nayyar = vectors[pid] - target_narray
+          res        = (sub_nayyar * sub_nayyar).sum
+
+          [pid, res]
+        end
+      end.compact.sort_by { |v| v[1] }.first(30).to_h
+
+    else
+      ### targetのベクトル取得 ###
+      if File.exist? "#{VECTORS_PATH}/vector_#{target.id}.npy"
+        target_narray = Npy.load("#{VECTORS_PATH}/vector_#{target.id}.npy")
+        target_vector = Vector.elements(target_narray.to_a)
+      end
+
+      ### 各ベクトル比較 ###
+      sorts = pids.map do |pid|
+        ### ファイルの存否を確認 ###
+        if pid == target.id # ターゲットを除外
+          nil
+        elsif File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
           pr_narray = Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
-          pr_vector = Vector.elements(pr_narray.to_a)
-          target_vector.angle_with(pr_vector)
-        when "norm" # norm計算
-          pr_narray = Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
-          pr_vector = Vector.elements(pr_narray.to_a)
-          (target_vector - pr_vector).r
-        when "redis" # Narrayでnorm計算 + Redisでキャッシュ
-          ta = [pid, target.id].sort
-          Rails.cache.fetch("norm_#{ta[0]}_#{ta[1]}") do
-            pr_narray = Rails.cache.fetch("vector_#{pid}") do
-              Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
-            end
 
+          ### ベクトル取得 ###
+          res = case params[:type]
+          when "angle" # 角度計算
+            pr_vector = Vector.elements(pr_narray.to_a)
+            target_vector.angle_with(pr_vector)
+          when "norm" # norm計算
+            pr_vector = Vector.elements(pr_narray.to_a)
+            (target_vector - pr_vector).r
+          else # Narrayでnorm計算
             sub_nayyar = pr_narray - target_narray
             (sub_nayyar * sub_nayyar).sum
           end
-        else # Narrayでnorm計算
-          pr_narray  = Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
-          sub_nayyar = pr_narray - target_narray
-          (sub_nayyar * sub_nayyar).sum
+
+          logger.debug "[[ #{pid}, #{res} ]]"
+          [pid, res]
+        else
+          nil
         end
-
-
-        logger.debug "[[ #{pid}, #{res} ]]"
-        [pid, res]
-      else
-        nil
-      end
-
-    end.compact.sort_by { |v| v[1] }.first(30).to_h
+      end.compact.sort_by { |v| v[1] }.first(30).to_h
+    end
 
   end
 
