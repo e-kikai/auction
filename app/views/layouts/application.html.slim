@@ -26,7 +26,7 @@ html
         ga('send', 'pageview');
 
   / body onLoad="FixedMidashi.create();"
-  body data-controller="#{controller.controller_path}" data-action="#{controller.action_name}"
+  body data-controller="#{controller.controller_path}" data-action="#{controller.action_name}" id="#{controller.controller_path.gsub("/", "-")}-#{controller.action_name}"
     - if session[:system_account]
       = hidden_field_tag :nologging, 1
     header.navbar.navbar-default.container-fluid role="navigation"

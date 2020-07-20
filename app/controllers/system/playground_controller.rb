@@ -103,6 +103,7 @@ class System::PlaygroundController < ApplicationController
     pids = products.pluck(:id).uniq
 
     if params[:type] == "redis" # Narrayでnorm計算 + Redisでキャッシュ
+      ### 結果キャッシュ ###
       Rails.cache.fetch("sort_result_#{target.id}") do
         vectors = Rails.cache.read("vectors") || {}
 

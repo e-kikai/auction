@@ -549,7 +549,7 @@ class Product < ApplicationRecord
 
   def make_search_keywords
     categories = category.path.map { |ca| ca.name }.join(" ")
-    self.search_keywords = "#{name} #{categories} #{user.company} #{state} #{state_comment} #{addr_1} #{addr_2} #{hashtags}".strip
+    self.search_keywords = "#{name} #{categories} #{user.company} #{state} #{state_comment} #{addr_1} #{addr_2} #{hashtags} #{description} #{additional}".strip
     self.search_keywords = "#{search_keywords} 即売価格" if prompt_dicision_price.present?
     self
   end
