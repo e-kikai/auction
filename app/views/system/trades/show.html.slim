@@ -3,7 +3,6 @@
 
 .row
   .col-md-5.trade-left
-    - if current_user.id != @product.user_id
     .panel.panel-default
       .panel-body.trade-product
         .trade-product = link_to @product.name, "/products/#{@product.id}", target: "_blank"

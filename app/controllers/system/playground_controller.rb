@@ -134,6 +134,33 @@ class System::PlaygroundController < ApplicationController
           end
         end.compact.sort_by { |v| v[1] }.first(30).to_h
       end
+    elsif params[:type] == "solo_cache" # Narrayでnorm計算 + 個別キャッシュ
+
+      ### targetのベクトル取得 ###
+      if File.exist? "#{VECTORS_PATH}/vector_#{target.id}.npy"
+        target_narray = Rails.cache.fetch("sort_result_#{target.id}") do
+          Npy.load("#{VECTORS_PATH}/vector_#{target.id}.npy")
+        end
+      end
+
+      ### 各ベクトル比較 ###
+      sorts = pids.map do |pid|
+        ### ファイルの存否を確認 ###
+        if pid == target.id # ターゲットを除外
+          nil
+        elsif File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
+          pr_narray = Rails.cache.fetch("vector_#{pid}") do
+            Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
+          end
+
+          sub_nayyar = pr_narray - target_narray
+          res        = (sub_nayyar * sub_nayyar).sum
+          [pid, res]
+        else
+          nil
+        end
+      end
+      sorts.compact.sort_by { |v| v[1] }.first(30).to_h
 
     else
       ### targetのベクトル取得 ###
