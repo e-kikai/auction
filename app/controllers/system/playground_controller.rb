@@ -100,12 +100,21 @@ class System::PlaygroundController < ApplicationController
   end
 
   def sort_by_vector(target, products)
-    pids = products.status(Product::STATUS[:start]).pluck(:id).uniq
+    pids = products.pluck(:id).uniq
 
-    if params[:type] == "redis" # Narrayでnorm計算 + Redisでキャッシュ
+    if params[:type] == "redis" # Narrayでnorm計算 + キャッシュ
       ### 結果キャッシュ ###
       Rails.cache.fetch("sort_result_#{target.id}") do
-        vectors = Rails.cache.read("vectors") || {}
+        vectors     = Rails.cache.read("vectors") || {}
+        update_flag = false
+
+        ### targetのベクトル取得 ###
+        target_narray = if vectors[target.id].present?
+          vectors[target.id]
+        elsif File.exist? "#{VECTORS_PATH}/vector_#{target.id}.npy"
+          update_flag = true
+          Npy.load("#{VECTORS_PATH}/vector_#{target.id}.npy")
+        end
 
         if vectors.blank?
           pids.each do |pid|
@@ -115,25 +124,43 @@ class System::PlaygroundController < ApplicationController
               nil
             end
           end
-
-          Rails.cache.write("vectors", vectors)
         end
 
-        ### targetのベクトル取得 ###
-        target_narray = vectors[target.id]
-
         ### 各ベクトル比較 ###
-        pids.map do |pid|
-          if pid == target.id || vectors[pid].blank?
+        sorts = pids.map do |pid|
+          ### ベクトルの取得 ###
+          pr_narray = if vectors[pid].present? # 既存
+            vectors[pid]
+          else # 新規
+            update_flag = true
+            vectors[pid] = if File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
+              Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
+            else
+              Numo::SFloat.zeros(1)
+            end
+            vectors[pid]
+          end
+
+          ### ベクトル比較 ###
+          if pid == target.id || pr_narray == Numo::SFloat.zeros(1)
             nil
           else
-            sub_nayyar = vectors[pid] - target_narray
+            sub_nayyar = pr_narray - target_narray
             res        = (sub_nayyar * sub_nayyar).sum
-
             [pid, res]
           end
+
         end.compact.sort_by { |v| v[1] }.first(30).to_h
+
+        Rails.cache.write("vectors", vectors) if update_flag == true
+
+        sorts
       end
+
+      ### ベクトルキャシュ更新 ###
+
+
+
     elsif params[:type] == "solo_cache" # Narrayでnorm計算 + 個別キャッシュ
 
       ### targetのベクトル取得 ###
