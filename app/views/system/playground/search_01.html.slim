@@ -35,13 +35,14 @@ css:
     - if @products.blank?
       .alert.alert-success
         span.glyphicon.glyphicon-info-sign
-        span.btn-content フォームから検索
+        span.btn-content フォームから検索してください
 
     - if @target.present?
       h4 この商品に類似した商品ソート (検索速度 : #{@time} sec)
       = render "product_panel_03_img", product: @target, r: :src_pnl
       hr
-    - @products.each do |pr|
+      
+    -(@pproducts || @products).each do |pr|
       = render "product_panel_03_img", product: pr, r: :src_pnl
 
   - if @pproducts.present?

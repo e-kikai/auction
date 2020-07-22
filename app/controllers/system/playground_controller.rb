@@ -8,6 +8,8 @@ class System::PlaygroundController < ApplicationController
   UTILS_PATH   = "/var/www/yoshida/utils"
   VECTORS_PATH = "#{UTILS_PATH}/static/image_vectors"
 
+  ZERO_NARRAY  =  Numo::SFloat.zeros(1)
+
   def search_01
     # 初期検索クエリ作成
     @products = Product.status(Product::STATUS[:mix])
@@ -104,7 +106,7 @@ class System::PlaygroundController < ApplicationController
 
     if params[:type] == "redis" # Narrayでnorm計算 + キャッシュ
       ### 結果キャッシュ ###
-      Rails.cache.fetch("sort_result_#{target.id}") do
+      Rails.cache.fetch("sort_result_#{target.id}", expired_in: 3.hour) do
         vectors     = Rails.cache.read("vectors") || {}
         update_flag = false
 
@@ -136,13 +138,13 @@ class System::PlaygroundController < ApplicationController
             vectors[pid] = if File.exist? "#{VECTORS_PATH}/vector_#{pid}.npy"
               Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
             else
-              Numo::SFloat.zeros(1)
+              ZERO_NARRAY
             end
             vectors[pid]
           end
 
           ### ベクトル比較 ###
-          if pid == target.id || pr_narray == Numo::SFloat.zeros(1)
+          if pid == target.id || pr_narray == ZERO_NARRAY
             nil
           else
             sub_nayyar = pr_narray - target_narray
@@ -152,9 +154,8 @@ class System::PlaygroundController < ApplicationController
 
         end.compact.sort_by { |v| v[1] }.first(30).to_h
 
-        # Rails.cache.write("vectors", vectors) if update_flag == true
-        Rails.cache.write("vectors", vectors)
-        
+        Rails.cache.write("vectors", vectors) if update_flag == true
+
         sorts
       end
 
