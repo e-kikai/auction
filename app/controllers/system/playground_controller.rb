@@ -100,7 +100,7 @@ class System::PlaygroundController < ApplicationController
   end
 
   def sort_by_vector(target, products)
-    pids = products.pluck(:id).uniq
+    pids = products.status(Product::STATUS[:start]).pluck(:id).uniq
 
     if params[:type] == "redis" # Narrayでnorm計算 + Redisでキャッシュ
       ### 結果キャッシュ ###
