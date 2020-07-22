@@ -152,8 +152,9 @@ class System::PlaygroundController < ApplicationController
 
         end.compact.sort_by { |v| v[1] }.first(30).to_h
 
-        Rails.cache.write("vectors", vectors) if update_flag == true
-
+        # Rails.cache.write("vectors", vectors) if update_flag == true
+        Rails.cache.write("vectors", vectors)
+        
         sorts
       end
 
