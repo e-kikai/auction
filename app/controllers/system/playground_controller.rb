@@ -90,69 +90,70 @@ class System::PlaygroundController < ApplicationController
 
   ### ベクトル変換処理 ###
   def vector_maker_solo
-    ### 初期化 ###
-    resource = Aws::S3::Resource.new(
-      access_key_id:     Rails.application.secrets.aws_access_key_id,
-      secret_access_key: Rails.application.secrets.aws_secret_access_key,
-      region:            'ap-northeast-1', # Tokyo
-    )
+    @time = Benchmark.realtime do
+      ### 初期化 ###
+      resource = Aws::S3::Resource.new(
+        access_key_id:     Rails.application.secrets.aws_access_key_id,
+        secret_access_key: Rails.application.secrets.aws_secret_access_key,
+        region:            'ap-northeast-1', # Tokyo
+      )
 
-    bucket = resource.bucket(@bucket_name)
+      bucket = resource.bucket(@bucket_name)
 
-    logger.debug "*** 1 : #{@bucket_name}"
+      logger.debug "*** 1 : #{@bucket_name}"
 
-    ### ターゲット商品情報取得 ###
-    product = Product.find(params[:id])
+      ### ターゲット商品情報取得 ###
+      product = Product.find(params[:id])
 
-    vector_key  = "vectors/vector_#{product.id}.npy"
+      vector_key  = "vectors/vector_#{product.id}.npy"
 
-    if product.product_images.first.blank?
-      ### 画像の有無チェック ###
-      redirect_to "/system/playground/search_01", alert: "商品に画像が登録されていません" and return
-    elsif bucket.object(vector_key).exists?
-      ### ベクトルファイルの存否を確認 ###
-      redirect_to "/system/playground/search_01", alert: "ベクトルファイルがすでに存在します" and return
+      if product.product_images.first.blank?
+        ### 画像の有無チェック ###
+        redirect_to "/system/playground/search_01", alert: "商品に画像が登録されていません" and return
+      elsif bucket.object(vector_key).exists?
+        ### ベクトルファイルの存否を確認 ###
+        redirect_to "/system/playground/search_01", alert: "ベクトルファイルがすでに存在します" and return
+      end
+      logger.debug "*** 2 : #{vector_key}"
+
+      ### S3より画像ファイルの取得 ###
+      @filename    = product.product_images.first.image_identifier
+      image_id    = product.product_images.first.id
+      image_key   = "uploads/product_image/image/#{image_id}/#{@filename}"
+
+      image_path  = "#{UTILS_PATH}/static/img/#{@filename}"
+      vector_path = "#{VECTORS_PATH}/#{@filename}.npy"
+
+      logger.debug "*** 3 : #{image_key}"
+
+      bucket.object(image_key).get(response_target: "#{image_path}")
+
+      logger.debug "*** 4 : #{image_path}"
+
+      ### プロセス ###
+      cmds = []
+      cmds << "cd #{UTILS_PATH} && python3 process_images.py --image_files=\"#{image_path}\";"
+      exec_commands(cmds)
+
+      logger.debug "*** 5 : #{vector_path}"
+
+      ### ベクトルファイルアップロード ###
+      bucket.object(vector_key).upload_file(vector_path)
+
+      logger.debug "*** 6 : upload"
+
+
+      ### 不要になった画像ファイル、ベクトルファイルの削除
+      File.delete(vector_path)
+      File.delete(image_path)
+
+      logger.debug "*** 7 : delete"
     end
-    logger.debug "*** 2 : #{vector_key}"
-
-    ### S3より画像ファイルの取得 ###
-    filename    = product.product_images.first.image_identifier
-    image_id    = product.product_images.first.id
-    image_key   = "uploads/product_image/image/#{image_id}/#{filename}"
-
-    image_path  = "#{UTILS_PATH}/static/img/#{filename}"
-    vector_path = "#{VECTORS_PATH}/#{filename}.npy"
-
-    logger.debug "*** 3 : #{image_key}"
-
-    bucket.object(image_key).get(response_target: "#{image_path}")
-
-    logger.debug "*** 4 : #{image_path}"
-
-    ### プロセス ###
-    cmds = []
-    cmds << "cd #{UTILS_PATH} && python3 process_images.py --image_files=\"#{image_path}\";"
-    exec_commands(cmds)
-
-    logger.debug "*** 5 : #{vector_path}"
-
-    ### ベクトルファイルアップロード ###
-    bucket.object(vector_key).upload_file(vector_path)
-
-    logger.debug "*** 6 : upload"
-
-
-    ### 不要になった画像ファイル、ベクトルファイルの削除
-    File.delete(vector_path)
-    File.delete(image_path)
-
-    logger.debug "*** 7 : delete"
-
 
     ### ベクトルキャッシュ更新 ###
     # update_vector
 
-    redirect_to "/system/playground/search_01", notice: "ベクトル変換完了 : #{filename}"
+    redirect_to "/system/playground/search_01", notice: "ベクトル変換完了 : #{@filename} : #{@time}"
   # rescue => e
   #   redirect_to "/system/playground/search_01", alert: "ベクトル変換エラー : #{e.message}"
   end
