@@ -96,9 +96,10 @@ class System::PlaygroundController < ApplicationController
       secret_access_key: Rails.application.secrets.aws_secret_access_key,
       region:            'ap-northeast-1', # Tokyo
     )
-    bucket = resource.bucket(Rails.application.secrets.aws_s3_bucket)
 
-    logger.debug "*** 1 : #{bucket}"
+    bucket = resource.bucket(@bucket_name)
+
+    logger.debug "*** 1 : #{@bucket_name}"
 
     ### ターゲット商品情報取得 ###
     product = Product.find(params[:id])
@@ -317,6 +318,7 @@ class System::PlaygroundController < ApplicationController
 
   end
 
+  ### テスト用DB切替 ###
   def change_db
     Thread.current[:request] = request
 
@@ -324,14 +326,17 @@ class System::PlaygroundController < ApplicationController
     when "production"; redirect_to "/"
     when "staging"
       ActiveRecord::Base.establish_connection(:production)
-      @img_base   = "https://s3-ap-northeast-1.amazonaws.com/mnok/uploads/product_image/image"
-      @link_base = "https://www.mnok.net/"
+      @img_base    = "https://s3-ap-northeast-1.amazonaws.com/mnok/uploads/product_image/image"
+      @link_base   = "https://www.mnok.net/"
+      @bucket_name = "mnok"
     else
-      @img_base  = "https://s3-ap-northeast-1.amazonaws.com/development.auction/uploads/product_image/image"
-      @link_base = "http://192.168.33.110:8087/"
+      @img_base    = "https://s3-ap-northeast-1.amazonaws.com/development.auction/uploads/product_image/image"
+      @link_base   = "http://192.168.33.110:8087/"
+      @bucket_name = Rails.application.secrets.aws_s3_bucket
     end
   end
 
+  ### DB切替を戻す ###
   def restore_db
     if Rails.env == "staging"
       ActiveRecord::Base.establish_connection(:staging)
