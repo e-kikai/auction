@@ -168,11 +168,15 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :playground, only: [:index] do
-      collection do
-        get 'search_01'
-        get 'vector_maker'
+    unless Rails.env.production?
+      resources :playground, only: [:index] do
+        collection do
+          get 'search_01'
+          get 'vector_maker'
+          get 'vector_maker_solo'
+        end
       end
     end
+    
   end
 end

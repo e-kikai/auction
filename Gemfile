@@ -159,3 +159,5 @@ gem 'npy'
 # gem "dalli"
 gem 'redis'
 gem 'redis-rails'
+
+gem 'aws-sdk-s3', '~> 1'

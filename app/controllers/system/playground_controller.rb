@@ -79,8 +79,8 @@ class System::PlaygroundController < ApplicationController
       ### プロセス ###
       cmds << "cd #{UTILS_PATH} && python3 process_images.py --image_files=\"#{UTILS_PATH}/static/img/#{filename}\";"
 
-      cmds << "mv #{VECTORS_PATH}/#{filename}.npy #{VECTORS_PATH}/vector_#{pr.id}.npy"
-      cmds << "rm #{UTILS_PATH}/static/img/#{filename}"
+      cmds << "mv #{VECTORS_PATH}/#{filename}.npy #{VECTORS_PATH}/vector_#{pr.id}.npy" # ファイル移動
+      cmds << "rm #{UTILS_PATH}/static/img/#{filename}" # 画像ファイル削除
 
       exec_commands(cmds)
     end
@@ -88,7 +88,98 @@ class System::PlaygroundController < ApplicationController
     redirect_to "/system/playground/search_01", notice: "変換完了"
   end
 
+  ### ベクトル変換処理 ###
+  def vector_maker_solo
+    ### 初期化 ###
+    resource = Aws::S3::Resource.new(
+      access_key_id:     Rails.application.secrets.aws_access_key_id,
+      secret_access_key: Rails.application.secrets.aws_secret_access_key,
+      region:            'ap-northeast-1', # Tokyo
+    )
+    bucket = resource.bucket(Rails.application.secrets.aws_s3_bucket)
+
+    logger.debug "*** 1 : #{bucket}"
+
+    ### ターゲット商品情報取得 ###
+    product = Product.find(params[:id])
+
+    vector_key  = "vectors/vector_#{product.id}.npy"
+
+    if product.product_images.first.blank?
+      ### 画像の有無チェック ###
+      redirect_to "/system/playground/search_01", alert: "商品に画像が登録されていません" and return
+    elsif bucket.object(vector_key).exists?
+      ### ベクトルファイルの存否を確認 ###
+      redirect_to "/system/playground/search_01", alert: "ベクトルファイルがすでに存在します" and return
+    end
+    logger.debug "*** 2 : #{vector_key}"
+
+    ### S3より画像ファイルの取得 ###
+    filename    = product.product_images.first.image_identifier
+    image_id    = product.product_images.first.id
+    image_key   = "uploads/product_image/image/#{image_id}/#{filename}"
+
+    image_path  = "#{UTILS_PATH}/static/img/#{filename}"
+    vector_path = "#{VECTORS_PATH}/#{filename}.npy"
+
+    logger.debug "*** 3 : #{image_key}"
+
+    bucket.object(image_key).get(response_target: "#{image_path}")
+
+    logger.debug "*** 4 : #{image_path}"
+
+    ### プロセス ###
+    cmds = []
+    cmds << "cd #{UTILS_PATH} && python3 process_images.py --image_files=\"#{image_path}\";"
+    exec_commands(cmds)
+
+    logger.debug "*** 5 : #{vector_path}"
+
+    ### ベクトルファイルアップロード ###
+    bucket.object(vector_key).upload_file(vector_path)
+
+    logger.debug "*** 6 : upload"
+
+
+    ### 不要になった画像ファイル、ベクトルファイルの削除
+    File.delete(vector_path)
+    File.delete(image_path)
+
+    logger.debug "*** 7 : delete"
+
+
+    ### ベクトルキャッシュ更新 ###
+    # update_vector
+
+    redirect_to "/system/playground/search_01", notice: "ベクトル変換完了 : #{filename}"
+  # rescue => e
+  #   redirect_to "/system/playground/search_01", alert: "ベクトル変換エラー : #{e.message}"
+  end
+
   private
+
+  ### キャッシュ更新 ###
+  def update_vector(rehash=false)
+    pids = Product.status(Product::STATUS[:mix]).order(:id).pluck(:id).uniq
+
+    vectors = if rehash
+      {}
+    else
+      Rails.cache.read("vectors") || {}
+    end
+
+    update_flag = false
+    pids.each do |pid|
+      ### ベクトルの確認 ###
+      if vectors[pid].blank? && File.exist?("#{VECTORS_PATH}/vector_#{pid}.npy")
+        update_flag  = true # 更新あり
+        vectors[pid] = Npy.load("#{VECTORS_PATH}/vector_#{pid}.npy")
+      end
+    end
+
+    ### ベクトルキャシュ更新 ###
+    Rails.cache.write("vectors", vectors) if update_flag == true
+  end
 
   def exec_commands(commands)
     commands.each do |cmd|
@@ -154,14 +245,11 @@ class System::PlaygroundController < ApplicationController
 
         end.compact.sort_by { |v| v[1] }.first(30).to_h
 
+        ### ベクトルキャシュ更新 ###
         Rails.cache.write("vectors", vectors) if update_flag == true
 
         sorts
       end
-
-      ### ベクトルキャシュ更新 ###
-
-
 
     elsif params[:type] == "solo_cache" # Narrayでnorm計算 + 個別キャッシュ
 
