@@ -260,9 +260,9 @@ article
           .carousel-inner
             - @product.product_images.each_with_index do |pi, i|
               - if i == 0
-                .item.active = image_tag pi.image.view.url, alt: "#{@product.name}_画像#{i+1}"
+                .item.active = image_tag pi.image.view.url, srcset: {pi.image.url => "x2"}, alt: "#{@product.name}_画像#{i+1}"
               - else
-                .item = image_tag pi.image.view.url, alt: "#{@product.name}_画像#{i+1}"
+                .item = image_tag pi.image.view.url, srcset: {pi.image.url => "x2"}, alt: "#{@product.name}_画像#{i+1}"
           a.left.carousel-control href="#product-carousel" data-slide="prev"
             span.glyphicon.glyphicon-chevron-left
           a.right.carousel-control href="#product-carousel" data-slide="next"
