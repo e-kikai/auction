@@ -1,7 +1,7 @@
 .thumbnail.product-pannel_02
   = link_to "/products/#{product.id}?r=#{r}", target: "_blank", title: product.name, class: "product_link" do
     .thumb_img
-      = image_tag(product.thumb_url, alt: product.name)
+      = image_tag(product.thumb_url, srcset: "#{product.view_url} 2x", alt: product.name)
 
     - if product.state_before_type_cast > 0
       .state class="state_#{product.state_before_type_cast}" = product.state
