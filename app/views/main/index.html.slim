@@ -152,9 +152,15 @@
         - @roots.each do |ca|
           - ca.children.order(:order_no).each do |ca2|
             .toppage-news-area
-              h4.topppage-category-title = "#{ca2.name}の新着商品"
+              label.topppage-category-title
+                span.btn-content = "#{ca2.name}の新着商品"
+                = link_to "/news/#{Time.now.strftime("%Y-%m-%d")}?category_id=#{ca.id}", class: "btn btn-warning", style: "margin-left: 4px;" do
+                  span.new-icon
+                  span.btn-content #{ca2.name}の新着商品を見る
+
               .top-category-news
-                - Product.status(Product::STATUS[:start]).search(category_id_in: ca2.subtree_ids).result.order(dulation_start: :desc).limit(3).each do |pr|
+                / - Product.status(Product::STATUS[:start]).search(category_id_in: ca2.subtree_ids).result.order(dulation_start: :desc).limit(3).each do |pr|
+                - Product.search(category_id_in: ca2.subtree_ids).result.order(dulation_start: :desc).limit(3).each do |pr|
                   = render "products/product_panel_02", product: pr, r: :top_cnw
 
         - if @detaillog_products.present?
