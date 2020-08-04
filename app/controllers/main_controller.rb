@@ -1,9 +1,5 @@
 class MainController < ApplicationController
   def index
-    # if Time.now < DateTime.parse("2018/05/15 00:00:00")
-    #   redirect_to "/lp/index.html"
-    # end
-
     @roots = Category.roots.order(:order_no)
 
     # 最近チェックした商品

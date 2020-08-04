@@ -59,7 +59,7 @@
       .panel.panel-success
         = link_to "#collapse_category", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
           span.glyphicon.glyphicon-search
-          span.btn-content カテゴリから探す
+          span.btn-content カテゴリからさがす
           span.glyphicon.glyphicon-chevron-down
 
           / = link_to "categories" do
@@ -73,77 +73,132 @@
             - ca.children.order(:order_no).each do |ca2|
               = link_to "　#{ca2.name}", "products?category_id=#{ca2.id}", class: "list-group-item"
 
+      - if Rails.env != "production"
+        .panel.panel-default
+          = link_to "#collapse_help", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
+            span.glyphicon.glyphicon-question-sign
+            span.btn-content ヘルプ
+            span.glyphicon.glyphicon-chevron-down
+          .panel-body#collapse_help.panel-collapse.collapse.in.xs-close
+
+            p = link_to "ものづくりオークションとは？", "/lp/index.html", target: "_blank"
+            - @helps.each do |he|
+              p = link_to he.title, "/helps/#{he.uid}"
+            p = link_to "利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
+            p = link_to ">> ヘルプ一覧", "/helps"
+
     .col-md-7.col-sm-8.col-xs-12
-      .toppage-searches
-        - if @searches[0]
-          - @searches[0..2].each do |se|
-            = render "search_panel", search: se
+      - if Rails.env == "production"
+        .toppage-searches
+          - if @searches[0]
+            - @searches[0..2].each do |se|
+              = render "search_panel", search: se
 
-      label
-        span.new-icon
-        span.btn-content 新着商品
-        = link_to "/news/#{Time.now.strftime("%Y-%m-%d")}", class: "btn btn-warning", style: "margin-left: 4px;" do
-          span.new-icon
-          span.btn-content すべての新着商品を見る
-          span.new-icon
-
-      .panel.panel-default
-        .panel-body.toppage-contents
-          .toppage-scroll
-            - @new_products.each do |pr|
-              = render "product_panel", product: pr, r: :top_new
-
-      .toppage-searches
-        - if @searches[3]
-          - @searches[3..5].each do |se|
-            = render "search_panel", search: se
-
-
-      - if @detaillog_products.present?
         label
-          span.glyphicon.glyphicon-ok.check-icon
-          span.btn-content 最近チェックした商品
+          span.new-icon
+          span.btn-content 新着商品
+          = link_to "/news/#{Time.now.strftime("%Y-%m-%d")}", class: "btn btn-warning", style: "margin-left: 4px;" do
+            span.new-icon
+            span.btn-content すべての新着商品を見る
+            span.new-icon
+
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
-              - @detaillog_products.each do |pr|
-                = render "product_panel", product: pr, r: :top_chk
+              - @new_products.each do |pr|
+                = render "product_panel", product: pr, r: :top_new
 
-      .toppage-searches
-        - if @searches[6]
-          - @searches[6..8].each do |se|
-            = render "search_panel", search: se
-
-      - if @follows_new_products.present?
-        label
-          span.glyphicon.glyphicon-heart.follow-heart
-          span.btn-content フォローした出品会社の新着商品
-        .panel.panel-default
-          .panel-body.toppage-contents
-            .toppage-scroll
-              - @follows_new_products.each do |pr|
-                = render "product_panel", product: pr, r: :top_flw
+        .toppage-searches
+          - if @searches[3]
+            - @searches[3..5].each do |se|
+              = render "search_panel", search: se
 
 
-      .toppage-searches
-        - if @searches[9]
-          - @searches[9..10].each do |se|
-            = render "search_panel", search: se
+        - if @detaillog_products.present?
+          label
+            span.glyphicon.glyphicon-ok.check-icon
+            span.btn-content 最近チェックした商品
+          .panel.panel-default
+            .panel-body.toppage-contents
+              .toppage-scroll
+                - @detaillog_products.each do |pr|
+                  = render "product_panel", product: pr, r: :top_chk
 
-        / .thumbnail.search-panel style="border:0;"
-        /  = link_to(image_tag("deadstock_01.png", alt: "SALE 新古品 お買い得 即売 デッドストックエンドミル特集"), "/products?keywords=%E2%98%85%E3%83%87%E3%83%83%E3%83%89%E3%82%B9%E3%83%88%E3%83%83%E3%82%AF%E3%82%A8%E3%83%B3%E3%83%89%E3%83%9F%E3%83%AB%E7%89%B9%E9%9B%86%E2%98%85&r=top_bnr")
+        .toppage-searches
+          - if @searches[6]
+            - @searches[6..8].each do |se|
+              = render "search_panel", search: se
 
-        .thumbnail.search-panel style="border:0;"
-          = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
+        - if @follows_new_products.present?
+          label
+            span.glyphicon.glyphicon-heart.follow-heart
+            span.btn-content フォローした出品会社の新着商品
+          .panel.panel-default
+            .panel-body.toppage-contents
+              .toppage-scroll
+                - @follows_new_products.each do |pr|
+                  = render "product_panel", product: pr, r: :top_flw
+
+
+        .toppage-searches
+          - if @searches[9]
+            - @searches[9..10].each do |se|
+              = render "search_panel", search: se
+
+          .thumbnail.search-panel style="border:0;"
+            = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
+
+      - else
+        - @roots.each do |ca|
+          - ca.children.order(:order_no).each do |ca2|
+            .toppage-news-area
+              h4.topppage-category-title = "#{ca2.name}の新着商品"
+              .top-category-news
+                - ca2.products.order(dulation_start: :desc).limit(3).each do |pr|
+                  = render "products/product_panel_02", product: pr, r: :top_cnw
+
+        - if @detaillog_products.present?
+          label
+            span.glyphicon.glyphicon-ok.check-icon
+            span.btn-content 最近チェックした商品
+          .panel.panel-default
+            .panel-body.toppage-contents
+              .toppage-scroll
+                - @detaillog_products.each do |pr|
+                  = render "product_panel", product: pr, r: :top_chk
+
+        .toppage-searches
+          - if @searches[6]
+            - @searches[6..8].each do |se|
+              = render "search_panel", search: se
+
+        - if @follows_new_products.present?
+          label
+            span.glyphicon.glyphicon-heart.follow-heart
+            span.btn-content フォローした出品会社の新着商品
+          .panel.panel-default
+            .panel-body.toppage-contents
+              .toppage-scroll
+                - @follows_new_products.each do |pr|
+                  = render "product_panel", product: pr, r: :top_flw
+
+
+        .toppage-searches
+          - if @searches[9]
+            - @searches[9..10].each do |se|
+              = render "search_panel", search: se
+
+          .thumbnail.search-panel style="border:0;"
+            = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
 
     .col-md-3.col-sm-4.col-xs-12.bid-banner-area
-      - if (Time.parse('2020-03-20 00:00:00')..Time.parse('2020-04-02 23:59:59')).include? Time.now
-        .thumbnail.search-panel
-          = link_to(image_tag("https://www.zenkiren.net/imgs/bids_28.png", alt: "マシンライフ 第28回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=28&r=bnr", target: "_blank")
-
-      - if (Time.parse('2020-06-26 00:00:00')..Time.parse('2020-07-09 23:59:59')).include? Time.now
-        .thumbnail.search-panel
-          = link_to(image_tag("https://www.zenkiren.net/imgs/bids_29.png", alt: "マシンライフ 第29回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=29&r=bnr", target: "_blank")
+      / - if (Time.parse('2020-03-20 00:00:00')..Time.parse('2020-04-02 23:59:59')).include? Time.now
+      /   .thumbnail.search-panel
+      /     = link_to(image_tag("https://www.zenkiren.net/imgs/bids_28.png", alt: "マシンライフ 第28回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=28&r=bnr", target: "_blank")
+      /
+      / - if (Time.parse('2020-06-26 00:00:00')..Time.parse('2020-07-09 23:59:59')).include? Time.now
+      /   .thumbnail.search-panel
+      /     = link_to(image_tag("https://www.zenkiren.net/imgs/bids_29.png", alt: "マシンライフ 第29回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=29&r=bnr", target: "_blank")
 
       - if (Time.parse('2020-09-25 00:00:00')..Time.parse('2020-10-07 23:59:59')).include? Time.now
         .thumbnail.search-panel
@@ -170,18 +225,19 @@
         .thumbnail.search-panel
           = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_194.png", alt: "大阪機械卸業団地協同組合 第194回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
-      .panel.panel-default
-        = link_to "#collapse_help", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
-          span.glyphicon.glyphicon-question-sign
-          span.btn-content ヘルプ
-          span.glyphicon.glyphicon-chevron-down
-        .panel-body#collapse_help.panel-collapse.collapse.in.xs-close
+      - if Rails.env == "production"
+        .panel.panel-default
+          = link_to "#collapse_help", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
+            span.glyphicon.glyphicon-question-sign
+            span.btn-content ヘルプ
+            span.glyphicon.glyphicon-chevron-down
+          .panel-body#collapse_help.panel-collapse.collapse.in.xs-close
 
-          p = link_to "ものづくりオークションとは？", "/lp/index.html", target: "_blank"
-          - @helps.each do |he|
-            p = link_to he.title, "/helps/#{he.uid}"
-          p = link_to "利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
-          p = link_to ">> ヘルプ一覧", "/helps"
+            p = link_to "ものづくりオークションとは？", "/lp/index.html", target: "_blank"
+            - @helps.each do |he|
+              p = link_to he.title, "/helps/#{he.uid}"
+            p = link_to "利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
+            p = link_to ">> ヘルプ一覧", "/helps"
 
       //// SNSボタン ///
       .sns-area
