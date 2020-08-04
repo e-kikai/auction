@@ -154,7 +154,7 @@
             .toppage-news-area
               h4.topppage-category-title = "#{ca2.name}の新着商品"
               .top-category-news
-                - ca2.products.order(dulation_start: :desc).limit(3).each do |pr|
+                - ca2.products.status(Product::STATUS[:start]).order(dulation_start: :desc).limit(3).each do |pr|
                   = render "products/product_panel_02", product: pr, r: :top_cnw
 
         - if @detaillog_products.present?
@@ -168,8 +168,8 @@
                   = render "product_panel", product: pr, r: :top_chk
 
         .toppage-searches
-          - if @searches[6]
-            - @searches[6..8].each do |se|
+          - if @searches[0]
+            - @searches[0..2].each do |se|
               = render "search_panel", search: se
 
         - if @follows_new_products.present?
@@ -184,8 +184,8 @@
 
 
         .toppage-searches
-          - if @searches[9]
-            - @searches[9..10].each do |se|
+          - if @searches[3]
+            - @searches[3..5].each do |se|
               = render "search_panel", search: se
 
           .thumbnail.search-panel style="border:0;"
