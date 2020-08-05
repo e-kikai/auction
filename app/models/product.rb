@@ -225,6 +225,14 @@ class Product < ApplicationRecord
     where(dulation_start: (day.to_date - 6.day).beginning_of_day..day.to_date.end_of_day)
   }
 
+  ### 画像特徴ベクトル検索 ###
+  scope :vectors_search, -> id, limit {
+    pids = Products.status(STATUS[:success]).pluck(:id).uniq
+
+    
+  }
+
+
   ### callback ###
   before_save :default_max_price
   before_save :youtube_id
