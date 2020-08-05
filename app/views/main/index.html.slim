@@ -164,9 +164,6 @@
           .thumbnail.search-panel style="border:0;"
             = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
 
-        .twitter-area
-          <a class="twitter-timeline" data-lang="ja" data-height="400" data-link-color="#981CEB" href="https://twitter.com/mnok_official?ref_src=twsrc%5Etfw">Tweets by mnok_official</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 
       .col-md-3.col-sm-4.col-xs-12.bid-banner-area
         / - if (Time.parse('2020-03-20 00:00:00')..Time.parse('2020-04-02 23:59:59')).include? Time.now
@@ -298,6 +295,10 @@
 
           .thumbnail.search-panel style="border:0;"
             = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
+
+      .twitter-area
+        <a class="twitter-timeline" data-lang="ja" data-height="400" data-link-color="#981CEB" href="https://twitter.com/mnok_official?ref_src=twsrc%5Etfw">Tweets by mnok_official</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 
   - unless Rails.env.production?
     section
