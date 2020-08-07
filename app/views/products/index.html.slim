@@ -160,7 +160,7 @@
 
     - if session[:search_view] == "list"
       - unless Rails.env.production?
-        .mobile-products-list
+        .mobile-products-list.hidden-lg.hidden-md
           - @pproducts.each do |pr|
             .mobile-product
               .img = link_to image_tag(pr.thumb_url, alt: "#{pr.name}"), "/products/#{pr.id}?r=src_lst", target: "_blank"
@@ -170,14 +170,14 @@
                     span.new-icon
                   = pr.name
                   span.state class="state_#{pr.state_before_type_cast}" = pr.state
-              .category-label カテゴリ
-              .category
-                - pr.category.path.each.with_index do |ca, i|
-                  = " > " if i != 0
-                  = link_to(ca.name, "/products?category_id=#{ca.id}")
-
-              .company-label 出品会社
-              .company =< link_to pr.user.company, "/products?company_id=#{pr.user_id}"
+              / .category-label カテゴリ
+              / .category
+              /   - pr.category.path.each.with_index do |ca, i|
+              /     = " > " if i != 0
+              /     = link_to(ca.name, "/products?category_id=#{ca.id}")
+              /
+              / .company-label 出品会社
+              / .company =< link_to pr.user.company, "/products?company_id=#{pr.user_id}"
 
 
               /// 落札済み ///
@@ -198,14 +198,19 @@
                   .prompt_dicision_price_label 即売
                   .prompt_dicision_price = number_to_currency(pr.prompt_dicision_price_with_tax)
 
+                .bids_couht_label 入札数
+                .bids_count = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+
                 - unless pr.prompt_dicision?
+                  .remaining_time_label 残り時間
                   .remaining_time = pr.remaining_time
+
                 .watch
                   .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
                     span.glyphicon.glyphicon-star.watch-star
                     span.btn-content ウォッチ
 
-      .table-responsive
+      .table-responsive.hidden-sm.hidden-xs
         table.product-table.table.table-striped.table-hover.table-condensed
           tr
             th
