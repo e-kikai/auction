@@ -1,0 +1,4 @@
+- if user_signed_in?
+
+= link_to "/myauction/watches/toggle?id=#{id}", method: :post, remote: true, data: { pid: id }, class: "watch_02 #{"active" if active}"  do
+  span.glyphicon.glyphicon-star

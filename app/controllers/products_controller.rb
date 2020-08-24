@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
-  before_action :authenticate_user!, only: [:conf, :bid, :result]
-  before_action :get_product,        only: [:show, :conf, :bids]
+  before_action :get_product,  only: [:show, :bids, :nitamono]
+  before_action :get_populars, only: [:show, :bids]
 
   def index
     ### フィルタリング用パラメータ生成 ###
@@ -80,6 +80,9 @@ class ProductsController < ApplicationController
     ### ページャ ###
     @pproducts = @products.page(params[:page])
 
+    ### ウォッチリスト ###
+    @watches = user_signed_in? ? current_user.watches.pluck(:product_id) : []
+
     # フィルタリング
     @select_categories = @products.joins(:category).group(:category_id).group("categories.name").reorder("count_id DESC").count
     @select_addr1      = @products.group(:addr_1).reorder(:addr_1).count
@@ -117,19 +120,26 @@ class ProductsController < ApplicationController
       @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: current_user.addr_1)
     end
 
-    # このカテゴリの人気商品
-    # @category_products = Product.status(Product::STATUS[:start]).includes(:product_images)
-    #   .where(category_id: @product.category.subtree_ids).where.not(id: @product.id)
-    #   .order(bids_count: :desc).limit(Product::NEW_MAX_COUNT)
-
     # 人気商品
-    @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
+    case rand(0..1)
+    when 1
+      @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
+    else
+      @vector_products = Product.vectors_search(@product.id, Product::NEW_MAX_COUNT)
+    end
+
   end
 
   # 入札履歴ページ
   def bids
+
     # 人気商品
-    @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
+    case rand(0..1)
+    when 1
+      @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
+    else
+      @vector_products = Product.vectors_search(@product.id, Product::NEW_MAX_COUNT)
+    end
   end
 
   def ads
@@ -152,14 +162,25 @@ class ProductsController < ApplicationController
     render layout: false
   end
 
+  def nitamono
+    @products = Product.vectors_search(@product.id, Product::NEW_MAX_COUNT)
+  end
+
   private
 
+  ### 商品情報取得 ###
   def get_product
     @product = Product.find(params[:id])
   end
 
-  def bid_params
-    params.require(:bid).permit(:amount)
+  ### 人気商品 or 画像特徴ベクトル検索 ###
+  def get_populars
+    case rand(0..1)
+    when 1
+      @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
+    else
+      @vector_products = Product.vectors_search(@product.id, Product::NEW_MAX_COUNT)
+    end
   end
 
 end

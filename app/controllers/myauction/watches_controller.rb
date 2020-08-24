@@ -29,4 +29,18 @@ class Myauction::WatchesController <  Myauction::ApplicationController
     @watch.soft_destroy!
     redirect_to "/myauction/watches/", notice: "ウォッチリストから商品を削除しました"
   end
+
+  ### ウォッチ切替 ###
+  def toggle
+    @product_id = params[:id]
+    @watch      = current_user.watches.find_by(product_id: @product_id)
+
+    @res = if @watch.blank?
+      @watch = current_user.watches.new(product_id: @product_id)
+      :on
+    else
+      @watch.soft_destroy!
+      :off
+    end
+  end
 end

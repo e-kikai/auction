@@ -138,6 +138,11 @@ class User < ApplicationRecord
     company.gsub(/(株式会社|有限会社|\(株\)|\(有\))/, "")
   end
 
+  ### ウォッチリストIDリスト ###
+  def watch_ids
+    watches.pluck(:product_id)
+  end
+
   private
 
   def init_account

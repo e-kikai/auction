@@ -70,6 +70,7 @@
 
 class Product < ApplicationRecord
   require 'csv'
+  require "open3"
 
   soft_deletable
   default_scope { without_soft_destroyed }
@@ -101,6 +102,15 @@ class Product < ApplicationRecord
   TWITTER_INTERVAL = 6.hours
 
   OR_MARKER  = "[[xxxxorxxx]]"
+
+  # 画像特徴ベクトル関連
+  UTILS_PATH   = "/var/www/yoshida/utils"
+  VECTORS_PATH = "#{UTILS_PATH}/static/image_vectors"
+  S3_VECTORS_PATH = "vectors"
+  ZERO_NARRAY  =  Numo::SFloat.zeros(1)
+  VECTOR_CACHE = "vector"
+
+  VECTORS_LIMIT   = 30
 
   ### relations ###
   belongs_to :user,     required: true
@@ -224,14 +234,6 @@ class Product < ApplicationRecord
   scope :news_week, -> day {
     where(dulation_start: (day.to_date - 6.day).beginning_of_day..day.to_date.end_of_day)
   }
-
-  ### 画像特徴ベクトル検索 ###
-  scope :vectors_search, -> id, limit {
-    pids = Products.status(STATUS[:success]).pluck(:id).uniq
-
-    
-  }
-
 
   ### callback ###
   before_save :default_max_price
@@ -581,6 +583,127 @@ class Product < ApplicationRecord
     end
   end
 
+  ### 画像特徴ベクトルを抽出 ###
+  def process_vector
+    bucket = Product.s3_bucket # S3バケット取得
+
+    vector_key = "#{S3_VECTORS_PATH}/vector_#{id}.npy"
+
+    image = product_images.first
+
+    if image.blank?  # 画像の有無チェック
+      errors.add(:base, '商品に画像が登録されていません') and return false
+    elsif bucket.object(vector_key).exists? # ベクトルファイルの存否を確認
+      errors.add(:base, 'ベクトルファイルがすでに存在します') and return false
+    end
+
+    logger.debug "*** 2 : #{vector_key}"
+
+    filename    = image.image_identifier
+    image_id    = image.id
+    image_key   = "uploads/product_image/image/#{image_id}/#{filename}"
+
+    image_path  = "#{UTILS_PATH}/static/img/#{filename}"
+    vector_path = "#{VECTORS_PATH}/#{filename}.npy"
+
+    logger.debug "*** 3 : #{image_key}"
+
+    bucket.object(image_key).download_file(image_path) # S3より画像ファイルの取得
+
+    # プロセス
+    cmd = "cd #{UTILS_PATH} && python3 process_images.py --image_files=\"#{image_path}\";"
+    logger.debug "*** 4 : #{cmd}"
+    o, e, s = Open3.capture3(cmd)
+    # logger.debug o
+    # logger.debug e
+    # logger.debug s
+
+    logger.debug "*** 5 : #{vector_path}"
+
+    bucket.object(vector_key).upload_file(vector_path) # ベクトルファイルアップロード
+
+    logger.debug "*** 6 : upload"
+
+    ### 不要になった画像ファイル、ベクトルファイルの削除
+    File.delete(vector_path, image_path)
+
+    logger.debug "*** 7 : delete"
+
+    self
+  end
+
+  ### 画像特徴ベクトル検索 ###
+  def self.vectors_search(id, limit=VECTORS_LIMIT)
+    pids = status(STATUS[:success]).pluck(:id).uniq # 検索対象(出品中)の商品ID取得
+
+    vectors = Rails.cache.read(VECTOR_CACHE) || {} # キャッシュからベクトル群を取得
+
+    bucket = Product.s3_bucket # S3バケット取得
+
+    update_flag = false
+
+    # targetベクトル取得
+    logger.debug "check : #{S3_VECTORS_PATH}/vector_#{id}.npy"
+
+    target = if vectors[id].present?
+      logger.debug "caching : #{vectors[id]}"
+
+      vectors[id]
+    elsif bucket.object("#{S3_VECTORS_PATH}/vector_#{id}.npy").exists?
+      update_flag = true
+      # Npy.load("#{S3_VECTORS_PATH}/vector_#{id}.npy")
+      logger.debug "download and cache : #{S3_VECTORS_PATH}/vector_#{id}.npy"
+      str = bucket.object("#{S3_VECTORS_PATH}/vector_#{id}.npy").get.body.read
+      Npy.load_string(str)
+    else
+      logger.debug "nil : #{S3_VECTORS_PATH}/vector_#{id}.npy"
+
+      nil
+    end
+
+    return false if target.blank?
+    logger.debug "target #{id} :: #{target}"
+
+
+    ### 各ベクトル比較 ###
+    sorts = pids.map do |pid|
+      ### ベクトルの取得 ###
+      pr_narray = if vectors[pid].present? # 既存
+        vectors[pid]
+      else # 新規(ファイルからベクトル取得して追加)
+        update_flag = true
+        vectors[pid] = if bucket.object("#{S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
+          # Npy.load("#{S3_VECTORS_PATH}/vector_#{pid}.npy")
+          logger.debug "download and cache : #{S3_VECTORS_PATH}/vector_#{pid}.npy"
+          str = bucket.object("#{S3_VECTORS_PATH}/vector_#{pid}.npy").get.body.read
+          Npy.load_string(str)
+        else
+          ZERO_NARRAY
+        end
+
+        vectors[pid]
+      end
+      logger.debug "#{pid} :: #{pr_narray}"
+
+      # ベクトル比較
+      if pid == id || pr_narray == ZERO_NARRAY || pr_narray == nil # ベクトルなし
+        nil
+      else
+        sub = pr_narray - target
+        res = (sub * sub).sum
+
+        [pid, res]
+      end
+    end.compact.sort_by { |v| v[1] }.first(30).to_h
+
+    # ベクトルキャシュ更新
+    Rails.cache.write(VECTOR_CACHE, vectors) if update_flag == true
+
+    # 結果を返す
+    where(id: sorts.keys).sort_by { |pr| sorts[pr.id] }
+  end
+
+
   private
 
   # 現在価格を初期化
@@ -610,4 +733,15 @@ class Product < ApplicationRecord
     end
   end
 
+  def self.s3_resource
+    Aws::S3::Resource.new(
+      access_key_id:     Rails.application.secrets.aws_access_key_id,
+      secret_access_key: Rails.application.secrets.aws_secret_access_key,
+      region:            'ap-northeast-1', # Tokyo
+    )
+  end
+
+  def self.s3_bucket
+    s3_resource.bucket(Rails.application.secrets.aws_s3_bucket)
+  end
 end

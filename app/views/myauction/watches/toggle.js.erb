@@ -1,0 +1,6 @@
+$_watch = $('.watch_02[data-pid=<%= @product_id %>]')
+<% if @watch.soft_destroyed? %>
+  $_watch.removeClass("active")
+<% else %>
+  $_watch.addClass("active")
+<% end %>

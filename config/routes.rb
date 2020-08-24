@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :products,   only: [:index, :show] do
     member do
       get 'bids'
+      get 'nitamono'
     end
 
     collection do
@@ -47,7 +48,12 @@ Rails.application.routes.draw do
     ### 共通ページ ###
     root to: "main#index"
     resources :bids,       only: [:index, :new, :create, :show]
-    resources :watches,    only: [:index, :create, :destroy]
+    resources :watches,    only: [:index, :create, :destroy] do
+      member do
+        post "toggle"
+      end
+    end
+
     resources :follows,    only: [:index, :create, :destroy]
     resources :blacklists, only: [:index, :create, :destroy]
     resources :searches,   only: [:index, :new, :create, :edit, :update, :destroy]
@@ -177,6 +183,6 @@ Rails.application.routes.draw do
         end
       end
     end
-    
+
   end
 end

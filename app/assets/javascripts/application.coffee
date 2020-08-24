@@ -107,12 +107,6 @@ $(document).on 'turbolinks:load', ->
     $(@).find("input.price").each ->
       $(this).triggerHandler "focus"
 
-  # スマートフォンのみcollapseを閉じておく
-  if window.matchMedia('(max-width: 767px)').matches
-    console.log($(".xs-close").collapse('hide'))
-  if window.matchMedia('(max-width: 991px)').matches
-    console.log($(".sm-close").collapse('hide'))
-
   # youtube modal #
   $('.youtube_viewer').click ->
     src = $(@).attr('data-video')
@@ -130,6 +124,9 @@ $(document).on 'turbolinks:load', ->
     console.log($(".xs-close").collapse('hide'))
   if window.matchMedia('(max-width: 991px)').matches
     console.log($(".sm-close").collapse('hide'))
+
+  # tooltip
+  $('[data-toggle="tooltip"]').tooltip()
 
 
 priceUnformat = (str) ->

@@ -210,6 +210,8 @@
                     span.glyphicon.glyphicon-star.watch-star
                     span.btn-content ウォッチ
 
+
+
       .table-responsive.hidden-sm.hidden-xs
         table.product-table.table.table-striped.table-hover.table-condensed
           tr
@@ -293,9 +295,15 @@
                 td.price.absolute
                   - unless pr.prompt_dicision?
                     = pr.remaining_time
-                  .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
-                    span.glyphicon.glyphicon-star.watch-star
-                    span.btn-content ウォッチ
+                  / .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
+                  /   span.glyphicon.glyphicon-star.watch-star
+                  /   span.btn-content ウォッチ
+
+                  / .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
+                  /   span.glyphicon.glyphicon-star.watch-star
+                  /   span.btn-content ウォッチ
+
+                  .td-under.right = render "watch_02", id: pr.id, active: true
 
 
     - else

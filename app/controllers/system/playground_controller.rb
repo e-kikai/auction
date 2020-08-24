@@ -237,9 +237,9 @@ class System::PlaygroundController < ApplicationController
           end
 
           ### ベクトル比較 ###
-          if pid == target.id || pr_narray == ZERO_NARRAY
+          if pid == target.id || pr_narray == ZERO_NARRAY # ベクトルなし
             nil
-          else
+          else # ノルム比較
             sub_nayyar = pr_narray - target_narray
             res        = (sub_nayyar * sub_nayyar).sum
             [pid, res]
@@ -316,7 +316,7 @@ class System::PlaygroundController < ApplicationController
         end
       end.compact.sort_by { |v| v[1] }.first(30).to_h
     end
-    
+
 
   end
 

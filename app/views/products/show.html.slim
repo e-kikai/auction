@@ -119,9 +119,11 @@ article
                   | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
             .col-md-4.col-sm-4.col-xs-6.col-md-offset-0.col-sm-offset-0.col-xs-offset-3.text-center style="padding: 0;"
               - unless @product.finished?
-                = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
-                  span.glyphicon.glyphicon-star.watch-star
-                  span.btn-content ウォッチ
+                / = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
+                /   span.glyphicon.glyphicon-star.watch-star
+                /   span.btn-content ウォッチ
+
+                = render "products/watch_02", id: @product.id, active: true
 
           /// ウォッチ、閲覧数 ///
           - if @product.unique_user_count > 0
@@ -356,6 +358,16 @@ article
         .toppage-scroll
           - @popular_products.each do |pr|
             = render "/main/product_panel", product: pr, r: :dtl_sca
+- elsif @vector_products.present?
+  .special-area
+    label
+      span.glyphicon.glyphicon-thumbs-up.check-icon
+      span.btn-content = "#{@product.name} と類似している商品"
+    .panel.panel-default
+      .panel-body.toppage-contents
+        .toppage-scroll
+          - @vector_products.each do |pr|
+            = render "/main/product_panel", product: pr, r: :dtl_vct
 
 = render "/main/ads_frames", okw: "#{@product.name}|#{@product.category.name}"
 
