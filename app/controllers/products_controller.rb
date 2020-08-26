@@ -119,15 +119,6 @@ class ProductsController < ApplicationController
     if user_signed_in?
       @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: current_user.addr_1)
     end
-
-    # 人気商品
-    case rand(0..1)
-    when 1
-      @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
-    else
-      @vector_products = Product.vectors_search(@product.id, Product::NEW_MAX_COUNT)
-    end
-
   end
 
   # 入札履歴ページ
@@ -163,7 +154,7 @@ class ProductsController < ApplicationController
   end
 
   def nitamono
-    @products = Product.vectors_search(@product.id, Product::NEW_MAX_COUNT)
+    @products = Product.nitamono_search(@product.id, Product::NEW_MAX_COUNT)
   end
 
   private
@@ -175,12 +166,11 @@ class ProductsController < ApplicationController
 
   ### 人気商品 or 画像特徴ベクトル検索 ###
   def get_populars
-    case rand(0..1)
-    when 1
-      @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
-    else
-      @vector_products = Product.vectors_search(@product.id, Product::NEW_MAX_COUNT)
-    end
+    ### 人気商品 ###
+    @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
+
+    ### 似たものサーチ ###
+    @nitamono_products = Product.nitamono_search(@product.id, Product::NEW_MAX_COUNT)
   end
 
 end

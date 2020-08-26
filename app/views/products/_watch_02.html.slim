@@ -1,4 +1,8 @@
-- if user_signed_in?
+- if user_signed_in? && current_user.watches.find_by(product_id: id).present?
+  - active == true
+- else
+  - active == false
 
-= link_to "/myauction/watches/toggle?id=#{id}", method: :post, remote: true, data: { pid: id }, class: "watch_02 #{"active" if active}"  do
+= link_to "/myauction/watches/toggle?id=#{id}", method: :post, remote: true, class: "watch_02 #{"active" if active == true}",
+  data: { pid: id, toggle: "tooltip", placement: "right", container: "html" }, title: "ウォッチリスト"  do
   span.glyphicon.glyphicon-star

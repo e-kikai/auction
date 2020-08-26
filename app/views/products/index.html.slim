@@ -164,51 +164,55 @@
           - @pproducts.each do |pr|
             .mobile-product
               .img = link_to image_tag(pr.thumb_url, alt: "#{pr.name}"), "/products/#{pr.id}?r=src_lst", target: "_blank"
-              .name = link_to("/products/#{pr.id}?r=src_lst", target: "_blank", title: pr.name) do
-                - if pr.dulation_start.present?
-                  - if pr.dulation_start > Time.now.yesterday
-                    span.new-icon
-                  = pr.name
-                  span.state class="state_#{pr.state_before_type_cast}" = pr.state
-              / .category-label カテゴリ
-              / .category
-              /   - pr.category.path.each.with_index do |ca, i|
-              /     = " > " if i != 0
-              /     = link_to(ca.name, "/products?category_id=#{ca.id}")
-              /
-              / .company-label 出品会社
-              / .company =< link_to pr.user.company, "/products?company_id=#{pr.user_id}"
+
+              .mobile-data-area
+                .name = link_to("/products/#{pr.id}?r=src_lst", target: "_blank", title: pr.name) do
+                  - if pr.dulation_start.present?
+                    - if pr.dulation_start > Time.now.yesterday
+                      span.new-icon
+                    = pr.name
+
+                    - if pr.state_before_type_cast > 0
+                      span.state class="state_#{pr.state_before_type_cast}" = pr.state
+
+                /// 落札済み ///
+                - if pr.success?
+                  .success_date = I18n.l(pr.dulation_end, format: :full_date) + "に落札"
+
+                  .success_price_label 落札価格
+                  .success_price = number_to_currency(pr.max_price_with_tax)
+
+                /// 期間中 ///
+                - else
+                  .max_price_label 現在価格
+                  .max_price = number_to_currency(pr.max_price_with_tax)
+
+                  - if pr.lower_price.present? && pr.lower_price.to_i > pr.max_price
+                    .lower-label 最低落札価格あり
+
+                  - if pr.prompt_dicision_price
+                    .prompt_dicision_price_label 即売
+                    .prompt_dicision_price = number_to_currency(pr.prompt_dicision_price_with_tax)
+
+                  .bids_count_label 入札数 :
+                  .bids_count = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
+
+                  - unless pr.prompt_dicision?
+                    .remaining_time_label 残り時間 :
+                    .remaining_time = pr.remaining_time
+
+                  / .watch
+                  /   .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
+                  /     span.glyphicon.glyphicon-star.watch-star
+                  /     span.btn-content ウォッチ
 
 
-              /// 落札済み ///
-              - if pr.success?
-                .success_date = I18n.l(pr.dulation_end, format: :full_date) + "に落札されました。"
-                .success_price_label 落札価格
-                .success_price = number_to_currency(pr.max_price_with_tax)
+                .mobile-button-area
+                  - if pr.top_image?
+                    = render "products/nitamono", id: pr.id
 
-              /// 期間中 ///
-              - else
-                .max_price_label 現在価格
-                .max_price = number_to_currency(pr.max_price_with_tax)
-
-                - if pr.lower_price.present? && pr.lower_price.to_i > pr.max_price
-                  .lower-label 最低落札価格あり
-
-                - if pr.prompt_dicision_price
-                  .prompt_dicision_price_label 即売
-                  .prompt_dicision_price = number_to_currency(pr.prompt_dicision_price_with_tax)
-
-                .bids_couht_label 入札数
-                .bids_count = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
-
-                - unless pr.prompt_dicision?
-                  .remaining_time_label 残り時間
-                  .remaining_time = pr.remaining_time
-
-                .watch
-                  .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
-                    span.glyphicon.glyphicon-star.watch-star
-                    span.btn-content ウォッチ
+                  - unless pr.finished?
+                    = render "products/watch_02", id: pr.id, active: true
 
 
 
@@ -252,6 +256,9 @@
                 td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
                 td.price.absolute
                   .success_label 落札
+
+                  - if pr.top_image?
+                    .td-under.right = render "products/nitamono", id: pr.id
 
             - else
               tr
@@ -299,12 +306,11 @@
                   /   span.glyphicon.glyphicon-star.watch-star
                   /   span.btn-content ウォッチ
 
-                  / .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
-                  /   span.glyphicon.glyphicon-star.watch-star
-                  /   span.btn-content ウォッチ
+                  .td-under.right
+                    - if pr.top_image?
+                      = render "products/nitamono", id: pr.id
 
-                  .td-under.right = render "watch_02", id: pr.id, active: true
-
+                    = render "watch_02", id: pr.id, active: true
 
     - else
       .products_area

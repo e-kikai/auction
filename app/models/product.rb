@@ -248,6 +248,11 @@ class Product < ApplicationRecord
     product_images.first.try(:image).try(:thumb).try(:url) || ProductImage::NOIMAGE_THUMB
   end
 
+  ### トップ画像の有無 ###
+  def top_image?
+    product_images.first.present?
+  end
+
   ### 現在の最高入札と入札金額を比較 ###
   def versus(bid)
     # 自動延長処理
@@ -633,7 +638,7 @@ class Product < ApplicationRecord
   end
 
   ### 画像特徴ベクトル検索 ###
-  def self.vectors_search(id, limit=VECTORS_LIMIT)
+  def self.nitamono_search(id, limit=VECTORS_LIMIT)
     pids = status(STATUS[:success]).pluck(:id).uniq # 検索対象(出品中)の商品ID取得
 
     vectors = Rails.cache.read(VECTOR_CACHE) || {} # キャッシュからベクトル群を取得

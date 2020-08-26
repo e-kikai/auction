@@ -40,11 +40,13 @@
           - unless product.prompt_dicision?
             = product.remaining_time
 
-  = link_to "/products/#{product.id}/nitamono", class: "nitamono" do
-    span.glyphicon.glyphicon-camera
-  - unless product.finished?
-    / = link_to "/myauction/watches?id=#{product.id}", method: :post, class: "btn btn-default btn-watch" do
-    /   span.glyphicon.glyphicon-star.watch-star
-    /   span.btn-content ウォッチ
+  .watch_area
+    - if product.top_image?
+      = render "products/nitamono", id: product.id
 
-    = render "products/watch_02", id: product.id, active: true
+    - unless product.finished?
+      / = link_to "/myauction/watches?id=#{product.id}", method: :post, class: "btn btn-default btn-watch" do
+      /   span.glyphicon.glyphicon-star.watch-star
+      /   span.btn-content ウォッチ
+
+      = render "products/watch_02", id: product.id, active: true

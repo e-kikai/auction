@@ -1518,22 +1518,33 @@ tr.bronze {
   .watch_02 {
     position: absolute;
     right: 12px;
-    bottom: 68px;
+    bottom: 72px;
+    background: rgba(255, 255, 255, 0.75);
+    padding: 4px;
   }
 
   .nitamono {
     position: absolute;
     right: 12px;
     bottom: 112px;
+    background: rgba(255, 255, 255, 0.75);
+    padding: 4px;
+
   }
 }
 
+.tooltip {
+  position: absolute;
+}
+
 .watch_02 {
+  display: block;
+
   .glyphicon-star {
-    font-size: 32px;
+    font-size: 28px;
     color: #CCC;
-    text-shadow: #FFF 0px 0px 10px;
-    -webkit-text-stroke: #333 1px;
+    -webkit-text-stroke: #111 1px;
+    // text-shadow: #FFF 1px 1px 1px;
   }
 
   &.active .glyphicon-star {
@@ -1542,13 +1553,19 @@ tr.bronze {
 }
 
 .nitamono {
+  display: block;
+
   .glyphicon-camera {
-    font-size: 32px;
-    color: #F33;
-    text-shadow: #FFF 0px 0px 10px;
-    -webkit-text-stroke: #333 1px;
+    font-size: 28px;
+    color: #111;
+    // text-shadow: #FFF 1px 1px 1px;
   }
 }
+
+
+
+
+
 
 /// @ohashi 20200807 ///
 .navbar {
@@ -2143,6 +2160,7 @@ ui#footer_banners li {
     width: 60%;
     float: right;
 }
+
 .mobile-product .name {
     font-size: 1.5rem;
 }
@@ -2164,3 +2182,86 @@ ui#footer_banners li {
 }
 
 /// @ohashi 20200807 end ///
+
+
+.mobile-product {
+  padding: 8px 0;
+
+  .mobile-data-area {
+    float: right;
+    width: 62%;
+
+    .name,
+    .success_date {
+      float: none;
+      width: 100%;
+    }
+  }
+
+  .category-label,
+  .company-label,
+  .max_price_label,
+  .prompt_dicision_price_label,
+  .success_price_label {
+    width: 40%;
+    float: left;
+    clear: both;
+    margin-bottom: 2px;
+  }
+
+
+  .category,
+  .company,
+  .max_price,
+  .prompt_dicision_price,
+  .success_price {
+    width: 60%;
+    float: left;
+    text-align: right;
+  }
+
+  .bids_count_label{
+    width: 58px;
+    float: left;
+  }
+
+
+  .bids_count {
+    width: 30px;
+    float: left;
+  }
+
+  .remaining_time_label {
+    width: 72px;
+    float: left;
+  }
+
+  .remaining_time {
+    width: 42px;
+    float: left;
+  }
+
+  .mobile-button-area {
+    clear: both;
+    float: right;
+    margin-top: 8px;
+  }
+
+  .nitamono,
+  .watch_02 {
+    display: inline-block;
+    text-align: right;
+    margin-left: 16px;
+  }
+
+}
+
+
+.td-under.right {
+  .nitamono,
+  .watch_02 {
+    display: inline-block;
+    text-align: right;
+    margin-left: 16px;
+  }
+}
