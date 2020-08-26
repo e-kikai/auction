@@ -1,8 +1,20 @@
-- if user_signed_in? && current_user.watches.find_by(product_id: id).present?
-  - active == true
-- else
-  - active == false
+- unless product.finished?
 
-= link_to "/myauction/watches/toggle?id=#{id}", method: :post, remote: true, class: "watch_02 #{"active" if active == true}",
-  data: { pid: id, toggle: "tooltip", placement: "right", container: "html" }, title: "ウォッチリスト"  do
-  span.glyphicon.glyphicon-star
+  - if user_signed_in?
+    - watche_ids = current_user.watches.pluck(:product_id) if watche_ids.nil?
+
+    - if watche_ids.include?(product.id)
+      - act = "active"
+      - ti  = "ウォッチリストから削除"
+    - else
+      - act = ""
+      - ti  = "ウォッチリストに登録"
+
+    = link_to "/myauction/watches/toggle?id=#{product.id}", method: :post, remote: true, class: "watch_02 #{act}",
+      data: { pid: product.id, toggle: "tooltip", placement: "left", container: "body" }, title: ti  do
+      span.glyphicon.glyphicon-star
+
+  - else
+    = link_to "/users/sign_in", class: "watch_02",
+      data: { pid: product.id, toggle: "tooltip", placement: "left", container: "body" }, title: "ログインするとウォッチリストを利用できます"  do
+      span.glyphicon.glyphicon-star

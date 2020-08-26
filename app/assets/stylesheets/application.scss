@@ -2209,6 +2209,14 @@ ui#footer_banners li {
     margin-bottom: 2px;
   }
 
+  .prompt_dicision_price_label {
+    font-size: 14px;
+    padding: 1px 8px;
+    background: #3b3;
+    color: white;
+    text-align: center;
+  }
+
 
   .category,
   .company,
@@ -2221,30 +2229,43 @@ ui#footer_banners li {
   }
 
   .bids_count_label{
-    width: 58px;
-    float: left;
+    display: inline-block;
+
+    clear: both;
   }
 
-
   .bids_count {
-    width: 30px;
-    float: left;
+    display: inline-block;
+    margin: 0 16px 0 8px;
   }
 
   .remaining_time_label {
-    width: 72px;
-    float: left;
+    display: inline-block;
+
   }
 
   .remaining_time {
-    width: 42px;
-    float: left;
+    display: inline-block;
+    margin: 0 0 0 8px;
+    float: none;
+    width: auto;
   }
 
   .mobile-button-area {
     clear: both;
     float: right;
     margin-top: 8px;
+  }
+
+  .lower-label {
+    color: #999;
+    font-size: 80%;
+    font-weight: normal;
+    text-align: right;
+  }
+
+  .prompt_dicision_price {
+    font-size: 1.8rem;
   }
 
   .nitamono,

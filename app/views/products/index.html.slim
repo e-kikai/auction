@@ -191,14 +191,14 @@
                     .lower-label 最低落札価格あり
 
                   - if pr.prompt_dicision_price
-                    .prompt_dicision_price_label 即売
+                    .prompt_dicision_price_label 即売価格
                     .prompt_dicision_price = number_to_currency(pr.prompt_dicision_price_with_tax)
 
-                  .bids_count_label 入札数 :
+                  .bids_count_label 入札
                   .bids_count = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
 
                   - unless pr.prompt_dicision?
-                    .remaining_time_label 残り時間 :
+                    .remaining_time_label 残り時間
                     .remaining_time = pr.remaining_time
 
                   / .watch
@@ -208,13 +208,8 @@
 
 
                 .mobile-button-area
-                  - if pr.top_image?
-                    = render "products/nitamono", id: pr.id
-
-                  - unless pr.finished?
-                    = render "products/watch_02", id: pr.id, active: true
-
-
+                  = render "products/nitamono", product: pr
+                  = render "products/watch_02", product: pr, active: true
 
       .table-responsive.hidden-sm.hidden-xs
         table.product-table.table.table-striped.table-hover.table-condensed
@@ -257,8 +252,7 @@
                 td.price.absolute
                   .success_label 落札
 
-                  - if pr.top_image?
-                    .td-under.right = render "products/nitamono", id: pr.id
+                  .td-under.right = render "products/nitamono", product: pr
 
             - else
               tr
@@ -307,10 +301,8 @@
                   /   span.btn-content ウォッチ
 
                   .td-under.right
-                    - if pr.top_image?
-                      = render "products/nitamono", id: pr.id
-
-                    = render "watch_02", id: pr.id, active: true
+                    = render "products/nitamono", product: pr
+                    = render "products/watch_02", product: pr, active: true
 
     - else
       .products_area

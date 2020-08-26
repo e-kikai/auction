@@ -1,6 +1,6 @@
 $_watch = $('.watch_02[data-pid=<%= @product_id %>]')
-<% if @watch.soft_destroyed? %>
-  $_watch.removeClass("active")
+<% if @watch.soft_destroyed_at.present? %>
+  $_watch.removeClass("active").attr("data-original-title", "ウォッチリストに登録")
 <% else %>
-  $_watch.addClass("active")
+  $_watch.addClass("active").attr("data-original-title", "ウォッチリストから削除")
 <% end %>

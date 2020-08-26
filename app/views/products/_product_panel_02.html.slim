@@ -41,12 +41,11 @@
             = product.remaining_time
 
   .watch_area
-    - if product.top_image?
-      = render "products/nitamono", id: product.id
+    = render "products/nitamono", product: product
 
-    - unless product.finished?
+    / - unless product.finished?
       / = link_to "/myauction/watches?id=#{product.id}", method: :post, class: "btn btn-default btn-watch" do
       /   span.glyphicon.glyphicon-star.watch-star
       /   span.btn-content ウォッチ
 
-      = render "products/watch_02", id: product.id, active: true
+    = render "products/watch_02", product: product, active: true

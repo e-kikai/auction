@@ -36,7 +36,7 @@ class Myauction::WatchesController <  Myauction::ApplicationController
     @watch      = current_user.watches.find_by(product_id: @product_id)
 
     @res = if @watch.blank?
-      @watch = current_user.watches.new(product_id: @product_id)
+      @watch = current_user.watches.create(product_id: @product_id)
       :on
     else
       @watch.soft_destroy!

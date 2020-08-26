@@ -49,7 +49,7 @@ Rails.application.routes.draw do
     root to: "main#index"
     resources :bids,       only: [:index, :new, :create, :show]
     resources :watches,    only: [:index, :create, :destroy] do
-      member do
+      collection do
         post "toggle"
       end
     end
