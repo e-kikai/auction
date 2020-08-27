@@ -1,4 +1,4 @@
 - if product.top_image?
   = link_to "/products/#{product.id}/nitamono", class: "nitamono",
-    data: { toggle: "tooltip", container: "html", placement: "left" }, title: "似たものサーチ" do
+    data: { toggle: :tooltip, container: :html, placement: :left, trigger: :hover }, title: "似たものサーチ" do
     span.glyphicon.glyphicon-camera

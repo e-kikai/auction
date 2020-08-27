@@ -130,10 +130,17 @@ h1.product-title
         span.btn-content
           | この商品への入札はありませんでした。
 
-.button-center.text-left
-  = link_to "/products/#{@product.id}?r=bck", class: "btn btn-default" do
-    span.glyphicon.glyphicon-arrow-left
-    span.btn-content 商品詳細ページに戻る
+
+- if @nitamono_products.present?
+  .special-area
+    label
+      span.glyphicon.glyphicon-camera.check-icon
+      span.btn-content = "#{@product.name} と似た商品"
+    .panel.panel-default
+      .panel-body.toppage-contents
+        .toppage-scroll
+          - @nitamono_products.each do |pr|
+            = render "/main/product_panel", product: pr, r: :dtl_nms
 
 - if @popular_products.present?
   .special-area
@@ -145,5 +152,11 @@ h1.product-title
         .toppage-scroll
           - @popular_products.each do |pr|
             = render "/main/product_panel", product: pr, r: :dtl_sca
+
+.button-center.text-left
+  = link_to "/products/#{@product.id}?r=bck", class: "btn btn-default" do
+    span.glyphicon.glyphicon-arrow-left
+    span.btn-content 商品詳細ページに戻る
+
 
 = render "/main/ads_frames", okw: "#{@product.name}|#{@product.category.name}"

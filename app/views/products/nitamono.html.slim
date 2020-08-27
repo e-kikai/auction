@@ -38,10 +38,14 @@
 
 .row
   .col-md-12
-    = render "product_panel_02", product: @product, r: :src_pnl
-    .search-title
+    / = render "product_panel_02", product: @product, r: :src_pnl
+
+    = link_to "/products/#{@product.id}", target: "_blank", class: "nitamono_target" do
+      = image_tag(@product.thumb_url, srcset: {@product.product_images.first.try(:image).try(:view).try(:url) || @product.thumb_url => "2x"}, alt: @product.name)
+
+    .search-title.nitamono-title
       span.glyphicon.glyphicon-search
-      span.btn-content = "#{@product.name} に似ている商品"
+      span.btn-content = "で似たものサーチ"
       span.count = "#{@products.count}"
       span = " 件"
 

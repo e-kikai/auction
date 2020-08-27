@@ -9,10 +9,10 @@
       - ti = "ウォッチリストに登録"
 
     = link_to "/myauction/watches/toggle?id=#{product.id}", method: :post, remote: true, class: "watch_02 #{ac}",
-      data: { pid: product.id, toggle: "tooltip", placement: "left", container: "body" }, title: ti  do
+      data: { pid: product.id, toggle: :tooltip, container: :html, placement: :left, trigger: :hover }, title: ti  do
       span.glyphicon.glyphicon-star
 
   - else
     = link_to "/users/sign_in", class: "watch_02",
-      data: { pid: product.id, toggle: "tooltip", placement: "left", container: "body" }, title: "ログインするとウォッチリストを利用できます"  do
+      data: { pid: product.id, totoggle: :tooltip, container: :html, placement: :left, trigger: :hover, html: :true }, title: "ログインすると<br />ウォッチリストを利用できます"  do
       span.glyphicon.glyphicon-star

@@ -61,7 +61,17 @@
       span.btn-content このオークションは開始前です
 
 /// 終了後、現在開催中の商品リスト ///
-- if @product.finished? && @popular_products.present?
+- if @nitamono_products.present?
+  .special-area
+    label
+      span.glyphicon.glyphicon-camera.check-icon
+      span.btn-content = "#{@product.name} と似た商品"
+    .panel.panel-default
+      .panel-body.toppage-contents
+        .toppage-scroll
+          - @nitamono_products.each do |pr|
+            = render "/main/product_panel", product: pr, r: :dtl_nms
+- elsif @popular_products.present?
   .special-area
     label
       span.glyphicon.glyphicon-thumbs-up.check-icon
@@ -123,7 +133,7 @@ article
                 /   span.glyphicon.glyphicon-star.watch-star
                 /   span.btn-content ウォッチ
 
-                = render "products/watch_02", id: @product.id, active: true
+                = render "products/watch_02", product: @product
 
           /// ウォッチ、閲覧数 ///
           - if @product.unique_user_count > 0
@@ -334,6 +344,28 @@ article
               . = @product.returns
               . = @product.returns_comment
 
+  - if @nitamono_products.present?
+    .special-area
+      label
+        span.glyphicon.glyphicon-camera.check-icon
+        span.btn-content = "#{@product.name} と似た商品"
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @nitamono_products.each do |pr|
+              = render "/main/product_panel", product: pr, r: :dtl_nms
+
+  - if @popular_products.present?
+    .special-area
+      label
+        span.glyphicon.glyphicon-thumbs-up.check-icon
+        span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @popular_products.each do |pr|
+              = render "/main/product_panel", product: pr, r: :dtl_sca
+
   .description-area
     h4.product-description
       span.glyphicon.glyphicon-info-sign
@@ -347,27 +379,6 @@ article
       span.btn-content 落札事項
       span.product-caution 商品を落札された場合の注意事項です。入札を行う前に必ずお読みください。
     section = markdown(@product.note)
-
-- if @popular_products.present?
-  .special-area
-    label
-      span.glyphicon.glyphicon-thumbs-up.check-icon
-      span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
-    .panel.panel-default
-      .panel-body.toppage-contents
-        .toppage-scroll
-          - @popular_products.each do |pr|
-            = render "/main/product_panel", product: pr, r: :dtl_sca
-- elsif @vector_products.present?
-  .special-area
-    label
-      span.glyphicon.glyphicon-thumbs-up.check-icon
-      span.btn-content = "#{@product.name} と類似している商品"
-    .panel.panel-default
-      .panel-body.toppage-contents
-        .toppage-scroll
-          - @vector_products.each do |pr|
-            = render "/main/product_panel", product: pr, r: :dtl_vct
 
 = render "/main/ads_frames", okw: "#{@product.name}|#{@product.category.name}"
 

@@ -635,51 +635,66 @@ class Product < ApplicationRecord
     logger.debug "*** 7 : delete"
 
     self
+  rescue
+    logger.debug "*** X : rescue"
+    return
   end
 
-  ### 画像特徴ベクトル検索 ###
-  def self.nitamono_search(id, limit=VECTORS_LIMIT)
-    pids = status(STATUS[:success]).pluck(:id).uniq # 検索対象(出品中)の商品ID取得
+  ### 商品から似たものサーチ ###
+  def nitamono(limit=VECTORS_LIMIT)
+    logger.debug "top_image"
 
+    return [] unless top_image?
+    logger.debug "top_image2"
     vectors = Rails.cache.read(VECTOR_CACHE) || {} # キャッシュからベクトル群を取得
+    bucket  = Product.s3_bucket # S3バケット取得
+    logger.debug "bucket"
 
-    bucket = Product.s3_bucket # S3バケット取得
-
-    update_flag = false
-
-    # targetベクトル取得
-    logger.debug "check : #{S3_VECTORS_PATH}/vector_#{id}.npy"
-
+    ### ターゲットベクトル取得 ###
     target = if vectors[id].present?
-      logger.debug "caching : #{vectors[id]}"
-
       vectors[id]
     elsif bucket.object("#{S3_VECTORS_PATH}/vector_#{id}.npy").exists?
-      update_flag = true
-      # Npy.load("#{S3_VECTORS_PATH}/vector_#{id}.npy")
-      logger.debug "download and cache : #{S3_VECTORS_PATH}/vector_#{id}.npy"
       str = bucket.object("#{S3_VECTORS_PATH}/vector_#{id}.npy").get.body.read
       Npy.load_string(str)
     else
-      logger.debug "nil : #{S3_VECTORS_PATH}/vector_#{id}.npy"
-
       nil
     end
 
-    return false if target.blank?
-    logger.debug "target #{id} :: #{target}"
+    logger.debug target
 
+    return [] if target.nil?
+
+    Product.nitamono_search(target, id, limit)
+  end
+
+  ### 画像ファイルから検索 ###
+  def self.nitamono_by_image(image, limit=VECTORS_LIMIT)
+
+    ### 画像ファイルからベクトルを取得 ###
+
+    Product.nitamono_search(target, nil, limit)
+  end
+
+  def self.nitamono_search(target, id=nil, limit=VECTORS_LIMIT)
+    vectors = Rails.cache.read(VECTOR_CACHE) || {} # キャッシュからベクトル群を取得
+    bucket = Product.s3_bucket # S3バケット取得
+    update_flag = false
+
+    logger.debug "update_flag :: #{update_flag}"
 
     ### 各ベクトル比較 ###
+    pids = status(STATUS[:mix]).pluck(:id).uniq # 検索対象(出品中)の商品ID取得
+
     sorts = pids.map do |pid|
       ### ベクトルの取得 ###
-      pr_narray = if vectors[pid].present? # 既存
+      pr_narray = if vectors[pid].present? && vectors[pid] != ZERO_NARRAY # 既存
         vectors[pid]
       else # 新規(ファイルからベクトル取得して追加)
         update_flag = true
+        logger.debug "update_flag :: true"
         vectors[pid] = if bucket.object("#{S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
-          # Npy.load("#{S3_VECTORS_PATH}/vector_#{pid}.npy")
           logger.debug "download and cache : #{S3_VECTORS_PATH}/vector_#{pid}.npy"
+
           str = bucket.object("#{S3_VECTORS_PATH}/vector_#{pid}.npy").get.body.read
           Npy.load_string(str)
         else
@@ -688,10 +703,11 @@ class Product < ApplicationRecord
 
         vectors[pid]
       end
-      logger.debug "#{pid} :: #{pr_narray}"
+      # logger.debug "#{pid} :: #{pr_narray}"
+      # logger.debug "target :: #{target}"
 
       # ベクトル比較
-      if pid == id || pr_narray == ZERO_NARRAY || pr_narray == nil # ベクトルなし
+      if pid == id || pr_narray == ZERO_NARRAY || pr_narray.nil? # ベクトルなし
         nil
       else
         sub = pr_narray - target
@@ -706,8 +722,8 @@ class Product < ApplicationRecord
 
     # 結果を返す
     where(id: sorts.keys).sort_by { |pr| sorts[pr.id] }
-  end
 
+  end
 
   private
 

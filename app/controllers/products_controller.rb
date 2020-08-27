@@ -123,14 +123,6 @@ class ProductsController < ApplicationController
 
   # 入札履歴ページ
   def bids
-
-    # 人気商品
-    case rand(0..1)
-    when 1
-      @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
-    else
-      @vector_products = Product.vectors_search(@product.id, Product::NEW_MAX_COUNT)
-    end
   end
 
   def ads
@@ -154,7 +146,7 @@ class ProductsController < ApplicationController
   end
 
   def nitamono
-    @products = Product.nitamono_search(@product.id, Product::NEW_MAX_COUNT)
+    @products = @product.nitamono(Product::NEW_MAX_COUNT)
   end
 
   private
@@ -170,7 +162,7 @@ class ProductsController < ApplicationController
     @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
 
     ### 似たものサーチ ###
-    @nitamono_products = Product.nitamono_search(@product.id, Product::NEW_MAX_COUNT)
+    @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
   end
 
 end

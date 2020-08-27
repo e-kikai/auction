@@ -1526,7 +1526,7 @@ tr.bronze {
   .nitamono {
     position: absolute;
     right: 12px;
-    bottom: 112px;
+    bottom: 108px;
     background: rgba(255, 255, 255, 0.75);
     padding: 4px;
 
@@ -1537,23 +1537,32 @@ tr.bronze {
   position: absolute;
 }
 
+.watch-star {
+  color: #FF0;
+  -webkit-text-stroke: #333 1px;
+}
+
 .watch_02 {
   display: block;
+  width: 36px;
+  height: 36px;
 
   .glyphicon-star {
     font-size: 28px;
     color: #CCC;
-    -webkit-text-stroke: #111 1px;
+    -webkit-text-stroke: #333 1px;
     // text-shadow: #FFF 1px 1px 1px;
   }
 
   &.active .glyphicon-star {
-    color: #FF3;
+    color: #FF0;
   }
 }
 
 .nitamono {
   display: block;
+  width: 36px;
+  height: 36px;
 
   .glyphicon-camera {
     font-size: 28px;
@@ -1562,10 +1571,31 @@ tr.bronze {
   }
 }
 
+.nitamono_target {
+  top: 0;
+  left: 64px;
+  height: 122px;
+  width: 122px;
+  border: 1px solid whitesmoke;
+  display: block;
+  position: absolute;
 
+  img {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    object-fit: cover;
+  }
 
+}
 
+.nitamono-title {
+  margin-top: 96px;
 
+  .btn-content {
+    margin-left: 168px;
+  }
+}
 
 /// @ohashi 20200807 ///
 .navbar {
@@ -2274,7 +2304,6 @@ ui#footer_banners li {
     text-align: right;
     margin-left: 16px;
   }
-
 }
 
 
