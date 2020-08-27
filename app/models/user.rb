@@ -143,6 +143,12 @@ class User < ApplicationRecord
     watches.pluck(:product_id)
   end
 
+  def watch?(product_id)
+    @watche_ids = watches.pluck(:product_id) if @watche_ids.nil?
+
+    @watche_ids.include?(product_id)
+  end
+
   private
 
   def init_account

@@ -1,16 +1,14 @@
 - unless product.finished?
 
   - if user_signed_in?
-    - watche_ids = current_user.watches.pluck(:product_id) if watche_ids.nil?
-
-    - if watche_ids.include?(product.id)
-      - act = "active"
-      - ti  = "ウォッチリストから削除"
+    - if current_user.watch?(product.id)
+      - ac = "active"
+      - ti = "ウォッチリストから削除"
     - else
-      - act = ""
-      - ti  = "ウォッチリストに登録"
+      - ac = ""
+      - ti = "ウォッチリストに登録"
 
-    = link_to "/myauction/watches/toggle?id=#{product.id}", method: :post, remote: true, class: "watch_02 #{act}",
+    = link_to "/myauction/watches/toggle?id=#{product.id}", method: :post, remote: true, class: "watch_02 #{ac}",
       data: { pid: product.id, toggle: "tooltip", placement: "left", container: "body" }, title: ti  do
       span.glyphicon.glyphicon-star
 
