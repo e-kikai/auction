@@ -80,6 +80,10 @@ class Myauction::ProductsController < Myauction::ApplicationController
     #   render :new
     # elsif @product.save
     if @product.save
+
+      ### 画像特徴ベクトル変換 ###
+      @product.process_vector
+
       redirect_to "/myauction/", notice: "#{@product.name}を登録しました"
     else
       render :new
@@ -94,6 +98,9 @@ class Myauction::ProductsController < Myauction::ApplicationController
 
     cond = @product.dulation_start > Time.now ? 0 : 1
     if @product.update(product_params)
+      ### 画像特徴ベクトル変換 ###
+      @product.process_vector
+
       if cond < 1
         redirect_to "/myauction/products?cond=-1", notice: "#{@product.name}を変更しました"
       else
