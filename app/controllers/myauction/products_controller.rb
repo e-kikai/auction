@@ -89,7 +89,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
     #   render :new
     # end
 
-    ### Bemchmark : 画像特徴ベクトル変換 ###    
+    ### Bemchmark : 画像特徴ベクトル変換 ###
     @time = Benchmark.realtime do
       @product = current_user.products.new(product_params)
 
@@ -98,7 +98,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
       @res = @product.save
 
       ### 画像特徴ベクトル変換 ###
-      @product.process_vector
+      # @product.process_vector
     end
 
     if @res
