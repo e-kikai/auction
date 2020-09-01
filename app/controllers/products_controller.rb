@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :get_product,  only: [:show, :bids, :nitamono]
+  before_action :get_product,  only: [:show, :bids, :nitamono, :process_vector]
   before_action :get_populars, only: [:show, :bids]
 
   def index
@@ -147,6 +147,14 @@ class ProductsController < ApplicationController
 
   def nitamono
     @products = @product.nitamono(Product::NEW_MAX_COUNT)
+  end
+
+  def process_vector
+    if @product.process_vector
+      render plain: 'OK', status: 200
+    else
+      render plain: @product.errors.full_messages.join(' | '), status: 200
+    end
   end
 
   private

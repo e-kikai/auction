@@ -99,6 +99,10 @@ class Myauction::ProductsController < Myauction::ApplicationController
 
       ### 画像特徴ベクトル変換 ###
       # @product.process_vector
+      if params[:images].present?
+        cmd = "curl -s -X GET #{root_url}/products/#{@product.id}/process_vector"
+        o, e, s = Open3.popen3(cmd)
+      end
     end
 
     if @res
