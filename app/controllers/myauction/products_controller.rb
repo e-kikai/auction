@@ -73,21 +73,40 @@ class Myauction::ProductsController < Myauction::ApplicationController
   # end
 
   def create
-    @product = current_user.products.new(product_params)
-    params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
-
-    # if params[:back]
+    # @product = current_user.products.new(product_params)
+    # params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
+    #
+    # # if params[:back]
+    # #   render :new
+    # # elsif @product.save
+    # if @product.save
+    #
+    #   ### 画像特徴ベクトル変換 ###
+    #   @product.process_vector
+    #
+    #   redirect_to "/myauction/", notice: "#{@product.name}を登録しました"
+    # else
     #   render :new
-    # elsif @product.save
-    if @product.save
+    # end
+
+    ### Bemchmark : 画像特徴ベクトル変換 ###
+    @time = Benchmark.realtime do
+      @product = current_user.products.new(product_params)
+
+      params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
+
+      res = @product.save
 
       ### 画像特徴ベクトル変換 ###
       @product.process_vector
+    end
 
-      redirect_to "/myauction/", notice: "#{@product.name}を登録しました"
+    if res
+      redirect_to "/myauction/", notice: "#{@product.name}を登録しました : #{@time}"
     else
       render :new
     end
+
   end
 
   def edit
