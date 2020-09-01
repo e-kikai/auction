@@ -89,19 +89,19 @@ class Myauction::ProductsController < Myauction::ApplicationController
     #   render :new
     # end
 
-    ### Bemchmark : 画像特徴ベクトル変換 ###
+    ### Bemchmark : 画像特徴ベクトル変換 ###    
     @time = Benchmark.realtime do
       @product = current_user.products.new(product_params)
 
       params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
 
-      res = @product.save
+      @res = @product.save
 
       ### 画像特徴ベクトル変換 ###
       @product.process_vector
     end
 
-    if res
+    if @res
       redirect_to "/myauction/", notice: "#{@product.name}を登録しました : #{@time}"
     else
       render :new
