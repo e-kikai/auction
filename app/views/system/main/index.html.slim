@@ -49,6 +49,23 @@
           li = link_to "/letter_opener", target: "_blank" do
             span.glyphicon.glyphicon-envelope
             span.btn-content letter_opener
+
+    .panel.panel-default
+      .panel-heading
+        span.glyphicon.glyphicon-camera
+        span.btn-content 似たものサーチ管理
+      ul.nav.nav-pills.nav-stacked
+        li = link_to "/system/total/nitamono_daily" do
+          span.glyphicon.glyphicon-calendar
+          span.btn-content 似たものサーチ履歴集計(日別)
+        li = link_to "/system/total/nitamono_monthly" do
+          span.glyphicon.glyphicon-calendar
+          span.btn-content 似たものサーチ履歴集計(月別)
+        li = link_to "/system/products/all_process_vector", method: :patch do
+          span.text-danger.glyphicon.glyphicon-fire
+          span.btn-content 画像特徴ベクトル一括抽出
+
+
   .col-md-3
     .panel.panel-default
       .panel-heading

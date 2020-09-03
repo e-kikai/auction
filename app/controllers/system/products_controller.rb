@@ -1,8 +1,8 @@
 class System::ProductsController < System::ApplicationController
   include Exports
 
-  before_action :company_selectors, exsist: [:image]
-  before_action :date_selectors,    exsist: [:products_monthly]
+  before_action :company_selectors, exsist: [:image, :all_process_vector]
+  before_action :date_selectors,    exsist: [:products_monthly, :all_process_vector]
 
   def index
     @date    = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
@@ -84,6 +84,13 @@ class System::ProductsController < System::ApplicationController
     respond_to do |format|
       format.csv { export_csv "products_image_#{Time.now.strftime('%Y%m%d')}.csv" }
     end
+  end
+
+  def all_process_vector
+    @products = Product.joins(:product_images).includes(:product_images).where(template: false).each { |pr| pr.process_vector }
+
+    redirect_to "/system/", notice: "すべての画像特徴ベクトル変換処理を行いました"
+
   end
 
   private

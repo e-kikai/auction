@@ -130,6 +130,7 @@ Rails.application.routes.draw do
         get 'finished_month'
         get 'results'
         get 'image'
+        patch 'all_process_vector'
       end
     end
 
@@ -152,12 +153,14 @@ Rails.application.routes.draw do
     end
     get "trades/:product_id/:owner_id" => "trades#show"
 
-    resources :total,        only: [:index] do
+    resources :total, only: [:index] do
       collection do
         get 'products'
         get 'products_monthly'
         get 'formula'
         get 'categories'
+        get 'nitamono_daily'
+        get 'nitamono_monthly'
       end
     end
 

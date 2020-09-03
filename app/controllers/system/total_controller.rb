@@ -2,7 +2,7 @@ class System::TotalController < System::ApplicationController
   include Exports
 
   before_action :company_selectors, exsist: [:index]
-  before_action :date_selectors,    exsist: [:products_monthly]
+  before_action :date_selectors,    exsist: [:products_monthly, :nitamono_monthly]
 
   def index
     @companies = User.companies.order(:id)
@@ -161,6 +161,49 @@ class System::TotalController < System::ApplicationController
       "出品件数"   => :now,
       "開始数"     => :start,
     }
+  end
+
+  def nitamono_daily
+    gro = "DATE(created_at)"
+
+    ### 詳細リンク集計 ###
+    detail_logs         = DetailLog.where(where_cr).group(gro)
+
+    @detail_log_counts  = detail_logs.count
+    @detail_user_counts = detail_logs.distinct.count(:user_id)
+
+    same_categories     = detail_logs.where(r: "dtl_sca")
+    @sca_counts         = same_categories.count
+    @sca_user_counts    = same_categories.distinct.count(:user_id)
+
+    nitamono_recommends = detail_logs.where(r: "dtl_nmr")
+    @nmr_counts         = nitamono_recommends.count
+    @nmr_user_counts    = nitamono_recommends.distinct.count(:user_id)
+
+
+    ### 検索集計 ###
+
+  end
+
+
+  def nitamono_monthly
+    @monthes = (Date.new(2018, 3, 1) .. endd).select{ |date| date.day == 1}.map { |d| d.strftime('%Y/%m')}
+    gro      = "to_char(created_at, 'YYYY/MM')"
+
+    ### 詳細リンク集計 ###
+    detail_logs         = DetailLog.group(gro)
+
+    @detail_log_counts  = detail_logs.count
+    @detail_user_counts = detail_logs.distinct.count(:user_id)
+
+    same_categories     = detail_logs.where(r: "dtl_sca")
+    @sca_counts         = same_categories.count
+    @sca_user_counts    = same_categories.distinct.count(:user_id)
+
+    nitamono_recommends = detail_logs.where(r: "dtl_nmr")
+    @nmr_counts         = nitamono_recommends.count
+    @nmr_user_counts    = nitamono_recommends.distinct.count(:user_id)
+
   end
 
   private
