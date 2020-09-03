@@ -1,0 +1,75 @@
+- set_meta_tags title: "似たものサーチ履歴集計(日別)"
+- breadcrumb :system_something, "似たものサーチ履歴集計(日別)"
+
+.row
+  .col-lg-12.col-md-12.col-sm-12
+    .table-responsive
+      table.table.table-hover.table-condensed.table-striped.product-table
+        thead
+          tr
+            th.num.sepa 日付
+            th.num 検索総数
+            th.num.sepa 似たもの<br />サーチ数
+            th.num 検索<br />総人数
+            th.num.sepa 似たもの<br />サーチ人数
+            th.num 詳細閲覧<br />総数
+            th.num 似たものサーチ<br />クリック数
+            th.num 同カテゴリ<br />クリック数
+            th.num.sepa 似たもの<br />クリック数
+            th.num 詳細閲覧<br />総人数
+            th.num 似たものサーチ<br />クリック人数
+            th.num 同カテゴリ<br />クリック人数
+            th.num 似た商品<br />クリック人数
+
+        - (@date.beginning_of_month..@date.end_of_month).each do |day|
+
+          - dow = case when day == Date.today; "success" when day.strftime('%w') == '0'; 'danger' when day.strftime('%w') == '6'; "info" end
+
+          tr class=dow
+            td.num.sepa = I18n.l(day, format: "%e (%a)")
+            td.num = number_with_delimiter(@search_log_counts[day])
+            td.num.sepa = number_with_delimiter(@nms_counts[day])
+            td.num = number_with_delimiter(@search_user_counts[day])
+            td.num.sepa = number_with_delimiter(@nms_user_counts[day])
+
+            td.num = number_with_delimiter(@detail_log_counts[day])
+            td.num = number_with_delimiter(@nms_counts[day])
+            td.num = number_with_delimiter(@sca_counts[day])
+            td.num.sepa = number_with_delimiter(@nmr_counts[day])
+            td.num = number_with_delimiter(@detail_user_counts[day])
+            td.num = number_with_delimiter(@nms_user_counts[day])
+            td.num = number_with_delimiter(@sca_user_counts[day])
+            td.num = number_with_delimiter(@nmr_user_counts[day])
+
+        thead
+          tr
+            th.num.sepa 日付
+            th.num 検索総数
+            th.num.sepa 似たもの<br />サーチ数
+            th.num 検索<br />総人数
+            th.num.sepa 似たもの<br />サーチ人数
+            th.num 詳細閲覧<br />総数
+            th.num 似たものサーチ<br />クリック数
+            th.num 同カテゴリ<br />クリック数
+            th.num.sepa 似たもの<br />クリック数
+            th.num 詳細閲覧<br />総人数
+            th.num 似たものサーチ<br />クリック人数
+            th.num 同カテゴリ<br />クリック人数
+            th.num 似た商品<br />クリック人数
+
+
+        tfoot
+          tr
+            th.num.sepa 合計
+            td.num = number_with_delimiter(@search_log_counts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@nms_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@search_user_counts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@nms_user_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@detail_log_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@nms_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@sca_counts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@nmr_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@detail_user_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@nms_user_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@sca_user_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@nmr_user_counts.sum { |k, v| v.to_i })

@@ -2,19 +2,20 @@
 #
 # Table name: search_logs
 #
-#  id          :bigint           not null, primary key
-#  host        :string
-#  ip          :string
-#  keywords    :string
-#  r           :string           default(""), not null
-#  referer     :string
-#  ua          :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  category_id :bigint
-#  company_id  :integer
-#  search_id   :bigint
-#  user_id     :bigint
+#  id                  :bigint           not null, primary key
+#  host                :string
+#  ip                  :string
+#  keywords            :string
+#  r                   :string           default(""), not null
+#  referer             :string
+#  ua                  :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  category_id         :bigint
+#  company_id          :integer
+#  nitamono_product_id :bigint
+#  search_id           :bigint
+#  user_id             :bigint
 #
 # Indexes
 #
@@ -26,15 +27,16 @@
 class SearchLog < ApplicationRecord
   belongs_to :user,     required: false
   belongs_to :category, required: false
-  belongs_to :company,  class_name: "User", required: false
+  belongs_to :company,  class_name: "User",   required: false
   belongs_to :search,   required: false
+  belongs_to :nitamono_product, class_name: "Product", required: false
 
   before_save :check_robot
 
   def link_source
     DetailLog.link_source(r, referer)
   end
-  
+
   private
 
   def check_robot

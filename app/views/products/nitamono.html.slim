@@ -21,6 +21,11 @@
 
 .row
   .col-md-12
+    /// ログ用検索パラメータ
+    = hidden_field_tag :nitamono_product_id, @product.id
+    = hidden_field_tag :referer,             request.referer
+    = hidden_field_tag :r,                   params[:r]
+
     / = render "product_panel_02", product: @product, r: :src_pnl
 
     = link_to "/products/#{@product.id}", target: "_blank", class: "nitamono_target" do
@@ -34,6 +39,6 @@
 
     .products_area
       - @products.each do |pr|
-        = render "product_panel_02", product: pr, r: :mns_pnl
+        = render "product_panel_02", product: pr, r: :nms_pnl
 
   / = render "/main/ads_frames", okw: @product.name

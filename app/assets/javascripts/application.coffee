@@ -51,6 +51,16 @@ $(document).on 'turbolinks:load', ->
         # success:  (data, status, xhr)   -> alert status
         # error:    (xhr,  status, error) -> alert status
 
+    ### 似たものサーチログ ###
+    if $("body").data("controller") == "products" && $("body").data("action") == "nitamono"
+      $.ajax
+        async:    true
+        url:      "/search_logs/"
+        type:     'POST',
+        dataType: 'json',
+        data :    { nitamono_product_id : $('#nitamono_product_id').val(),r : $('#r').val(), referer : $('#referer').val() },
+        timeout:  3000,
+
     ### トップページログ ###
     if $("body").data("controller") == "main" && $("body").data("action") == "index"
       $.ajax
@@ -126,6 +136,7 @@ $(document).on 'turbolinks:load', ->
     console.log($(".sm-close").collapse('hide'))
 
   # tooltip
+  $('.tooltip').remove()
   $('[data-toggle="tooltip"]').tooltip()
 
 

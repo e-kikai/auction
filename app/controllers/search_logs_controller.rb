@@ -8,6 +8,9 @@ class SearchLogsController < ApplicationController
       keywords:    params[:keywords],
       search_id:   params[:search_id],
       user_id:    user_signed_in? ? current_user.id : nil,
+      
+      nitamono_product_id: params[:nitamono_product_id],
+
       host:       (Resolv.getname(ip) rescue ""),
       ip:          ip,
       r:           params[:r],

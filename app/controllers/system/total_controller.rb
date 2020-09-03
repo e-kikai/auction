@@ -167,7 +167,7 @@ class System::TotalController < System::ApplicationController
     gro = "DATE(created_at)"
 
     ### 詳細リンク集計 ###
-    detail_logs         = DetailLog.where(where_cr).group(gro)
+    detail_logs         = DetailLog.where(@where_cr).group(gro)
 
     @detail_log_counts  = detail_logs.count
     @detail_user_counts = detail_logs.distinct.count(:user_id)
@@ -180,13 +180,24 @@ class System::TotalController < System::ApplicationController
     @nmr_counts         = nitamono_recommends.count
     @nmr_user_counts    = nitamono_recommends.distinct.count(:user_id)
 
+    to_nitamono          = detail_logs.where("r LIKE '%nms%'")
+    @to_nms_counts       = to_nitamono.count
+    @to_nms_user_counts  = to_nitamono.distinct.count(:user_id)
 
     ### 検索集計 ###
+    search_logs         = SearchLog.where(@where_cr).group(gro)
 
+    @search_log_counts  = search_logs.count
+    @search_user_counts = search_logs.distinct.count(:user_id)
+
+    nitamono_searches   = search_logs.where.not(nitamono_product_id: nil)
+    @nms_counts         = nitamono_searches.count
+    @nms_user_counts    = nitamono_searches.distinct.count(:user_id)
   end
 
 
   def nitamono_monthly
+    endd     = Product.maximum(:dulation_end)
     @monthes = (Date.new(2018, 3, 1) .. endd).select{ |date| date.day == 1}.map { |d| d.strftime('%Y/%m')}
     gro      = "to_char(created_at, 'YYYY/MM')"
 
@@ -203,6 +214,20 @@ class System::TotalController < System::ApplicationController
     nitamono_recommends = detail_logs.where(r: "dtl_nmr")
     @nmr_counts         = nitamono_recommends.count
     @nmr_user_counts    = nitamono_recommends.distinct.count(:user_id)
+
+    to_nitamono          = detail_logs.where("r LIKE '%nms%'")
+    @to_nms_counts       = to_nitamono.count
+    @to_nms_user_counts  = to_nitamono.distinct.count(:user_id)
+
+    ### 検索集計 ###
+    search_logs         = SearchLog.group(gro)
+
+    @search_log_counts  = search_logs.count
+    @search_user_counts = search_logs.distinct.count(:user_id)
+
+    nitamono_searches   = search_logs.where.not(nitamono_product_id: nil)
+    @nms_counts         = nitamono_searches.count
+    @nms_user_counts    = nitamono_searches.distinct.count(:user_id)
 
   end
 

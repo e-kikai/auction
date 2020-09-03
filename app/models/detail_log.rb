@@ -36,7 +36,7 @@ class DetailLog < ApplicationRecord
     "win" => "入札通知", "los" => "高値更新", "csl" => "キャンセル", "suc" => "落札通知", "trd" => "取引通知",
     "rmd" => "リマインダ",
     "pnl" => "パネル表示", "lst" => "リスト表示",
-    "nms" => "似たものサーチ", "nmr" => "似たものレコメンド",
+    "nms" => "似たものサーチ", "nmr" => "似た商品", "cnw" => "カテゴリ別新着",
     "cmp" => "Mailchimp", "mailchimp" => "Mailchimp",
     "machinelife" => "マシンライフ", "dst" => "デッドストック", "ekikai" => "e-kikai",
   }
