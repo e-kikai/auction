@@ -39,6 +39,11 @@ crumb :products_show do |pr|
   parent :category, pr.category
 end
 
+crumb :products_nitamono do |pr|
+  link   "似たものサーチ", "/products/#{pr.id}/nitamono"
+  parent :products_show, pr
+end
+
 crumb :products_bids do |pr|
   link   "入札履歴", "/products/#{pr.id}/bids"
   parent :products_show, pr

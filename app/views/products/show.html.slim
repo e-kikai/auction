@@ -70,7 +70,7 @@
       .panel-body.toppage-contents
         .toppage-scroll
           - @nitamono_products.each do |pr|
-            = render "/main/product_panel", product: pr, r: :dtl_nms
+            = render "/main/product_panel", product: pr, r: :dtl_nmr
 - elsif @popular_products.present?
   .special-area
     label
@@ -353,7 +353,7 @@ article
         .panel-body.toppage-contents
           .toppage-scroll
             - @nitamono_products.each do |pr|
-              = render "/main/product_panel", product: pr, r: :dtl_nms
+              = render "/main/product_panel", product: pr, r: :dtl_nmr
 
   - if @popular_products.present?
     .special-area

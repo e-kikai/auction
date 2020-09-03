@@ -36,6 +36,7 @@ class DetailLog < ApplicationRecord
     "win" => "入札通知", "los" => "高値更新", "csl" => "キャンセル", "suc" => "落札通知", "trd" => "取引通知",
     "rmd" => "リマインダ",
     "pnl" => "パネル表示", "lst" => "リスト表示",
+    "nms" => "似たものサーチ", "nmr" => "似たものレコメンド"
     "cmp" => "Mailchimp", "mailchimp" => "Mailchimp",
     "machinelife" => "マシンライフ", "dst" => "デッドストック", "ekikai" => "e-kikai",
   }
@@ -75,6 +76,8 @@ class DetailLog < ApplicationRecord
       when /\/www\.mnok\.net\/(r=.*)?$/;            "トップページ"
       when /\/www\.mnok\.net\/products(\?)?/;       "検索結果"
       when /\/www\.mnok\.net\/products\/[0-9]/;     "詳細"
+      when /\/www\.mnok\.net\/products\/[0-9]+\/nitamono/; "似たものサーチ"
+
       when /\/www\.mnok\.net\/myauction\/(\?)?/;    "マイ・オークション"
       when /\/www\.mnok\.net\/helps/;               "ヘルプ"
       when /\/www\.mnok\.net\/news/;                "新着商品"

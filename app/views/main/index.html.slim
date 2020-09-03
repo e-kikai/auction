@@ -121,6 +121,22 @@
             p = link_to "利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
             p = link_to ">> ヘルプ一覧", "/helps"
 
+        //// SNSボタン ///
+        .sns-area
+          = link_to "http://www.facebook.com/sharer.php?u=#{root_url}", target: "_blank", class: "facebook-button" do
+            = image_tag "fb_icon.png", alt: "facebook"
+            span シェア
+
+          = link_to "http://twitter.com/share?hashtags=ものオク&text=ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！&url=#{root_url}", target: "_blank", class: "twitter-button" do
+            = image_tag "twitter_icon.png", alt: "Twitter"
+            span Tweet
+
+          = link_to "LINEで送る", "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！ #{root_url}",target: "_blank", class: "line-button", alt: "LINE"
+
+          = link_to "RSS", "/rss", target: "_blank", style: "background:#f39800;"
+
+        .twitter-area
+          <a class="twitter-timeline" data-lang="ja" data-height="400" data-link-color="#981CEB" href="https://twitter.com/mnok_official?ref_src=twsrc%5Etfw">Tweets by mnok_official</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
     - if Rails.env == "production"
       .col-md-7.col-sm-8.col-xs-12
@@ -313,24 +329,6 @@
 
           .thumbnail.search-panel style="border:0;"
             = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
-
-
-        //// SNSボタン ///
-        .sns-area
-          = link_to "http://www.facebook.com/sharer.php?u=#{root_url}", target: "_blank", class: "facebook-button" do
-            = image_tag "fb_icon.png", alt: "facebook"
-            span シェア
-
-          = link_to "http://twitter.com/share?hashtags=ものオク&text=ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！&url=#{root_url}", target: "_blank", class: "twitter-button" do
-            = image_tag "twitter_icon.png", alt: "Twitter"
-            span Tweet
-
-          = link_to "LINEで送る", "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！ #{root_url}",target: "_blank", class: "line-button", alt: "LINE"
-
-          = link_to "RSS", "/rss", target: "_blank", style: "background:#f39800;"
-
-        .twitter-area
-          <a class="twitter-timeline" data-lang="ja" data-height="400" data-link-color="#981CEB" href="https://twitter.com/mnok_official?ref_src=twsrc%5Etfw">Tweets by mnok_official</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
   - unless Rails.env.production?
     section
