@@ -87,7 +87,7 @@ class System::ProductsController < System::ApplicationController
   end
 
   def all_process_vector
-    @products = Product.joins(:product_images).includes(:product_images).where(template: false).each { |pr| pr.process_vector }
+    @products = Product.joins(:product_images).includes(:product_images).where(template: false).order(id: :desc).each { |pr| pr.process_vector }
 
     redirect_to "/system/", notice: "すべての画像特徴ベクトル変換処理を行いました"
 

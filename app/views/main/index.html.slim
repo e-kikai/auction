@@ -286,7 +286,7 @@
       .col-md-9.col-sm-9.col-xs-12
         - @roots.each do |ca|
           - ca.children.order(:order_no).each do |ca2|
-            - ca_products = Product.search(category_id_in: ca2.subtree_ids).result.order(dulation_start: :desc).limit(10)
+            - ca_products = Product.search(category_id_in: ca2.subtree_ids).result.status(Product::STATUS[:start]).order(dulation_start: :desc).limit(10)
             - if ca_products.present?
               .toppage-news-area
                 label.topppage-category-title

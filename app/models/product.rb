@@ -642,13 +642,10 @@ class Product < ApplicationRecord
 
   ### 商品から似たものサーチ ###
   def nitamono(limit=VECTORS_LIMIT)
-    logger.debug "top_image"
+    return [] unless top_image? # 画像の有無チェック
 
-    return [] unless top_image?
-    logger.debug "top_image2"
     vectors = Rails.cache.read(VECTOR_CACHE) || {} # キャッシュからベクトル群を取得
     bucket  = Product.s3_bucket # S3バケット取得
-    logger.debug "bucket"
 
     ### ターゲットベクトル取得 ###
     target = if vectors[id].present?
@@ -659,8 +656,6 @@ class Product < ApplicationRecord
     else
       nil
     end
-
-    logger.debug target
 
     return [] if target.nil?
 
@@ -683,7 +678,7 @@ class Product < ApplicationRecord
     logger.debug "update_flag :: #{update_flag}"
 
     ### 各ベクトル比較 ###
-    pids = status(STATUS[:mix]).pluck(:id).uniq # 検索対象(出品中)の商品ID取得
+    pids = status(STATUS[:start]).pluck(:id).uniq # 検索対象(出品中)の商品ID取得
 
     sorts = pids.map do |pid|
       ### ベクトルの取得 ###
@@ -691,9 +686,7 @@ class Product < ApplicationRecord
         vectors[pid]
       else # 新規(ファイルからベクトル取得して追加)
         update_flag = true
-        logger.debug "update_flag :: true"
         vectors[pid] = if bucket.object("#{S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
-          logger.debug "download and cache : #{S3_VECTORS_PATH}/vector_#{pid}.npy"
 
           str = bucket.object("#{S3_VECTORS_PATH}/vector_#{pid}.npy").get.body.read
           Npy.load_string(str)
@@ -703,8 +696,6 @@ class Product < ApplicationRecord
 
         vectors[pid]
       end
-      # logger.debug "#{pid} :: #{pr_narray}"
-      # logger.debug "target :: #{target}"
 
       # ベクトル比較
       if pid == id || pr_narray == ZERO_NARRAY || pr_narray.nil? # ベクトルなし

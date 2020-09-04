@@ -61,26 +61,27 @@
       span.btn-content このオークションは開始前です
 
 /// 終了後、現在開催中の商品リスト ///
-- if @nitamono_products.present?
-  .special-area
-    label
-      span.glyphicon.glyphicon-camera.check-icon
-      span.btn-content = "#{@product.name} と似た商品"
-    .panel.panel-default
-      .panel-body.toppage-contents
-        .toppage-scroll
-          - @nitamono_products.each do |pr|
-            = render "/main/product_panel", product: pr, r: :dtl_nmr
-- elsif @popular_products.present?
-  .special-area
-    label
-      span.glyphicon.glyphicon-thumbs-up.check-icon
-      span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
-    .panel.panel-default
-      .panel-body.toppage-contents
-        .toppage-scroll
-          - @popular_products.each do |pr|
-            = render "/main/product_panel", product: pr, r: :dtl_sca
+- if @product.finished? || @product.before?
+  - if @nitamono_products.present?
+    .special-area
+      label
+        span.glyphicon.glyphicon-camera.check-icon
+        span.btn-content = "#{@product.name} と似た商品"
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @nitamono_products.each do |pr|
+              = render "/main/product_panel", product: pr, r: :dtl_nmr
+  - elsif @popular_products.present?
+    .special-area
+      label
+        span.glyphicon.glyphicon-thumbs-up.check-icon
+        span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @popular_products.each do |pr|
+              = render "/main/product_panel", product: pr, r: :dtl_sca
 
 article
   h1.product-title
