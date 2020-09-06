@@ -2004,6 +2004,79 @@ a.btn.btn-warning {
 .mobile-product .max_price {
     font-size: 1.8rem;
 }
+
+.glyphicon-camera:before {
+    font-size: 70%;
+}
+.glyphicon-star:before {
+    font-size: 70%;
+}
+.thumbnail.product-pannel_02 .nitamono {
+    border-radius: 5px;
+    padding: 0;
+    bottom: 110px;
+}
+.thumbnail.product-pannel_02 .watch_02 {
+    border-radius: 5px;
+    padding: 0;
+}
+.nitamono_target img {
+    border: 5px solid #268902;
+}
+.nitamono_target img:hover {
+    opacity: 1.0;
+}
+.product-description {
+    background-color: #d3d3d3;
+    font-size: 110%;
+    padding: 0.5em;
+}
+.panel.panel-default {
+    border-color: #258a01;
+}
+.thumbnail.product-pannel {
+    height: 172px;
+    text-align: center;
+}
+.toppage-contents {
+    height: 226px;
+}
+.thumbnail.product-pannel {
+    height: 212px;
+    text-align: center;
+}
+.thumbnail.product-pannel img {
+    max-width: 168px;
+    max-height: 168px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    object-fit: cover;
+    border: 1px solid #fff;
+}
+.thumbnail.product-pannel .price {
+    text-align: center;
+    width: 100%;
+}
+.thumbnail.product-pannel a:hover {
+    background: #fff;
+    text-decoration: none;
+    border: 1px solid #fff;
+    opacity: 0.8;
+}
+.special-area label {
+    font-size: 120%;
+}
+.special-area label .glyphicon-camera:before {
+    font-size: 100%;
+}
+.special-area label .glyphicon-thumbs-up:before {
+    font-size: 100%;
+}
 @media (min-width:768px){
 .col-md-7 {
     width: 60.3333333333%;
@@ -2190,7 +2263,6 @@ ui#footer_banners li {
     width: 60%;
     float: right;
 }
-
 .mobile-product .name {
     font-size: 1.5rem;
 }
@@ -2199,15 +2271,67 @@ ui#footer_banners li {
 .thumbnail.product-pannel_02 {
     min-height: 255px;
 }
+.nitamono-title {
+    margin-top: 130px;
+}
+.nitamono_target {
+    left: 15px;
+}
+.nitamono-title .btn-content {
+    margin-left: 0;
+}
+.thumbnail.product-pannel_02 .nitamono {
+    bottom: 120px;
+    right: 6px;
+}
+.thumbnail.product-pannel_02 .watch_02 {
+    bottom: 82px;
+    right: 6px;
+}
 }
 @media (max-width:375px){
 .thumbnail.product-pannel_02 {
     min-height: 235px;
 }
+.nitamono-title {
+    margin-top: 130px;
+}
+.nitamono_target {
+    left: 15px;
+}
+.nitamono-title .btn-content {
+    margin-left: 0;
+}
+.thumbnail.product-pannel_02 .nitamono {
+    bottom: 125px;
+    right: 6px;
+}
+.thumbnail.product-pannel_02 .watch_02 {
+    bottom: 87px;
+    right: 6px;
+}
+
 }
 @media (max-width:320px){
 .thumbnail.product-pannel_02 {
     min-height: 210px;
+}
+.nitamono-title {
+    margin-top: 130px;
+}
+.nitamono_target {
+    left: 15px;
+}
+.nitamono-title .btn-content {
+    margin-left: 0;
+}
+.thumbnail.product-pannel_02 .nitamono {
+    bottom: 120px;
+    right: 6px;
+}
+.thumbnail.product-pannel_02 .watch_02 {
+    bottom: 82px;
+    right: 6px;
 }
 }
 
