@@ -1256,9 +1256,15 @@ dl.star-dl {
 .filtering-form {
   margin-bottom: 8px;
 
+  h4,
   input,
-  select {
+  select,
+  button {
     margin-right: 4px;
+  }
+
+  h4 {
+    display: inline-block;
   }
 }
 /// system ///
@@ -1936,14 +1942,14 @@ ui#footer_banners li img {
     font-size: 25px;
     border-bottom: 2px dotted #258a01;
 }
-.btn-warning {
+.btn-more {
     background-color: whitesmoke;
     color: #333;
     border: none;
     position: relative;
     padding: 1rem 0 0 0.8rem !important;
 }
-a.btn.btn-warning:before {
+a.btn.btn-more:before {
     content: '';
     height: 0;
     width: 0;
@@ -1955,11 +1961,11 @@ a.btn.btn-warning:before {
     top: 1.2em;
     left: 0;
 }
-a.btn.btn-warning {
+a.btn.btn-more {
     float: right;
     margin-right: 1rem;
 }
-.btn-warning:hover {
+.btn-more:hover {
     color: #333;
     background-color: whitesmoke;
     opacity: 0.5;
@@ -2005,10 +2011,10 @@ a.btn.btn-warning {
     font-size: 1.8rem;
 }
 
-.glyphicon-camera:before {
+.watch_area .glyphicon-camera:before {
     font-size: 70%;
 }
-.glyphicon-star:before {
+.watch_area .glyphicon-star:before {
     font-size: 70%;
 }
 .thumbnail.product-pannel_02 .nitamono {
@@ -2039,7 +2045,7 @@ a.btn.btn-warning {
     text-align: center;
 }
 .toppage-contents {
-    height: 226px;
+    height: 240px;
 }
 .thumbnail.product-pannel {
     height: 212px;
@@ -2230,7 +2236,7 @@ select.form-control.sort_select {
     font-size: 18px;
     line-height: 1.5em;
 }
-.toppage-news-area label.topppage-category-title a.btn.btn-warning {
+.toppage-news-area label.topppage-category-title a.btn.btn-more {
     padding: 3px 6px;
     font-size: 1.2rem;
 }

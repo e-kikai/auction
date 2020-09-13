@@ -4,8 +4,13 @@
 .row
   .col-md-12.col-sm-12
     = form_tag("/system/users/total", method: "get", class: "form-inline filtering-form") do
+      label.checkbox-inline
+        = check_box_tag :all, 1, params[:all].present?
+        | 全期間
+      span = " / "
+
       = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
-      = button_tag class: "btn btn-info", style: "margin-right:8px;" do
+      = button_tag class: "btn btn-info" do
         span.glyphicon.glyphicon-search
         span.btn-content 月変更
 

@@ -1,4 +1,6 @@
 class Myauction::ProductsController < Myauction::ApplicationController
+  include Exports
+
   before_action :check_seller
   before_action :get_product, only: [:edit, :update, :destroy, :prompt, :cancel, :additional, :additional_update]
 
@@ -10,12 +12,14 @@ class Myauction::ProductsController < Myauction::ApplicationController
     if params[:cond] == "3" && params[:all].blank?
       in_codes  = current_user.products.where(cancel: nil).where.not(code: "").select(:code)
       @products = @products.where.not(code: in_codes)
+
     elsif params[:cond] == "2"
       @user_selectors = current_user.products.status(params[:cond]).joins(max_bid: :user).reorder(nil)
         .group("bids.user_id", "users.account", "users.name", "users.company").count
         .map { |k, v| ["#{k[1]} | #{k[2]} #{k[3]} (#{v})", k[0]] }
 
       @products = @products.joins(:max_bid).where("bids.user_id" => params[:user_id]) if params[:user_id].present?
+
     elsif params[:cond] == "-1"
       @start_date_selector = current_user.products.status(params[:cond]).reorder(nil)
         .group("DATE(dulation_start)").count
@@ -28,6 +32,19 @@ class Myauction::ProductsController < Myauction::ApplicationController
     end
 
     @pproducts = @products.page(params[:page])
+
+    file_label = case params[:cond]
+    when "-1"; "before"
+    when "1";  "not_success"
+    when "2";  "success"
+    when "3";  "cancel"
+    else;      "start"
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv { export_csv "products_#{file_label}_#{Time.now.strftime('%Y%m%d')}.csv" }
+    end
   end
 
   def new
@@ -90,7 +107,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
     # end
 
     ### Bemchmark : 画像特徴ベクトル変換 ###
-    @time = Benchmark.realtime do
+    # @time = Benchmark.realtime do
       @product = current_user.products.new(product_params)
 
       params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
@@ -103,10 +120,11 @@ class Myauction::ProductsController < Myauction::ApplicationController
         cmd = "curl -s -X GET #{root_url}/products/#{@product.id}/process_vector"
         o, e, s = Open3.popen3(cmd)
       end
-    end
+    # end
 
     if @res
-      redirect_to "/myauction/", notice: "#{@product.name}を登録しました : #{@time}"
+      # redirect_to "/myauction/", notice: "#{@product.name}を登録しました : #{@time}"
+      redirect_to "/myauction/", notice: "#{@product.name}を登録しました"
     else
       render :new
     end

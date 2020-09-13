@@ -84,11 +84,16 @@ class System::UsersController < System::ApplicationController
 
 
   def total
-    @date    = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
+    @date = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
 
-    # 取得
-    rstart = @date.beginning_of_month
-    rend   = @date.end_of_month
+    # 取得範囲(全取得対応)
+    if params[:all].present?
+      rstart = Time.new(2018, 1, 1)
+      rend   = Float::INFINITY
+    else
+      rstart = @date.beginning_of_month
+      rend   = @date.end_of_month
+    end
 
     # @users = User.includes(:bids).where("created_at <= ?", rend).where("count(bids.id) IS NOT NULL")
     @products = Product.where(dulation_end: rstart..rend, template: false, cancel: nil).where.not(max_bid_id: nil)

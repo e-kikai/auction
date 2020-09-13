@@ -3,9 +3,9 @@
 - set_meta_tags title: title
 - breadcrumb    :myauction_something, title
 
-h4 #{title} : #{number_with_delimiter(@products.count)} 件
-
 = form_tag("/myauction/products", method: "get", class: "form-inline filtering-form") do
+  h4 #{title} : #{number_with_delimiter(@products.count)} 件
+
   = hidden_field_tag :cond, params[:cond]
   = text_field_tag "q[code_cont]", (params[:q][:code_cont] rescue ""), placeholder: "管理番号", class: "form-control"
   = text_field_tag "q[name_cont]", (params[:q][:name_cont] rescue ""), placeholder: "商品名", class: "form-control"
@@ -22,6 +22,10 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
   = button_tag class: "btn btn-info" do
     span.glyphicon.glyphicon-search
     span.btn-content 検索
+
+  = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+    span.glyphicon.glyphicon-download-alt
+    span.btn-content CSV出力
 
 = paginate @pproducts
 
@@ -71,7 +75,7 @@ h4 #{title} : #{number_with_delimiter(@products.count)} 件
             th.num = sort_link(@search, :detail_logs_count)
             th.num = sort_link(@search, :watches_count)
             / th.sns SNSシェア
-            th 追記<br />変更
+            th 追記変更
             th.num 残り<br />時間
             / th 自社落札
             th 出品<br />キャンセル
