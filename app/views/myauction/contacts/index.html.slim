@@ -19,14 +19,17 @@
       table.table.table-hover.table-condensed.table-striped.product-table
         thead
           tr
-            th.num 商品ID
+            / th.num 商品ID
             th 商品
+            th 出品会社
+            th 似たもの<br />サーチ
+            th.sepa ウォッチ
             th.num 入札数
             th.price 現在価格
             th.sepa 状況
-            th.num.sepa 書込数
-            th 開始日時
-            th 最終更新
+            th.num.sepa 書込み数
+            th 書込み開始
+            th 最終書込み
 
         - @pthread_lasts.each do |key, val|
           - product = @products[key[0]]
@@ -38,8 +41,11 @@
             - owner    = product.try(:max_bid).try(:user)
 
           tr
-            td.num = key[0]
-            td = product.name
+            / td.num = key[0]
+            td = link_to product.name, "/products/#{product.id}"
+            td = link_to product.user.company_remove_kabu, "/companies/#{product.user_id}"
+            td = render "products/nitamono", product: product
+            td.sepa = render "/products/watch_02", product: product
             td.num = number_with_delimiter(product.bids_count)
             td.price = number_to_currency(product.max_price_with_tax)
             td.sepa
@@ -58,18 +64,21 @@
               - else
                 span.glyphicon.glyphicon-comment
                 span.btn-content 問合せ : #{@thread_counts[key]}
-            td = @thread_starts[key]
-            td = val
+            td = I18n.l(@thread_starts[key], format: :full_date)
+            td = I18n.l(val, format: :full_date)
 
         thead
           tr
-            th.num 商品ID
+            / th.num 商品ID
             th 商品
+            th 出品会社
+            th 似たもの<br />サーチ
+            th.sepa ウォッチ
             th.num 入札数
             th.price 現在価格
             th.sepa 状況
-            th.num.sepa 書込数
-            th 開始日時
-            th 最終更新
+            th.num.sepa 書込み数
+            th 書込み開始
+            th 最終書込み
 
     = paginate @paginatable_array

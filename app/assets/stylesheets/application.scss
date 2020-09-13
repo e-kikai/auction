@@ -213,6 +213,7 @@ label.required:after {
   td.img_mini {
     width: 100px;
     height: 75px;
+    text-align: center;
 
     img {
       max-width: 100px;
@@ -1552,6 +1553,8 @@ tr.bronze {
   display: block;
   width: 36px;
   height: 36px;
+  margin: auto;
+  text-align: center;
 
   .glyphicon-star {
     font-size: 28px;
@@ -1562,6 +1565,8 @@ tr.bronze {
 
   &.active .glyphicon-star {
     color: #FF0;
+    text-shadow: #FF0 0px 0px 4px;
+
   }
 }
 
@@ -1569,6 +1574,8 @@ tr.bronze {
   display: block;
   width: 36px;
   height: 36px;
+  margin: auto;
+  text-align: center;
 
   .glyphicon-camera {
     font-size: 28px;
