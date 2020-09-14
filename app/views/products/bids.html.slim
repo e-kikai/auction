@@ -119,17 +119,28 @@ h1.product-title
               - else
                 = number_to_currency(bi.amount_with_tax)
             td = I18n.l(bi.created_at, format: :full_date)
-    - elsif @product.remaining_second > 0
+    - elsif @product.start?
       .alert.alert-success
         span.glyphicon.glyphicon-info-sign
         span.btn-content
-          | 現在、この商品への入札はありません。今なら開始価格で入札できるチャンスです！！
+          | この商品への入札はまだありません。今なら開始価格 #{number_to_currency(@product.max_price)}(税抜) で入札できるチャンスです！！
     - else
       .alert.alert-warning
         span.glyphicon.glyphicon-info-sign
         span.btn-content
           | この商品への入札はありませんでした。
 
+    - if @product.start? && @product.user_id != current_user.try(:id)
+
+      . = link_to "/myauction/bids/new?id=#{@product.id}&bid%5Bamount%5D=", class: "btn btn-warning"  do
+        span.glyphicon.glyphicon-pencil
+        span.btn-content 入札
+
+
+.button-center.text-left
+  = link_to "/products/#{@product.id}?r=bck", class: "btn btn-default" do
+    span.glyphicon.glyphicon-arrow-left
+    span.btn-content 商品詳細ページに戻る
 
 - if @nitamono_products.present?
   .special-area

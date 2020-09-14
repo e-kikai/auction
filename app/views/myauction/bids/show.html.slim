@@ -65,3 +65,8 @@ hr
         .toppage-scroll
           - @popular_products.each do |pr|
             = render "/main/product_panel", product: pr, r: :bfn_sca
+
+.button-center.text-left
+  = link_to "/products/#{@bid.product.id}?r=bfn_bck", class: "btn btn-default" do
+    span.glyphicon.glyphicon-arrow-left
+    span.btn-content 商品詳細ページに戻る
