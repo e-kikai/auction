@@ -2,6 +2,11 @@
 - breadcrumb :system_something, "出品商品履歴"
 
 = form_tag("/system/products", method: "get", class: "form-inline filtering-form") do
+  label.checkbox-inline
+    = check_box_tag :all, 1, params[:all].present?
+    | 全期間
+  span = " / "
+
   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
   = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
 

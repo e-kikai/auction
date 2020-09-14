@@ -7,7 +7,10 @@ class System::ProductsController < System::ApplicationController
   def index
     @date    = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
 
-    @products  = Product.includes(:product_images, :user).where(created_at: @date.all_month, template: false).order(created_at: :desc)
+    # 取得範囲(全取得対応)
+    date_range = params[:all].present? ? (Time.new(2018, 1, 1)..Float::INFINITY) : @date.all_month
+
+    @products  = Product.includes(:product_images, :user).where(created_at: date_range, template: false).order(created_at: :desc)
 
     @products = @products.where(user: @company) if @company.present?
 
