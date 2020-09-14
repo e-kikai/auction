@@ -336,6 +336,10 @@ class Product < ApplicationRecord
     dulation_start > Time.now
   end
 
+  def start?
+    dulation_end && dulation_start <= Time.now && dulation_end > Time.now
+  end
+
   ### 終了後か ###
   def finished?
     dulation_end && dulation_end <= Time.now

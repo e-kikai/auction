@@ -37,6 +37,7 @@ class DetailLog < ApplicationRecord
     "rmd" => "リマインダ",
     "pnl" => "パネル表示", "lst" => "リスト表示",
     "nms" => "似たものサーチ", "nmr" => "似た商品", "cnw" => "カテゴリ別新着",
+    "cnt" => "問合せ・取引",
     "cmp" => "Mailchimp", "mailchimp" => "Mailchimp",
     "machinelife" => "マシンライフ", "dst" => "デッドストック", "ekikai" => "e-kikai",
   }

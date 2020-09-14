@@ -18,10 +18,10 @@ javascript:
     - if current_user.id != @product.user_id
     .panel.panel-default
       .panel-body.trade-product
-        .trade-product = link_to @product.name, "/products/#{@product.id}", target: "_blank"
+        .trade-product = link_to @product.name, "/products/#{@product.id}?r=cnt", target: "_blank"
         .row
           .col-md-5.col-sm-5.text-center
-            = link_to image_tag(@product.thumb_url), "/products/#{@product.id}", alt: @product.name, target: "_blank"
+            = link_to image_tag(@product.thumb_url), "/products/#{@product.id}?r=cnt", alt: @product.name, target: "_blank"
           .col-md-7.col-sm-7
             dl.dl-horizontal.trade-dl.product
               - if @product.trade_success?(@owner)
@@ -54,6 +54,13 @@ javascript:
                 dd = "#{@product.bids_count} 件"
                 dt 残り時間
                 dd = "#{@product.remaining_time.gsub(/[^0-9,]*/, "")} #{@product.remaining_time.gsub(/[0-9,]*/, "")}"
+
+                - if @product.start?
+                  = render "/products/watch_02", product: @product
+                  = link_to "/myauction/bids/new?id=#{@product.id}&bid%5Bamount%5D=", class: "btn btn-warning pull-right clearfix"  do
+                    span.glyphicon.glyphicon-pencil
+                    span.btn-content 入札
+
 
         - if @product.trade_success?(@owner)
           p.text-danger
@@ -237,3 +244,27 @@ javascript:
             .alert.alert-info
               span.glyphicon.glyphicon-ok
               span.btn-content  このオークションは終了しました。
+
+
+.
+  - if @nitamono_products.present?
+    .special-area
+      label
+        span.glyphicon.glyphicon-camera.check-icon
+        span.btn-content = "#{@product.name} と似た商品"
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @nitamono_products.each do |pr|
+              = render "/main/product_panel", product: pr, r: :cnt_nmr
+
+  - if @popular_products.present?
+    .special-area
+      label
+        span.glyphicon.glyphicon-thumbs-up.check-icon
+        span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @popular_products.each do |pr|
+              = render "/main/product_panel", product: pr, r: :cnt_sca

@@ -33,6 +33,13 @@ class Myauction::ContactsController < Myauction::ApplicationController
     @trades = Trade.where(product_id: params[:id], owner_id: [nil, @owner.id]).order(id: :desc)
 
     @trade  = @product.trades.new
+
+    # 人気商品
+    @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
+
+    ### 似たものサーチ ###
+    @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
+
   end
 
   def create

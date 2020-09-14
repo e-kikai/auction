@@ -70,6 +70,8 @@ class Myauction::BidsController < Myauction::ApplicationController
     # 人気商品
     @popular_products = Product.related_products(@bid.product).populars.limit(Product::NEW_MAX_COUNT)
 
+    ### 似たものサーチ ###
+    @nitamono_products = @bid.product.nitamono(Product::NEW_MAX_COUNT)
   end
 
   private

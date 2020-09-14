@@ -44,6 +44,17 @@ hr
     span.glyphicon.glyphicon-arrow-left
     span.btn-content 商品詳細ページに戻る
 
+- if @nitamono_products.present?
+  .special-area
+    label
+      span.glyphicon.glyphicon-camera.check-icon
+      span.btn-content = "#{@bid.product.name} と似た商品"
+    .panel.panel-default
+      .panel-body.toppage-contents
+        .toppage-scroll
+          - @nitamono_products.each do |pr|
+            = render "/main/product_panel", product: pr, r: :bfn_nmr
+
 - if @popular_products.present?
   .special-area
     label
