@@ -57,7 +57,11 @@ Rails.application.configure do
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
   # config.cache_store = :memory_store, { size: 256.megabytes }
+<<<<<<< HEAD
   config.cache_store = :file_store
+=======
+  config.file_store
+>>>>>>> 05409eb60bb2b744567a619f3aa2e80e55c3afbf
 
   # config.cache_store = :file_store, "#{Rails.root}/tmp/cache"
   # config.cache_store = :redis_store, 'redis://localhost:6379/2/cache', { expires_in: 90.day }
