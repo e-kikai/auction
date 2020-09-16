@@ -1,0 +1,139 @@
+- set_meta_tags title: "似たものサーチ履歴集計"
+- breadcrumb :system_something, "似たものサーチ履歴集計"
+
+= form_tag("/system/total/nitamono", method: "get", class: "form-inline filtering-form") do
+
+  label.radio-inline
+    = radio_button_tag :range, :all, params[:range] == "all"
+    | 全期間
+  span = " / "
+
+  label.radio-inline
+    = radio_button_tag :range, :monthly, params[:range] == "monthly"
+    | 月別
+  span = " / "
+
+  label.radio-inline
+    = radio_button_tag :range, "", !params[:range].in?(["all","monthly"])
+    | 日別(月選択)
+
+  = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+  / = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
+
+  = button_tag class: "btn btn-info" do
+    span.glyphicon.glyphicon-search
+    span.btn-content 検索
+  = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+    span.glyphicon.glyphicon-download-alt
+    span.btn-content CSV出力
+
+.row
+  .col-lg-12.col-md-12.col-sm-12
+    .table-responsive
+      table.table.table-hover.table-condensed.table-striped.product-table
+        thead
+          tr.sub_head
+            th.num.sepa
+            th.sepa colspan="2" 検索回数
+            th.sepa colspan="2" 検索人数
+            th.sepa colspan="4" 詳細クリック回数
+            th.sepa colspan="4" 詳細クリック人数
+            th.sepa colspan="4" 似たものサーチ コンバージョン
+          tr
+            th.num.sepa 日付
+            th.num 総数
+            th.num.sepa 似サ
+            th.num 総人数
+            th.num.sepa 似サ
+            th.num 総回数
+            th.num 似サ結果
+            th.num 同カテゴリ
+            th.num.sepa 似た商品
+            th.num 総人数
+            th.num 似サ結果
+            th.num 同カテゴリ
+            th.num.sepa 似た商品
+            th.num ウォッチ
+            th.num 入札数
+            th.num 落札数
+            th.price.sepa 落札金額
+
+        / - (@date.beginning_of_month..@date.end_of_month).each do |day|
+        - @rows.each do |day|
+
+          - if params[:range] == "monthly"
+            - dow = day == Time.now.strftime("%Y/%m") ? "success" : ""
+          - else
+            - dow = case when day == Date.today; "success" when day.strftime('%w') == '0'; 'danger' when day.strftime('%w') == '6'; "info" end
+
+          tr class=dow
+            td.num.sepa
+              - if params[:range] == "all"
+                = I18n.l(day, format: "%Y/%m/%d (%a)")
+              - elsif params[:range] == "monthly"
+                = link_to day, "/system/total/nitamono?date[year]=#{day.gsub(/(\/.*)/, "")}&date[month]=#{day.gsub(/(.*\/)/, "")}&date[day]=1"
+              - else
+                = I18n.l(day, format: "%e (%a)")
+
+            td.num = number_with_delimiter(@search_log_counts[day])
+            td.num.sepa = number_with_delimiter(@nms_counts[day])
+            td.num = number_with_delimiter(@search_user_counts[day])
+            td.num.sepa = number_with_delimiter(@nms_user_counts[day])
+
+            td.num = number_with_delimiter(@detail_log_counts[day])
+            td.num = number_with_delimiter(@nms_counts[day])
+            td.num = number_with_delimiter(@sca_counts[day])
+            td.num.sepa = number_with_delimiter(@nmr_counts[day])
+            td.num = number_with_delimiter(@detail_user_counts[day])
+            td.num = number_with_delimiter(@nms_user_counts[day])
+            td.num = number_with_delimiter(@sca_user_counts[day])
+            td.num.sepa = number_with_delimiter(@nmr_user_counts[day])
+            td.num = number_with_delimiter(@watches[day])
+            td.num = number_with_delimiter(@bids[day])
+            td.num = number_with_delimiter(@max_bid_counts[day])
+            td.price = number_to_currency(@max_bid_prices[day])
+
+
+        thead
+          tr.sub_head
+            th.num.sepa
+            th.sepa colspan="2" 検索回数
+            th.sepa colspan="2" 検索人数
+            th.sepa colspan="4" 詳細クリック回数
+            th.sepa colspan="4" 詳細クリック人数
+            th.sepa colspan="4" 似たものサーチ コンバージョン
+          tr
+            th.num.sepa 日付
+            th.num 総数
+            th.num.sepa 似サ
+            th.num 総人数
+            th.num.sepa 似サ
+            th.num 総回数
+            th.num 似サ結果
+            th.num 同カテゴリ
+            th.num.sepa 似た商品
+            th.num 総人数
+            th.num 似サ結果
+            th.num 同カテゴリ
+            th.num.sepa 似た商品
+            th.num ウォッチ
+            th.num 入札数
+            th.num 落札数
+            th.price.sepa 落札金額
+
+
+        tfoot
+          tr
+            th.num.sepa 合計
+            td.num = number_with_delimiter(@search_log_counts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@nms_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@search_user_counts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@nms_user_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@detail_log_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@nms_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@sca_counts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@nmr_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@detail_user_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@nms_user_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@sca_user_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@nmr_user_counts.sum { |k, v| v.to_i })

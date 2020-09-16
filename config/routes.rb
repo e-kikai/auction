@@ -159,8 +159,7 @@ Rails.application.routes.draw do
         get 'products_monthly'
         get 'formula'
         get 'categories'
-        get 'nitamono_daily'
-        get 'nitamono_monthly'
+        get 'nitamono'
       end
     end
 

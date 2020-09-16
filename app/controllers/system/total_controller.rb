@@ -163,72 +163,54 @@ class System::TotalController < System::ApplicationController
     }
   end
 
-  def nitamono_daily
-    gro = "DATE(created_at)"
-
+  def nitamono
     ### 詳細リンク集計 ###
-    detail_logs         = DetailLog.where(@where_cr).group(gro)
+    detail_logs         = DetailLog.where(@where_cr)
 
-    @detail_log_counts  = detail_logs.count
-    @detail_user_counts = detail_logs.distinct.count(:user_id)
+    @detail_log_counts  = detail_logs.group(@group).count
+    @detail_user_counts = detail_logs.group(@group).distinct.count(:user_id)
 
     same_categories     = detail_logs.where(r: "dtl_sca")
-    @sca_counts         = same_categories.count
-    @sca_user_counts    = same_categories.distinct.count(:user_id)
+    @sca_counts         = same_categories.group(@group).count
+    @sca_user_counts    = same_categories.group(@group).distinct.count(:user_id)
 
     nitamono_recommends = detail_logs.where(r: "dtl_nmr")
-    @nmr_counts         = nitamono_recommends.count
-    @nmr_user_counts    = nitamono_recommends.distinct.count(:user_id)
+    @nmr_counts         = nitamono_recommends.group(@group).count
+    @nmr_user_counts    = nitamono_recommends.group(@group).distinct.count(:user_id)
 
     to_nitamono          = detail_logs.where("r LIKE '%nms%'")
-    @to_nms_counts       = to_nitamono.count
-    @to_nms_user_counts  = to_nitamono.distinct.count(:user_id)
+    @to_nms_counts       = to_nitamono.group(@group).count
+    @to_nms_user_counts  = to_nitamono.group(@group).distinct.count(:user_id)
+
+    ### 似たものサーチコンバージョン取得 ###
+    @bids = Bid.where(@where_cr)
+      .where("(user_id, product_id) IN (SELECT dl.user_id, dl.product_id FROM detail_logs dl WHERE (dl.r LIKE '%nms%' OR dl.r LIKE '%nmr%'))")
+      .group("DATE(bids.created_at)").count
+
+    max_bids = Product.status(Product::STATUS[:mix]).where(@where_end).reorder("").joins(:max_bid)
+    .where("(bids.user_id, bids.product_id) IN (SELECT dl.user_id, dl.product_id FROM detail_logs dl WHERE (dl.r LIKE '%nms%' OR dl.r LIKE '%nmr%'))")
+
+    @max_bid_counts = max_bids.group("DATE(products.dulation_end)").count
+    @max_bid_prices = max_bids.group("DATE(products.dulation_end)").sum("products.max_price")
+
+    @watches = Watch.where(@where_cr)
+      .where("(user_id, product_id) IN (SELECT dl.user_id, dl.product_id FROM detail_logs dl WHERE (dl.r LIKE '%nms%' OR dl.r LIKE '%nmr%'))")
+      .group("DATE(watches.created_at)").count
 
     ### 検索集計 ###
-    search_logs         = SearchLog.where(@where_cr).group(gro)
+    search_logs         = SearchLog.where(@where_cr)
 
-    @search_log_counts  = search_logs.count
-    @search_user_counts = search_logs.distinct.count(:user_id)
-
-    nitamono_searches   = search_logs.where.not(nitamono_product_id: nil)
-    @nms_counts         = nitamono_searches.count
-    @nms_user_counts    = nitamono_searches.distinct.count(:user_id)
-  end
-
-
-  def nitamono_monthly
-    endd     = Product.maximum(:dulation_end)
-    @monthes = (Date.new(2018, 3, 1) .. endd).select{ |date| date.day == 1}.map { |d| d.strftime('%Y/%m')}
-    gro      = "to_char(created_at, 'YYYY/MM')"
-
-    ### 詳細リンク集計 ###
-    detail_logs         = DetailLog.group(gro)
-
-    @detail_log_counts  = detail_logs.count
-    @detail_user_counts = detail_logs.distinct.count(:user_id)
-
-    same_categories     = detail_logs.where(r: "dtl_sca")
-    @sca_counts         = same_categories.count
-    @sca_user_counts    = same_categories.distinct.count(:user_id)
-
-    nitamono_recommends = detail_logs.where(r: "dtl_nmr")
-    @nmr_counts         = nitamono_recommends.count
-    @nmr_user_counts    = nitamono_recommends.distinct.count(:user_id)
-
-    to_nitamono          = detail_logs.where("r LIKE '%nms%'")
-    @to_nms_counts       = to_nitamono.count
-    @to_nms_user_counts  = to_nitamono.distinct.count(:user_id)
-
-    ### 検索集計 ###
-    search_logs         = SearchLog.group(gro)
-
-    @search_log_counts  = search_logs.count
-    @search_user_counts = search_logs.distinct.count(:user_id)
+    @search_log_counts  = search_logs.group(@group).count
+    @search_user_counts = search_logs.group(@group).distinct.count(:user_id)
 
     nitamono_searches   = search_logs.where.not(nitamono_product_id: nil)
-    @nms_counts         = nitamono_searches.count
-    @nms_user_counts    = nitamono_searches.distinct.count(:user_id)
+    @nms_counts         = nitamono_searches.group(@group).count
+    @nms_user_counts    = nitamono_searches.group(@group).distinct.count(:user_id)
 
+    respond_to do |format|
+      format.html
+      format.csv { export_csv "nitamono_total_#{params[:range]}_#{Time.now.strftime('%Y%m%d')}.csv" }
+    end
   end
 
   private
@@ -240,13 +222,45 @@ class System::TotalController < System::ApplicationController
   end
 
   def date_selectors
-    @date = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Date.today
+    # 取得範囲(全取得対応)
+    case params[:range]
+    when "all"
+      @date = Date.today
 
-    @rstart = @date.to_time.beginning_of_month
-    @rend   = @date.to_time.end_of_month
+      @rstart = Date.new(2018, 3, 1)
+      @rend   = Product.maximum(:dulation_end)
 
-    @where_cr  = {created_at: @rstart..@rend}
-    @where_str = {dulation_start: @rstart..@rend}
-    @where_end = {dulation_end: @rstart..@rend}
+      @group  = "DATE(created_at)"
+      @rows   = @rstart.to_date..@rend.to_date
+
+    when "monthly"
+      @date = Date.today
+
+      @rstart = Date.new(2018, 3, 1)
+      @rend   = Product.maximum(:dulation_end)
+
+      @group  = "to_char(created_at, 'YYYY/MM')"
+      @rows   = (@rstart..@rend).select{ |date| date.day == 1}.map { |d| d.strftime('%Y/%m')}
+
+    else # daily
+      @date = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Date.today
+
+      @rstart = @date.to_time.beginning_of_month
+      @rend   = @date.to_time.end_of_month
+
+      @group  = "DATE(created_at)"
+      @rows   = @date.beginning_of_month..@date.end_of_month
+    end
+
+    @rrange = @rstart..@rend
+
+    # @date = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Date.today
+    #
+    # @rstart = @date.to_time.beginning_of_month
+    # @rend   = @date.to_time.end_of_month
+
+    @where_cr  = {created_at: @rrange}
+    @where_str = {dulation_start: @rrrange}
+    @where_end = {dulation_end: @rrrange}
   end
 end

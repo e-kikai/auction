@@ -19,7 +19,9 @@ Rails.application.configure do
   #
   # config.cache_store = :memory_store
   # config.cache_store = :dalli_store, '192.168.33.110', '192.168.33.110', { :namespace => mnok, :expires_in => 1.day, :compress => true }
-  config.cache_store = :file_store, "#{Rails.root}/tmp/cache"
+  # config.cache_store = :file_store, "#{Rails.root}/tmp/cache"
+  config.cache_store = :file_store , "/tmp/rails-cache/assets/#{Rails.env}/"
+
   # config.cache_store = :redis_store, 'redis://localhost:6379/2/cache', { expires_in: 90.day }
 
   #   config.public_file_server.headers = {

@@ -22,6 +22,7 @@
 class DetailLog < ApplicationRecord
   belongs_to :user,    required: false
   belongs_to :product, required: true
+
   counter_culture :product
 
   before_save :check_robot
