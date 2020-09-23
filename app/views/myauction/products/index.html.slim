@@ -73,7 +73,7 @@
             th 最高<br />入札者
             th.num = sort_link(@search, :bids_count)
             th.num = sort_link(@search, :detail_logs_count)
-            th.num = sort_link(@search, :watches_count)
+            th.num = sort_link(@search, :watches_count, "ウォッチ")
             / th.sns SNSシェア
             th 追記変更
             th.num 残り<br />時間
@@ -214,12 +214,12 @@
             th 最高<br />入札者
             th.num = sort_link(@search, :bids_count)
             th.num = sort_link(@search, :detail_logs_count)
-            th.num = sort_link(@search, :watches_count)
+            th.num = sort_link(@search, :watches_count, "ウォッチ")
             / th.sns SNSシェア
             th 追記<br />変更
             th.num 残り<br />時間
             / th 自社落札
-            th 出品<br />キャンセル
+            th キャンセル
 = paginate @pproducts
 
 - @pproducts.each do |pr|

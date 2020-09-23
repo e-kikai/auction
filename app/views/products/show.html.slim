@@ -2,9 +2,27 @@
 - breadcrumb    :products_show, @product
 
 /// 基本 ///
-- desc = "オークション現在価格 #{number_to_currency @product.max_price_with_tax}|"
-- if @product.prompt_dicision_price
-  - desc += "即売価格 #{number_to_currency @product.prompt_dicision_price_with_tax}|"
+- if @product.start?
+  - desc_price_label = "現在価格"
+  - desc_gobi = "現在出品中の"
+- elsif @product.success?
+  - desc_price_label = "落札価格"
+  - desc_gobi = "出品していた"
+- else
+  - desc_price_label = "終了価格"
+  - desc_gobi = "出品していた"
+
+- desc =  "中古工具が見つかる「ものづくりオークション」。"
+
+- desc += "このページは、#{@product.user.company_remove_kabu}が#{desc_gobi}"
+- desc += "#{@product.category.name}「#{@product.name}」を掲載しています。"
+
+- desc += "#{desc_price_label}:#{number_to_currency @product.max_price_with_tax}、"
+- if @product.start? && @product.prompt_dicision_price
+  - desc += "即売価格:#{number_to_currency @product.prompt_dicision_price_with_tax}、"
+
+- if @product.addr_1.present?
+  - desc += "#{@product.addr_1}#{@product.addr_2}、"
 - desc += @product.description
 / - keywords = "オークション,ものオク,販売,中古,機械,工具,#{@product.search_keywords.gsub(/(\s|　)+/, ",")}"
 
