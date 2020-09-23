@@ -15,7 +15,7 @@
 - desc =  "中古工具が見つかる「ものづくりオークション」。"
 
 - desc += "このページは、#{@product.user.company_remove_kabu}が#{desc_gobi}"
-- desc += "#{@product.category.name}「#{@product.name}」を掲載しています。"
+- desc += "#{@product.category.name}「#{@product.name}[#{@product.state}]」を掲載しています。"
 
 - desc += "#{desc_price_label}:#{number_to_currency @product.max_price_with_tax}、"
 - if @product.start? && @product.prompt_dicision_price
