@@ -30,14 +30,14 @@ h1.product-title
             | が設定されています
 
         .row
-          .col-md-offset-2.col-md-3.h4 入札金額
+          .col-md-5.h4.text-right 入札金額
           .col-md-5.text-right.h4 = number_to_currency(@bid.amount)
         .row
-          .col-md-offset-2.col-md-3.h4 消費税
+          .col-md-5.h4.text-right 消費税
           .col-md-5.text-right.h4 = number_to_currency(@bid.amount_tax)
         hr.detail-price-calc
         .row
-          .col-md-offset-2.col-md-3.h3 税込価格
+          .col-md-5.h3.text-right 税込価格
           .col-md-5.text-right.h3 = number_to_currency(@bid.amount_with_tax)
 
         .detail-price-message この金額で入札を行います。よろしいですか。

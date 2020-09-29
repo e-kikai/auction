@@ -1,0 +1,4 @@
+- if product.top_image? && @pms.present?
+  = link_to url_for(@pms.merge(nitamono: product.id)), class: "nitamono",
+    data: { toggle: :tooltip, container: :html, placement: :left, html: true, trigger: :hover }, title: "似たものソート<br />この商品と<br /><strong>見た目が似ている順</strong>で並び替え" do
+    span.glyphicon.glyphicon-camera

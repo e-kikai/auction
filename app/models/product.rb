@@ -112,6 +112,19 @@ class Product < ApplicationRecord
 
   VECTORS_LIMIT   = 30
 
+  SORT_SELECTOR = {
+    "出品 : 新着"   => "dulation_start asc",
+    "出品 : 古い"   => "dulation_start desc",
+    "価格 : 安い"   => "max_price asc",
+    "価格 : 高い"   => "max_price desc",
+    "即売 : 安い"   => "prompt_dicision_price asc",
+    "即売 : 高い"   => "prompt_dicision_price desc",
+    "入札 : 多い"   => 'bids_count desc',
+    "入札 : 少ない" => "bids_count asc",
+    "残り時間"      => "dulation_end asc",
+  }
+
+
   ### relations ###
   belongs_to :user,     required: true
   belongs_to :category, required: true
@@ -644,37 +657,48 @@ class Product < ApplicationRecord
     return
   end
 
-  ### 商品から似たものサーチ ###
-  def nitamono(limit=VECTORS_LIMIT)
-    return [] unless top_image? # 画像の有無チェック
+  ### この商品のベクトルを取得 ###
+  def get_vector
+    return nil unless top_image? # 画像の有無チェック
 
     vectors = Rails.cache.read(VECTOR_CACHE) || {} # キャッシュからベクトル群を取得
     bucket  = Product.s3_bucket # S3バケット取得
 
     ### ターゲットベクトル取得 ###
-    target = if vectors[id].present?
+    if vectors[id].present? # キャッシュからベクトル取得
       vectors[id]
-    elsif bucket.object("#{S3_VECTORS_PATH}/vector_#{id}.npy").exists?
+    elsif bucket.object("#{S3_VECTORS_PATH}/vector_#{id}.npy").exists? # アップロードファイルからベクトル取得
       str = bucket.object("#{S3_VECTORS_PATH}/vector_#{id}.npy").get.body.read
       Npy.load_string(str)
-    else
+    else # ない場合
       nil
     end
-
-    return [] if target.nil?
-
-    Product.nitamono_search(target, id, limit)
   end
 
-  ### 画像ファイルから検索 ###
-  def self.nitamono_by_image(image, limit=VECTORS_LIMIT)
+  ### 商品から似たものサーチ ###
+  def nitamono(limit=Product::VECTORS_LIMIT)
+    Product.status(STATUS[:start]).nitamono_search(self.get_vector, limit)
+  end
+
+  ### 画像ファイルから検索(途中) ###
+  def self.nitamono_by_image(image, limit=Product::VECTORS_LIMIT)
 
     ### 画像ファイルからベクトルを取得 ###
 
-    Product.nitamono_search(target, nil, limit)
+    Product.status(STATUS[:start]).nitamono_search(target, limit)
   end
 
-  def self.nitamono_search(target, id=nil, limit=VECTORS_LIMIT)
+  ### 似たものでソート ###
+  def self.nitamono_sort(product_id, page=1)
+    target = Product.find(product_id).get_vector
+
+    self.nitamono_search(target, 25, page)
+  end
+
+  ### 画像特徴ベクトル検索処理 ###
+  def self.nitamono_search(target, limit=nil, page=1)
+    return Product.none if target.nil?
+
     vectors = Rails.cache.read(VECTOR_CACHE) || {} # キャッシュからベクトル群を取得
     bucket = Product.s3_bucket # S3バケット取得
     update_flag = false
@@ -682,7 +706,8 @@ class Product < ApplicationRecord
     logger.debug "update_flag :: #{update_flag}"
 
     ### 各ベクトル比較 ###
-    pids = status(STATUS[:start]).pluck(:id).uniq # 検索対象(出品中)の商品ID取得
+    # pids = status(STATUS[:start]).pluck(:id).uniq # 検索対象(出品中)の商品ID取得
+    pids = pluck(:id).uniq # 検索対象(出品中)の商品ID取得
 
     sorts = pids.map do |pid|
       ### ベクトルの取得 ###
@@ -702,15 +727,18 @@ class Product < ApplicationRecord
       end
 
       # ベクトル比較
-      if pid == id || pr_narray == ZERO_NARRAY || pr_narray.nil? # ベクトルなし
+      if pr_narray == ZERO_NARRAY || pr_narray.nil? # ベクトルなし
         nil
       else
         sub = pr_narray - target
         res = (sub * sub).sum
 
-        [pid, res]
+        res > 0 ? [pid, res]  : nil
       end
-    end.compact.sort_by { |v| v[1] }.first(30).to_h
+    end.compact.sort_by { |v| v[1] }
+
+    sorts = sorts.slice(limit * (page - 1), limit) if limit.present? ### 件数フィルタリング ###
+    sorts = sorts.to_h
 
     # ベクトルキャシュ更新
     Rails.cache.write(VECTOR_CACHE, vectors) if update_flag == true

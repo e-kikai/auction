@@ -41,7 +41,9 @@
             = product.remaining_time
 
   .watch_area
-    = render "products/nitamono", product: product
+    / = render "products/nitamono", product: product
+    = render "products/nitamono_02", product: product
+
 
     / - unless product.finished?
       / = link_to "/myauction/watches?id=#{product.id}", method: :post, class: "btn btn-default btn-watch" do
