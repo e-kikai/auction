@@ -737,7 +737,13 @@ class Product < ApplicationRecord
       end
     end.compact.sort_by { |v| v[1] }
 
-    # sorts = sorts.slice(limit.to_i * (page.to_i - 1), limit.to_i) if limit.present? ### 件数フィルタリング ###
+    ### 件数フィルタリング ###
+    limit = limit.to_i
+    page = page.to_i
+    page = 1 if page < 0
+
+    sorts = sorts.slice(limit * (page - 1), limit) if limit > 0
+
     sorts = sorts.to_h
 
     # ベクトルキャシュ更新
