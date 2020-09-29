@@ -740,7 +740,7 @@ class Product < ApplicationRecord
     ### 件数フィルタリング ###
     limit = limit.to_i
     page = page.to_i
-    page = 1 if page < 0
+    page = 1 if page < 1
 
     sorts = sorts.slice(limit * (page - 1), limit) if limit > 0
 
