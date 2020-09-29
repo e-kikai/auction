@@ -50,6 +50,13 @@
     = hidden_field_tag :referer,            request.referer
     = hidden_field_tag :r,                  params[:r]
 
+    = button_tag class: "btn btn-warning btn-md center-block", data: { toggle: :modal, target: "#news-modal_01"} do
+      span.glyphicon.glyphicon-question-sign
+      span.btn-content = "新機能 : "
+      span.glyphicon.glyphicon-camera
+      span.btn-content 似たものソート
+
+
     .panel.panel-info
       = link_to "#collapse_filter", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
         span.glyphicon.glyphicon-filter
@@ -359,3 +366,9 @@
                 = render "/main/product_panel", product: pr, r: :src_chk
 
 = render "/main/ads_frames", okw: title
+
+/// 新機能モーダル ///
+.modal.fade#news-modal_01
+  .modal-dialog
+    .modal-content
+      = image_tag "news_modal_01.jpeg", alt: "新機能 : 似たものソート"

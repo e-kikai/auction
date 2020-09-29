@@ -1614,6 +1614,24 @@ tr.bronze {
   }
 }
 
+.nitamono.target {
+  color: #333;
+  font-size: 14px;
+  width: 178px;
+
+  .glyphicon-camera {
+    color: #FF0;
+    text-shadow: #FF0 0px 0px 8px;
+    -webkit-text-stroke: #333 1px;
+  }
+
+  .nitamono_label {
+    line-height: 1;
+    margin-left: 4px;
+    display: inline-block;
+  }
+}
+
 /// @ohashi 20200807 ///
 .navbar {
     border-top: 10px solid #248b00;

@@ -692,11 +692,11 @@ class Product < ApplicationRecord
   def self.nitamono_sort(product_id, page=1)
     target = Product.find(product_id).get_vector
 
-    self.nitamono_search(target, 25, page)
+    self.nitamono_search(target, 25, page, true)
   end
 
   ### 画像特徴ベクトル検索処理 ###
-  def self.nitamono_search(target, limit=nil, page=1)
+  def self.nitamono_search(target, limit=nil, page=1, mine=false)
     return Product.none if target.nil?
 
     vectors = Rails.cache.read(VECTOR_CACHE) || {} # キャッシュからベクトル群を取得
@@ -733,7 +733,7 @@ class Product < ApplicationRecord
         sub = pr_narray - target
         res = (sub * sub).sum
 
-        res > 0 ? [pid, res]  : nil
+        (res > 0 || mine == true) ? [pid, res]  : nil
       end
     end.compact.sort_by { |v| v[1] }
 
