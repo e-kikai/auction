@@ -24,6 +24,20 @@
   - set_meta_tags twitter: { image: img.image.thumb.url }
   - set_meta_tags og:      { image: img.image.view.url }
 
+/// 新機能告知
+= hidden_field_tag(:news_modal_01, session[:news_modal_01])
+
+- if session[:news_modal_01].blank?
+  - session[:news_modal_01] = 1
+
+  javascript:
+
+    $(document).on('turbolinks:load', function() {
+      if (!$("#news_modal_01").val()) {
+        $('#news-modal_01').modal("show");
+      }
+    });
+
 /// パンくず ///
 - if @company.present?
   - breadcrumb :company, @company
@@ -34,9 +48,11 @@
 - else
   - breadcrumb :search
 
+
 - if @company.present?
   - if @company.header_image.url.present?
     .row.header-image = image_tag @company.header_image.url, alt: @company.company
+
 
 .row
   / = url_for @pms
@@ -49,13 +65,6 @@
     = hidden_field_tag :search_id,          @pms[:search_id]
     = hidden_field_tag :referer,            request.referer
     = hidden_field_tag :r,                  params[:r]
-
-    = button_tag class: "btn btn-warning btn-md center-block", data: { toggle: :modal, target: "#news-modal_01"} do
-      span.glyphicon.glyphicon-question-sign
-      span.btn-content = "新機能 : "
-      span.glyphicon.glyphicon-camera
-      span.btn-content 似たものソート
-
 
     .panel.panel-info
       = link_to "#collapse_filter", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
@@ -164,6 +173,12 @@
       br style="clear:both;"
 
     = paginate @pproducts
+
+    = button_tag id: "news-btn_01", class: "btn btn-md pull-right btn-info", data: { toggle: :modal, target: "#news-modal_01"} do
+      span.glyphicon.glyphicon-exclamation-sign
+      span.btn-content = "新機能のお知らせ : "
+      span.glyphicon.glyphicon-camera
+      span.btn-content 似たものソート
 
     - if session[:search_view] == "list"
       - unless Rails.env.production?

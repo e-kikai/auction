@@ -1632,6 +1632,21 @@ tr.bronze {
   }
 }
 
+#news-modal_01 img {
+  max-width: 100%;
+}
+
+#news-btn_01 {
+  .glyphicon-camera {
+    color: #333;
+  }
+
+  .glyphicon-exclamation-sign {
+    color: #ff0;
+    text-shadow: #FF0 0px 0px 8px;
+  }
+}
+
 /// @ohashi 20200807 ///
 .navbar {
     border-top: 10px solid #248b00;
