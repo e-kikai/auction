@@ -49,7 +49,10 @@
 
         td
           - if lo[:product_id].present?
-            = "#{lo.product_id} : #{lo.product.name}(#{number_to_currency(lo.product.start_price)} / #{number_to_currency(lo.product.max_price)})"
+            = "[#{lo.product_id}] #{lo.product.name}(#{number_to_currency(lo.product.start_price)} / #{number_to_currency(lo.product.max_price)})"
+
+          - if lo[:keywords].present?
+            = "キーワード : #{lo.keywords}"
 
           - if lo[:category_id].present?
             = "カテゴリ : #{lo.category.name}"
@@ -61,7 +64,7 @@
             = "検索(特集) : #{lo.search.name}"
 
           - if lo[:nitamono_product_id].present?
-            = "似たものサーチ : #{lo.nitamono_product.name} (#{number_to_currency(lo.nitamono_product.start_price)} / #{number_to_currency(lo.nitamono_product.max_price)})"
+            = "似たものサーチ : [#{lo.nitamono_product_id}] #{lo.nitamono_product.name} (#{number_to_currency(lo.nitamono_product.start_price)} / #{number_to_currency(lo.nitamono_product.max_price)})"
 
 
         td.name
