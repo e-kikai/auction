@@ -106,25 +106,35 @@ class System::DetailLogsController < System::ApplicationController
     @date_start = params[:date_start] || Date.today - 1.month
     @date_end   = params[:date_end] || Date.today
 
-    where   = {user_id: params[:user_id], product_id: params[:product_id], created_at: @date_start..@date_end}
+    where = {created_at: @date_start..@date_end}
+
+    if params[:user_id]
+      @user           = User.find(params[:user_id])
+      where[:user_id] = params[:user_id]
+    end
+
+    product_where = where
+    if params[:product_id]
+      @product = Product.find(params[:product_id])
+      product_where[:product_id] = params[:product_id]
+    end
+
     reorder = {created_at: :desc}
 
+    @datail_logs  = DetailLog.includes(:user, :product).where(product_where).reorder(reorder)
+    @search_logs  = SearchLog.includes(:user, :category, :company, :search, :nitamono_product).where(where).reorder(reorder)
+    @toppage_logs = ToppageLog.includes(:user).where(where).reorder(reorder)
 
-    @datail_logs  = DetailLog.joins(:user, :product).where(where).reorder(reorder)
-    @search_logs  = SearchLog.where(user_id: params[:user_id], created_at: @date_start..@date_end).reorder(reorder)
-    @toppage_logs = ToppageLog.where(created_at: @date_start..@date_end).reorder(reorder)
+    @watches      = Watch.includes(:user, :product).where(where).reorder(reorder)
+    @bids         = Bid.includes(:user, :product).where(where).reorder(reorder)
 
-    @watches      = Watch.where(where).reorder(reorder)
-    @bids         = Bid.where(where).reorder(reorder)
+    @follows      = Follow.includes(:user, :to_user).where(where).reorder(reorder)
+    @trades       = Trade.includes(:user, :product).where(where).reorder(reorder)
 
-    @follows      = Follow.where(where).reorder(reorder)
-    @trades       = Trade.where(where).reorder(reorder)
-
-    logs = @datail_logs + @search_logs + @toppage_logs
-    @logs = logs.sort { |lo| lo.created_at }.reverse
+    logs = [] + @datail_logs + @search_logs + @toppage_logs + @watches + @bids
+    @logs = logs.sort_by { |lo| lo.created_at }.reverse
 
 
-    @user    = User.find(params[:user_id])       if params[:user_id]
     @product = Product.find(params[:product_id]) if params[:product_id]
 
   end

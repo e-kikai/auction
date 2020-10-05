@@ -34,19 +34,36 @@
             = "#{lo.user.id} : #{lo.user.company} #{lo.user.name}"
         td
           - action = case lo.class.to_s
-          - when "DetailLog"; ["詳細", "glyphicon-gift", "green"]
-          - when "SearchLog"; ["検索", "glyphicon-search", "blue"]
-          - when "ToppageLog"; ["トップページ", "glyphicon-home", "orange"]
-          - else; [lo.class, "glyphicon-exclamation-sign", "gray"]
+          - when "DetailLog";  ["詳細", "glyphicon-gift", "#FF9300"]
+          - when "SearchLog";  ["検索", "glyphicon-search", "#0433FF"]
+          - when "ToppageLog"; ["トップページ", "glyphicon-home", "#AA7942"]
+          - when "Watch";      ["ウォッチリスト", "glyphicon-star", "#EE0"]
+          - when "Follow";     ["フォロー", "glyphicon-heart", "#D00"]
+          - when "Bid";        ["入札", "glyphicon-pencil", "#942192"]
+          - when "Trade";      ["問合せ・取引", "glyphicon-comment", "#3c763d"]
+          - else; [lo.class, "glyphicon-exclamation-sign", "#919191"]
 
           span.glyphicon class="#{action[1]}" style="color:#{action[2]};"
           span.btn-content = action[0]
 
 
         td
-        - if lo[:product_id].present?
-          = "#{lo.product_id} : #{lo.product.name} #{number_to_currency(lo.product.start_price)} /"
+          - if lo[:product_id].present?
+            = "#{lo.product_id} : #{lo.product.name}(#{number_to_currency(lo.product.start_price)} / #{number_to_currency(lo.product.max_price)})"
+
+          - if lo[:category_id].present?
+            = "カテゴリ : #{lo.category.name}"
+
+          - if lo[:company_id].present?
+            = "出品会社 : #{lo.company.company}"
+
+          - if lo[:search_id].present?
+            = "検索(特集) : #{lo.search.name}"
+
+          - if lo[:nitamono_product_id].present?
+            = "似たものサーチ : #{lo.nitamono_product.name} (#{number_to_currency(lo.nitamono_product.start_price)} / #{number_to_currency(lo.nitamono_product.max_price)})"
 
 
-
-        td.name title="#{URI.unescape(lo.referer)}" = URI.unescape(lo.link_source)
+        td.name
+          - if lo[:referer].present?
+            = URI.unescape(lo.link_source)
