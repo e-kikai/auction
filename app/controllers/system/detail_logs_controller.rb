@@ -101,4 +101,31 @@ class System::DetailLogsController < System::ApplicationController
 
     end
   end
+
+  def search
+    @date_start = params[:date_start] || Date.today - 1.month
+    @date_end   = params[:date_end] || Date.today
+
+    where   = {user_id: params[:user_id], product_id: params[:product_id], created_at: @date_start..@date_end}
+    reorder = {created_at: :desc}
+
+
+    @datail_logs  = DetailLog.joins(:user, :product).where(where).reorder(reorder)
+    @search_logs  = SearchLog.where(user_id: params[:user_id], created_at: @date_start..@date_end).reorder(reorder)
+    @toppage_logs = ToppageLog.where(created_at: @date_start..@date_end).reorder(reorder)
+
+    @watches      = Watch.where(where).reorder(reorder)
+    @bids         = Bid.where(where).reorder(reorder)
+
+    @follows      = Follow.where(where).reorder(reorder)
+    @trades       = Trade.where(where).reorder(reorder)
+
+    logs = @datail_logs + @search_logs + @toppage_logs
+    @logs = logs.sort { |lo| lo.created_at }.reverse
+
+
+    @user    = User.find(params[:user_id])       if params[:user_id]
+    @product = Product.find(params[:product_id]) if params[:product_id]
+
+  end
 end

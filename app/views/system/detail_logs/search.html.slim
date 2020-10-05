@@ -1,0 +1,52 @@
+- set_meta_tags title: "ユーザ・商品別アクセスログ"
+- breadcrumb :system_something, "ユーザ・商品別アクセスログ"
+
+= form_tag("/system/detail_logs/search", method: "get", class: "form-inline filtering-form") do
+  / = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
+  = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+
+  = button_tag "検索",  class: "btn btn-info" do
+    span.glyphicon.glyphicon-search
+    span.btn-content 検索
+
+  = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+    span.glyphicon.glyphicon-download-alt
+    span.btn-content CSV出力
+
+.table-responsive
+  table.table.table-hover.table-condensed.table-striped
+    tr
+      th アクセス日時
+      th IP
+      th ユーザ
+      th アクション
+      th 詳細
+
+      th.name リンク元
+    - @logs.each do |lo|
+      tr
+        td = lo.created_at
+        td
+          - if lo[:ip].present?
+            = lo.ip
+        td
+          - if lo[:user_id].present?
+            = "#{lo.user.id} : #{lo.user.company} #{lo.user.name}"
+        td
+          - action = case lo.class.to_s
+          - when "DetailLog"; ["詳細", "glyphicon-gift", "green"]
+          - when "SearchLog"; ["検索", "glyphicon-search", "blue"]
+          - when "ToppageLog"; ["トップページ", "glyphicon-home", "orange"]
+          - else; [lo.class, "glyphicon-exclamation-sign", "gray"]
+
+          span.glyphicon class="#{action[1]}" style="color:#{action[2]};"
+          span.btn-content = action[0]
+
+
+        td
+        - if lo[:product_id].present?
+          = "#{lo.product_id} : #{lo.product.name} #{number_to_currency(lo.product.start_price)} /"
+
+
+
+        td.name title="#{URI.unescape(lo.referer)}" = URI.unescape(lo.link_source)

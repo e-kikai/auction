@@ -138,6 +138,7 @@ Rails.application.routes.draw do
     resources :detail_logs, only: [:index] do
       collection do
         get 'monthly'
+        get "search"
       end
     end
     resources :search_logs,  only: [:index]
