@@ -3,7 +3,12 @@
 
 = form_tag("/system/detail_logs/search", method: "get", class: "form-inline filtering-form") do
   / = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
-  = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
+
+  = search_field_tag :user_id, params[:user_id], class: 'form-control', placeholder: "ユーザID"
+  = text_field_tag :date_start, @date_start, class: 'form-control', placeholder: "開始日時"
+  span = " 〜 "
+  = text_field_tag :date_end, @date_end, class: 'form-control', placeholder: "終了日時"
+  / = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}
 
   = button_tag "検索",  class: "btn btn-info" do
     span.glyphicon.glyphicon-search
@@ -13,12 +18,55 @@
     span.glyphicon.glyphicon-download-alt
     span.btn-content CSV出力
 
+- if @user.present?
+  .row
+    .col-md-offset-3.col-md-6
+      .panel.panel-default
+        section.panel-body
+          dl.dl-horizontal.product-dl
+            dt.dt-first ユーザID
+            dd = @user.id
+
+            dt 会社名
+            dd = @user.company
+
+            dt 氏名
+            dd = @user.name
+
+            dt アカウント
+            dd = @user.account
+
+            dt 都道府県
+            dd = @user.addr_1
+
+          dl.dl-horizontal.product-dl.product-dl-border
+            dt 業種
+            dd
+              - @user.industries.each do |ind|
+                . = ind.name
+
+            dt 出品
+            dd
+              - if @user.special?
+                | SP
+              - elsif @user.seller?
+                | ◯
+
+            dt 案内メール
+            dd = @user.allow_mail? ? "◯" : ""
+
+            dt 登録日時
+            dd = I18n.l(@user.created_at, format: :full_date)
+
+
+
 .table-responsive
   table.table.table-hover.table-condensed.table-striped
     tr
       th アクセス日時
-      th IP
-      th ユーザ
+      - if @user.blank?
+        th IP
+        th ユーザ
       th アクション
       th 詳細
 
@@ -26,12 +74,15 @@
     - @logs.each do |lo|
       tr
         td = lo.created_at
-        td
-          - if lo[:ip].present?
-            = lo.ip
-        td
-          - if lo[:user_id].present?
-            = "#{lo.user.id} : #{lo.user.company} #{lo.user.name}"
+
+        - if @user.blank?
+          td
+            - if lo[:ip].present?
+              = lo.ip
+          td
+            - if lo[:user_id].present?
+              / = "#{lo.user.id} : #{lo.user.company} #{lo.user.name}"
+              = link_to "#{lo.user.id} : #{lo.user.company} #{lo.user.name}", "/system/detail_logs/search?user_id=#{lo.user.id}"
         td
           - action = case lo.class.to_s
           - when "DetailLog";  ["詳細", "glyphicon-gift", "#FF9300"]
@@ -48,23 +99,26 @@
 
 
         td
-          - if lo[:product_id].present?
+          - if lo[:product].present?
             = "[#{lo.product_id}] #{lo.product.name}(#{number_to_currency(lo.product.start_price)} / #{number_to_currency(lo.product.max_price)})"
 
           - if lo[:keywords].present?
             = "キーワード : #{lo.keywords}"
 
-          - if lo[:category_id].present?
+          - if lo[:category].present?
             = "カテゴリ : #{lo.category.name}"
 
-          - if lo[:company_id].present?
-            = "出品会社 : #{lo.company.company}"
+          - if lo[:company].present?
+            = "出品会社 : #{lo.company.company_remove_kabu}"
 
-          - if lo[:search_id].present?
+          - if lo[:search].present?
             = "検索(特集) : #{lo.search.name}"
 
-          - if lo[:nitamono_product_id].present?
+          - if lo[:nitamono_product].present?
             = "似たものサーチ : [#{lo.nitamono_product_id}] #{lo.nitamono_product.name} (#{number_to_currency(lo.nitamono_product.start_price)} / #{number_to_currency(lo.nitamono_product.max_price)})"
+
+          - if lo[:amount].present?
+            = " >> #{number_to_currency(lo.amount)}"
 
 
         td.name
