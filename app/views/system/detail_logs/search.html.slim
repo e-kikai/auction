@@ -99,22 +99,22 @@
 
 
         td
-          - if lo[:product].present?
+          - if lo[:product_id].present? && lo.product
             = "[#{lo.product_id}] #{lo.product.name}(#{number_to_currency(lo.product.start_price)} / #{number_to_currency(lo.product.max_price)})"
 
           - if lo[:keywords].present?
             = "キーワード : #{lo.keywords}"
 
-          - if lo[:category].present?
+          - if lo[:category_id].present? && lo.category
             = "カテゴリ : #{lo.category.name}"
 
-          - if lo[:company].present?
+          - if lo[:company_id].present? && lo.company
             = "出品会社 : #{lo.company.company_remove_kabu}"
 
-          - if lo[:search].present?
+          - if lo[:search_id].present? && lo.search
             = "検索(特集) : #{lo.search.name}"
 
-          - if lo[:nitamono_product].present?
+          - if lo[:nitamono_product_id].present? && lo.nitamono_product
             = "似たものサーチ : [#{lo.nitamono_product_id}] #{lo.nitamono_product.name} (#{number_to_currency(lo.nitamono_product.start_price)} / #{number_to_currency(lo.nitamono_product.max_price)})"
 
           - if lo[:amount].present?
