@@ -1632,9 +1632,26 @@ tr.bronze {
   }
 }
 
-#news-modal_01 img {
-  max-width: 100%;
+#news-modal_01 {
+  .close_modal {
+    font-size: 32px;
+    color: #FFF;
+    width: 600px;
+    margin: 0 auto;
+    text-align: right;
+    text-shadow: 2px 2px 4px #000;
+    cursor: pointer;
+  }
+
+  .modal-content {
+    overflow: hidden;
+  }
+
+  img {
+   max-width: 100%;
+  }
 }
+
 
 #news-btn_01 {
   .glyphicon-camera {
