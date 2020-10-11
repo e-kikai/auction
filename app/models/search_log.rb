@@ -6,6 +6,8 @@
 #  host                :string
 #  ip                  :string
 #  keywords            :string
+#  page                :integer          default(1), not null
+#  path                :string           default(""), not null
 #  r                   :string           default(""), not null
 #  referer             :string
 #  ua                  :string

@@ -23,6 +23,9 @@
   .col-md-12
     /// ログ用検索パラメータ
     = hidden_field_tag :nitamono_product_id, @product.id
+    = hidden_field_tag :path,                request.fullpath
+    = hidden_field_tag :page,                params[:page] || 1
+
     = hidden_field_tag :referer,             request.referer
     = hidden_field_tag :r,                   params[:r]
 

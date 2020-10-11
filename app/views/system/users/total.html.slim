@@ -30,7 +30,8 @@
           / th アカウント
           th.name 会社名・ユーザ名
           th 出品
-          th.sepa 都道府県
+          th 都道府県
+          th.sepa ログ
           th.num 入札<br />件数
           th.num 落札<br />件数
           th.total_price.sepa 落札金額
@@ -65,7 +66,10 @@
               | SP
             - elsif us.seller?
               | ◯
-          td.sepa = us.addr_1
+          td = us.addr_1
+          td.sepa = link_to("/system/detail_logs/search?user_id=#{us.id}", class: "btn btn-default btn-sm") do
+            span.glyphicon.glyphicon-road
+            span.btn-content ログ
           / td.sepa = us.seller? ? "◯" : "×"
           td.num = number_with_delimiter(@bids_count[us.id])
           td.num = number_with_delimiter(@count_max_price[us.id])
@@ -95,7 +99,8 @@
           / th アカウント
           th.name 会社名・ユーザ名
           th 出品
-          th.sepa 都道府県
+          th 都道府県
+          th.sepa ログ
           th.num 入札<br />件数
           th.num 落札<br />件数
           th.total_price.sepa 落札金額
@@ -122,6 +127,7 @@
           td
           td
           / td
+          td
           td
           td
           th.sepa 合計

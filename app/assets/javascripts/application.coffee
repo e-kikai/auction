@@ -46,7 +46,7 @@ $(document).on 'turbolinks:load', ->
         url:      "/search_logs/"
         type:     'POST',
         dataType: 'json',
-        data :    { category_id : $('#search_category_id').val(), company_id : $('#search_company_id').val(), keywords : $('#search_keywords').val(), search_id : $('#search_id').val(), r : $('#r').val(), referer : $('#referer').val() },
+        data :    { category_id : $('#search_category_id').val(), company_id : $('#search_company_id').val(), keywords : $('#search_keywords').val(), search_id : $('#search_id').val(), nitamono_product_id : $('#nitamono_product_id').val(), path : $('#path').val(), page : $('#page').val(), r : $('#r').val(), referer : $('#referer').val() },
         timeout:  3000,
         # success:  (data, status, xhr)   -> alert status
         # error:    (xhr,  status, error) -> alert status
@@ -58,7 +58,7 @@ $(document).on 'turbolinks:load', ->
         url:      "/search_logs/"
         type:     'POST',
         dataType: 'json',
-        data :    { nitamono_product_id : $('#nitamono_product_id').val(),r : $('#r').val(), referer : $('#referer').val() },
+        data :    { nitamono_product_id : $('#nitamono_product_id').val(), path : $('#path').val(), page : $('#page').val(), r : $('#r').val(), referer : $('#referer').val() },
         timeout:  3000,
 
     ### トップページログ ###

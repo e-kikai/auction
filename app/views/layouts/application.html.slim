@@ -27,7 +27,7 @@ html
 
   / body onLoad="FixedMidashi.create();"
   body data-controller="#{controller.controller_path}" data-action="#{controller.action_name}" id="#{controller.controller_path.gsub("/", "-")}-#{controller.action_name}"
-    - if session[:system_account]
+    - if session[:system_account] && Rails.env.production?
       = hidden_field_tag :nologging, 1
     header.navbar.navbar-default.container-fluid role="navigation"
       .navbar-header
@@ -80,7 +80,7 @@ html
           .col-md-6
             .form-group.search-area
               = form_tag "/products", method: :get, class: "form-inline" do
-                = hidden_field_tag :category_id, params[:category_id]
+                = hidden_field_tag :category_id, params[:category_id], id: "keyword_search_categoy_id"
                 .input-group
                   / = text_field_tag :keywords, params[:keywords], class: "form-control", placeholder: "キーワードから探す - 空白区切りでAND検索できます"
                   = text_field_tag :keywords, @keywords.to_s, class: "form-control", placeholder: "キーワードから探す - 空白区切りでAND検索できます"

@@ -43,6 +43,7 @@ ul.nav.nav-pills
               th 出品
               th 案内
               th 確認
+              th ログ
               th 変更
               / th 代理ログイン
               th パスワード
@@ -66,6 +67,10 @@ ul.nav.nav-pills
                   | ◯
               td = us.allow_mail? ? "◯" : ""
               td = us.confirmed_at? ? "◯" : ""
+
+              td = link_to("/system/detail_logs/search?user_id=#{us.id}", class: "btn btn-default btn-sm") do
+                span.glyphicon.glyphicon-road
+                span.btn-content ログ
 
               td = link_to({ action: :edit, id: us.id }, class: "btn btn-warning btn-sm") do
                 span.glyphicon.glyphicon-edit

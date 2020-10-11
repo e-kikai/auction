@@ -64,6 +64,9 @@
     = hidden_field_tag :search_keywords,     @pms[:keywords]
     = hidden_field_tag :search_id,           @pms[:search_id]
     = hidden_field_tag :nitamono_product_id, @pms[:nitamono]
+
+    = hidden_field_tag :path,                request.fullpath
+    = hidden_field_tag :page,                params[:page] || 1
     = hidden_field_tag :referer,             request.referer
     = hidden_field_tag :r,                   params[:r]
 

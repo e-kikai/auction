@@ -103,8 +103,8 @@ class System::DetailLogsController < System::ApplicationController
   end
 
   def search
-    @date_start = (params[:date_start].to_date) || Date.today - 1.month
-    @date_end   = (params[:date_end].to_date) || Date.today
+    @date_start = (params[:date_start] || Date.today - 1.month).to_date
+    @date_end   = (params[:date_end] || Date.today).to_date
 
     where = {created_at: @date_start.beginning_of_day..@date_end.end_of_day}
     date_where = {created_at: @date_start.beginning_of_day..@date_end.end_of_day}
@@ -117,9 +117,9 @@ class System::DetailLogsController < System::ApplicationController
       ips += SearchLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
       ips += ToppageLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
       ips.uniq!
+
+      ip_where = {ip: ips}
     end
-
-
 
     product_where = {}
     if params[:product_id].present?
