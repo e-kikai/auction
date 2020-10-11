@@ -11,6 +11,7 @@ class ProductsController < ApplicationController
       company_id:  pms[:company_id].presence,
       search_id:   pms[:search_id].presence,
       success:     pms[:success].presence,
+      nitamono:    pms[:nitamono].presence,
 
       news_week:   pms[:news_week].presence,
       news_day:    pms[:news_day].presence,

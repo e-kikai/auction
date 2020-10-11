@@ -103,17 +103,25 @@ class System::DetailLogsController < System::ApplicationController
   end
 
   def search
-    @date_start = params[:date_start] || Date.today - 1.month
-    @date_end   = params[:date_end] || Date.today
+    @date_start = (params[:date_start].to_date) || Date.today - 1.month
+    @date_end   = (params[:date_end].to_date) || Date.today
 
-    where = {created_at: @date_start...@date_end}
-
+    where = {created_at: @date_start.beginning_of_day..@date_end.end_of_day}
+    date_where = {created_at: @date_start.beginning_of_day..@date_end.end_of_day}
     if params[:user_id].present?
       @user           = User.find(params[:user_id])
       where[:user_id] = params[:user_id]
+
+      # IPからユーザ推測
+      ips = DetailLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
+      ips += SearchLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
+      ips += ToppageLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
+      ips.uniq!
     end
 
-    product_where = where
+
+
+    product_where = {}
     if params[:product_id].present?
       @product = Product.find(params[:product_id])
       product_where[:product_id] = params[:product_id]
@@ -121,7 +129,10 @@ class System::DetailLogsController < System::ApplicationController
 
     reorder = {created_at: :desc}
 
-    @datail_logs  = DetailLog.includes(:user, :product).where(product_where).reorder(reorder)
+    @datail_logs  = DetailLog.includes(:user, :product).where(where).where(product_where).reorder(reorder)
+    # @datail_logs  = DetailLog.includes(:user, :product).where(date_where).where(detaillog_user_where).where(product_where).reorder(reorder)
+    # @datail_logs  = DetailLog.includes(:user, :product).where(user_id: params[:user_id]).or(DetailLog.where(ip: ip_tmp)).where(date_where).where(product_where).reorder(reorder)
+
     @search_logs  = SearchLog.includes(:user, :category, :company, :search, :nitamono_product).where(where).reorder(reorder)
     @toppage_logs = ToppageLog.includes(:user).where(where).reorder(reorder)
 

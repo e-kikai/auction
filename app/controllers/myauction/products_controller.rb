@@ -140,7 +140,11 @@ class Myauction::ProductsController < Myauction::ApplicationController
     cond = @product.dulation_start > Time.now ? 0 : 1
     if @product.update(product_params)
       ### 画像特徴ベクトル変換 ###
-      @product.process_vector
+      # @product.process_vector
+      if params[:images].present?
+        cmd = "curl -s -X GET #{root_url}/products/#{@product.id}/process_vector"
+        o, e, s = Open3.popen3(cmd)
+      end
 
       if cond < 1
         redirect_to "/myauction/products?cond=-1", notice: "#{@product.name}を変更しました"

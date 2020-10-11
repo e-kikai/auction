@@ -1238,6 +1238,7 @@ td.absolute {
 
     &.right {
       right: 5px;
+      width: 300px;
     }
   }
 }
@@ -1617,7 +1618,7 @@ tr.bronze {
 .nitamono.target {
   color: #333;
   font-size: 14px;
-  width: 178px;
+  width: 90%;
 
   .glyphicon-camera {
     color: #FF0;
@@ -1629,6 +1630,7 @@ tr.bronze {
     line-height: 1;
     margin-left: 4px;
     display: inline-block;
+    font-size: 10.5px;
   }
 }
 

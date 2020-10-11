@@ -70,7 +70,7 @@
       th アクション
       th 詳細
 
-      th.name リンク元
+      th リンク元
     - @logs.each do |lo|
       tr
         td = lo.created_at
@@ -121,6 +121,6 @@
             = " >> #{number_to_currency(lo.amount)}"
 
 
-        td.name
+        td
           - if lo[:referer].present?
             = URI.unescape(lo.link_source)
