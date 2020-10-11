@@ -718,7 +718,7 @@ class Product < ApplicationRecord
         vectors[pid] = if bucket.object("#{S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
 
           str = bucket.object("#{S3_VECTORS_PATH}/vector_#{pid}.npy").get.body.read
-          Npy.load_string(str)
+          Npy.load_string(str) rescue ZERO_NARRAY
         else
           ZERO_NARRAY
         end
