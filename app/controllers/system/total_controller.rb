@@ -260,7 +260,7 @@ class System::TotalController < System::ApplicationController
     # @rend   = @date.to_time.end_of_month
 
     @where_cr  = {created_at: @rrange}
-    @where_str = {dulation_start: @rrrange}
-    @where_end = {dulation_end: @rrrange}
+    @where_str = {dulation_start: @rrange}
+    @where_end = {dulation_end: @rrange}
   end
 end
