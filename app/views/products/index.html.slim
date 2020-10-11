@@ -183,6 +183,8 @@
       span.glyphicon.glyphicon-camera
       span.btn-content 似たものソート
 
+    br style="clear:both;"
+
     - if session[:search_view] == "list"
       .mobile-products-list.hidden-lg.hidden-md
         - @pproducts.each do |pr|
