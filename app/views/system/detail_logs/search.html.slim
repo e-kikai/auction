@@ -124,6 +124,9 @@
             - if lo[:category_id].present? && lo.category
               - conditions <<  "カテゴリ: #{lo.category.name}"
 
+            - elsif lo[:path].present? && lo[:path] =~ /products($|\?)/
+              - conditions <<  "すべてのカテゴリ"
+
             - if lo[:company_id].present? && lo.company
               - conditions <<  "出品会社: #{lo.company.company_remove_kabu}"
 
@@ -137,10 +140,10 @@
               - conditions <<  "新着: #{$1}"
 
             - if lo[:path].present? && lo[:path] =~ /success\=start/
-              - conditions <<  "出品中"
+              - conditions <<  "出品中を表示"
 
             - if lo[:path].present? && lo[:path] =~ /success\=success/
-              - conditions <<  "落札価格"
+              - conditions <<  "落札価格を表示"
 
             = conditions.join(' | ')
             /// ページャ ///
