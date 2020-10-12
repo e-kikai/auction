@@ -60,7 +60,7 @@
 
             dt IP
             dd = "#{@user.last_sign_in_ip} | #{@user.current_sign_in_ip}"
-- elsif params[:user_id].strip.present?
+- elsif params[:user_id].present?
   .row
     .col-md-offset-3.col-md-6
       .panel.panel-default
