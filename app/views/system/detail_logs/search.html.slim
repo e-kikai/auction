@@ -58,97 +58,116 @@
             dt 登録日時
             dd = I18n.l(@user.created_at, format: :full_date)
 
+            dt IP
+            dd = "#{@user.last_sign_in_ip} | #{@user.current_sign_in_ip}"
+- elsif params[:user_id].split.present?
+  .row
+    .col-md-offset-3.col-md-6
+      .panel.panel-default
+        section.panel-body
+          dl.dl-horizontal.product-dl
+            dt.dt-first IP
+            dd = params[:user_id]
 
-
-.table-responsive
-  table.table.table-hover.table-condensed.table-striped
-    tr
-      th アクセス日時
-      - if @user.blank?
-        th IP
-        th ユーザ
-      th アクション
-      th 詳細
-
-      th リンク元
-    - @logs.each do |lo|
+- if @logs.blank?
+  .alert.alert-success
+    span.glyphicon.glyphicon-info-sign
+    span.btn-content = ログデータがありませんでした。
+- else
+  .table-responsive
+    table.table.table-hover.table-condensed.table-striped
       tr
-        td = lo.created_at
-
+        th アクセス日時
         - if @user.blank?
+          th IP
+          th ユーザ
+        - else
+          th IP推測
+        th アクション
+        th 詳細
+
+        th リンク元
+      - @logs.each do |lo|
+        tr
+          td = lo.created_at
+
+          - if @user.blank?
+            td
+              - if lo[:ip].present?
+                / = lo.ip
+                = link_to "#{lo.ip}", "/system/detail_logs/search?user_id=#{lo.ip}"
+            td
+              - if lo[:user_id].present?
+                / = "#{lo.user.id} : #{lo.user.company} #{lo.user.name}"
+                = link_to "#{lo.user.id} : #{lo.user.company} #{lo.user.name}", "/system/detail_logs/search?user_id=#{lo.user.id}"
+          - else
+            td = "○" if lo[:user_id].blank?
           td
-            - if lo[:ip].present?
-              = lo.ip
+            - action = case lo.class.to_s
+            - when "DetailLog";  ["詳細", "glyphicon-gift", "#FF9300"]
+            - when "SearchLog";  ["検索", "glyphicon-search", "#0433FF"]
+            - when "ToppageLog"; ["トップページ", "glyphicon-home", "#AA7942"]
+            - when "Watch";      ["ウォッチリスト", "glyphicon-star", "#EE0"]
+            - when "Follow";     ["フォロー", "glyphicon-heart", "#D00"]
+            - when "Bid";        ["入札", "glyphicon-pencil", "#942192"]
+            - when "Trade";      ["問合せ・取引", "glyphicon-comment", "#3c763d"]
+            - else; [lo.class, "glyphicon-exclamation-sign", "#919191"]
+
+            span.glyphicon class="#{action[1]}" style="color:#{action[2]};"
+            span.btn-content = action[0]
+
+
           td
-            - if lo[:user_id].present?
-              / = "#{lo.user.id} : #{lo.user.company} #{lo.user.name}"
-              = link_to "#{lo.user.id} : #{lo.user.company} #{lo.user.name}", "/system/detail_logs/search?user_id=#{lo.user.id}"
-        td
-          - action = case lo.class.to_s
-          - when "DetailLog";  ["詳細", "glyphicon-gift", "#FF9300"]
-          - when "SearchLog";  ["検索", "glyphicon-search", "#0433FF"]
-          - when "ToppageLog"; ["トップページ", "glyphicon-home", "#AA7942"]
-          - when "Watch";      ["ウォッチリスト", "glyphicon-star", "#EE0"]
-          - when "Follow";     ["フォロー", "glyphicon-heart", "#D00"]
-          - when "Bid";        ["入札", "glyphicon-pencil", "#942192"]
-          - when "Trade";      ["問合せ・取引", "glyphicon-comment", "#3c763d"]
-          - else; [lo.class, "glyphicon-exclamation-sign", "#919191"]
+            - if lo[:product_id].present? && lo.product
+              = "[#{lo.product_id}] "
+              = link_to lo.product.name, "/products/#{lo[:product_id]}", target: "_blank"
+              - unless lo.product.state == "中古"
+                = "[#{lo.product.state}]"
 
-          span.glyphicon class="#{action[1]}" style="color:#{action[2]};"
-          span.btn-content = action[0]
+              - if lo.product.prompt_dicision_price
+                = "(即売:#{number_to_currency(lo.product.prompt_dicision_price)})"
+              = "(#{number_to_currency(lo.product.max_price)})"
 
+              = " 入札数: #{lo.product.bids_count}"
 
-        td
-          - if lo[:product_id].present? && lo.product
-            = "[#{lo.product_id}] "
-            = link_to lo.product.name, "/products/#{lo[:product_id]}", target: "_blank"
-            - unless lo.product.state == "中古"
-              = "[#{lo.product.state}]"
+              - if lo.product.dulation_end < lo.created_at
+                = " - 終了済"
 
-            - if lo.product.prompt_dicision_price
-              = "(即売:#{number_to_currency(lo.product.prompt_dicision_price)})"
-            = "(#{number_to_currency(lo.product.max_price)})"
+            /// 検索条件 ///
+            - if lo.class.to_s == "SearchLog"
+              - conditions = []
 
-            = " 入札数: #{lo.product.bids_count}"
+              - if lo[:keywords].present?
+                - conditions << "キーワード: #{lo.keywords}"
 
-            - if lo.product.dulation_end < lo.created_at
-              = " - 終了済"
+              - if lo[:category_id].present? && lo.category
+                - conditions <<  "カテゴリ: #{lo.category.name}"
 
-          /// 検索条件 ///
-          - if lo.class.to_s == "SearchLog"
-            - conditions = []
+              - elsif lo[:path].present? && lo[:path] =~ /products($|\?)/
+                - conditions <<  "すべてのカテゴリ"
 
-            - if lo[:keywords].present?
-              - conditions << "キーワード: #{lo.keywords}"
+              - if lo[:company_id].present? && lo.company
+                - conditions <<  "出品会社: #{lo.company.company_remove_kabu}"
 
-            - if lo[:category_id].present? && lo.category
-              - conditions <<  "カテゴリ: #{lo.category.name}"
+              - if lo[:search_id].present? && lo.search
+                - conditions <<  "特集: #{lo.search.name}"
 
-            - elsif lo[:path].present? && lo[:path] =~ /products($|\?)/
-              - conditions <<  "すべてのカテゴリ"
+              - if lo[:nitamono_product_id].present? && lo.nitamono_product
+                - conditions <<  "似たものサーチ: [#{lo.nitamono_product_id}] #{lo.nitamono_product.name} (#{number_to_currency(lo.nitamono_product.max_price)})"
 
-            - if lo[:company_id].present? && lo.company
-              - conditions <<  "出品会社: #{lo.company.company_remove_kabu}"
+              - if lo[:path].present? && lo[:path] =~ /news\/([0-9-]+)/
+                - conditions <<  "新着: #{$1}"
 
-            - if lo[:search_id].present? && lo.search
-              - conditions <<  "特集: #{lo.search.name}"
+              - if lo[:path].present? && lo[:path] =~ /success\=start/
+                - conditions <<  "出品中を表示"
 
-            - if lo[:nitamono_product_id].present? && lo.nitamono_product
-              - conditions <<  "似たものサーチ: [#{lo.nitamono_product_id}] #{lo.nitamono_product.name} (#{number_to_currency(lo.nitamono_product.max_price)})"
+              - if lo[:path].present? && lo[:path] =~ /success\=success/
+                - conditions <<  "落札価格を表示"
 
-            - if lo[:path].present? && lo[:path] =~ /news\/([0-9-]+)/
-              - conditions <<  "新着: #{$1}"
-
-            - if lo[:path].present? && lo[:path] =~ /success\=start/
-              - conditions <<  "出品中を表示"
-
-            - if lo[:path].present? && lo[:path] =~ /success\=success/
-              - conditions <<  "落札価格を表示"
-
-            = conditions.join(' | ')
-            /// ページャ ///
-            - if lo[:page].present?
-              = " (#{lo[:page]})"
+              = conditions.join(' | ')
+              /// ページャ ///
+              - if lo[:page].present?
+                = " (#{lo[:page]})"
 
 
             - if lo[:amount].present?
@@ -157,6 +176,6 @@
 
 
 
-        td
-          - if lo[:referer].present?
-            = URI.unescape(lo.link_source)
+          td
+            - if lo[:referer].present?
+              = URI.unescape(lo.link_source)

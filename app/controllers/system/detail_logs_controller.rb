@@ -106,19 +106,25 @@ class System::DetailLogsController < System::ApplicationController
     @date_start = (params[:date_start] || Date.today - 1.week).to_date
     @date_end   = (params[:date_end] || Date.today).to_date
 
-    where = {created_at: @date_start.beginning_of_day..@date_end.end_of_day}
-    date_where = {created_at: @date_start.beginning_of_day..@date_end.end_of_day}
+    where    = {created_at: @date_start.beginning_of_day..@date_end.end_of_day}
+    ip_where = {created_at: @date_start.beginning_of_day..@date_end.end_of_day}
+
     if params[:user_id].present?
-      @user           = User.find(params[:user_id])
-      where[:user_id] = params[:user_id]
+      ips = if params[:user_id].strip =~ /^[0-9]+$/
+        @user           = User.find(params[:user_id])
+        where[:user_id] = params[:user_id]
 
-      # IPからユーザ推測
-      ips = DetailLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
-      ips += SearchLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
-      ips += ToppageLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
-      ips.uniq!
+        # IPからユーザ推測
+        ips =  DetailLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
+        ips += SearchLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
+        ips += ToppageLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
 
-      ip_where = {ip: ips}
+        ips.uniq
+      else
+        params[:user_id]
+      end
+
+      ip_where[:ip] = ips
     end
 
     product_where = {}
@@ -129,12 +135,9 @@ class System::DetailLogsController < System::ApplicationController
 
     reorder = {created_at: :desc}
 
-    @datail_logs  = DetailLog.includes(:user, :product).where(where).where(product_where).reorder(reorder)
-    # @datail_logs  = DetailLog.includes(:user, :product).where(date_where).where(detaillog_user_where).where(product_where).reorder(reorder)
-    # @datail_logs  = DetailLog.includes(:user, :product).where(user_id: params[:user_id]).or(DetailLog.where(ip: ip_tmp)).where(date_where).where(product_where).reorder(reorder)
-
-    @search_logs  = SearchLog.includes(:user, :category, :company, :search, :nitamono_product).where(where).reorder(reorder)
-    @toppage_logs = ToppageLog.includes(:user).where(where).reorder(reorder)
+    @datail_logs  = DetailLog.includes(:user, :product).where(ip_where).where(product_where).reorder(reorder)
+    @search_logs  = SearchLog.includes(:user, :category, :company, :search, :nitamono_product).where(ip_where).reorder(reorder)
+    @toppage_logs = ToppageLog.includes(:user).where(ip_where).reorder(reorder)
 
     @watches      = Watch.includes(:user, :product).where(where).reorder(reorder)
     @bids         = Bid.includes(:user, :product).where(where).reorder(reorder)
