@@ -106,7 +106,7 @@ class System::DetailLogsController < System::ApplicationController
     @date_start = (params[:date_start] || Date.today - 1.week).to_date
     @date_end   = (params[:date_end] || Date.today).to_date
 
-    where    = {created_at: @date_start.beginning_of_day..@date_end.end_of_day}
+    where    = {created_at: @date_start.beginning_of_day..@date_end.end_of_day, user_id: 9999999999}
     ip_where = {created_at: @date_start.beginning_of_day..@date_end.end_of_day}
 
     if params[:user_id].present?
@@ -118,8 +118,8 @@ class System::DetailLogsController < System::ApplicationController
         ips =  DetailLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
         ips += SearchLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
         ips += ToppageLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
-        ips << @user.last_sign_in_ip
-        ips << @user.current_sign_in_ip
+        ips << @user.last_sign_in_ip.to_s
+        ips << @user.current_sign_in_ip.to_s
 
         ips.uniq
       else
