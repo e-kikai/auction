@@ -208,7 +208,7 @@ class System::DetailLogsController < System::ApplicationController
 
         max_price:    (lo[:product_id].present? && lo.product) ? lo.product.max_price : "",
         amount:       lo[:amount].presence || "",
-        bids_count:    (lo[:bids_count].present? && lo.product) ? lo.product.bids_count : "",
+        bids_count:    (lo[:product_id].present? && lo.product) ? lo.product.bids_count : "",
 
         page:         lo[:page].presence || "",
         con:          con,
