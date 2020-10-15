@@ -171,7 +171,7 @@ class System::DetailLogsController < System::ApplicationController
       if lo[:product_id].present? && lo.product
         con << "[#{lo.product.state}]" unless lo.product.state == "中古"
 
-        con << "即売:#{number_to_currency(lo.product.prompt_dicision_price)}" if lo.product.prompt_dicision_price
+        con << "即売:#{lo.product.prompt_dicision_price}円" if lo.product.prompt_dicision_price
 
         con << "終了済" if lo.product.dulation_end < lo.created_at
       end
