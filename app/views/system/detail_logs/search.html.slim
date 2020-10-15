@@ -111,7 +111,7 @@
 
               = " (#{number_to_currency(lo[:max_price])})"
 
-              = " 入札数: #{lo[:bids_count]}"
+              = " 入札数: #{number_with_delimiter(lo[:bids_count])}"
 
             = lo[:con].join(' | ')
 
