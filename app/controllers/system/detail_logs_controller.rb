@@ -204,9 +204,9 @@ class System::DetailLogsController < System::ApplicationController
         ip_guess:     (@user.present? && lo[:user_id].blank?) ? true : false,
 
         product_id:   lo[:product_id].presence || "",
-        product_name: lo[:product_id].present? ? lo.product.name : "",
+        product_name: (lo[:product_id].present? && lo.product) ? lo.product.name : "",
 
-        max_price:    lo[:product_id].present? ? lo.product.max_price : "",
+        max_price:    (lo[:product_id].present? && lo.product) ? lo.product.max_price : "",
         amount:       lo[:amount].presence || "",
         bids_count:   lo[:bids_count].presence || "",
         page:         lo[:page].presence || "",
