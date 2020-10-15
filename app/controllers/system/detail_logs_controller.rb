@@ -153,5 +153,74 @@ class System::DetailLogsController < System::ApplicationController
 
     @product = Product.find(params[:product_id]) if params[:product_id]
 
+    ### 事前整形 ###
+    @relogs = @logs .map do |lo|
+
+      klass = case lo.class.to_s
+      when "DetailLog";  ["詳細", "glyphicon-gift", "#FF9300"]
+      when "SearchLog";  ["検索", "glyphicon-search", "#0433FF"]
+      when "ToppageLog"; ["トップページ", "glyphicon-home", "#AA7942"]
+      when "Watch";      ["ウォッチリスト", "glyphicon-star", "#EE0"]
+      when "Follow";     ["フォロー", "glyphicon-heart", "#D00"]
+      when "Bid";        ["入札", "glyphicon-pencil", "#942192"]
+      when "Trade";      ["問合せ・取引", "glyphicon-comment", "#3c763d"]
+      else; [lo.class, "glyphicon-exclamation-sign", "#919191"]
+      end
+
+      con = []
+      if lo[:product_id].present? && lo.product
+        con << "[#{lo.product.state}]" unless lo.product.state == "中古"
+
+        con << "即売:#{number_to_currency(lo.product.prompt_dicision_price)}" if lo.product.prompt_dicision_price
+
+        con << "終了済" if lo.product.dulation_end < lo.created_at
+      end
+
+
+      if lo.class.to_s == "SearchLog"
+        if lo[:search_id].present? && lo.search
+          con << "特集: #{lo.search.name}"
+        else
+          con << "キーワード: #{lo.keywords}"                  if lo[:keywords].present?
+          con << "カテゴリ: #{lo.category.name}"               if lo[:category_id].present? && lo.category
+          con << "出品会社: #{lo.company.company_remove_kabu}" if lo[:company_id].present? && lo.company
+          con << "すべてのカテゴリ" if con.blank? && lo[:path].present? && lo[:path] =~ /products($|\?)/
+          if lo[:nitamono_product_id].present? && lo.nitamono_product
+            con <<  "似たものサーチ: [#{lo.nitamono_product_id}] #{lo.nitamono_product.name}"
+          end
+          con << "新着: #{$1}"      if lo[:path].present? && lo[:path] =~ /news\/([0-9-]+)/
+          con << "出品中を表示"       if lo[:path].present? && lo[:path] =~ /success\=start/
+          con << "落札価格を表示" if lo[:path].present? && lo[:path] =~ /success\=success/
+        end
+      end
+
+      {
+        created_at:   lo.created_at,
+        klass:        klass,
+        ip:           lo[:ip].presence || "",
+        user_id:      lo[:user_id].presence || "",
+        user_name:    lo[:user_id].present? && lo.user ? "#{lo.user.company} #{lo.user.name}" : "",
+
+        ip_guess:     (@user.present? && lo[:user_id].blank?) ? true : false,
+
+        product_id:   lo[:product_id].presence || "",
+        product_name: lo[:product_id].present? ? lo.product.name : "",
+
+        max_price:    lo[:product_id].present? ? lo.product.max_price : "",
+        amount:       lo[:amount].presence || "",
+        bids_count:   lo[:bids_count].presence || "",
+        page:         lo[:page].presence || "",
+        con:          con,
+        ref:          lo[:referer].present? ? URI.unescape(lo.link_source) : "",
+      }
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {
+        export_csv "logs_search_#{params[:user_id]}.csv"
+      }
+    end
+
   end
 end
