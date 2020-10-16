@@ -190,7 +190,7 @@ crumb :myauction_answer do |product, owner|
 end
 
 crumb :myauction_contacts do
-  link   "商品についての問合せ・取引一覧", "/myauction/contacts/threads"
+  link   "商品についての問合せ・取引一覧", "/myauction/contacts/"
   parent :myauction
 end
 
