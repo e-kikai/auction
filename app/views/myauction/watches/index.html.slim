@@ -35,7 +35,7 @@ h4 ウォッチリスト
           th 問合せ
           - if params[:result].blank?
             th 入札
-          th 似たもの<br />サーチ
+          / th 似たもの<br />サーチ
           th ウォッチ
 
       - @pproducts.each do |pr|
@@ -70,16 +70,12 @@ h4 ウォッチリスト
               = link_to "/myauction/bids/new?id=#{pr.id}&bid%5Bamount%5D=", class: "btn btn-warning" do
                 span.glyphicon.glyphicon-pencil
                 span.btn-content 入札
-          td
+          / td
             / = link_to "/myauction/alerts/new?alert[category_id]=#{pr.category_id}&alert[name]=★#{pr.category.name} 新着通知", method: :get, class: "btn btn-default" do
             /   span.glyphicon.glyphicon-bell.alert-bell
             /   span.btn-content 同カテゴリの新着を通知
 
-              = link_to "/products/#{pr.id}/nitamono", class: "btn btn-default", target: "_blank",
-                data: { toggle: :tooltip, container: :html, placement: :left, trigger: :hover }, title: "似たものサーチ" do
-                span.glyphicon.glyphicon-camera
-                span.btn-content 似たものサーチ
-            = render "products/nitamono", product: pr
+            / = render "products/nitamono", product: pr
 
           td
             - unless params[:finished]
@@ -104,7 +100,7 @@ h4 ウォッチリスト
           th 問合せ
           - if params[:result].blank?
             th 入札
-          th 似たものサーチ
+          / th 似たものサーチ
           th ウォッチ
 
   . = paginate @pproducts

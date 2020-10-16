@@ -30,7 +30,7 @@ h4 = title
           - if params[:cond] == "2"
             th.price = sort_link(@search, :max_price, "落札金額")
             th = sort_link(@search, :user_id, "出品会社")
-            th 似たものサーチ
+            / th 似たものサーチ
             th 取引
             th 受取確認・評価
           - else
@@ -39,7 +39,8 @@ h4 = title
             th.num =  sort_link(@search, :bids_count)
             th 最高入札者
             th = sort_link(@search, :dulation_end, "残り時間")
-            th 似たものサーチ
+            th 問合せ
+            / th 似たものサーチ
             th ウォッチ
       - @pproducts.each do |pr|
         tr
@@ -49,7 +50,7 @@ h4 = title
           td.price = number_to_currency(pr.max_price_with_tax)
           td = link_to pr.user.company_remove_kabu, "/products?company_id=#{pr.user_id}"
           - if params[:cond] == "2"
-            td = render "products/nitamono", product: pr
+            / td = render "products/nitamono", product: pr
 
             - if pr.max_bid.user_id != pr.user_id
               td = link_to("/myauction/contacts/#{pr.id}", class: "btn btn-success") do
@@ -82,7 +83,13 @@ h4 = title
 
 
             td = pr.remaining_time
-            td = render "products/nitamono", product: pr
+            td
+              = link_to "/myauction/contacts/#{pr.id}", method: :get, class: "btn btn-success" do
+                span.glyphicon.glyphicon-comment
+                span.btn-content 問合せ
+
+            / td = render "products/nitamono", product: pr
+
             td = render "/products/watch_02", product: pr
 
       thead
@@ -94,7 +101,7 @@ h4 = title
           - if params[:cond] == "2"
             th.price = sort_link(@search, :max_price, "落札金額")
             th = sort_link(@search, :user_id, "出品会社")
-            th 似たものサーチ
+            / th 似たものサーチ
             th 取引
             th 受取確認・評価
           - else
@@ -103,7 +110,8 @@ h4 = title
             th.num =  sort_link(@search, :bids_count)
             th 最高入札者
             th = sort_link(@search, :dulation_end, "残り時間")
-            th 似たものサーチ
+            th 問合せ
+            / th 似たものサーチ
             th ウォッチ
   . = paginate @pproducts
 

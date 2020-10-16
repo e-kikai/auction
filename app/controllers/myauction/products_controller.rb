@@ -90,39 +90,12 @@ class Myauction::ProductsController < Myauction::ApplicationController
   # end
 
   def create
-    # @product = current_user.products.new(product_params)
-    # params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
-    #
-    # # if params[:back]
-    # #   render :new
-    # # elsif @product.save
-    # if @product.save
-    #
-    #   ### 画像特徴ベクトル変換 ###
-    #   @product.process_vector
-    #
-    #   redirect_to "/myauction/", notice: "#{@product.name}を登録しました"
-    # else
-    #   render :new
-    # end
+    @product = current_user.products.new(product_params)
+    params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
 
-    ### Bemchmark : 画像特徴ベクトル変換 ###
-    # @time = Benchmark.realtime do
-      @product = current_user.products.new(product_params)
+    if @product.save
+      process_vector_remote(@product.id)
 
-      params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
-
-      @res = @product.save
-
-      ### 画像特徴ベクトル変換 ###
-      # @product.process_vector
-      if params[:images].present?
-        cmd = "curl -s -X GET #{root_url}/products/#{@product.id}/process_vector"
-        o, e, s = Open3.popen3(cmd)
-      end
-    # end
-
-    if @res
       # redirect_to "/myauction/", notice: "#{@product.name}を登録しました : #{@time}"
       redirect_to "/myauction/", notice: "#{@product.name}を登録しました"
     else
@@ -141,10 +114,12 @@ class Myauction::ProductsController < Myauction::ApplicationController
     if @product.update(product_params)
       ### 画像特徴ベクトル変換 ###
       # @product.process_vector
-      if params[:images].present?
-        cmd = "curl -s -X GET #{root_url}/products/#{@product.id}/process_vector"
-        o, e, s = Open3.popen3(cmd)
-      end
+      # if params[:images].present?
+      #   cmd = "curl -s -X GET #{root_url}/products/#{@product.id}/process_vector"
+      #   o, e, s = Open3.popen3(cmd)
+      # end
+
+      process_vector_remote(@product.id)
 
       if cond < 1
         redirect_to "/myauction/products?cond=-1", notice: "#{@product.name}を変更しました"
@@ -251,6 +226,8 @@ class Myauction::ProductsController < Myauction::ApplicationController
     params[:images].each { |img| @product.product_images.new(image: img) } if params[:images].present?
 
     if @product.update(additional_params)
+      process_vector_remote(@product.id)
+
       redirect_to "/myauction/products", notice: "#{@product.name}の追記を変更しました" and return
     else
       render :additional
@@ -261,6 +238,11 @@ class Myauction::ProductsController < Myauction::ApplicationController
 
   def get_product
     @product = current_user.products.find(params[:id])
+  end
+
+  def process_vector_remote(product_id)
+    cmd = "curl -s -X GET #{root_url}/products/#{product_id}/process_vector"
+    o, e, s = Open3.popen3(cmd)
   end
 
   def product_params

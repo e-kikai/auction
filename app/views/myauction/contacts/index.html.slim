@@ -23,7 +23,7 @@
             th.img_mini
             th 商品
             th 出品会社
-            th 似たもの<br />サーチ
+            / th 似たもの<br />サーチ
             th.sepa ウォッチ
             th.num 入札数
             th.price 現在価格
@@ -46,7 +46,7 @@
             td.img_mini = link_to image_tag(product.thumb_url), "/products/#{product.id}?r=cnt_lst"
             td = link_to product.name, "/products/#{product.id}?r=cnt_lst"
             td = link_to product.user.company_remove_kabu, "/companies/#{product.user_id}"
-            td = render "products/nitamono", product: product
+            / td = render "products/nitamono", product: product
             td.sepa = render "/products/watch_02", product: product
             td.num = number_with_delimiter(product.bids_count)
             td.price = number_to_currency(product.max_price_with_tax)
@@ -80,7 +80,7 @@
             th.img_mini
             th 商品
             th 出品会社
-            th 似たもの<br />サーチ
+            / th 似たもの<br />サーチ
             th.sepa ウォッチ
             th.num 入札数
             th.price 現在価格

@@ -190,13 +190,13 @@ crumb :myauction_answer do |product, owner|
 end
 
 crumb :myauction_contacts do
-  link   "商品についての問合せ・取引一覧", "/myauction/trades/threads"
+  link   "商品についての問合せ・取引一覧", "/myauction/contacts/threads"
   parent :myauction
 end
 
 crumb :myauction_contact do |product, owner|
   label = product.trade_success?(owner) ? "取引" : "問合せ"
-  link   "#{product.name} についての#{label}", "/myauction/trades/#{product.id}"
+  link   "#{product.name} についての#{label}", "/myauction/contacts/#{product.id}"
   parent :myauction_contacts
 end
 
