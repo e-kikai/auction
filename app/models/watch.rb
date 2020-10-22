@@ -31,7 +31,7 @@ class Watch < ApplicationRecord
 
   ### ウォッチおすすめ新着メール配信 ###
   def self.scheduling
-    User.includes(:watches, :bids).all.each do |us|
+    User.includes(:watches, :bids).where(allow_mail: true).each do |us|
       next if us.watches.length == 0 && us.bids.length == 0
 
       base = Product.where(id: us.watches.pluck(:product_id).concat(us.bids.pluck(:product_id)))
