@@ -137,4 +137,7 @@
             td.num = number_with_delimiter(@to_nms_user_total)
             td.num = number_with_delimiter(@sca_user_total)
             td.num.sepa = number_with_delimiter(@nmr_user_total)
-            td colspan="4"
+            td.num = number_with_delimiter(@watches.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@bids.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@max_bid_counts.sum { |k, v| v.to_i })
+            td.num.price = number_to_currency(@max_bid_prices.sum { |k, v| v.to_i })

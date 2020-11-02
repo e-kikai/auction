@@ -210,7 +210,7 @@ class System::TotalController < System::ApplicationController
     ### 合計人数 ###
     @search_user_total = search_logs.distinct.count(:ip)
 
-    @detail_user_total = detail_logs.group(@group).distinct.count(:ip)
+    @detail_user_total = detail_logs.distinct.count(:ip)
     @nms_user_total    = nitamono_searches.distinct.count(:ip)
     @sca_user_total    = same_categories.distinct.count(:ip)
     @nmr_user_total    = nitamono_recommends.distinct.count(:ip)
