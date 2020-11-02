@@ -168,19 +168,19 @@ class System::TotalController < System::ApplicationController
     detail_logs         = DetailLog.where(@where_cr)
 
     @detail_log_counts  = detail_logs.group(@group).count
-    @detail_user_counts = detail_logs.group(@group).distinct.count(:user_id)
+    @detail_user_counts = detail_logs.group(@group).distinct.count(:ip)
 
     same_categories     = detail_logs.where(r: "dtl_sca")
     @sca_counts         = same_categories.group(@group).count
-    @sca_user_counts    = same_categories.group(@group).distinct.count(:user_id)
+    @sca_user_counts    = same_categories.group(@group).distinct.count(:ip)
 
     nitamono_recommends = detail_logs.where(r: "dtl_nmr")
     @nmr_counts         = nitamono_recommends.group(@group).count
-    @nmr_user_counts    = nitamono_recommends.group(@group).distinct.count(:user_id)
+    @nmr_user_counts    = nitamono_recommends.group(@group).distinct.count(:ip)
 
     to_nitamono          = detail_logs.where("r LIKE '%nms%'")
     @to_nms_counts       = to_nitamono.group(@group).count
-    @to_nms_user_counts  = to_nitamono.group(@group).distinct.count(:user_id)
+    @to_nms_user_counts  = to_nitamono.group(@group).distinct.count(:ip)
 
     ### 似たものサーチコンバージョン取得 ###
     @bids = Bid.where(@where_cr)
