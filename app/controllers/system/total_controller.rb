@@ -201,11 +201,21 @@ class System::TotalController < System::ApplicationController
     search_logs         = SearchLog.where(@where_cr)
 
     @search_log_counts  = search_logs.group(@group).count
-    @search_user_counts = search_logs.group(@group).distinct.count(:user_id)
+    @search_user_counts = search_logs.group(@group).distinct.count(:ip)
 
     nitamono_searches   = search_logs.where.not(nitamono_product_id: nil)
     @nms_counts         = nitamono_searches.group(@group).count
-    @nms_user_counts    = nitamono_searches.group(@group).distinct.count(:user_id)
+    @nms_user_counts    = nitamono_searches.group(@group).distinct.count(:ip)
+
+    ### 合計人数 ###
+    @search_user_total = search_logs.distinct.count(:ip)
+
+    @detail_user_total = detail_logs.group(@group).distinct.count(:ip)
+    @nms_user_total    = nitamono_searches.distinct.count(:ip)
+    @sca_user_total    = same_categories.distinct.count(:ip)
+    @nmr_user_total    = nitamono_recommends.distinct.count(:ip)
+    @to_nms_user_total = to_nitamono.distinct.count(:ip)
+
 
     respond_to do |format|
       format.html
