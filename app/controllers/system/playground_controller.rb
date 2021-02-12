@@ -158,6 +158,20 @@ class System::PlaygroundController < ApplicationController
   #   redirect_to "/system/playground/search_01", alert: "ベクトル変換エラー : #{e.message}"
   end
 
+  ### VBPRテスト用データ ###
+  def vbpr_list
+    @watches = Watch.all.pluck(:user_id, :product_id)
+    @bids    = Bid.all.pluck(:user_id, :product_id)
+
+    @lists = (@watches + @bids).uniq
+
+    respond_to do |format|
+      format.csv {
+        export_csv "vbpr_list.csv"
+      }
+    end
+  end
+
   private
 
   ### キャッシュ更新 ###

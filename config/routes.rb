@@ -184,6 +184,7 @@ Rails.application.routes.draw do
           get 'search_01'
           get 'vector_maker'
           get 'vector_maker_solo'
+          get 'vbpr_list'
         end
       end
     end
