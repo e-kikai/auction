@@ -3,7 +3,7 @@
 @detail_logs.sum do |lo|
 
   [
-    lo.id, lo.created_at, lo.ip, lo.host,
+    lo.id, lo.created_at, lo.ip.scrub('♪'), lo.host.scrub('♪'),
     lo.user.try(:account), "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip,
     lo.product_id,
     lo.product ? lo.product.name : "× (削除された商品)",
