@@ -3,19 +3,19 @@
 @detail_logs.sum do |lo|
 
   [
-    lo.id, lo.created_at, lo.ip, lo.host.scrub('♪'),
-    lo.user.try(:account), "#{lo.user.try(:company).scrub('♪')} #{lo.user.try(:name).scrub('♪')}".strip,
+    lo.id, lo.created_at, lo.ip, lo.host,
+    lo.user.try(:account), "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip,
     lo.product_id,
-    lo.product ? lo.product.name.scrub('♪') : "× (削除された商品)",
+    lo.product ? lo.product.name : "× (削除された商品)",
     lo.product ? lo.product.user_id : "",
     lo.product ? lo.product.user.company : "",
 
     lo.product ? number_to_currency(lo.product.max_price) : "",
     lo.product ? lo.product.bids_count : "",
-    URI.unescape(lo.link_source), URI.unescape(lo.referer.scrub('♪')),
+    URI.unescape(lo.link_source), URI.unescape(lo.referer),
 
     lo.product ? lo.product.category_id : "",
     lo.product ? lo.product.category.name : "",
     lo.product ? lo.product.category.ancestor_names : "",
-  ].to_csv
+  ].to_csv.scrub('♪')
 end
