@@ -185,6 +185,8 @@ Rails.application.routes.draw do
           get 'vector_maker'
           get 'vector_maker_solo'
           get 'vbpr_list'
+          get 'bpr_list_02'
+          get 'bpr_now_products'
         end
       end
     end

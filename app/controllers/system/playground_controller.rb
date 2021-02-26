@@ -172,6 +172,45 @@ class System::PlaygroundController < ApplicationController
     end
   end
 
+  ### VBPRテスト用データ ###
+  def bpr_list_02
+    @watches     = Watch.distinct.pluck(:user_id, :product_id)
+    @bids        = Bid.distinct.pluck(:user_id, :product_id)
+    @detail_logs = DetailLog.distinct.where.not(user_id: nil).pluck(:user_id, :product_id)
+
+    @lists = (@watches + @bids).uniq
+
+    @lists = {}
+    @detail_logs.each do |lo|
+      @lists[[lo[0], lo[1]]] = 1
+    end
+
+    @watches.each do |wa|
+      @lists[[wa[0], wa[1]]] = (@lists[[wa[0], wa[1]]] || 0) + 4
+    end
+
+    @bids.each do |bi|
+      @lists[[bi[0], bi[1]]] = (@lists[[bi[0], bi[1]]] || 0) + 10
+    end
+
+
+    respond_to do |format|
+      format.csv {
+        export_csv "bpr_list_02.csv"
+      }
+    end
+  end
+
+  ### 現在出品されている商品のIDリストCSV ###
+  def bpr_now_products
+    @products_ids = Product.status(Product::STATUS[:start]).pluck(:id)
+    respond_to do |format|
+      format.csv {
+        export_csv "bpr_now_products.csv"
+      }
+    end
+  end
+
   private
 
   ### キャッシュ更新 ###
