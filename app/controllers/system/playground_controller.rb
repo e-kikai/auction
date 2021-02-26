@@ -203,7 +203,8 @@ class System::PlaygroundController < ApplicationController
 
   ### 現在出品されている商品のIDリストCSV ###
   def bpr_now_products
-    @products_ids = Product.status(Product::STATUS[:start]).pluck(:id)
+    @products_ids = Product.status(Product::STATUS[:start]).where(id: DetailLog.distinct.select(:product_id).where.not(user_id: nil)).pluck(:id)
+
     respond_to do |format|
       format.csv {
         export_csv "bpr_now_products.csv"
