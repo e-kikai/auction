@@ -1,13 +1,9 @@
 - set_meta_tags title: "フォロー利用履歴"
 - breadcrumb :system_something, "フォロー利用履歴"
 
-/ = form_tag("/system/follow_logs", method: "get", class: "form-inline filtering-form") do
-/   = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
-/   = button_tag class: "btn btn-info" do
-/     span.glyphicon.glyphicon-follow
-/     span.btn-content 日付変更
+= render("/system/watches/month_selector_form", path: "/system/follows/", range: params[:range], date: @date)
 
-= paginate @pfollowes
+= paginate @pfollows
 .table-responsive
   table.table.table-hover.table-condensed.table-striped
     tr
@@ -19,12 +15,14 @@
       th 保存日時
       th 削除日時
 
-    - @pfollowes.each do |se|
+    - @pfollows.each do |se|
       tr
         td.num = se.id
-        td = se.user.try(:account)
-        td.sepa = "#{se.user.try(:company)} #{se.user.try(:name)}".strip
+        td = se.user&.account
+        td.sepa = "#{se.user&.company} #{se.user&.name}".strip
         td.num = se.to_user_id
-        td.sepa = se.to_user.try(:company)
+        td.sepa = se.to_user&.company
         td = se.created_at
         td = se.soft_destroyed_at
+
+= paginate @pfollows

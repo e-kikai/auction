@@ -1,6 +1,18 @@
 class System::FollowsController < System::ApplicationController
+  include MonthSelector
+  include Exports
+
+  before_action :month_selector
+
   def index
-    @followes = Follow.unscoped.all.includes(:user, :to_user).order(created_at: :desc)
-    @pfollowes = @followes.page(params[:page]).per(500)
+    @follows = Follow.unscoped.includes(:user, :to_user)
+      .where(created_at: @rrange).order(created_at: :desc)
+
+    respond_to do |format|
+      format.html {
+        @pfollows = @follows.page(params[:page]).per(100)
+      }
+      format.csv { export_csv "follow_#{@date.strftime('%Y_%m')}.csv" }
+    end
   end
 end

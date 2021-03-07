@@ -1,11 +1,7 @@
 - set_meta_tags title: "お気に入り利用履歴"
 - breadcrumb :system_something, "お気に入り利用履歴"
 
-/ = form_tag("/system/search_logs", method: "get", class: "form-inline filtering-form") do
-/   = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
-/   = button_tag class: "btn btn-info" do
-/     span.glyphicon.glyphicon-search
-/     span.btn-content 日付変更
+= render("/system/watches/month_selector_form", path: "/system/searches/", range: params[:range], date: @date)
 
 = paginate @psearches
 .table-responsive
@@ -28,13 +24,15 @@
       tr
         td.num = se.id
         td.sepa  = link_to se.name, se.uri, target: "_blank"
-        td = se.category.try(:name)
-        td = se.company.try(:company_remove_kabu)
+        td = se.category&.name
+        td = se.company&.company_remove_kabu
         td.sepa = se.keywords
         td.sepa = '○' if se.publish
         td.num.sepa = number_with_delimiter(@search_log_counts[se.id])
         td.num = se.user_id
-        td = se.user.try(:account)
-        td.sepa = "#{se.user.try(:company)} #{se.user.try(:name)}".strip
+        td = se.user&.account
+        td.sepa = "#{se.user&.company} #{se.user&.name}".strip
         td = se.created_at
         td = se.soft_destroyed_at
+
+= paginate @psearches

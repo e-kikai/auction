@@ -1,0 +1,19 @@
+= form_tag(path, method: "get", class: "form-inline filtering-form") do
+  label.radio-inline
+    = radio_button_tag :range, :all, !range.in?(["month"])
+    | 全期間
+  span = " / "
+
+  label.radio-inline
+    = radio_button_tag :range, :month, range == "month"
+    span = "月選択 : "
+
+  = select_date date, {prefix: :date, start_year:2018, end_year: Date.today.year, discard_day: true}, {class: "form-control"}
+
+  = button_tag class: "btn btn-info" do
+    span.glyphicon.glyphicon-search
+    span.btn-content 検索
+
+  = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
+    span.glyphicon.glyphicon-download-alt
+    span.btn-content CSV出力

@@ -1,11 +1,7 @@
 - set_meta_tags title: "新着メール通知利用履歴"
 - breadcrumb :system_something, "新着メール通知利用履歴"
 
-/ = form_tag("/system/search_logs", method: "get", class: "form-inline filtering-form") do
-/   = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
-/   = button_tag class: "btn btn-info" do
-/     span.glyphicon.glyphicon-search
-/     span.btn-content 日付変更
+= render("/system/watches/month_selector_form", path: "/system/alerts/", range: params[:range], date: @date)
 
 = paginate @palerts
 .table-responsive
@@ -26,11 +22,13 @@
       tr
         td.num = al.id
         td.sepa  = link_to al.name, al.uri, target: "_blank"
-        td = al.category.try(:name)
-        td = al.company.try(:company_remove_kabu)
+        td = al.category&.name
+        td = al.company&.company_remove_kabu
         td.sepa = al.keywords
         td.num = al.user_id
-        td = al.user.try(:account)
-        td.sepa = "#{al.user.try(:company)} #{al.user.try(:name)}".strip
+        td = al.user&.account
+        td.sepa = "#{al.user&.company} #{al.user&.name}".strip
         td = al.created_at
         td = al.soft_destroyed_at
+
+= paginate @palerts

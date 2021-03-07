@@ -1,13 +1,10 @@
 - set_meta_tags title: "ウォッチリスト利用履歴"
 - breadcrumb :system_something, "ウォッチリスト利用履歴"
 
-/ = form_tag("/system/watch_logs", method: "get", class: "form-inline filtering-form") do
-/   = select_date @date, {prefix: :date, start_year: 2018}, {class: "form-control"}
-/   = button_tag class: "btn btn-info" do
-/     span.glyphicon.glyphicon-watch
-/     span.btn-content 日付変更
+= render("/system/watches/month_selector_form", path: "/system/watches/", range: params[:range], date: @date)
 
 = paginate @pwatches
+
 .table-responsive
   table.table.table-hover.table-condensed.table-striped
     tr
@@ -28,25 +25,27 @@
     - @pwatches.each do |wa|
       tr
         td.num = wa.id
-        td.num = wa.user.try(:id)
-        td = wa.user.try(:account)
-        td.sepa = "#{wa.user.try(:company)} #{wa.user.try(:name)}".strip
+        td.num = wa.user&.id
+        td = wa.user&.account
+        td.sepa = "#{wa.user&.company} #{wa.user&.name}".strip
         td.num = wa.product_id
-        td = link_to wa.product.try(:name), "/products/#{wa.product_id}", target: "_blank"
-        / td = wa.product.try(:dulation_start)
-        td = wa.product.try(:dulation_end)
+        td = link_to wa.product&.name, "/products/#{wa.product_id}", target: "_blank"
+        / td = wa.product&.dulation_start
+        td = wa.product&.dulation_end
         td
-          - if wa.product.try(:dulation_end).blank?
+          - if wa.product&.dulation_end.blank?
             . エラー
-          - elsif wa.product.try(:dulation_end) < Time.now && wa.product.try(:max_bid_id).blank?
+          - elsif wa.product&.dulation_end < Time.now && wa.product&.max_bid_id.blank?
             . 未落札
-          - elsif wa.product.try(:dulation_end) < Time.now && wa.product.try(:max_bid).try(:user_id) == wa.user_id
+          - elsif wa.product&.dulation_end < Time.now && wa.product&.max_bid&.user_id == wa.user_id
             . ○
-          - elsif wa.product.try(:dulation_end) < Time.now && wa.product.try(:max_bid).try(:user_id) != wa.user_id
+          - elsif wa.product&.dulation_end < Time.now && wa.product&.max_bid&.user_id != wa.user_id
             . ×
-          - elsif wa.product.try(:dulation_end) < Time.now + 15.minutes
+          - elsif wa.product&.dulation_end < Time.now + 15.minutes
             . 終了間近
-        / td.price = wa.product.try(:start_price)
-        td.price.sepa = number_to_currency(wa.product.try(:max_price))
+        / td.price = wa.product&.start_price
+        td.price.sepa = number_to_currency(wa.product&.max_price)
         td = wa.created_at
         td = wa.soft_destroyed_at
+
+= paginate @pwatches
