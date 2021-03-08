@@ -172,13 +172,11 @@ class System::PlaygroundController < ApplicationController
     end
   end
 
-  ### VBPRテスト用データ ###
+  ### BPRテスト用データ(バイアスあり) ###
   def bpr_list_02
     @watches     = Watch.distinct.pluck(:user_id, :product_id)
     @bids        = Bid.distinct.pluck(:user_id, :product_id)
     @detail_logs = DetailLog.distinct.where.not(user_id: nil).pluck(:user_id, :product_id)
-
-    @lists = (@watches + @bids).uniq
 
     @lists = {}
     @detail_logs.each do |lo|
@@ -193,7 +191,6 @@ class System::PlaygroundController < ApplicationController
       @lists[[bi[0], bi[1]]] = (@lists[[bi[0], bi[1]]] || 0) + 10
     end
 
-
     respond_to do |format|
       format.csv {
         export_csv "bpr_list_02.csv"
@@ -203,13 +200,105 @@ class System::PlaygroundController < ApplicationController
 
   ### 現在出品されている商品のIDリストCSV ###
   def bpr_now_products
-    @products_ids = Product.status(Product::STATUS[:start]).where(id: DetailLog.distinct.select(:product_id).where.not(user_id: nil)).pluck(:id)
+    @products_ids = Product.status(Product::STATUS[:start])
+      .where(id: DetailLog.distinct.select(:product_id).where.not(user_id: nil))
+      .pluck(:id)
 
     respond_to do |format|
       format.csv {
         export_csv "bpr_now_products.csv"
       }
     end
+  end
+
+  ### VBPR処理テスト ###
+  def vbpr_test
+    # logger.debug '!!! 1 !!!'
+
+    # math = fork {
+    #   PyCall.sys.path.append(__dir__)
+
+    #   # pyfrom 'vbpr',         import: :VBPR
+    #   pyfrom 'scipy.sparse', import: :coo_matrix
+    # }
+
+    # logger.debug '!!! 3 !!!'
+
+    ### ログのあるを取得 ###
+    img_ids      = ProductImage.distinct.select(:product_id)
+    @watches     = Watch.distinct.where(product_id: img_ids).pluck(:user_id, :product_id)
+    @bids        = Bid.distinct.where(product_id: img_ids).pluck(:user_id, :product_id)
+    @detail_logs = DetailLog.distinct.where.not(user_id: nil).where(product_id: img_ids).pluck(:user_id, :product_id)
+
+    ### 現在出品中の商品(画像あり)を取得 ###
+    @now_products = Product.status(Product::STATUS[:start]).where(id: img_ids).pluck(:id)
+
+    ### バイアスを集計 ###
+    bias_detail = 1
+    bias_watch  = 4
+    bias_dib    = 10
+
+    @bis = @detail_logs.map { |lo| [[lo[0], lo[1]] , bias_detail] }.to_h
+    @watches.each { |wa| @bis[[wa[0], wa[1]]] = (@bis[[wa[0], wa[1]]] || 0) + bias_watch }
+    @bids.each    { |bi| @bis[[bi[0], bi[1]]] = (@bis[[bi[0], bi[1]]] || 0) + bias_dib }
+
+    ### スパース行列に変換 ###
+    user    = []
+    product = []
+    bias    = []
+
+    @bis.each do |key, val|
+      user    << key[0].to_i
+      product << key[1].to_i
+      bias    << val || 1
+    end
+
+    user_idx = user.uniq.map.with_index { |v, i| [v, i] }.to_h # ユーザインデックスhash
+    user_key = user.map { |v| user_idx[v] } # ユーザインデックスに変換
+
+    product_idx = product.uniq.map.with_index { |v, i| [v, i] }.to_h # 商品インデックスhash
+    product_key = product.map { |v| product_idx[v] } # 商品インデックスに変換
+
+    ### 現在出品中の商品のみインデックスhash ###
+     now_product_idx = @now_products.map { |pid| [ pid, product_idx[pid] ] }.to_h
+
+    res = {
+      user_idx:    user_idx,
+      user_key:    user_key,
+      product_idx: product_idx,
+      product_key: product_key,
+      bias:        bias,
+
+      now_product_idx: now_product_idx
+    }.to_json
+
+    respond_to do |format|
+      format.json { render plain: res }
+    end
+
+    ### ここからPythonに処理を渡す ###
+    # 1. データ受け取り
+    # 2. coo_matrix
+    # 3. 画像ベクトル取得、list結合
+    # 4. 学習処理(VBPR)
+    # 5. 結果を出力(JSON?)
+
+    # スパース行列
+    # data_coo = coo_matrix.new(PyCall.tuple([data, PyCall.tuple([user_key, product_key])]))
+
+
+
+    ### 画像特徴ベクトル取得 ###
+
+
+    ### トレーニング ###
+    # puts "### トレーニング ###"
+    # result = Benchmark.realtime do
+    #   vbpr.fit(data_coo, epochs: epochs, lr: 0.1, verbose: true)
+    # end
+    # puts "benchmark :: #{result.round(3)} sec"
+
+
   end
 
   private
