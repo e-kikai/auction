@@ -187,6 +187,8 @@ Rails.application.routes.draw do
           get 'vbpr_list'
           get 'bpr_list_02'
           get 'bpr_now_products'
+
+          get 'vbpr_test'
         end
       end
     end
