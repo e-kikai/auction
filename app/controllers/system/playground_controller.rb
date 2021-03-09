@@ -241,13 +241,13 @@ class System::PlaygroundController < ApplicationController
 
     product_temp = (@biases.map { |key, val| key[1] } + @now_products).uniq # チェック用商品ID一覧
 
-
     ignore = product_temp.map do |pid|
       if vectors[pid].present? || bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
         nil # ベクトルファイルが存在している場合、スキップ
       else
         # ベクトルが存在しない場合、ベクトル生成処理
-        Product.find(pid).process_vector
+        Product.find_by(pid)&.process_vector
+
         if bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
           logger.debug "new_vector_file : #{pid}"
           nil
