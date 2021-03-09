@@ -213,22 +213,15 @@ class System::PlaygroundController < ApplicationController
 
   ### VBPR処理テスト ###
   def vbpr_test
-    # logger.debug '!!! 1 !!!'
-
-    # math = fork {
-    #   PyCall.sys.path.append(__dir__)
-
-    #   # pyfrom 'vbpr',         import: :VBPR
-    #   pyfrom 'scipy.sparse', import: :coo_matrix
-    # }
-
-    # logger.debug '!!! 3 !!!'
-
     ### ログのあるを取得 ###
     img_ids      = ProductImage.distinct.select(:product_id)
     @watches     = Watch.distinct.where(product_id: img_ids).pluck(:user_id, :product_id)
     @bids        = Bid.distinct.where(product_id: img_ids).pluck(:user_id, :product_id)
     @detail_logs = DetailLog.distinct.where.not(user_id: nil).where(product_id: img_ids).pluck(:user_id, :product_id)
+    # @watches     = Watch.distinct.where(user_id: 2..100).where(product_id: img_ids).pluck(:user_id, :product_id)
+    # @bids        = Bid.distinct.where(user_id: 2..100).where(product_id: img_ids).pluck(:user_id, :product_id)
+    # @detail_logs = DetailLog.distinct.where(user_id: 2..100).where(product_id: img_ids).pluck(:user_id, :product_id)
+
 
     ### 現在出品中の商品(画像あり)を取得 ###
     @now_products = Product.status(Product::STATUS[:start]).where(id: img_ids).pluck(:id)
@@ -238,20 +231,104 @@ class System::PlaygroundController < ApplicationController
     bias_watch  = 4
     bias_dib    = 10
 
-    @bis = @detail_logs.map { |lo| [[lo[0], lo[1]] , bias_detail] }.to_h
-    @watches.each { |wa| @bis[[wa[0], wa[1]]] = (@bis[[wa[0], wa[1]]] || 0) + bias_watch }
-    @bids.each    { |bi| @bis[[bi[0], bi[1]]] = (@bis[[bi[0], bi[1]]] || 0) + bias_dib }
+    @biases = @detail_logs.map { |lo| [[lo[0], lo[1]] , bias_detail] }.to_h
+    @watches.each { |wa| @biases[[wa[0], wa[1]]] = (@biases[[wa[0], wa[1]]] || 0) + bias_watch }
+    @bids.each    { |bi| @biases[[bi[0], bi[1]]] = (@biases[[bi[0], bi[1]]] || 0) + bias_dib }
+
+    # ### ベクトルデータの有無チェック ###
+    vectors = Rails.cache.read("vectors") || {} # キャッシュ読み込み
+    bucket  = s3_bucket # S3バケット取得(playground用)
+
+    product_temp = (@biases.map { |key, val| key[1] } + @now_products).uniq # チェック用商品ID一覧
+
+
+    ignore = product_temp.map do |pid|
+      if vectors[pid].present? || bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
+        nil # ベクトルファイルが存在している場合、スキップ
+      else
+        # ベクトルが存在しない場合、ベクトル生成処理
+        Product.find(pid).process_vector
+        if bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
+          logger.debug "new_vector_file : #{pid}"
+          nil
+        else # ない場合
+          logger.debug "ignore : #{pid}"
+          pid
+        end
+      end
+    end.compact
+
+    logger.debug ignore
+
+    # share_vecotrs = (product + @now_products).uniq.map do |pid|
+    #   if vectors[pid].present?
+    #     logger.debug "cached : #{pid}"
+    #     # [pid, vectors[pid]]
+    #     vectors[pid]
+
+    #   elsif bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
+    #     logger.debug "vector_file : #{pid}"
+    #     str = bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").get.body.read
+
+    #     # [pid, Npy.load_string(str)]
+    #     Npy.load_string(str)
+    #   else
+    #     Product.find(pid).process_vector
+    #     if bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
+    #       logger.debug "new_vector_file : #{pid}"
+    #       str = bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").get.body.read
+    #       # [pid, Npy.load_string(str)]
+    #       Npy.load_string(str)
+    #     else
+    #       # logger.debug "ZERO_NARRAY : #{pid}"
+    #       # [pid, Product::ZERO_NARRAY.format_to_a]
+    #       nil
+    #     end
+    #   end
+    # end.compact
+
+
+
+    # br = Benchmark.realtime do
+    #   # pid = 159
+    #   # str = bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").get.body.read
+    #   # sample = Npy.load_string(str)
+
+    #   ruby_labels = [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
+    #   sample = Numo::Int32.cast(ruby_labels)
+
+    #   logger.debug "++++++ sample +++++++;"
+    #   logger.debug sample.format_to_a
+
+
+    #   pca = Rumale::Decomposition::PCA.new(n_components: 64, solver: 'evd', random_seed: 1)
+    #   logger.debug "++++++ pca +++++++;"
+    #   pca_result = pca.fit_transform([sample, sample])
+    #   logger.debug pca_result.format_to_a
+
+    # end
+    # logger.debug "benchmark :: #{br.round(3)} sec"
+
+    # ### ベクトルキャシュ更新 ###
+    # Rails.cache.write("vectors", vectors) if update_flag == true
 
     ### スパース行列に変換 ###
     user    = []
     product = []
     bias    = []
 
-    @bis.each do |key, val|
+    @biases.each do |key, val|
+      ### ベクトルがないものを拒否 ###
+      if key[1].in? ignore
+        logger.debug "ignore : #{key[0]} : #{key[1]} : #{val}"
+        next
+      end
+
       user    << key[0].to_i
       product << key[1].to_i
       bias    << val || 1
     end
+
 
     user_idx = user.uniq.map.with_index { |v, i| [v, i] }.to_h # ユーザインデックスhash
     user_key = user.map { |v| user_idx[v] } # ユーザインデックスに変換
@@ -269,7 +346,9 @@ class System::PlaygroundController < ApplicationController
       product_key: product_key,
       bias:        bias,
 
-      now_product_idx: now_product_idx
+      now_product_idx: now_product_idx,
+
+      # share_vecotrs_res: share_vecotrs_res,
     }.to_json
 
     respond_to do |format|
@@ -282,22 +361,6 @@ class System::PlaygroundController < ApplicationController
     # 3. 画像ベクトル取得、list結合
     # 4. 学習処理(VBPR)
     # 5. 結果を出力(JSON?)
-
-    # スパース行列
-    # data_coo = coo_matrix.new(PyCall.tuple([data, PyCall.tuple([user_key, product_key])]))
-
-
-
-    ### 画像特徴ベクトル取得 ###
-
-
-    ### トレーニング ###
-    # puts "### トレーニング ###"
-    # result = Benchmark.realtime do
-    #   vbpr.fit(data_coo, epochs: epochs, lr: 0.1, verbose: true)
-    # end
-    # puts "benchmark :: #{result.round(3)} sec"
-
 
   end
 
@@ -486,5 +549,18 @@ class System::PlaygroundController < ApplicationController
     if Rails.env == "staging"
       ActiveRecord::Base.establish_connection(:staging)
     end
+  end
+
+  ### S3 bucket 取得 ###
+  def s3_resource
+    Aws::S3::Resource.new(
+      access_key_id:     Rails.application.secrets.aws_access_key_id,
+      secret_access_key: Rails.application.secrets.aws_secret_access_key,
+      region:            'ap-northeast-1', # Tokyo
+    )
+  end
+
+  def s3_bucket
+    s3_resource.bucket(@bucket_name)
   end
 end
