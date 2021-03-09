@@ -246,7 +246,7 @@ class System::PlaygroundController < ApplicationController
         nil # ベクトルファイルが存在している場合、スキップ
       else
         # ベクトルが存在しない場合、ベクトル生成処理
-        Product.find_by(pid)&.process_vector
+        Product.find_by(id: pid)&.process_vector
 
         if bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
           logger.debug "new_vector_file : #{pid}"
