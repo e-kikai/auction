@@ -215,9 +215,10 @@ class System::PlaygroundController < ApplicationController
   def vbpr_test
     ### ログのあるを取得 ###
     img_ids      = ProductImage.distinct.select(:product_id)
-    @watches     = Watch.distinct.where(product_id: img_ids).pluck(:user_id, :product_id)
-    @bids        = Bid.distinct.where(product_id: img_ids).pluck(:user_id, :product_id)
-    @detail_logs = DetailLog.distinct.where.not(user_id: nil).where(product_id: img_ids).pluck(:user_id, :product_id)
+    products     = Product.all # 削除されたものを除外
+    @watches     = Watch.distinct.where(product_id: img_ids).where(product_id: products).pluck(:user_id, :product_id)
+    @bids        = Bid.distinct.where(product_id: img_ids).where(product_id: products).pluck(:user_id, :product_id)
+    @detail_logs = DetailLog.distinct.where.not(user_id: nil).where(product_id: img_ids).where(product_id: products).pluck(:user_id, :product_id)
     # @watches     = Watch.distinct.where(user_id: 2..100).where(product_id: img_ids).pluck(:user_id, :product_id)
     # @bids        = Bid.distinct.where(user_id: 2..100).where(product_id: img_ids).pluck(:user_id, :product_id)
     # @detail_logs = DetailLog.distinct.where(user_id: 2..100).where(product_id: img_ids).pluck(:user_id, :product_id)
