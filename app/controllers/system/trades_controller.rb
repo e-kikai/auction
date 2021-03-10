@@ -15,7 +15,7 @@ class System::TradesController < System::ApplicationController
     #####
     @threads_02 = Trade.includes({product: {max_bid: :user}}, :owner)
       .where(id: Trade.group(:product_id, :owner_id).select('max(id)'))
-      # .where(created_at: @rrange)
+      .where(created_at: @rrange)
       .order(created_at: :desc)
 
     @threads_02 = @threads_02.where(product_id: Product.where(user_id: @company)) if @company.present?

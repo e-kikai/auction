@@ -19,9 +19,9 @@ module MonthSelector
     else
       @date = Date.today
 
-      @rstart = Date.new(2018, 3, 1)
+      @rstart = Date.new(2018, 3, 1).beginning_of_day
       # @rend   = Product.maximum(:dulation_end)
-      @rend   = Date.today
+      @rend   = Date.today.end_of_day
 
       @group  = "DATE(created_at)"
       @rows   = @rstart.to_date..@rend.to_date
