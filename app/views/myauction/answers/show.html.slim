@@ -83,7 +83,7 @@ javascript:
     /   .panel-body#collapse_company.panel-collapse.collapse.in.sm-close
     /     dl.dl-horizontal.trade-dl
     /       dt.dt-first 会社名
-    /       dd = @product.user.company
+    /       dd = @product.user&.company
         /   .company-button-area
         /     = link_to "/companies/#{@product.user_id}", class: "btn btn-default" do
         /       span.glyphicon.glyphicon-home
@@ -93,19 +93,19 @@ javascript:
         /       span.btn-content 出品商品を見る
         /
         /   dt 〒
-        /   dd = @product.user.zip
+        /   dd = @product.user&.zip
         /   dt 住所
-        /   dd #{@product.user.addr_1} #{@product.user.addr_2} #{@product.user.addr_3}
+        /   dd #{@product.user&.addr_1} #{@product.user&.addr_2} #{@product.user&.addr_3}
         /   dt 振込先情報
-        /   dd = simple_format(@product.user.bank)
+        /   dd = simple_format(@product.user&.bank)
         / br style="clear:both;"
 
         / = link_to "/products?company_id=#{@product.user_id}", target: "_blank" do
         /   span.glyphicon.glyphicon-list
-        /   span.btn-content = "#{@product.user.company}のそのほかの出品商品を見る"
+        /   span.btn-content = "#{@product.user&.company}のそのほかの出品商品を見る"
         /
         / .trade-button-area
-        /   = link_to "/myauction/alerts/new?alert[company_id]=#{@product.user_id}&alert[name]=◆#{@product.user.company} 新着通知", method: :get, class: "btn btn-default" do
+        /   = link_to "/myauction/alerts/new?alert[company_id]=#{@product.user_id}&alert[name]=◆#{@product.user&.company} 新着通知", method: :get, class: "btn btn-default" do
         /     span.glyphicon.glyphicon-bell.alert-bell
         /     span.btn-content この出品会社の新着メール通知
         /
@@ -183,17 +183,17 @@ javascript:
         - next if tr.comment.strip.blank?
 
         - if @product.dulation_end.between?(tr.created_at, time)
-          - if @product.max_bid.user_id == @owner.id
+          - if @product.max_bid&.user_id == @owner.id
             - if @product.cancel.present?
               .col-md-12
                 .alert.alert-danger
                   span.glyphicon.glyphicon-remove
                   span.btn-content このオークションは、以下の理由により出品キャンセルされました。
                   . = markdown(@product.cancel)
-            - elsif @product.user.result_message.present?
+            - elsif @product.user&.result_message.present?
               .col-md-offset-2.col-md-10
                 .trade_time = "#{I18n.l(@product.dulation_end, format: :full_date)}"
-                .trade.mine = simple_format(@product.user.result_message)
+                .trade.mine = simple_format(@product.user&.result_message)
 
             .col-md-12
               .alert.success_message
@@ -225,11 +225,11 @@ javascript:
               span.glyphicon.glyphicon-remove
               span.btn-content このオークションは、以下の理由により出品キャンセルされました。
               . = markdown(@product.cancel)
-        - elsif @product.max_bid.user_id == @owner.id
-          - if @product.user.result_message.present?
+        - elsif @product.max_bid&.user_id == @owner.id
+          - if @product.user&.result_message.present?
             .col-md-offset-2.col-md-10
               .trade_time = "#{I18n.l(@product.dulation_end, format: :full_date)}"
-              .trade.mine = simple_format(@product.user.result_message)
+              .trade.mine = simple_format(@product.user&.result_message)
 
           .col-md-12
             .alert.success_message

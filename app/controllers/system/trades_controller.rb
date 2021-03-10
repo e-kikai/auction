@@ -1,5 +1,8 @@
 class System::TradesController < System::ApplicationController
+  include MonthSelector
   include Exports
+
+  before_action :month_selector
 
   def index
     # @date = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
@@ -8,6 +11,23 @@ class System::TradesController < System::ApplicationController
 
     @company = params[:company]
     @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
+
+    #####
+    @threads_02 = Trade.includes(:product, :owner)
+      .where(id: Trade.group(:product_id, :owner_id).select('max(id)')).where(created_at: @rrange)
+      .order(created_at: :desc)
+
+    @threads_02 = @threads_02.where(product_id: Product.where(user_id: @company)) if @company.present?
+
+     @th_group = Trade
+       .where(product_id: @threads_02.select(:product_id), owner_id: @threads_02.select(:owner_id))
+       .group(:product_id, :owner_id)
+
+    @thread_starts_02  = @th_group.minimum(:created_at)
+    @thread_counts_02  = @th_group.count
+
+    ####
+
 
     @threads       = Trade.group(:product_id, :owner_id)
     @threads       = @threads.where(product_id: Product.where(user_id: @company)) if @company.present?
@@ -30,7 +50,7 @@ class System::TradesController < System::ApplicationController
 
     respond_to do |format|
       format.html {
-        # @ptrades = @trades.page(params[:page]).per(500)
+        @pthreads = @threads_02.page(params[:page]).per(50)
       }
       format.csv { export_csv "trades_#{@date.strftime('%Y_%m')}.csv" }
     end

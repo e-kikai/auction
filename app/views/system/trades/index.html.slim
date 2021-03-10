@@ -30,15 +30,80 @@
 /     span.glyphicon.glyphicon-download-alt
 /     span.btn-content CSV出力
 
+
 .row
   .col-lg-12.col-md-12.col-sm-12
+    = paginate @pthreads
+
+    .table-responsive
+      table.table.table-hover.table-condensed.table-striped.product-table
+        thead
+          tr
+            th.num 商品ID
+            th 商品 開始金額/入札数/最高金額
+            th.sepa 状況
+            th.sepa 出品会社
+            th.name.sepa ユーザ
+            th.num.sepa 書込数
+            th 開始日時
+            th 最終更新
+
+        - @threads_02.each do |th|
+          - gro = [th.product_id, th.owner_id]
+
+          tr
+            td.num = th.product_id
+            td
+              . = th.product&.name
+              . = "#{number_to_currency(th.product&.start_price)} / #{number_with_delimiter(th.product&.bids_count)} / #{number_to_currency(th.product&.max_price)}"
+
+            td.sepa
+              - if th.product&.trade_status(th.owner) == "落札"
+                span = "落札 : "
+                - if th.product&.star
+                  span.star = th.product&.star_view
+                - else
+                  | 受取確認・評価前
+              - else
+                = th.product&.trade_status(th.owner)
+            td.sepa
+              . = th.product&.user_id
+              . = th.product&.user&.company_remove_kabu
+            td.name.sepa
+              . = "#{th.owner_id} | #{th.owner&.account}"
+              . = "#{th.owner&.company_remove_kabu} #{th.owner&.name}".strip
+            td.num.sepa = link_to "/system/trades/#{th.product_id}/#{th.owner_id}", class: "btn btn-success btn-md" do
+              span.glyphicon.glyphicon-comment
+              span.btn-content = "#{@thread_counts_02[gro]}"
+            td = @thread_starts_02[gro]
+            td = th.created_at
+
+
+        thead
+          tr
+            th.num 商品ID
+            th 商品 開始金額/入札数/最高金額
+            th.sepa 状況
+            th.sepa 出品会社
+            th.name.sepa ユーザ
+            th.num.sepa 書込数
+            th 開始日時
+            th 最終更新
+    = paginate @pthreads
+
+
+
+
+
+    hr
+
     = paginate @paginatable_array
     .table-responsive
       table.table.table-hover.table-condensed.table-striped.product-table
         thead
           tr
             th.num 商品ID
-            th 商品 入札数/開始金額/最高金額
+            th 商品 開始金額/入札数/最高金額
             th.sepa 状況
             th.sepa 出品会社
             th.name.sepa ユーザ
@@ -52,8 +117,8 @@
             - owner_id = key[1]
             - owner    = @owners[key[1]]
           - else
-            - owner_id = product.try(:max_bid).try(:user_id)
-            - owner    = product.try(:max_bid).try(:user)
+            - owner_id = product.max_bid&.user_id
+            - owner    = product.max_bid&.user
 
           tr
             td.num = key[0]
@@ -84,7 +149,7 @@
         thead
           tr
             th.num 商品ID
-            th 商品 入札数/開始金額/最高金額
+            th 商品 開始金額/入札数/最高金額
             th.sepa 状況
             th.sepa 出品会社
             th.name.sepa ユーザ

@@ -27,5 +27,6 @@ class Trade < ApplicationRecord
   soft_deletable
 
   belongs_to :product
+  belongs_to :owner,  class_name: "User"
   belongs_to :user
 end
