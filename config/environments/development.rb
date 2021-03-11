@@ -62,4 +62,6 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: '192.168.33.110', port: 8087 }
   config.action_mailer.delivery_method = :letter_opener_web
+
+  # config.web_console.whitelisted_ips = '0.0.0.0/0'
 end

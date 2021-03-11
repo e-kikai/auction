@@ -5,8 +5,6 @@ module MonthSelector
   def month_selector
     # 取得範囲(全取得対応)
     case params[:range]
-
-
     when "month"
       @date = params[:date] ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Date.today
 
@@ -32,5 +30,11 @@ module MonthSelector
     # @where_cr  = {created_at: @rrange}
     # @where_str = {dulation_start: @rrange}
     # @where_end = {dulation_end: @rrange}
+
+    ### 会社選択肢 ###
+    @company_selectors = User.companies.order(:id).map { |co| [co.company_remove_kabu, co.id] }
+
+    ### 商品情報一括includes ###
+    @includes_product = {product: [:user, :category, max_bid: [:user]]}
   end
 end

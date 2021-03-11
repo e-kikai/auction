@@ -5,7 +5,7 @@ class System::WatchesController  < System::ApplicationController
   before_action :month_selector
 
   def index
-    @watches = Watch.unscoped.includes(:user, product: [:user, :category, max_bid: [:user]])
+    @watches = Watch.unscoped.includes(:user, @includes_product)
       .where(created_at: @rrange).order(created_at: :desc)
 
     respond_to do |format|

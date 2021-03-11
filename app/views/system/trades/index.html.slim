@@ -1,30 +1,14 @@
 - set_meta_tags title: "問い合わせ履歴"
 - breadcrumb :system_trades
 
-// javascript:
-//   $(function() {
-//       $('tr').on("mouseenter", function() {
-//           thread = $(this).data("thread")
-//           $('tr.' + thread + ' td.title').css("background", "#ffd700")
-//       });
-//
-//       $('tr').on("mouseleave", function() {
-//           thread = $(this).data("thread")
-//           $('tr.' + thread + ' td.title').css("background", "")
-//       });
-//   });
+= render("/system/watches/month_selector_form", path: "/system/trades/", range: params[:range], date: @date, company_selectors: @company_selectors, company: params[:company])
 
-/ css:
-/   td.title {
-/     transition: 0.5s;
-/   }
+/ = form_tag("/system/trades", method: "get", class: "form-inline filtering-form") do
+/   = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
 
-= form_tag("/system/trades", method: "get", class: "form-inline filtering-form") do
-  = select_tag :company, options_for_select(@company_selectors, selected: @company), {include_blank: "すべての出品会社", class: "form-control"}
-
-  = button_tag "検索",  class: "btn btn-info" do
-    span.glyphicon.glyphicon-search
-    span.btn-content 検索
+/   = button_tag "検索",  class: "btn btn-info" do
+/     span.glyphicon.glyphicon-search
+/     span.btn-content 検索
 /
 /   = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
 /     span.glyphicon.glyphicon-download-alt
@@ -91,73 +75,67 @@
             th 最終更新
     = paginate @pthreads
 
+    / = paginate @paginatable_array
+    / .table-responsive
+    /   table.table.table-hover.table-condensed.table-striped.product-table
+    /     thead
+    /       tr
+    /         th.num 商品ID
+    /         th 商品 開始金額/入札数/最高金額
+    /         th.sepa 状況
+    /         th.sepa 出品会社
+    /         th.name.sepa ユーザ
+    /         th.num.sepa 書込数
+    /         th 開始日時
+    /         th 最終更新
 
+    /     - @pthread_lasts.each do |key, val|
+    /       - product = @products[key[0]]
+    /       - if @owners[key[1]]
+    /         - owner_id = key[1]
+    /         - owner    = @owners[key[1]]
+    /       - else
+    /         - owner_id = product.max_bid&.user_id
+    /         - owner    = product.max_bid&.user
 
+    /       tr
+    /         td.num = key[0]
+    /         td
+    /           . = product.name
+    /           . = "#{number_to_currency(product.start_price)} / #{number_with_delimiter(product.bids_count)} / #{number_to_currency(product.max_price)}"
+    /         td.sepa
+    /           - if product.trade_status(owner) == "落札"
+    /             span = "落札 : "
+    /             - if product.star
+    /               span.star = product.star_view
+    /             - else
+    /               | 受取確認・評価前
+    /           - else
+    /             = product.trade_status(owner)
+    /         td.sepa
+    /           . = product.user_id
+    /           . = product.user.try(:company_remove_kabu)
+    /         td.name.sepa
+    /           . = "#{owner_id} | #{owner.account}"
+    /           . = "#{owner.try(:company_remove_kabu)} #{owner.try(:name)}".strip
+    /         td.num.sepa = link_to "/system/trades/#{key[0]}/#{owner_id}", class: "btn btn-success btn-md" do
+    /           span.glyphicon.glyphicon-comment
+    /           span.btn-content = "#{@thread_counts[key]}"
+    /         td = @thread_starts[key]
+    /         td = val
 
+    /     thead
+    /       tr
+    /         th.num 商品ID
+    /         th 商品 開始金額/入札数/最高金額
+    /         th.sepa 状況
+    /         th.sepa 出品会社
+    /         th.name.sepa ユーザ
+    /         th.num.sepa 書込数
+    /         th 開始日時
+    /         th 最終更新
 
-    hr
-
-    = paginate @paginatable_array
-    .table-responsive
-      table.table.table-hover.table-condensed.table-striped.product-table
-        thead
-          tr
-            th.num 商品ID
-            th 商品 開始金額/入札数/最高金額
-            th.sepa 状況
-            th.sepa 出品会社
-            th.name.sepa ユーザ
-            th.num.sepa 書込数
-            th 開始日時
-            th 最終更新
-
-        - @pthread_lasts.each do |key, val|
-          - product = @products[key[0]]
-          - if @owners[key[1]]
-            - owner_id = key[1]
-            - owner    = @owners[key[1]]
-          - else
-            - owner_id = product.max_bid&.user_id
-            - owner    = product.max_bid&.user
-
-          tr
-            td.num = key[0]
-            td
-              . = product.name
-              . = "#{number_to_currency(product.start_price)} / #{number_with_delimiter(product.bids_count)} / #{number_to_currency(product.max_price)}"
-            td.sepa
-              - if product.trade_status(owner) == "落札"
-                span = "落札 : "
-                - if product.star
-                  span.star = product.star_view
-                - else
-                  | 受取確認・評価前
-              - else
-                = product.trade_status(owner)
-            td.sepa
-              . = product.user_id
-              . = product.user.try(:company_remove_kabu)
-            td.name.sepa
-              . = "#{owner_id} | #{owner.account}"
-              . = "#{owner.try(:company_remove_kabu)} #{owner.try(:name)}".strip
-            td.num.sepa = link_to "/system/trades/#{key[0]}/#{owner_id}", class: "btn btn-success btn-md" do
-              span.glyphicon.glyphicon-comment
-              span.btn-content = "#{@thread_counts[key]}"
-            td = @thread_starts[key]
-            td = val
-
-        thead
-          tr
-            th.num 商品ID
-            th 商品 開始金額/入札数/最高金額
-            th.sepa 状況
-            th.sepa 出品会社
-            th.name.sepa ユーザ
-            th.num.sepa 書込数
-            th 開始日時
-            th 最終更新
-
-    = paginate @paginatable_array
+    / = paginate @paginatable_array
 
 / = paginate @ptrades
 / .table-responsive

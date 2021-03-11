@@ -10,6 +10,10 @@
 
   = select_date date, {prefix: :date, start_year:2018, end_year: Date.today.year, discard_day: true}, {class: "form-control"}
 
+  - if defined? company_selectors
+    - company = nil unless defined? company
+    = select_tag :company, options_for_select(company_selectors, selected: company), {include_blank: "すべての出品会社", class: "form-control"}
+
   = button_tag class: "btn btn-info" do
     span.glyphicon.glyphicon-search
     span.btn-content 検索
