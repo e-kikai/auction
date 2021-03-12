@@ -237,29 +237,29 @@ class System::PlaygroundController < ApplicationController
     @bids.each    { |bi| @biases[[bi[0], bi[1]]] = (@biases[[bi[0], bi[1]]] || 0) + bias_dib }
 
     # ### ベクトルデータの有無チェック ###
-    vectors = Rails.cache.read("vectors") || {} # キャッシュ読み込み
-    bucket  = s3_bucket # S3バケット取得(playground用)
+    # vectors = Rails.cache.read("vectors") || {} # キャッシュ読み込み
+    # bucket  = s3_bucket # S3バケット取得(playground用)
 
-    product_temp = (@biases.map { |key, val| key[1] } + @now_products).uniq # チェック用商品ID一覧
+    # product_temp = (@biases.map { |key, val| key[1] } + @now_products).uniq # チェック用商品ID一覧
 
-    ignore = product_temp.map do |pid|
-      if vectors[pid].present? || bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
-        nil # ベクトルファイルが存在している場合、スキップ
-      else
-        # ベクトルが存在しない場合、ベクトル生成処理
-        Product.find_by(id: pid)&.process_vector
+    # ignore = product_temp.map do |pid|
+    #   if vectors[pid].present? || bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
+    #     nil # ベクトルファイルが存在している場合、スキップ
+    #   else
+    #     # ベクトルが存在しない場合、ベクトル生成処理
+    #     Product.find_by(id: pid)&.process_vector
 
-        if bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
-          logger.debug "new_vector_file : #{pid}"
-          nil
-        else # ない場合
-          logger.debug "ignore : #{pid}"
-          pid
-        end
-      end
-    end.compact
+    #     if bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
+    #       logger.debug "new_vector_file : #{pid}"
+    #       nil
+    #     else # ない場合
+    #       logger.debug "ignore : #{pid}"
+    #       pid
+    #     end
+    #   end
+    # end.compact
 
-    logger.debug ignore
+    # logger.debug ignore
 
     # share_vecotrs = (product + @now_products).uniq.map do |pid|
     #   if vectors[pid].present?
