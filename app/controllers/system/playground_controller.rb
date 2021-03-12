@@ -320,10 +320,10 @@ class System::PlaygroundController < ApplicationController
 
     @biases.each do |key, val|
       ### ベクトルがないものを拒否 ###
-      if key[1].in? ignore
-        logger.debug "ignore : #{key[0]} : #{key[1]} : #{val}"
-        next
-      end
+      # if key[1].in? ignore
+      #   logger.debug "ignore : #{key[0]} : #{key[1]} : #{val}"
+      #   next
+      # end
 
       user    << key[0].to_i
       product << key[1].to_i
