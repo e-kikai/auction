@@ -341,7 +341,7 @@ class System::PlaygroundController < ApplicationController
     now_product_idx = @now_products.map { |pid| [ pid, product_idx[pid] ] }.to_h
 
     ### 現在出品中、かつ、ログのない商品をインデックスに追加 ###
-    plus_products_idx = (@now_products - product.uniq).map.with_index { |v, i| [v, (i + roduct.uniq.length + 1)] }.to_h
+    plus_products_idx = (@now_products - product.uniq).map.with_index { |v, i| [v, (i + product.uniq.length + 1)] }.to_h
     product_idx.merge! plus_products_idx
 
 
