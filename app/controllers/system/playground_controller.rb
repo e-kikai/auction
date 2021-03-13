@@ -338,7 +338,13 @@ class System::PlaygroundController < ApplicationController
     product_key = product.map { |v| product_idx[v] } # 商品インデックスに変換
 
     ### 現在出品中の商品のみインデックスhash ###
-     now_product_idx = @now_products.map { |pid| [ pid, product_idx[pid] ] }.to_h
+    now_product_idx = @now_products.map { |pid| [ pid, product_idx[pid] ] }.to_h
+
+    ### 現在出品中、かつ、ログのない商品をインデックスに追加 ###
+    plus_products_idx = (@now_products - product.uniq).map.with_index { |v, i| [v, (i + roduct.uniq.length + 1)] }.to_h
+    product_idx.merge! plus_products_idx
+
+
 
     res = {
       user_idx:    user_idx,
@@ -348,6 +354,8 @@ class System::PlaygroundController < ApplicationController
       bias:        bias,
 
       now_product_idx: now_product_idx,
+
+      plus_products_idx: plus_products_idx,
 
       # share_vecotrs_res: share_vecotrs_res,
     }.to_json
