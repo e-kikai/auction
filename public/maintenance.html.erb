@@ -1,0 +1,55 @@
+<!DOCTYPE html><html>
+<head>
+  <meta charset="utf-8">
+  <title>現在メンテナンス中 ｜ ものづくりオークション</title>
+  <style type="text/css"><!--
+    body {
+      margin: 0;
+    }
+    h1 { color: red; }
+
+
+    .main-container {
+        padding: 16px;
+        width: 980px;
+        margin: auto;
+
+    }
+
+    .reason {
+      background: #258a01;
+      color: #FFF;
+      margin: 32px 64px;
+      padding: 16px;
+
+
+    }
+
+    footer {
+      margin-top: 48px;
+      margin-bottom: 48px;
+      text-align: center;
+      display: block;
+    }
+  --></style>
+
+</head>
+<body>
+
+<div class="main-container">
+  <h2>ものづくりオークションは、ただいまメンテナンス中です。</h2>
+
+  <div class="reason"><%=reason%></div>
+  <p>
+    メンテナンス終了まで、ものづくりオークションにアクセスを行うことができません。<br />
+    ご迷惑をおかけいたしますが、何卒宜しくお願いします。
+  </p>
+</div>
+
+
+</body>
+<footer class="container-fluid">
+  Copyright &copy; <%=Time.now.year %>
+  <a href="/helps/about">任意団体ものづくりオークション委員会</a>
+  All Rights reserved.
+</footer>

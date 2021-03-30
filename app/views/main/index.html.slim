@@ -38,30 +38,30 @@
         /   .thumbnail.search-panel
         /     = link_to(image_tag("https://www.zenkiren.net/imgs/bids_29.png", alt: "マシンライフ 第29回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=29&r=bnr", target: "_blank")
 
-        - if (Time.parse('2020-09-25 00:00:00')..Time.parse('2020-10-07 23:59:59')).include? Time.now
-          .thumbnail.search-panel
-            = link_to(image_tag("https://www.zenkiren.net/imgs/bids_30.png", alt: "マシンライフ 第30回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=30&r=bnr", target: "_blank")
+        / - if (Time.parse('2020-09-25 00:00:00')..Time.parse('2020-10-07 23:59:59')).include? Time.now
+        /   .thumbnail.search-panel
+        /     = link_to(image_tag("https://www.zenkiren.net/imgs/bids_30.png", alt: "マシンライフ 第30回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=30&r=bnr", target: "_blank")
 
-        - if (Time.parse('2020-12-18 00:00:00')..Time.parse('2021-01-14 23:59:59')).include? Time.now
-          .thumbnail.search-panel
-            = link_to(image_tag("https://www.zenkiren.net/imgs/bids_31.png", alt: "マシンライフ 第31回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=31&r=bnr", target: "_blank")
+        / - if (Time.parse('2020-12-18 00:00:00')..Time.parse('2021-01-14 23:59:59')).include? Time.now
+        /   .thumbnail.search-panel
+        /     = link_to(image_tag("https://www.zenkiren.net/imgs/bids_31.png", alt: "マシンライフ 第31回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=31&r=bnr", target: "_blank")
 
 
         / - if (Time.parse('2020-05-22 00:00:00')..Time.parse('2020-06-05 23:59:59')).include? Time.now
         /   .thumbnail.search-panel
         /     = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_191.png", alt: "大阪機械卸業団地協同組合 第191回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
-        - if (Time.parse('2020-08-21 00:00:00')..Time.parse('2020-09-04 23:59:59')).include? Time.now
-          .thumbnail.search-panel
-            = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_192.png", alt: "大阪機械卸業団地協同組合 第192回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+        / - if (Time.parse('2020-08-21 00:00:00')..Time.parse('2020-09-04 23:59:59')).include? Time.now
+        /   .thumbnail.search-panel
+        /     = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_192.png", alt: "大阪機械卸業団地協同組合 第192回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
-        - if (Time.parse('2020-11-13 00:00:00')..Time.parse('2020-11-27 23:59:59')).include? Time.now
-          .thumbnail.search-panel
-            = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_193.png", alt: "大阪機械卸業団地協同組合 第193回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+        / - if (Time.parse('2020-11-13 00:00:00')..Time.parse('2020-11-27 23:59:59')).include? Time.now
+        /   .thumbnail.search-panel
+        /     = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_193.png", alt: "大阪機械卸業団地協同組合 第193回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
-        - if (Time.parse('2021-02-19 00:00:00')..Time.parse('2021-03-05 23:59:59')).include? Time.now
-          .thumbnail.search-panel
-            = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_194.png", alt: "大阪機械卸業団地協同組合 第194回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+        / - if (Time.parse('2021-02-19 00:00:00')..Time.parse('2021-03-05 23:59:59')).include? Time.now
+        /   .thumbnail.search-panel
+        /     = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_194.png", alt: "大阪機械卸業団地協同組合 第194回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
         .panel.panel-warning
           = link_to "#collapse_myauction", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
@@ -285,6 +285,12 @@
 
         / - else
     .col-md-9.col-sm-9.col-xs-12
+      .alert.alert-info
+        h4
+          span.glyphicon.glyphicon-info-sign
+          span.btn-content システムメンテナンスのお知らせ
+        p 消費税の総額表示対応のため、2021/4/1 0:00 〜 4:00 まで、システムメンテナンスを行います。
+        p = link_to "→ くわしくはこちら", "/helps/tax_included_2021"
       - @roots.each do |ca|
         - ca.children.order(:order_no).each do |ca2|
           - ca_products = Product.search(category_id_in: ca2.subtree_ids).result.status(Product::STATUS[:start]).order(dulation_start: :desc).limit(10)
