@@ -51,7 +51,7 @@ Rails.application.configure do
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
   config.log_level = :error
-  config.logger    = Logger.new("log/production.log", 8, 10 * 1024 * 1024)
+  # config.logger    = Logger.new("log/production.log", 8, 10 * 1024 * 1024)
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]

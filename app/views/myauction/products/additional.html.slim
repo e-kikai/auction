@@ -51,14 +51,14 @@ coffee:
       td = "#{I18n.l(@product.dulation_start, format: :full_date)} 〜 #{I18n.l(@product.dulation_end, format: :full_date)}"
 
     tr.form-inline
-      th = f.label :start_price, "開始価格(税抜)"
-      td = number_to_currency(@product.start_price)
+      th = f.label :start_price, "開始価格 (税込)"
+      td = number_to_currency(@product.start_price_with_tax)
     tr.form-inline
-      th = f.label :lower_price, "最低落札価格(税抜)"
-      td = number_to_currency(@product.lower_price)
+      th = f.label :lower_price, "最低落札価格 (税込)"
+      td = number_to_currency(@product.lower_price_with_tax)
 
     tr.form-inline
-      th = f.label :prompt_dicision_price, "即売価格(税抜)"
+      th = f.label :prompt_dicision_price, "即売価格 (税込)"
       / td = number_to_currency(@product.prompt_dicision_price)
       td
         . = (f.text_field :prompt_dicision_price, class: "form-control price") + " 円"
