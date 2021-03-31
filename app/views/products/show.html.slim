@@ -182,9 +182,11 @@ article
             - elsif @product.max_bid.present? && @product.max_bid.user == current_user
               p.success-message あなたが現在の最高入札者です
 
-            span.h2.max_price> #{number_to_currency @product.max_price}
-            span.product-tax
-              | (税込 #{number_to_currency(@product.max_price_with_tax)})
+            / span.h2.max_price> #{number_to_currency @product.max_price}
+            span.h2.max_price #{number_to_currency @product.max_price_with_tax}
+
+            / span.product-tax
+            /   | (税込 #{number_to_currency(@product.max_price_with_tax)})
 
             - unless @product.finished? || @product.before? || @product.user_id == current_user.try(:id)
               = button_tag class: "btn btn-warning btn-lg center-block", data: { toggle: :modal, target: "#bid-modal"} do
@@ -329,12 +331,16 @@ article
             / dd = @product.early_termination ? 'あり' : 'なし'
             dt 最高入札者
             dd = @product.max_bid.present? ? @product.max_bid.user.account : "-"
-            dt 開始価格(税抜)
-            dd #{number_to_currency(@product.start_price)}
+            / dt 開始価格(税抜)
+            / dd #{number_to_currency(@product.start_price)}
+            dt 開始価格(税込)
+            dd #{number_to_currency(@product.start_price_with_tax)}
 
             - if @product.prompt_dicision_price.present?
-              dt 即売価格(税抜)
-              dd #{number_to_currency(@product.prompt_dicision_price)}
+              / dt 即売価格(税抜)
+              / dd #{number_to_currency(@product.prompt_dicision_price)}
+              dt 即売価格(税込)
+              dd #{number_to_currency(@product.prompt_dicision_price_with_tax)}
 
           dl.dl-horizontal.product-dl.product-dl-border
             dt 発送元
@@ -423,7 +429,8 @@ article
                   span.btn-content 最低落札価格
                 | が設定されています
 
-            .col-md-5.h4.text-right 入札金額(税抜)
+            / .col-md-5.h4.text-right 入札金額(税抜)
+            .col-md-5.h4.text-right 入札金額(税込)
             .col-md-5.text-right
               .form-group.form-group-lg = f.text_field :amount, value: (@product.max_price + (@product.bids_count > 0 ? @product.bid_unit : 0)), class: "form-control price", required: "required"
             .col-md-1.h4 円
@@ -445,10 +452,11 @@ article
         .row.detail-price-area
           .detail-price-message この金額で今すぐ落札されます。
           .col-md-offset-2.col-md-3.h4.prompt_dicision_h4 即売価格
-          .col-md-5.text-right.h4 = number_to_currency(@product.prompt_dicision_price)
+          / .col-md-5.text-right.h4 = number_to_currency(@product.prompt_dicision_price)
+          .col-md-5.text-right.h4 = number_to_currency(@product.prompt_dicision_price_with_tax)
         .row
-          .col-md-offset-2.col-md-3.h4 消費税
-          .col-md-5.text-right.h4 = number_to_currency(@product.prompt_dicision_price_tax)
+          / .col-md-offset-2.col-md-3.h4 消費税
+          / .col-md-5.text-right.h4 = number_to_currency(@product.prompt_dicision_price_tax)
         hr.detail-price-calc
         .row
           .col-md-offset-2.col-md-3.h3 税込価格

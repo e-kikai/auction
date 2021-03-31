@@ -37,6 +37,7 @@ class System::TotalController < System::ApplicationController
     @success        = @products.where(cancel: nil).where.not(max_bid_id: nil).group(gro_end).where(@where_end)
     @success_counts = @success.count
     @success_prices = @success.sum(:max_price)
+    @success_prices = @success_prices.map { |key, val| [key,Product.calc_price_with_tax(val, @date)] }.to_h # 総額対応
 
     # 入札・ユーザ集計
     @bid_counts          = Bid.where(product_id: @products).where(@where_cr).group(gro).count
@@ -71,6 +72,7 @@ class System::TotalController < System::ApplicationController
     @success        = @products.where(cancel: nil).where.not(max_bid_id: nil).group(gro_end)
     @success_counts = @success.count
     @success_prices = @success.sum(:max_price)
+    @success_prices = @success_prices.map { |key, val| [key,Product.calc_price_with_tax(val, key)] }.to_h # 総額対応
 
     # 入札・ユーザ集計
     @bid_counts          = Bid.where(product_id: @products).group(gro).count
@@ -95,6 +97,7 @@ class System::TotalController < System::ApplicationController
     @success       = @products.where(cancel: nil).where.not(max_bid_id: nil).where(@where_end)
     @success_count = @success.count
     @success_price = @success.sum(:max_price)
+    @success_price = Product.calc_price_with_tax(@success_price) # 総額対応
 
     @success_products = @products.where.not(max_bid_id: nil).where("dulation_end < ? ", @rend)
     @max_product      = @success.order("max_price DESC").first
@@ -192,6 +195,7 @@ class System::TotalController < System::ApplicationController
 
     @max_bid_counts = max_bids.group("DATE(products.dulation_end)").count
     @max_bid_prices = max_bids.group("DATE(products.dulation_end)").sum("products.max_price")
+    @max_bid_prices = @max_bid_prices.map { |key, val| [key,Product.calc_price_with_tax(val, key)] }.to_h # 総額対応
 
     @watches = Watch.where(@where_cr)
       .where("(user_id, product_id) IN (SELECT dl.user_id, dl.product_id FROM detail_logs dl WHERE (dl.r LIKE '%nms%' OR dl.r LIKE '%nmr%'))")

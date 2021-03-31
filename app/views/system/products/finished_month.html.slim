@@ -65,14 +65,20 @@ table.table.table-hover.table-condensed.table-striped.product-table
         . = I18n.l(pr.dulation_start, format: :full_date)
       td = I18n.l(pr.dulation_end, format: :full_date)
       td.price
-        . = number_to_currency(pr.start_price)
-        . = number_to_currency(pr.lower_price) || "-"
-        . = number_to_currency(pr.prompt_dicision_price) || "-"
-      td.price = number_to_currency(pr.max_price) || "-"
+        / . = number_to_currency(pr.start_price)
+        / . = number_to_currency(pr.lower_price) || "-"
+        / . = number_to_currency(pr.prompt_dicision_price) || "-"
+        . = number_to_currency(pr.start_price_with_tax)
+        . = pr.lower_price.present? ? number_to_currency(pr.lower_price_with_tax) : "-"
+        . = pr.prompt_dicision_price.present? ? number_to_currency(pr.prompt_dicision_price_with_tax) : "-"
+
+      / td.price = number_to_currency(pr.max_price) || "-"
+      td.price = pr.max_price_with_tax.present? ? number_to_currency(pr.max_price_with_tax) : "-"
+
       td
-        - if pr.max_bid.try(:user)
-          . = pr.max_bid.try(:user).try(:account)
-          . = "#{pr.max_bid.try(:user).try(:company)} #{pr.max_bid.try(:user).try(:name)}".strip
+        - if pr.max_bid&.user
+          . = pr.max_bid&.user&.account
+          . = "#{pr.max_bid&.user&.company} #{pr.max_bid&.user&.name}".strip
         - else
           = "-"
 

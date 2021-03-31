@@ -25,11 +25,15 @@ javascript:
           .col-md-7.col-sm-7
             dl.dl-horizontal.trade-dl.product
               - if @product.trade_success?(@owner)
-                dt 落札金額(税抜)
-                dd = number_to_currency(@product.max_price)
+                / dt 落札金額(税抜)
+                / dd = number_to_currency(@product.max_price)
+                dt 落札金額(税込)
+                dd = number_to_currency(@product.max_price_with_tax)
+
+
                 / dt 消費税(#{Product::TAX_RATE}%)
-                dt 消費税(#{Product.tax_rate(@product.dulation_end)}%)
-                dd.text-right = number_to_currency(@product.max_price_tax)
+                / dt 消費税(#{Product.tax_rate(@product.dulation_end)}%)
+                / dd.text-right = number_to_currency(@product.max_price_tax)
 
                 - if @shipping_label
                   dt 発送方法
@@ -43,9 +47,10 @@ javascript:
                 dd.text-right = number_to_currency(@product.max_price_with_tax + (@shipping_fee.try(:price) || 0))
               - else
 
-                dt 現在価格(税抜)
-                dd = number_to_currency(@product.max_price)
-                dt 税込価格
+                / dt 現在価格(税抜)
+                / dd = number_to_currency(@product.max_price)
+                / dt 税込価格
+                dt 現在価格(税込)
                 dd = number_to_currency(@product.max_price_with_tax)
                 - if @product.prompt_dicision_price.present?
                   dt 即売価格(税込)

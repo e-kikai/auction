@@ -26,6 +26,28 @@ $(document).on 'turbolinks:load', ->
     ga('set', 'location', location.href.split('#')[0])
     ga('send', 'pageview')
 
+  ### URL表示からログパラメータを削除 ###
+  # # URLSearchParamsオブジェクトを取得
+  # url    = new URL(window.location.href)
+  # params = url.searchParams;
+
+  # # アドレスバーのURLからGET rパラメータを削除
+  # params.delete('r')
+  # history.replaceState('', '', url.href)
+
+  # ### リロード、履歴の判別 ###
+  if $('#r').length
+    rval = $('#r').val()
+  else
+    rval = ""
+
+  if window.performance
+    if performance.navigation.type == 1
+      rval = "reload"
+    else if performance.navigation.type == 2
+      rval = "back"
+
+  ### ログ格納 ###
   if !$("#nologging").val()
     ### 詳細ページログ取得 ###
     if $("body").data("controller") == "products" && $("body").data("action") == "show"
@@ -34,7 +56,7 @@ $(document).on 'turbolinks:load', ->
         url:      "/detail_logs/"
         type:     'POST',
         dataType: 'json',
-        data :    { product_id : $('#product_id').val(), r : $('#r').val(), referer : $('#referer').val()  },
+        data :    { product_id : $('#product_id').val(), r : rval, referer : $('#referer').val()  },
         timeout:  3000,
         # success:  (data, status, xhr)   -> alert status
         # error:    (xhr,  status, error) -> alert status
@@ -46,7 +68,7 @@ $(document).on 'turbolinks:load', ->
         url:      "/search_logs/"
         type:     'POST',
         dataType: 'json',
-        data :    { category_id : $('#search_category_id').val(), company_id : $('#search_company_id').val(), keywords : $('#search_keywords').val(), search_id : $('#search_id').val(), nitamono_product_id : $('#nitamono_product_id').val(), path : $('#path').val(), page : $('#page').val(), r : $('#r').val(), referer : $('#referer').val() },
+        data :    { category_id : $('#search_category_id').val(), company_id : $('#search_company_id').val(), keywords : $('#search_keywords').val(), search_id : $('#search_id').val(), nitamono_product_id : $('#nitamono_product_id').val(), path : $('#path').val(), page : $('#page').val(), r : rval, referer : $('#referer').val() },
         timeout:  3000,
         # success:  (data, status, xhr)   -> alert status
         # error:    (xhr,  status, error) -> alert status
@@ -58,7 +80,7 @@ $(document).on 'turbolinks:load', ->
         url:      "/search_logs/"
         type:     'POST',
         dataType: 'json',
-        data :    { nitamono_product_id : $('#nitamono_product_id').val(), path : $('#path').val(), page : $('#page').val(), r : $('#r').val(), referer : $('#referer').val() },
+        data :    { nitamono_product_id : $('#nitamono_product_id').val(), path : $('#path').val(), page : $('#page').val(), r : rval, referer : $('#referer').val() },
         timeout:  3000,
 
     ### トップページログ ###
@@ -68,7 +90,7 @@ $(document).on 'turbolinks:load', ->
         url:      "/toppage_logs/"
         type:     'POST',
         dataType: 'json',
-        data :    { r : $('#r').val(), referer : $('#referer').val() },
+        data :    { r : rval, referer : $('#referer').val() },
         timeout:  3000,
         # success:  (data, status, xhr)   -> alert status
         # error:    (xhr,  status, error) -> alert status

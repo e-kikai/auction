@@ -596,10 +596,13 @@ class Product < ApplicationRecord
     detail_logs.count('DISTINCT ip')
   end
 
+  ### 税率 ###
   def self.tax_rate(day = Date.today)
     day ||= Date.today
     d = day.to_date
+
     case
+    when d >= "2021/04/01".to_date;  0 # 税込価格
     when d >= "2019/10/01".to_date; 10
     else;                            8
     end

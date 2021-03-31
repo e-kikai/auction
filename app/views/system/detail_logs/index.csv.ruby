@@ -10,7 +10,8 @@
     lo.product ? lo.product.user_id : "",
     lo.product ? lo.product.user.company : "",
 
-    lo.product ? number_to_currency(lo.product.max_price) : "",
+    # lo.product ? number_to_currency(lo.product.max_price) : "",
+    lo.product ? number_to_currency(lo.product.max_price_with_tax) : "",
     lo.product ? lo.product.bids_count : "",
     URI.unescape(lo.link_source), URI.unescape(lo.referer).scrub('♪'),
 

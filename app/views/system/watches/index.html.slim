@@ -44,7 +44,8 @@
           - elsif wa.product&.dulation_end < Time.now + 15.minutes
             . 終了間近
         / td.price = wa.product&.start_price
-        td.price.sepa = number_to_currency(wa.product&.max_price)
+        / td.price.sepa = number_to_currency(wa.product&.max_price)
+        td.price.sepa = number_to_currency(wa.product&.max_price_with_tax)
         td = wa.created_at
         td = wa.soft_destroyed_at
 

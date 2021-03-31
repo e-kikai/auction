@@ -123,7 +123,8 @@ h1.product-title
       .alert.alert-success
         span.glyphicon.glyphicon-info-sign
         span.btn-content
-          | この商品への入札はまだありません。今なら開始価格 #{number_to_currency(@product.max_price)}(税抜) で入札できるチャンスです！！
+          / | この商品への入札はまだありません。今なら開始価格 #{number_to_currency(@product.max_price)}(税抜) で入札できるチャンスです！！
+          | この商品への入札はまだありません。今なら開始価格 #{number_to_currency(@product.max_price_with_tax)}(税込) で入札できるチャンスです！！
     - else
       .alert.alert-warning
         span.glyphicon.glyphicon-info-sign

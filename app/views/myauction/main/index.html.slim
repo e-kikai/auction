@@ -122,10 +122,14 @@
             span.glyphicon.glyphicon-thumbs-down
             span.btn-content ブラックリスト
 
-          hr
+      .panel.panel-default
+        .panel-heading
+          span.glyphicon.glyphicon-gift
+          span.btn-content 集計
+        ul.nav.nav-pills.nav-stacked
           li = link_to "/myauction/total/products" do
             span.glyphicon.glyphicon-calendar
-            span.btn-content 日別トータル、出品予定
+            span.btn-content トータル、出品予定(日別)
 
   .col-md-3
     - if current_user.seller?

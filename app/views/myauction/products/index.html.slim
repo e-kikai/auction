@@ -88,9 +88,12 @@
             td = I18n.l(pr.dulation_start, format: :full_date)
           td = I18n.l(pr.dulation_end, format: :full_date)
           td.price
-            . = number_to_currency(pr.start_price)
-            . = pr.lower_price.try { |price| number_to_currency(price) } || "-"
-            . = pr.prompt_dicision_price.try { |price| number_to_currency(price) } || "-"
+            / . = number_to_currency(pr.start_price)
+            / . = pr.lower_price.try { |price| number_to_currency(price) } || "-"
+            / . = pr.prompt_dicision_price.try { |price| number_to_currency(price) } || "-"
+            . = number_to_currency(pr.start_price_with_tax)
+            . = pr.lower_price.present? ? number_to_currency(pr.lower_price_with_tax) : "-"
+            . = pr.prompt_dicision_price.present? ? number_to_currency(pr.prompt_dicision_price_with_tax) : "-"
 
           - if params[:cond].to_i == -1
             td = link_to({ action: :edit, id: pr.id }, class: "btn btn-warning") do
@@ -106,7 +109,8 @@
               span.glyphicon.glyphicon-refresh
               =< "再出品"
           - elsif params[:cond].to_i == 2
-            td.price = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
+            / td.price = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
+            td.price = (pr.max_price.present? ? number_to_currency(pr.max_price_with_tax) : "-")
             td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
 
             - if pr.max_bid.user_id != current_user.id
@@ -140,7 +144,8 @@
               =< "別商品として再出品"
 
           - else
-            td.price = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
+            / td.price = (pr.max_price.present? ? number_to_currency(pr.max_price) : "-")
+            td.price = (pr.max_price.present? ? number_to_currency(pr.max_price_with_tax) : "-")
             td.num = (pr.max_bid.present? ? pr.max_bid.user.account : "-")
             td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
             td.num = pr.detail_logs_count

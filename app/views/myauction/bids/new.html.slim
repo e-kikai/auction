@@ -29,13 +29,13 @@ h1.product-title
               span.btn-content 最低落札価格
             | が設定されています
 
-        .row
-          .col-md-5.h4.text-right 入札金額
-          .col-md-5.text-right.h4 = number_to_currency(@bid.amount)
-        .row
-          .col-md-5.h4.text-right 消費税
-          .col-md-5.text-right.h4 = number_to_currency(@bid.amount_tax)
-        hr.detail-price-calc
+        / .row
+        /   .col-md-5.h4.text-right 入札金額
+        /   .col-md-5.text-right.h4 = number_to_currency(@bid.amount)
+        / .row
+        /   .col-md-5.h4.text-right 消費税
+        /   .col-md-5.text-right.h4 = number_to_currency(@bid.amount_tax)
+        / hr.detail-price-calc
         .row
           .col-md-5.h3.text-right 税込価格
           .col-md-5.text-right.h3 = number_to_currency(@bid.amount_with_tax)
@@ -82,7 +82,8 @@ h1.product-title
             | が設定されています
 
         .row
-          .col-md-5.h4.text-right 入札金額(税抜)
+          / .col-md-5.h4.text-right 入札金額(税抜)
+          .col-md-5.h4.text-right 入札金額(税込)
           .col-md-5.text-right
             .form-group.form-group-lg = f.text_field :amount, value: (@product.max_price + (@product.bids_count > 0 ? @product.bid_unit : 0)), class: "form-control price", required: "required"
           .col-md-1.h4 円

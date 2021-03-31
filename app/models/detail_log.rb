@@ -36,11 +36,25 @@ class DetailLog < ApplicationRecord
     "oss" => "おすすめ", "nws" => "新着通知", "sca" => "同じカテゴリ", "bfn" => "入札完了", "bck" => "戻る",
     "win" => "入札通知", "los" => "高値更新", "csl" => "キャンセル", "suc" => "落札通知", "trd" => "取引通知",
     "rmd" => "リマインダ",
+
+    # 表示形式
     "pnl" => "パネル表示", "lst" => "リスト表示",
-    "nms" => "似たものサーチ", "nmr" => "似た商品", "cnw" => "カテゴリ別新着",
+
+    # 画像特徴ベクトル検索
+    "nms" => "似たものサーチ", "nmr" => "似た商品",
+    "cnw" => "カテゴリ別新着",
+
+    # 問合せ
     "cnt" => "問合せ・取引",
+
+    # Mailchimp
     "cmp" => "Mailchimp", "mailchimp" => "Mailchimp",
+
+    # 外部サイト
     "machinelife" => "マシンライフ", "dst" => "デッドストック", "ekikai" => "e-kikai",
+
+    # ブラウザ
+    "reload" => "リロード", "back" => "履歴",
   }
 
   def link_source

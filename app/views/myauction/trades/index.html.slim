@@ -30,11 +30,14 @@ javascript:
             = link_to image_tag(@product.thumb_url), "/products/#{@product.id}", alt: @product.name, target: "_blank"
           .col-md-7.col-sm-7
             dl.dl-horizontal.trade-dl.product
-              dt 落札金額(税抜)
-              dd = number_to_currency(@product.max_price)
+              / dt 落札金額(税抜)
+              / dd = number_to_currency(@product.max_price)
+              dt 落札金額(税込)
+              dd = number_to_currency(@product.max_price_with_tax)
+
               / dt 消費税(#{Product::TAX_RATE}%)
-              dt 消費税(#{Product.tax_rate(@product.dulation_end)}%)
-              dd.text-right = number_to_currency(@product.max_price_tax)
+              / dt 消費税(#{Product.tax_rate(@product.dulation_end)}%)
+              / dd.text-right = number_to_currency(@product.max_price_tax)
 
               - if @shipping_label
                 dt 発送方法

@@ -18,12 +18,12 @@ h1.product-title
     h3
       span.glyphicon.glyphicon-thumbs-up
       span.btn-content 入札完了
-    .row
-      .col-md-offset-2.col-md-3.h4 入札金額
-      .col-md-5.text-right.h4 = number_to_currency(@bid.amount)
-    .row
-      .col-md-offset-2.col-md-3.h4 消費税
-      .col-md-5.text-right.h4 = number_to_currency(@bid.amount_tax)
+    / .row
+    /   .col-md-offset-2.col-md-3.h4 入札金額
+    /   .col-md-5.text-right.h4 = number_to_currency(@bid.amount)
+    / .row
+    /   .col-md-offset-2.col-md-3.h4 消費税
+    /   .col-md-5.text-right.h4 = number_to_currency(@bid.amount_tax)
     hr.detail-price-calc
     .row
       .col-md-offset-2.col-md-3.h3 税込価格

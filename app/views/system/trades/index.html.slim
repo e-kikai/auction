@@ -39,8 +39,8 @@
             td.num = th.product_id
             td
               . = th.product&.name
-              . = "#{number_to_currency(th.product&.start_price)} / #{number_with_delimiter(th.product&.bids_count)} / #{number_to_currency(th.product&.max_price)}"
-
+              / . = "#{number_to_currency(th.product&.start_price)} / #{number_with_delimiter(th.product&.bids_count)} / #{number_to_currency(th.product&.max_price)}"
+              . = "#{number_to_currency(th.product&.start_price_with_tax)} / #{number_with_delimiter(th.product&.bids_count)} / #{number_to_currency(th.product&.max_price_with_tax)}"
             td.sepa
               - if th.product&.trade_status(th.owner) == "落札"
                 span = "落札 : "

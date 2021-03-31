@@ -10,7 +10,7 @@ prawn_document do |pdf|
     # fee_tax      = fee_products.sum(&:fee_tax)
     # fee_with_tax = fee_products.sum(&:fee_with_tax)
     fee          = price * Product::FEE_RATE / 100
-    fee_tax      = Product.calc_tax(fee)
+    fee_tax      = Product.calc_tax(fee, @date)
     fee_with_tax = fee + fee_tax
 
     next if fee_products.blank?
@@ -90,7 +90,9 @@ prawn_document do |pdf|
     fee_products.map.with_index do |pr, i|
       [(i+1), pr.code, pr.name, number_with_delimiter(pr.start_price),
         I18n.l(pr.dulation_end, format: :date_time), number_with_delimiter(pr.max_price)]
-    end + [
+      # [(i+1), pr.code, pr.name, number_with_delimiter(pr.start_price_with_tax),
+      #     I18n.l(pr.dulation_end, format: :date_time), number_with_delimiter(pr.max_price_with_tax)]
+      end + [
       [ {content: "", colspan: 2}, {content: "落札金額合計", colspan: 2}, {content: number_to_currency(price), colspan: 2},],
       [ {content: "", colspan: 2}, {content: "システム使用料", colspan: 2}, {content: number_to_currency(fee), colspan: 2},],
       # [ {content: "", colspan: 2}, {content: "消費税 (#{Product::TAX_RATE}%)", colspan: 2}, {content: number_to_currency(fee_tax), colspan: 2},],

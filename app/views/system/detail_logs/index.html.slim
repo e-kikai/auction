@@ -39,7 +39,8 @@
           td
             . = link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank"
             . = lo.product.user.company_remove_kabu
-          td.price = number_to_currency(lo.product.max_price)
+          / td.price = number_to_currency(lo.product.max_price)
+          td.price = number_to_currency(lo.product.max_price_with_tax)
           td.num = lo.product.bids_count > 0 ? lo.product.bids_count : ""
         - else
           td × (削除された商品)

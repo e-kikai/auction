@@ -45,8 +45,10 @@
             td.img_mini = link_to image_tag(product.thumb_url), "/products/#{product.id}"
             td = link_to product.name, "/products/#{product.id}"
             td.num = number_with_delimiter(product.bids_count)
-            td.price = number_to_currency(product.start_price)
-            td.price = number_to_currency(product.max_price)
+            / td.price = number_to_currency(product.start_price)
+            / td.price = number_to_currency(product.max_price)
+            td.price = number_to_currency(product.start_price_with_tax)
+            td.price = number_to_currency(product.max_price_with_tax)
             td.sepa
               - if product.trade_success?(owner)
                 span = "落札 : "

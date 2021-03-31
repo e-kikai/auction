@@ -1,5 +1,5 @@
-- set_meta_tags title: "日別トータル、出品予定"
-- breadcrumb :myauction_something, "日別トータル、出品予定"
+- set_meta_tags title: "トータル、出品予定(日別)"
+- breadcrumb :myauction_something, "トータル、出品予定(日別)"
 
 = form_tag("/myauction/total/products", method: "get", class: "form-inline filtering-form") do
   = select_date @date, {prefix: :date, start_year: 2018, discard_day: true}, {class: "form-control"}

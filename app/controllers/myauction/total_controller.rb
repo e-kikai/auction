@@ -28,6 +28,7 @@ class Myauction::TotalController < Myauction::ApplicationController
     @success        = @products.where(cancel: nil).where.not(max_bid_id: nil).group(gro_end).where(@where_end)
     @success_counts = @success.count
     @success_prices = @success.sum(:max_price)
+    @success_prices = @success_prices.map { |key, val| [key,Product.calc_price_with_tax(val, @date)] }.to_h # 総額対応
 
     # 入札・ユーザ集計
     @bid_counts          = Bid.where(product_id: @products).where(@where_cr).group(gro).count

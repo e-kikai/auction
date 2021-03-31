@@ -100,6 +100,8 @@ class System::UsersController < System::ApplicationController
 
     # 落札金額、落札数、入札数
     @sum_max_price   = @products.joins(:max_bid).group("bids.user_id").order("sum_max_price DESC").sum(:max_price)
+    @sum_max_price   = @sum_max_price.map { |key, val| [key,Product.calc_price_with_tax(val, @date)] }.to_h # 総額対応
+
     @count_max_price = @products.joins(:max_bid).group("bids.user_id").count(:max_price)
     @bids_count      = Bid.where(created_at: rstart..rend).group(:user_id).order("count_all DESC").count
     @watches_count   = Watch.where(created_at: rstart..rend).group(:user_id).order("count_all DESC").count

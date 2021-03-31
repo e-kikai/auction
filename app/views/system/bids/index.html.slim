@@ -31,11 +31,14 @@
         td.id = bi.user.try(:id)
         td = bi.user.try(:account)
         td = "#{bi.user.try(:company)} #{bi.user.try(:name)}".strip
-        td.price.sepa = number_to_currency(bi.amount)
+        / td.price.sepa = number_to_currency(bi.amount)
+        td.price.sepa = number_to_currency(bi.amount_with_tax)
         - if bi.product.present?
           td.id = bi.product_id
           td = link_to bi.product.name, "/products/#{bi.product_id}", target: "_blank"
-          td.price = number_to_currency(bi.product.max_price)
+          / td.price = number_to_currency(bi.product.max_price)
+          td.price = number_to_currency(bi.product.max_price_with_tax)
+
           td.price = link_to(number_with_delimiter(bi.product.bids_count), "/products/#{bi.product_id}/bids", target: "_blank")
           td = I18n.l(bi.product.dulation_end, format: "%m/%d (%a) %H:%M")
         - else

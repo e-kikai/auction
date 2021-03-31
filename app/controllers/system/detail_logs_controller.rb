@@ -206,8 +206,11 @@ class System::DetailLogsController < System::ApplicationController
         product_id:   lo[:product_id].presence || "",
         product_name: (lo[:product_id].present? && lo.product) ? lo.product.name : "",
 
-        max_price:    (lo[:product_id].present? && lo.product) ? lo.product.max_price : "",
-        amount:       lo[:amount].presence || "",
+        # max_price:    (lo[:product_id].present? && lo.product) ? lo.product.max_price : "",
+        max_price:    (lo[:product_id].present? && lo.product) ? lo.product.max_price_with_tax : "", # 総額対応
+
+        # amount:       lo[:amount].presence || "",
+        amount:       lo[:amount].present? ? Product.calc_price_with_tax(lo[:amount]) : "",
         bids_count:    (lo[:product_id].present? && lo.product) ? lo.product.bids_count : "",
 
         page:         lo[:page].presence || "",
