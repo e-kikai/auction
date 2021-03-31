@@ -285,12 +285,12 @@
 
         / - else
     .col-md-9.col-sm-9.col-xs-12
-      .alert.alert-info
-        h4
-          span.glyphicon.glyphicon-info-sign
-          span.btn-content システムメンテナンスのお知らせ
-        p 消費税の総額表示対応のため、2021/4/1 0:00 〜 4:00 まで、システムメンテナンスを行います。
-        p = link_to "→ くわしくはこちら", "/helps/tax_included_2021"
+      / .alert.alert-info
+      /   h4
+      /     span.glyphicon.glyphicon-info-sign
+      /     span.btn-content システムメンテナンスのお知らせ
+      /   p 消費税の総額表示対応のため、2021/4/1 0:00 〜 4:00 まで、システムメンテナンスを行います。
+      /   p = link_to "→ くわしくはこちら", "/helps/tax_included_2021"
       - @roots.each do |ca|
         - ca.children.order(:order_no).each do |ca2|
           - ca_products = Product.search(category_id_in: ca2.subtree_ids).result.status(Product::STATUS[:start]).order(dulation_start: :desc).limit(10)
