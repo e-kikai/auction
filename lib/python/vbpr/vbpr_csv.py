@@ -20,7 +20,7 @@ from vbpr import VBPR
 from utils import *
 from data import *
 
-import requests
+# import requests
 import json
 import csv
 import boto3
