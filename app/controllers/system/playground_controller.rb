@@ -219,10 +219,6 @@ class System::PlaygroundController < ApplicationController
     @watches     = Watch.distinct.where(product_id: img_ids).where(product_id: products).pluck(:user_id, :product_id)
     @bids        = Bid.distinct.where(product_id: img_ids).where(product_id: products).pluck(:user_id, :product_id)
     @detail_logs = DetailLog.distinct.where.not(user_id: nil).where(product_id: img_ids).where(product_id: products).pluck(:user_id, :product_id)
-    # @watches     = Watch.distinct.where(user_id: 2..100).where(product_id: img_ids).pluck(:user_id, :product_id)
-    # @bids        = Bid.distinct.where(user_id: 2..100).where(product_id: img_ids).pluck(:user_id, :product_id)
-    # @detail_logs = DetailLog.distinct.where(user_id: 2..100).where(product_id: img_ids).pluck(:user_id, :product_id)
-
 
     ### 現在出品中の商品(画像あり)を取得 ###
     @now_products = Product.status(Product::STATUS[:start]).where(id: img_ids).pluck(:id)
@@ -370,7 +366,21 @@ class System::PlaygroundController < ApplicationController
     # 3. 画像ベクトル取得、list結合
     # 4. 学習処理(VBPR)
     # 5. 結果を出力(JSON?)
+  end
 
+  def vbpr_test_02
+    DetailLog.vbpr_calc
+    # @vbpr_res = DetailLog.vbpr_data()
+
+    respond_to do |format|
+      format.json { render plain: "OK" }
+    end
+
+  end
+
+  ### VBPR表示テスト ###
+  def vbpr_view
+    @vbpr_res = DetailLog.vbpr_data()
   end
 
   private
