@@ -60,6 +60,7 @@ class DetailLog < ApplicationRecord
     "reload" => "リロード", "back" => "履歴",
   }
 
+  VBPR_BIAS     = {detail: 1, watch: 4, bid: 10}
   VBPR_CSV_FILE = "#{Rails.root}/tmp/vbpr/result.csv"
   VBPR_NPZ_FILE = "#{Rails.root}/tmp/vbpr/vectors.npz"
   VBPR_TEMP     = "#{Rails.root}/tmp/vbpr/temp.npy"

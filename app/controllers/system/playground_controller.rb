@@ -224,108 +224,18 @@ class System::PlaygroundController < ApplicationController
     @now_products = Product.status(Product::STATUS[:start]).where(id: img_ids).pluck(:id)
 
     ### バイアスを集計 ###
-    bias_detail = 1
-    bias_watch  = 4
-    bias_dib    = 10
-
-    @biases = @detail_logs.map { |lo| [[lo[0], lo[1]] , bias_detail] }.to_h
-    @watches.each { |wa| @biases[[wa[0], wa[1]]] = (@biases[[wa[0], wa[1]]] || 0) + bias_watch }
-    @bids.each    { |bi| @biases[[bi[0], bi[1]]] = (@biases[[bi[0], bi[1]]] || 0) + bias_dib }
-
-    # ### ベクトルデータの有無チェック ###
-    # vectors = Rails.cache.read("vectors") || {} # キャッシュ読み込み
-    # bucket  = s3_bucket # S3バケット取得(playground用)
-
-    # product_temp = (@biases.map { |key, val| key[1] } + @now_products).uniq # チェック用商品ID一覧
-
-    # ignore = product_temp.map do |pid|
-    #   if vectors[pid].present? || bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
-    #     nil # ベクトルファイルが存在している場合、スキップ
-    #   else
-    #     # ベクトルが存在しない場合、ベクトル生成処理
-    #     Product.find_by(id: pid)&.process_vector
-
-    #     if bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
-    #       logger.debug "new_vector_file : #{pid}"
-    #       nil
-    #     else # ない場合
-    #       logger.debug "ignore : #{pid}"
-    #       pid
-    #     end
-    #   end
-    # end.compact
-
-    # logger.debug ignore
-
-    # share_vecotrs = (product + @now_products).uniq.map do |pid|
-    #   if vectors[pid].present?
-    #     logger.debug "cached : #{pid}"
-    #     # [pid, vectors[pid]]
-    #     vectors[pid]
-
-    #   elsif bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
-    #     logger.debug "vector_file : #{pid}"
-    #     str = bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").get.body.read
-
-    #     # [pid, Npy.load_string(str)]
-    #     Npy.load_string(str)
-    #   else
-    #     Product.find(pid).process_vector
-    #     if bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").exists?
-    #       logger.debug "new_vector_file : #{pid}"
-    #       str = bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").get.body.read
-    #       # [pid, Npy.load_string(str)]
-    #       Npy.load_string(str)
-    #     else
-    #       # logger.debug "ZERO_NARRAY : #{pid}"
-    #       # [pid, Product::ZERO_NARRAY.format_to_a]
-    #       nil
-    #     end
-    #   end
-    # end.compact
-
-
-
-    # br = Benchmark.realtime do
-    #   # pid = 159
-    #   # str = bucket.object("#{Product::S3_VECTORS_PATH}/vector_#{pid}.npy").get.body.read
-    #   # sample = Npy.load_string(str)
-
-    #   ruby_labels = [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
-    #   sample = Numo::Int32.cast(ruby_labels)
-
-    #   logger.debug "++++++ sample +++++++;"
-    #   logger.debug sample.format_to_a
-
-
-    #   pca = Rumale::Decomposition::PCA.new(n_components: 64, solver: 'evd', random_seed: 1)
-    #   logger.debug "++++++ pca +++++++;"
-    #   pca_result = pca.fit_transform([sample, sample])
-    #   logger.debug pca_result.format_to_a
-
-    # end
-    # logger.debug "benchmark :: #{br.round(3)} sec"
-
-    # ### ベクトルキャシュ更新 ###
-    # Rails.cache.write("vectors", vectors) if update_flag == true
+    @biases = @detail_logs.map { |lo| [[lo[0], lo[1]] , DetailLog::VBPR_BIAS[:detail]] }.to_h
+    @watches.each { |wa| @biases[[wa[0], wa[1]]] = (@biases[[wa[0], wa[1]]] || 0) + DetailLog::VBPR_BIAS[:watch] }
+    @bids.each    { |bi| @biases[[bi[0], bi[1]]] = (@biases[[bi[0], bi[1]]] || 0) + DetailLog::VBPR_BIAS[:bid] }
 
     ### スパース行列に変換 ###
-    user    = []
-    product = []
-    bias    = []
+    user, product, bias = [], [], []
 
     @biases.each do |key, val|
-      ### ベクトルがないものを拒否 ###
-      # if key[1].in? ignore
-      #   logger.debug "ignore : #{key[0]} : #{key[1]} : #{val}"
-      #   next
-      # end
-
       user    << key[0].to_i
       product << key[1].to_i
       bias    << val || 1
     end
-
 
     user_idx = user.uniq.map.with_index { |v, i| [v, i] }.to_h # ユーザインデックスhash
     user_key = user.map { |v| user_idx[v] } # ユーザインデックスに変換
@@ -340,8 +250,6 @@ class System::PlaygroundController < ApplicationController
     plus_products_idx = (@now_products - product.uniq).map.with_index { |v, i| [v, (i + product.uniq.length)] }.to_h
     product_idx.merge! plus_products_idx
 
-
-
     res = {
       user_idx:    user_idx,
       user_key:    user_key,
@@ -349,23 +257,22 @@ class System::PlaygroundController < ApplicationController
       product_key: product_key,
       bias:        bias,
 
-      now_product_idx: now_product_idx,
-
+      now_product_idx:   now_product_idx,
       plus_products_idx: plus_products_idx,
 
-      # share_vecotrs_res: share_vecotrs_res,
+      # 設定類
+      config: {
+        # bucket_name: Rails.application.secrets.aws_s3_bucket,
+        bucket_name: @bucket_name,
+        csv_file:    DetailLog::VBPR_CSV_FILE,
+        npz_file:    DetailLog::VBPR_NPZ_FILE,
+        tempfile:    DetailLog::VBPR_TEMP
+      }
     }.to_json
 
     respond_to do |format|
       format.json { render plain: res }
     end
-
-    ### ここからPythonに処理を渡す ###
-    # 1. データ受け取り
-    # 2. coo_matrix
-    # 3. 画像ベクトル取得、list結合
-    # 4. 学習処理(VBPR)
-    # 5. 結果を出力(JSON?)
   end
 
   def vbpr_test_02

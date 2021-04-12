@@ -20,7 +20,7 @@ from vbpr import VBPR
 from utils import *
 from data import *
 
-# import requests
+import requests
 import json
 import csv
 import boto3
@@ -38,18 +38,23 @@ parser.add_argument('--bpr', action='store_true', help="performing bpr")
 # 出力数
 parser.add_argument("--limit", type=int, default=100, help="result number limit")
 
+parser.add_argument("--url", default="https://www.mnok.net", help="root url of site.")
+
+
 args   = parser.parse_args()
 epochs = args.epochs
 limit  = args.limit
 
+json_url = '%s/system/playground/vbpr_test.json' % args.url
+print(json_url)
 ### 1. JSONデータ読み込み ###
-# data = requests.get(json_url, headers={"content-type": "application/json"}).json()
-data = json.loads(input())
+data = requests.get(json_url, headers={"content-type": "application/json"}).json()
+# data = json.loads(input())
 
-bucket_name = data["bucket_name"]
-csv_file    = data["csv_file"]
-npz_file    = data["npz_file"]
-tempfile    = data["tempfile"]
+bucket_name = data["config"]["bucket_name"]
+csv_file    = data["config"]["csv_file"]
+npz_file    = data["config"]["npz_file"]
+tempfile    = data["config"]["tempfile"]
 
 ### 2. スパース行列に変換 ###
 print("### スパース行列に変換 ###")

@@ -10,8 +10,8 @@ set :environment, rails_env
 ### wget URL ###
 url = case rails_env.to_sym
 when :production; "https://www.mnok.net"
-when :staging;    "52.198.119.255"
-else;             "http://127.0.0.1:8087"
+when :staging;    "http://54.248.15.132"
+else;             "http://192.168.33.110:8087"
 end
 
 scheduling_url = url + "/system/scheduling"
