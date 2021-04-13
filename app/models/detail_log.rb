@@ -127,7 +127,7 @@ class DetailLog < ApplicationRecord
   def self.vbpr_get(user_id, limit=VBPR_VIEWLIMIT)
     ### CSVからレコメンド情報を取得 ###
     product_ids = CSV.foreach(VBPR_CSV_FILE, headers: true).with_object([]) do |row, ids|
-      ids << row['product_id'] if row['user_id'].to_i == user_id
+      ids << row['product_id'] if row['user_id'].to_i == user_id.to_i
     end
 
     sorts = product_ids.map.with_index { |v, i| [v, i] }.to_h
