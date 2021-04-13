@@ -189,7 +189,6 @@ Rails.application.routes.draw do
           get 'bpr_now_products'
 
           get 'vbpr_test'
-          get 'vbpr_test_02'
           get 'vbpr_view'
         end
       end

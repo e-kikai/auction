@@ -1,0 +1,30 @@
+- set_meta_tags title: "VBPRレコメンドテスト"
+/ - breadcrumb :system_something, "出品商品履歴"
+
+= form_tag("/system/playground/vbpr_view", method: "get", class: "form-inline filtering-form") do
+  = select_tag :user_id, options_for_select(@user_selector, selected: params[:user_id]), {include_blank: "-- ユーザ --", class: "form-control"}
+
+  = button_tag class: "btn btn-info" do
+    span.glyphicon.glyphicon-search
+    span.btn-content 選択
+
+  = link_to "/system/playground/vbpr_view", class: "btn btn-danger pull-right" do
+    span.glyphicon.glyphicon-remove
+    span.btn-content リセット
+
+  - if @pproducts.present?
+    . = paginate @pproducts
+  .row
+    - if params[:user_id].blank?
+      .alert.alert-success
+        span.glyphicon.glyphicon-info-sign
+        span.btn-content ユーザを選択してください
+    - else
+      h3 レコメンド
+      - @vbpr_products.each do |pr|
+         = render "products/product_panel_02", product: pr, r: :top_cnw
+
+      hr
+      h3 履歴
+      - @detaillog_products.each do |pr|
+         = render "products/product_panel_02", product: pr, r: :top_cnw

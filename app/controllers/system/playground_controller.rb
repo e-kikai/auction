@@ -216,9 +216,9 @@ class System::PlaygroundController < ApplicationController
     ### ログのあるを取得 ###
     img_ids      = ProductImage.distinct.select(:product_id)
     products     = Product.all # 削除されたものを除外
-    @watches     = Watch.distinct.where(product_id: img_ids).where(product_id: products).pluck(:user_id, :product_id)
-    @bids        = Bid.distinct.where(product_id: img_ids).where(product_id: products).pluck(:user_id, :product_id)
-    @detail_logs = DetailLog.distinct.where.not(user_id: nil).where(product_id: img_ids).where(product_id: products).pluck(:user_id, :product_id)
+    @watches     = Watch.distinct.where(product_id: img_ids).where(product_id: products, created_at: DetailLog::VBPR_RANGE).pluck(:user_id, :product_id)
+    @bids        = Bid.distinct.where(product_id: img_ids).where(product_id: products, created_at: DetailLog::VBPR_RANGE).pluck(:user_id, :product_id)
+    @detail_logs = DetailLog.distinct.where.not(user_id: nil).where(product_id: img_ids, created_at: DetailLog::VBPR_RANGE).where(product_id: products).pluck(:user_id, :product_id)
 
     ### 現在出品中の商品(画像あり)を取得 ###
     @now_products = Product.status(Product::STATUS[:start]).where(id: img_ids).pluck(:id)
@@ -266,7 +266,9 @@ class System::PlaygroundController < ApplicationController
         bucket_name: @bucket_name,
         csv_file:    DetailLog::VBPR_CSV_FILE,
         npz_file:    DetailLog::VBPR_NPZ_FILE,
-        tempfile:    DetailLog::VBPR_TEMP
+        tempfile:    DetailLog::VBPR_TEMP,
+        limit:       DetailLog::VBPR_LIMIT,
+        epochs:      DetailLog::VBPR_EPOCHS,
       }
     }.to_json
 
@@ -275,19 +277,19 @@ class System::PlaygroundController < ApplicationController
     end
   end
 
-  def vbpr_test_02
-    DetailLog.vbpr_calc
-    # @vbpr_res = DetailLog.vbpr_data()
-
-    respond_to do |format|
-      format.json { render plain: "OK" }
-    end
-
-  end
-
   ### VBPR表示テスト ###
   def vbpr_view
-    @vbpr_res = DetailLog.vbpr_data()
+    detail_logs    = DetailLog.where(created_at: DetailLog::VBPR_RANGE)
+    @detail_count  = detail_logs.group(:user_id).order("count_all DESC").count
+    @user_selector = User.where(id: detail_logs.select(:user_id)).order(:id)
+      .map { |us| ["#{us.id} : #{us.company} #{us.name} (#{@detail_count[us.id]})", us.id] }
+
+    if params[:user_id]
+      @vbpr_products = DetailLog.vbpr_get(params[:user_id])
+
+      detaillog_ids = DetailLog.where(user_id: params[:user_id]).select(:product_id).order(id: :desc).limit(30)
+      @detaillog_products = Product.includes(:product_images).where(id: detaillog_ids)
+    end
   end
 
   private

@@ -30,31 +30,34 @@ import boto3
 parser = argparse.ArgumentParser()
 
 # VBPRの反復訓練回数 Training AUCのスコアが収束する（変化しなくなる）回数を実験的に決める
-parser.add_argument("--epochs", type=int, default=10, help="training epoches")
+# parser.add_argument("--epochs", type=int, default=10, help="training epoches")
 
 # BPR(画像特徴ベクトルなし)を実行
 parser.add_argument('--bpr', action='store_true', help="performing bpr")
 
-# 出力数
-parser.add_argument("--limit", type=int, default=100, help="result number limit")
-
+### basse URL ###
 parser.add_argument("--url", default="https://www.mnok.net", help="root url of site.")
 
-
 args   = parser.parse_args()
-epochs = args.epochs
-limit  = args.limit
+# epochs = args.epochs
 
-json_url = '%s/system/playground/vbpr_test.json' % args.url
-print(json_url)
 ### 1. JSONデータ読み込み ###
-data = requests.get(json_url, headers={"content-type": "application/json"}).json()
+json_url = '%s/system/playground/vbpr_test.json' % args.url
+data     = requests.get(json_url, headers={"content-type": "application/json"}).json()
 # data = json.loads(input())
 
 bucket_name = data["config"]["bucket_name"]
 csv_file    = data["config"]["csv_file"]
 npz_file    = data["config"]["npz_file"]
 tempfile    = data["config"]["tempfile"]
+# epochs      = data["config"]["epochs"]
+# limit       = data["config"]["limit"]
+epochs      = 50
+limit       = 100
+
+csv_file    = "/var/www/auction/tmp/vbpr/result.csv"
+npz_file    = "/var/www/auction/tmp/vbpr/vectors.npz"
+tempfile    = "/var/www/auction/tmp/vbpr/temp.npy"
 
 ### 2. スパース行列に変換 ###
 print("### スパース行列に変換 ###")
@@ -81,7 +84,7 @@ else:
 
     # S3バケット初期化
     s3     = boto3.resource('s3', region_name='ap-northeast-1')
-    bucket = s3.Bucket(bucket_name)
+    bucket = s3.Bucket('mnok')
 
     # ベクトルのダウンロード
     vectors = []
@@ -95,14 +98,13 @@ else:
             else:
                 vecotor_file = 'vectors/vector_%s.npy' % product_id
                 print('file load : %s' % vecotor_file)
-                print(tempfile)
                 bucket.download_file(vecotor_file, tempfile)
-                print('load')
+                # print('load')
                 npy = np.load(tempfile)
-                print('append')
+                # print('append')
 
                 vectors.append(npy)
-                print('cache')
+                # print('cache')
                 npz[product_id] = npy # キャッシュ格納
         except:
             # ベクトルのダウンロードに失敗したときは、とりあえず0埋めのベクトルに
@@ -118,7 +120,7 @@ else:
     visual_features = pca_embedding(vectors, n_com=256)
     # visual_features = np.array(vectors)
 
-    vbpr.fit(data_coo, item_content_features=visual_features, epochs=args.epochs, lr=.005)
+    vbpr.fit(data_coo, item_content_features=visual_features, epochs=epochs, lr=.005)
 
     # end = time.perf_counter()
     # print(f"実行時間: {end - start} sec")
@@ -129,7 +131,7 @@ result.append(["user_id", "product_id", "score", "rank"])
 
 for us_idx, user_id in enumerate(data["user_idx"]):
     tmp_result = []
-    for pr_idx, product_id in enumerate(data[result_by]): # 現在出品中の商品のみ出力
+    for pr_idx, product_id in enumerate(data["now_product_idx"]): # 現在出品中の商品のみ出力
         score = vbpr.predict(pr_idx, us_idx)
         tmp_result.append([user_id, product_id, score])
 
