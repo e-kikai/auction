@@ -285,9 +285,9 @@ class System::PlaygroundController < ApplicationController
       .map { |us| ["#{us.id} : #{us.company} #{us.name} (#{@detail_count[us.id]})", us.id] }
 
     if params[:user_id]
-      @vbpr_products = DetailLog.vbpr_get(params[:user_id])
+      @vbpr_products = DetailLog.vbpr_get(params[:user_id], 20)
 
-      detaillog_ids = DetailLog.where(user_id: params[:user_id]).select(:product_id).order(id: :desc).limit(30)
+      detaillog_ids = DetailLog.where(user_id: params[:user_id]).select(:product_id).order(id: :desc).limit(20)
       @detaillog_products = Product.includes(:product_images).where(id: detaillog_ids)
     end
   end

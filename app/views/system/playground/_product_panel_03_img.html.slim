@@ -1,10 +1,9 @@
-.thumbnail.product-pannel_02 style="height: 240px;"
+.thumbnail.product-pannel_02
   / = link_to "/products/#{product.id}?r=#{r}", target: "_blank", title: product.name, class: "product_link" do
-  = link_to "#{@link_base}/products/#{product.id}?r=#{r}", target: "_blank", title: product.name, class: "product_link" do
+  = link_to "javascript:void(0);", title: product.name, class: "product_link" do
     .thumb_img
-      / = image_tag(product.thumb_url, alt: product.name)
       - if product.product_images.first.present?
-        = image_tag("#{@img_base}/#{product.product_images.first.id}/thumb_#{product.product_images.first.image_identifier}", alt: product.name)
+        = image_tag("#{@img_base}/#{product.product_images.first.id}/thumb_#{product.product_images&.first&.image_identifier}", alt: product.name)
       - else
         = image_tag(ProductImage::NOIMAGE_THUMB, alt: product.name)
 
@@ -45,15 +44,6 @@
           - unless product.prompt_dicision?
             = product.remaining_time
 
-  / - unless product.finished?
-  /   = link_to "/myauction/watches?id=#{product.id}", method: :post, class: "btn btn-default btn-watch" do
-  /     span.glyphicon.glyphicon-star.watch-star
-  /     span.btn-content ウォッチ
-
-  - if product.product_images.present?
-    = button_tag name: :product_id, value: product.id, class: "btn btn-warning btn-xs btn-sort-img" do
-      span.glyphicon.glyphicon-sort
-      span.btn-content 似たものサーチ
-
-  - if params[:product_id] && @sorts[product.id].present? && @sorts[product.id] > 0
-    .dist-label = @sorts[product.id]
+  / .watch_area
+  /   = render "products/nitamono_02", product: product
+  /   = render "products/watch_02", product: product, active: true

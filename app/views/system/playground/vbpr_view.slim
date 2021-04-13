@@ -22,9 +22,9 @@
     - else
       h3 レコメンド
       - @vbpr_products.each do |pr|
-         = render "products/product_panel_02", product: pr, r: :top_cnw
+         = render "product_panel_03_img", product: pr, r: :top_cnw
 
       hr
       h3 履歴
       - @detaillog_products.each do |pr|
-         = render "products/product_panel_02", product: pr, r: :top_cnw
+         = render "product_panel_03_img", product: pr, r: :top_cnw
