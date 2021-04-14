@@ -298,7 +298,7 @@ class System::PlaygroundController < ApplicationController
       @watch_products = Product.includes(:product_images).where(id: watch_pids)
 
       bid_pids        = Bid.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
-      @bod_products   = Product.includes(:product_images).where(id: bid_pids)
+      @bid_products   = Product.includes(:product_images).where(id: bid_pids)
     end
   end
 
