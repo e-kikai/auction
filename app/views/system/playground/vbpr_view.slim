@@ -2,7 +2,7 @@
 / - breadcrumb :system_something, "出品商品履歴"
 
 = form_tag("/system/playground/vbpr_view", method: "get", class: "form-inline filtering-form") do
-  = select_tag :user_id, options_for_select(@user_selector, selected: params[:user_id]), {include_blank: "-- ユーザ --", class: "form-control"}
+  = select_tag :user_id, options_for_select(@user_selector, selected: params[:user_id]), {include_blank: "-- ID : ユーザ (入札数 / ウォッチ数 / 閲覧数)--", class: "form-control"}
 
   = button_tag class: "btn btn-info" do
     span.glyphicon.glyphicon-search
@@ -12,19 +12,44 @@
     span.glyphicon.glyphicon-remove
     span.btn-content リセット
 
-  - if @pproducts.present?
-    . = paginate @pproducts
-  .row
-    - if params[:user_id].blank?
-      .alert.alert-success
-        span.glyphicon.glyphicon-info-sign
-        span.btn-content ユーザを選択してください
+/ - if @pproducts.present?
+/   . = paginate @pproducts
+.row style="margin: 8px;"
+  - if params[:user_id].blank?
+    .alert.alert-success
+      span.glyphicon.glyphicon-info-sign
+      span.btn-content ユーザを選択してください
+  - else
+    h4 レコメンド
+    - if @vbpr_products.blank?
+      . レコメンドなし
     - else
-      h3 レコメンド
       - @vbpr_products.each do |pr|
-         = render "product_panel_03_img", product: pr, r: :top_cnw
+        = render "product_panel_03_img", product: pr, r: :top_vbpr
 
-      hr
-      h3 履歴
+    hr
+
+    h4 入札
+    - if @bid_products.blank?
+      . 入札なし
+    - else
+      - @bid_products.each do |pr|
+        = render "product_panel_03_img", product: pr, r: :top_bid
+
+    hr
+
+    h4 ウォッチ
+    - if @watch_products.blank?
+      . ウォッチなし
+    - else
+      - @watch_products.each do |pr|
+        = render "product_panel_03_img", product: pr, r: :top_wtc
+
+    hr
+
+    h4 履歴
+    - if @detaillog_products.blank?
+      . 履歴なし
+    - else
       - @detaillog_products.each do |pr|
-         = render "product_panel_03_img", product: pr, r: :top_cnw
+        = render "product_panel_03_img", product: pr, r: :top_log

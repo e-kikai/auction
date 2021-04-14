@@ -279,16 +279,26 @@ class System::PlaygroundController < ApplicationController
 
   ### VBPR表示テスト ###
   def vbpr_view
-    detail_logs    = DetailLog.where(created_at: DetailLog::VBPR_RANGE)
-    @detail_count  = detail_logs.group(:user_id).order("count_all DESC").count
+    detail_logs   = DetailLog.where(created_at: DetailLog::VBPR_RANGE)
+    @detail_count = detail_logs.group(:user_id).order("count_all DESC").count
+    @watch_cont   = Watch.where(created_at: DetailLog::VBPR_RANGE).group(:user_id).count
+    @bid_count    = Bid.where(created_at: DetailLog::VBPR_RANGE).group(:user_id).count
+
     @user_selector = User.where(id: detail_logs.select(:user_id)).order(:id)
-      .map { |us| ["#{us.id} : #{us.company} #{us.name} (#{@detail_count[us.id]})", us.id] }
+      .map { |us| ["#{us.id} : #{us.company} #{us.name} (#{@bid_count[us.id].to_i} / #{@watch_cont[us.id].to_i} / #{@detail_count[us.id].to_i})", us.id] }
 
     if params[:user_id]
+      limit = 20
       @vbpr_products = DetailLog.vbpr_get(params[:user_id], 20)
 
-      detaillog_ids = DetailLog.where(user_id: params[:user_id]).select(:product_id).order(id: :desc).limit(20)
-      @detaillog_products = Product.includes(:product_images).where(id: detaillog_ids)
+      detaillog_pids = DetailLog.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
+      @detaillog_products = Product.includes(:product_images).where(id: detaillog_pids)
+
+      watch_pids      = Watch.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
+      @watch_products = Product.includes(:product_images).where(id: watch_pids)
+
+      bid_pids        = Bid.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
+      @bod_products   = Product.includes(:product_images).where(id: bid_pids)
     end
   end
 
