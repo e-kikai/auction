@@ -49,14 +49,11 @@ data     = requests.get(json_url, headers={"content-type": "application/json"}).
 bucket_name = data["config"]["bucket_name"]
 npz_file    = data["config"]["npz_file"]
 tempfile    = data["config"]["tempfile"]
-# epochs      = data["config"]["epochs"]
-# limit       = data["config"]["limit"]
-epochs      = 50
-limit       = 100
+epochs      = data["config"]["epochs"]
+limit       = data["config"]["limit"]
 
-csv_file    = "/var/www/auction/tmp/vbpr/result.csv"
-npz_file    = "/var/www/auction/tmp/vbpr/vectors.npz"
-tempfile    = "/var/www/auction/tmp/vbpr/temp.npy"
+# npz_file    = "/var/www/auction/tmp/vbpr/vectors.npz"
+# tempfile    = "/var/www/auction/tmp/vbpr/temp.npy"
 
 ### 2. スパース行列に変換 ###
 print("### スパース行列に変換 ###")
@@ -68,12 +65,14 @@ data_coo = coo_matrix(( data["bias"], (data["user_key"], data["product_key"])) )
 # (V)BPRインスタンスの作成
 vbpr = VBPR()
 if args.bpr:
-    csv_file    = data["config"]["bpr_csv_file"]
+    csv_file = data["config"]["bpr_csv_file"]
+    # csv_file = "/var/www/auction/tmp/vbpr/bpr_result.csv"
 
     ### BPR ###
     vbpr.fit(data_coo, epochs=epochs, lr=.1, verbose=0)
 else:
-    csv_file    = data["config"]["vbpr_csv_file"]
+    csv_file = data["config"]["vbpr_csv_file"]
+    # csv_file = "/var/www/auction/tmp/vbpr/vbpr_result.csv"
 
     ### VBPR ###
     ### 4. 画像ベクトル取得、list結合 ###
