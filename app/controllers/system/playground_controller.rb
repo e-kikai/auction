@@ -264,11 +264,12 @@ class System::PlaygroundController < ApplicationController
       config: {
         # bucket_name: Rails.application.secrets.aws_s3_bucket,
         bucket_name: @bucket_name,
-        csv_file:    DetailLog::VBPR_CSV_FILE,
-        npz_file:    DetailLog::VBPR_NPZ_FILE,
-        tempfile:    DetailLog::VBPR_TEMP,
-        limit:       DetailLog::VBPR_LIMIT,
-        epochs:      DetailLog::VBPR_EPOCHS,
+        vbpr_csv_file: DetailLog::VBPR_CSV_FILE,
+        bpr_csv_file:  DetailLog::BPR_CSV_FILE,
+        npz_file:      DetailLog::VBPR_NPZ_FILE,
+        tempfile:      DetailLog::VBPR_TEMP,
+        limit:         DetailLog::VBPR_LIMIT,
+        epochs:        DetailLog::VBPR_EPOCHS,
       }
     }.to_json
 
@@ -279,6 +280,7 @@ class System::PlaygroundController < ApplicationController
 
   ### VBPR表示テスト ###
   def vbpr_view
+    ### ユーザセレクタ ###
     detail_logs   = DetailLog.where(created_at: DetailLog::VBPR_RANGE)
     @detail_count = detail_logs.group(:user_id).order("count_all DESC").count
     @watch_cont   = Watch.where(created_at: DetailLog::VBPR_RANGE).group(:user_id).count
@@ -289,8 +291,14 @@ class System::PlaygroundController < ApplicationController
 
     if params[:user_id]
       limit = 20
-      @vbpr_products = DetailLog.vbpr_get(params[:user_id], 20)
 
+      ### VBPR結果取得 ###
+      @vbpr_products = DetailLog.vbpr_get(params[:user_id], limit)
+
+      ### BPR結果取得 ###
+      @bpr_products  = DetailLog.bpr_get(params[:user_id], limit)
+
+      ### 履歴他 ###
       detaillog_pids = DetailLog.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
       @detaillog_products = Product.includes(:product_images).where(id: detaillog_pids)
 

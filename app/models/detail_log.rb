@@ -62,13 +62,14 @@ class DetailLog < ApplicationRecord
   }
 
   VBPR_BIAS      = {detail: 1, watch: 4, bid: 10}
-  VBPR_CSV_FILE  = "#{Rails.root}/tmp/vbpr/result.csv"
+  VBPR_CSV_FILE  = "#{Rails.root}/tmp/vbpr/vbpr_result.csv"
+  BPR_CSV_FILE   = "#{Rails.root}/tmp/vbpr/bpr_result.csv"
   VBPR_NPZ_FILE  = "#{Rails.root}/tmp/vbpr/vectors.npz"
   VBPR_TEMP      = "#{Rails.root}/tmp/vbpr/temp.npy"
   VBPR_RANGE     = (Date.today - 1.year)..Date.today
   VBPR_LIMIT     = 100
-  VBPR_EPOCHS    = 50
-  VBPR_VIEWLIMIT = 15
+  VBPR_EPOCHS    = 51
+  VBPR_VIEWLIMIT = 16
 
   def link_source
     DetailLog.link_source(r, referer)
@@ -127,6 +128,20 @@ class DetailLog < ApplicationRecord
   def self.vbpr_get(user_id, limit=VBPR_VIEWLIMIT)
     ### CSVからレコメンド情報を取得 ###
     product_ids = CSV.foreach(VBPR_CSV_FILE, headers: true).with_object([]) do |row, ids|
+      ids << row['product_id'] if row['user_id'].to_i == user_id.to_i
+    end
+
+    sorts = product_ids.map.with_index { |v, i| [v, i] }.to_h
+
+    ### データ取得とソートおよびlimit ###
+    Product.where(id: product_ids).sort_by { |pr| sorts[pr.id] }.take(limit)
+  rescue
+    []
+  end
+
+  def self.bpr_get(user_id, limit=VBPR_VIEWLIMIT)
+    ### CSVからレコメンド情報を取得 ###
+    product_ids = CSV.foreach(BPR_CSV_FILE, headers: true).with_object([]) do |row, ids|
       ids << row['product_id'] if row['user_id'].to_i == user_id.to_i
     end
 

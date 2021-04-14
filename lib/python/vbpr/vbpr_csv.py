@@ -47,7 +47,6 @@ data     = requests.get(json_url, headers={"content-type": "application/json"}).
 # data = json.loads(input())
 
 bucket_name = data["config"]["bucket_name"]
-csv_file    = data["config"]["csv_file"]
 npz_file    = data["config"]["npz_file"]
 tempfile    = data["config"]["tempfile"]
 # epochs      = data["config"]["epochs"]
@@ -69,9 +68,13 @@ data_coo = coo_matrix(( data["bias"], (data["user_key"], data["product_key"])) )
 # (V)BPRインスタンスの作成
 vbpr = VBPR()
 if args.bpr:
+    csv_file    = data["config"]["bpr_csv_file"]
+
     ### BPR ###
     vbpr.fit(data_coo, epochs=epochs, lr=.1, verbose=0)
 else:
+    csv_file    = data["config"]["vbpr_csv_file"]
+
     ### VBPR ###
     ### 4. 画像ベクトル取得、list結合 ###
     # キャッシュ取得
