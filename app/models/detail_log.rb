@@ -125,30 +125,17 @@ class DetailLog < ApplicationRecord
     end
   end
 
-  def self.vbpr_get(user_id, limit=VBPR_VIEWLIMIT)
+  def self.vbpr_get(user_id, limit=VBPR_VIEWLIMIT, bpr=false)
     ### CSVからレコメンド情報を取得 ###
-    product_ids = CSV.foreach(VBPR_CSV_FILE, headers: true).with_object([]) do |row, ids|
+    csv_file = bpr ? BPR_CSV_FILE : VBPR_CSV_FILE
+    product_ids = CSV.foreach(csv_file, headers: true).with_object([]) do |row, ids|
       ids << row['product_id'] if row['user_id'].to_i == user_id.to_i
     end
 
     sorts = product_ids.map.with_index { |v, i| [v, i] }.to_h
 
     ### データ取得とソートおよびlimit ###
-    Product.where(id: product_ids).sort_by { |pr| sorts[pr.id] }.take(limit)
-  rescue
-    []
-  end
-
-  def self.bpr_get(user_id, limit=VBPR_VIEWLIMIT)
-    ### CSVからレコメンド情報を取得 ###
-    product_ids = CSV.foreach(BPR_CSV_FILE, headers: true).with_object([]) do |row, ids|
-      ids << row['product_id'] if row['user_id'].to_i == user_id.to_i
-    end
-
-    sorts = product_ids.map.with_index { |v, i| [v, i] }.to_h
-
-    ### データ取得とソートおよびlimit ###
-    Product.where(id: product_ids).sort_by { |pr| sorts[pr.id] }.take(limit)
+    Product.includes(:product_images).where(id: product_ids).sort_by { |pr| sorts[pr.id] }.take(limit)
   rescue
     []
   end

@@ -290,23 +290,35 @@ class System::PlaygroundController < ApplicationController
       .map { |us| ["#{us.id} : #{us.company} #{us.name} (#{@bid_count[us.id].to_i} / #{@watch_cont[us.id].to_i} / #{@detail_count[us.id].to_i})", us.id] }
 
     if params[:user_id]
-      limit = 20
+      limit = 10
 
       ### VBPR結果取得 ###
       @vbpr_products = DetailLog.vbpr_get(params[:user_id], limit)
 
       ### BPR結果取得 ###
-      @bpr_products  = DetailLog.bpr_get(params[:user_id], limit)
+      @bpr_products  = DetailLog.vbpr_get(params[:user_id], limit, true)
 
       ### 履歴他 ###
+      products = Product.status(Product::STATUS[:start]).includes(:product_images).limit(limit)
+
       detaillog_pids = DetailLog.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
-      @detaillog_products = Product.includes(:product_images).where(id: detaillog_pids)
+      @detaillog_products = products.where(id: detaillog_pids)
 
       watch_pids      = Watch.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
-      @watch_products = Product.includes(:product_images).where(id: watch_pids)
+      @watch_products = products.where(id: watch_pids)
 
       bid_pids        = Bid.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
-      @bid_products   = Product.includes(:product_images).where(id: bid_pids)
+      @bid_products   = products.where(id: bid_pids)
+
+      @end_products   = products.reorder(:dulation_end) # まもなく終了
+
+      news = products.reorder(dulation_start: :desc)
+      @machine_news   = news.where(category_id: Category.find(1).subtree_ids) # 機械新着
+      @tool_news      = news.where(category_id: Category.find(107).subtree_ids) # 工具新着
+
+      @zero_products  = products.jouns(:detail_logs).group(:id).order("count(detail_logs.id), random()") # 閲覧少
+
+
     end
   end
 

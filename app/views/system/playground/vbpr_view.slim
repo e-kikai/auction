@@ -20,7 +20,7 @@
       span.glyphicon.glyphicon-info-sign
       span.btn-content ユーザを選択してください
   - else
-    h4 VBPRレコメンド
+    h4 あなたへのオススメ (VBPRレコメンド)
     - if @vbpr_products.blank?
       . VBPRレコメンドなし
     - else
@@ -29,7 +29,7 @@
 
     hr
 
-    h4 BPRレコメンド
+    h4 あなたへのオススメ (BPRレコメンド)
     - if @bpr_products.blank?
       . BPRレコメンドなし
     - else
@@ -37,6 +37,31 @@
         = render "product_panel_03_img", product: pr, r: :top_vbpr
 
     hr
+
+    h4 機械新着 (全ユーザ共通)
+    - @machine_news.each do |pr|
+      = render "product_panel_03_img", product: pr, r: :top_vbpr
+
+    hr
+
+    h4 工具新着 (全ユーザ共通)
+    - @tool_news.each do |pr|
+      = render "product_panel_03_img", product: pr, r: :top_vbpr
+
+    hr
+
+    h4 まもなく終了 (全ユーザ共通)
+    - @end_products.each do |pr|
+      = render "product_panel_03_img", product: pr, r: :top_vbpr
+
+    hr
+
+    h4 こんなものもあります (全ユーザ共通)
+    - @zero_products.each do |pr|
+      = render "product_panel_03_img", product: pr, r: :top_vbpr
+
+    hr
+
 
     h4 入札
     - if @bid_products.blank?
