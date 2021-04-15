@@ -62,6 +62,14 @@
 
     hr
 
+    h4 最近チェックした商品
+    - if @detaillog_products.blank?
+      . 履歴なし
+    - else
+      - @detaillog_products.each do |pr|
+        = render "product_panel_03_img", product: pr, r: :top_log
+    hr
+
     h4 入札してみませんか？
     - if @cart_products.blank?
       . 履歴なし
@@ -89,10 +97,3 @@
         = render "product_panel_03_img", product: pr, r: :top_wtc
 
     hr
-
-    h4 履歴
-    - if @detaillog_products.blank?
-      . 履歴なし
-    - else
-      - @detaillog_products.each do |pr|
-        = render "product_panel_03_img", product: pr, r: :top_log

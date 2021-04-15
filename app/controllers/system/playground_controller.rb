@@ -314,12 +314,16 @@ class System::PlaygroundController < ApplicationController
       products = products.status(Product::STATUS[:start])
 
       ### 入札してみませんか ###
-      cart_log_pids = DetailLog.where(user_id: params[:user_id]).select(:product_id).group(:product_id).order("count(product_id) DESC").limit(limit)
-
-      @cart_products  = products
+      cart_log_pids  = DetailLog.where(user_id: params[:user_id]).select(:product_id).group(:product_id).order("count(product_id) DESC").limit(limit)
+      watch_pids     = Watch.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
+      @cart_products = products
         .where(id: watch_pids)
         .or(products.where(id: cart_log_pids))
-        .where.not(id: bid_pids).reorder("random()") # 入札してみませんか
+        .where.not(id: bid_pids).reorder("random()")
+
+      ### 最近チェックした商品 ###
+      detaillog_pids = DetailLog.where(user_id: params[:user_id]).select(:product_id).order(id: :desc)
+      @detaillog_products = products.where(id: detaillog_pids)
 
     end
 
