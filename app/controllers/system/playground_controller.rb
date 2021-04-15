@@ -299,7 +299,7 @@ class System::PlaygroundController < ApplicationController
       @bpr_products  = DetailLog.vbpr_get(params[:user_id], limit, true)
 
       ### 履歴他 ###
-      products = Product.status(Product::STATUS[:start]).includes(:product_images).limit(limit)
+      products = Product.includes(:product_images).limit(limit)
 
       detaillog_pids = DetailLog.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
       @detaillog_products = products.where(id: detaillog_pids)
@@ -310,16 +310,29 @@ class System::PlaygroundController < ApplicationController
       bid_pids        = Bid.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
       @bid_products   = products.where(id: bid_pids)
 
-      @end_products   = products.reorder(:dulation_end) # まもなく終了
+      ### 現在出品中の商品からのみ取得 ###
+      products = products.status(Product::STATUS[:start])
 
-      news = products.reorder(dulation_start: :desc)
-      @machine_news   = news.where(category_id: Category.find(1).subtree_ids) rescue [] # 機械新着
-      @tool_news      = news.where(category_id: Category.find(107).subtree_ids) rescue [] # 工具新着
+      ### 入札してみませんか ###
+      cart_log_pids = DetailLog.where(user_id: params[:user_id]).select(:product_id).group(:product_id).order("count(product_id) DESC").limit(limit)
 
-      @zero_products  = products.joins(:detail_logs).group(:id).order("count(detail_logs.id), random()") # 閲覧少
-
+      @cart_products  = products
+        .where(id: watch_pids)
+        .or(products.where(id: cart_log_pids))
+        .where.not(id: bid_pids).reorder("random()") # 入札してみませんか
 
     end
+
+    ### ユーザ共通 : 現在出品中の商品からのみ取得 ###
+    products = products.status(Product::STATUS[:start])
+
+    @end_products   = products.reorder(:dulation_end) # まもなく終了
+
+    news            = products.reorder(dulation_start: :desc)
+    @tool_news      = news.where(category_id: Category.find(1).subtree_ids) rescue [] # 機械新着
+    @machine_news   = news.where(category_id: Category.find(107).subtree_ids) rescue [] # 工具新着
+
+    @zero_products  = products.joins(:detail_logs).group(:id).reorder("count(detail_logs.id), random()") # 閲覧少
   end
 
   private
