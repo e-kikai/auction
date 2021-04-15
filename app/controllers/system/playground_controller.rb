@@ -313,10 +313,10 @@ class System::PlaygroundController < ApplicationController
       @end_products   = products.reorder(:dulation_end) # まもなく終了
 
       news = products.reorder(dulation_start: :desc)
-      @machine_news   = news.where(category_id: Category.find(1).subtree_ids) # 機械新着
-      @tool_news      = news.where(category_id: Category.find(107).subtree_ids) # 工具新着
+      @machine_news   = news.where(category_id: Category.find(1).subtree_ids) rescue [] # 機械新着
+      @tool_news      = news.where(category_id: Category.find(107).subtree_ids) rescue [] # 工具新着
 
-      @zero_products  = products.jouns(:detail_logs).group(:id).order("count(detail_logs.id), random()") # 閲覧少
+      @zero_products  = products.joins(:detail_logs).group(:id).order("count(detail_logs.id), random()") # 閲覧少
 
 
     end
