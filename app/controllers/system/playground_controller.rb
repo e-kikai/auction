@@ -328,7 +328,7 @@ class System::PlaygroundController < ApplicationController
     end
 
     ### ユーザ共通 : 現在出品中の商品からのみ取得 ###
-    products = products.status(Product::STATUS[:start])
+    products = Product.includes(:product_images).status(Product::STATUS[:start]).limit(limit)
 
     @end_products   = products.reorder(:dulation_end) # まもなく終了
 
