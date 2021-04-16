@@ -339,6 +339,8 @@ class System::PlaygroundController < ApplicationController
       # @bids_key = products.where(id: bids_pids)
 
     else
+      products = Product.includes(:product_images).status(Product::STATUS[:start]).limit(limit)
+
       ### 最近チェックした商品 for IP ###
       detaillog_pids = DetailLog.group(:product_id).where(ip: ip)
       .order("max(created_at) DESC").limit(limit)
