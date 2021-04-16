@@ -295,8 +295,6 @@ class System::PlaygroundController < ApplicationController
     start_products = products.status(Product::STATUS[:start])
 
     if params[:user_id]
-
-
       ### VBPR結果取得 ###
       @vbpr_products = DetailLog.vbpr_get(params[:user_id], limit)
 
@@ -304,18 +302,14 @@ class System::PlaygroundController < ApplicationController
       @bpr_products  = DetailLog.vbpr_get(params[:user_id], limit, true)
 
       ### 履歴他 ###
-
-      detaillog_pids = DetailLog.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
-      @detaillog_products = products.where(id: detaillog_pids)
+      # detaillog_pids = DetailLog.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
+      # @detaillog_products = products.where(id: detaillog_pids)
 
       watch_pids      = Watch.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
       @watch_products = products.where(id: watch_pids)
 
       bid_pids        = Bid.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE).select(:product_id).order(id: :desc).limit(limit)
       @bid_products   = products.where(id: bid_pids)
-
-      ### 現在出品中の商品からのみ取得 ###
-      products = products.status(Product::STATUS[:start])
 
       ### 入札してみませんか ###
       cart_log_pids  = DetailLog.where(user_id: params[:user_id]).select(:product_id).group(:product_id).order("count(product_id) DESC").limit(limit)
@@ -326,12 +320,17 @@ class System::PlaygroundController < ApplicationController
         .where.not(id: bid_pids).reorder("random()")
 
       ### 最近チェックした商品 ###
-      detaillog_pids = DetailLog.group(:product_id).where(user_id: params[:user_id])
-        .order("max(created_at) DESC").limit(limit).pluck(:product_id)
+      # detaillog_pids = DetailLog.group(:product_id).where(user_id: params[:user_id])
+      #   .order("max(created_at) DESC").limit(limit)
+      #   .pluck(:product_id)
 
-      @detaillog_products = start_products.where(id: detaillog_pids).sort_by{ |pr| detaillog_pids.index(pr.id)}
-      @detaillog_pids =  detaillog_pids
-      @detaillog_names = start_products.where(id: detaillog_pids).pluck(:name)
+
+      # @detaillog_products = products.where(id: detaillog_pids).sort_by{ |pr| detaillog_pids.index(pr.id)}
+      # @detaillog_pids =  detaillog_pids
+      # @detaillog_names = products.where(id: detaillog_pids).pluck(:name)
+
+      @detaillog_products = products.joins(:detail_logs).group(:id).where(user_id: params[:user_id]).reorder("max(detail_logs.created_at)")
+
 
       # ### 入札履歴からのオススメ ###
       # bids_pids = Bid.where(user_id: params[:user_id]).select(:product_id).order(id: :desc).limit(limit)
@@ -344,7 +343,9 @@ class System::PlaygroundController < ApplicationController
       .pluck(:product_id)
 
       @ip = ip
-      @detaillog_products = start_products.where(id: detaillog_pids).sort_by{ |pr| detaillog_pids.index(pr.id)}
+      # @detaillog_products = products.where(id: detaillog_pids).sort_by{ |pr| detaillog_pids.index(pr.id)}
+
+      @detaillog_products = products.joins(:detail_logs).group(:id).where(ip: ip).reorder("max(detail_logs.created_at)")
     end
 
     ### ユーザ共通 : 現在出品中の商品からのみ取得 ###
