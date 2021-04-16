@@ -294,7 +294,7 @@ class System::PlaygroundController < ApplicationController
     products       = Product.includes(:product_images).limit(limit)
     start_products = products.status(Product::STATUS[:start])
 
-    if params[:user_id]
+    if params[:user_id].present?
       ### VBPR結果取得 ###
       @vbpr_products = DetailLog.vbpr_get(params[:user_id], limit)
 
@@ -329,8 +329,8 @@ class System::PlaygroundController < ApplicationController
       # @detaillog_pids =  detaillog_pids
       # @detaillog_names = products.where(id: detaillog_pids).pluck(:name)
 
-      @detaillog_products = products.joins(:detail_logs).group(:id).where(detail_logs: [user_id: params[:user_id]]).reorder("max(detail_logs.created_at)")
-
+      @detaillog_products = products.joins(:detail_logs).group(:id)
+        .where(detail_logs: {user_id: params[:user_id]}).reorder("max(detail_logs.created_at)")
 
       # ### 入札履歴からのオススメ ###
       # bids_pids = Bid.where(user_id: params[:user_id]).select(:product_id).order(id: :desc).limit(limit)
@@ -338,14 +338,15 @@ class System::PlaygroundController < ApplicationController
 
     else
       ### 最近チェックした商品 for IP ###
-      detaillog_pids = DetailLog.group(:product_id).where(ip: ip)
-      .order("max(created_at) DESC").limit(limit)
-      .pluck(:product_id)
+      # detaillog_pids = DetailLog.group(:product_id).where(ip: ip)
+      # .order("max(created_at) DESC").limit(limit)
+      # .pluck(:product_id)
 
       @ip = ip
       # @detaillog_products = products.where(id: detaillog_pids).sort_by{ |pr| detaillog_pids.index(pr.id)}
 
-      @detaillog_products = products.joins(:detail_logs).group(:id).where(detail_logs: [ip: ip]).reorder("max(detail_logs.created_at)")
+      @detaillog_products = products.joins(:detail_logs).group(:id)
+        .where(detail_logs: {ip: ip}).reorder("max(detail_logs.created_at)")
     end
 
     ### ユーザ共通 : 現在出品中の商品からのみ取得 ###
