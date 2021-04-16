@@ -322,17 +322,21 @@ class System::PlaygroundController < ApplicationController
         .where.not(id: bid_pids).reorder("random()")
 
       ### 最近チェックした商品 ###
-      detaillog_pids = DetailLog.where(user_id: params[:user_id]).select(:product_id).order(id: :desc)
-      @detaillog_products = products.where(id: detaillog_pids)
+      detaillog_pids = DetailLog.group(:product_id).where(user_id: params[:user_id])
+        .order("max(created_at) DESC").limit(limit).pluck(:product_id)
 
-      ### 入札履歴からのオススメ ###
-      bids_pids = Bid.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE)
-        .select(:product_id).order(id: :desc).limit(limit)
-
-      @bids_key = products.where(id: bids_pids)
-
+      @detaillog_products = products.where(id: detaillog_pids).sort_by{ |pr| detaillog_pids.index(pr.id)}
+      @detaillog_pids =  detaillog_pids
+      @detaillog_names = products.where(id: detaillog_pids).pluck(:name)
+      # @detaillog_products = products.joins(:detail_logs).where(detail_logs: [user_id: params[:user_id]]).reorder("detail_logs.created_at DESC")
 
 
+
+
+
+      # ### 入札履歴からのオススメ ###
+      # bids_pids = Bid.where(user_id: params[:user_id]).select(:product_id).order(id: :desc).limit(limit)
+      # @bids_key = products.where(id: bids_pids)
 
     end
 
