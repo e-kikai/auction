@@ -19,6 +19,15 @@
     .alert.alert-success
       span.glyphicon.glyphicon-info-sign
       span.btn-content ユーザを選択してください
+
+    h4 最近チェックした商品 (IPから取得 : #{@ip})
+    - if @detaillog_products.blank?
+      . 履歴なし
+    - else
+      - @detaillog_products.each do |pr|
+        = render "product_panel_03_img", product: pr, r: :top_log
+    hr
+
   - else
     ol
       - @detaillog_names.each do |na|

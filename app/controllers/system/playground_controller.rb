@@ -338,6 +338,14 @@ class System::PlaygroundController < ApplicationController
       # bids_pids = Bid.where(user_id: params[:user_id]).select(:product_id).order(id: :desc).limit(limit)
       # @bids_key = products.where(id: bids_pids)
 
+    else
+      ### 最近チェックした商品 for IP ###
+      detaillog_pids = DetailLog.group(:product_id).where(ip: ip)
+      .order("max(created_at) DESC").limit(limit)
+      .pluck(:product_id)
+
+      @ip = ip
+      @detaillog_products = products.where(id: detaillog_pids).sort_by{ |pr| detaillog_pids.index(pr.id)}
     end
 
     ### ユーザ共通 : 現在出品中の商品からのみ取得 ###

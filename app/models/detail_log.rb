@@ -132,10 +132,11 @@ class DetailLog < ApplicationRecord
       ids << row['product_id'] if row['user_id'].to_i == user_id.to_i
     end
 
-    sorts = product_ids.map.with_index { |v, i| [v, i] }.to_h
+    # sorts = product_ids.map.with_index { |v, i| [v, i] }.to_h
 
     ### データ取得とソートおよびlimit ###
-    Product.includes(:product_images).where(id: product_ids).sort_by { |pr| sorts[pr.id] }.take(limit)
+    # Product.includes(:product_images).where(id: product_ids).sort_by { |pr| sorts[pr.id] }.take(limit)
+    Product.includes(:product_images).where(id: product_ids).sort_by{ |pr| product_ids.index(pr.id) }.take(limit)
   rescue
     []
   end
