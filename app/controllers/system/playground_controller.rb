@@ -329,7 +329,7 @@ class System::PlaygroundController < ApplicationController
       # @detaillog_pids =  detaillog_pids
       # @detaillog_names = products.where(id: detaillog_pids).pluck(:name)
 
-      @detaillog_products = products.joins(:detail_logs).group(:id).where(user_id: params[:user_id]).reorder("max(detail_logs.created_at)")
+      @detaillog_products = products.joins(:detail_logs).group(:id).where(detail_logs: [user_id: params[:user_id]]).reorder("max(detail_logs.created_at)")
 
 
       # ### 入札履歴からのオススメ ###
@@ -345,7 +345,7 @@ class System::PlaygroundController < ApplicationController
       @ip = ip
       # @detaillog_products = products.where(id: detaillog_pids).sort_by{ |pr| detaillog_pids.index(pr.id)}
 
-      @detaillog_products = products.joins(:detail_logs).group(:id).where(ip: ip).reorder("max(detail_logs.created_at)")
+      @detaillog_products = products.joins(:detail_logs).group(:id).where(detail_logs: [ip: ip]).reorder("max(detail_logs.created_at)")
     end
 
     ### ユーザ共通 : 現在出品中の商品からのみ取得 ###
