@@ -325,6 +325,15 @@ class System::PlaygroundController < ApplicationController
       detaillog_pids = DetailLog.where(user_id: params[:user_id]).select(:product_id).order(id: :desc)
       @detaillog_products = products.where(id: detaillog_pids)
 
+      ### 入札履歴からのオススメ ###
+      bids_pids = Bid.where(user_id: params[:user_id], created_at: DetailLog::VBPR_RANGE)
+        .select(:product_id).order(id: :desc).limit(limit)
+
+      @bids_key = products.where(id: bids_pids)
+
+
+
+
     end
 
     ### ユーザ共通 : 現在出品中の商品からのみ取得 ###

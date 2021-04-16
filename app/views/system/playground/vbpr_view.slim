@@ -20,6 +20,9 @@
       span.glyphicon.glyphicon-info-sign
       span.btn-content ユーザを選択してください
   - else
+    ol = @bids_key.each do |pr|
+      li = pr.name
+
     h4 あなたへのオススメ (VBPRレコメンド)
     - if @vbpr_products.blank?
       . VBPRレコメンドなし
