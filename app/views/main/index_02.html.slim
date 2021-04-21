@@ -169,8 +169,8 @@
 
       /// VBPR ///
       - if @user.present?
-        - case rand(0..1)
-        - when 1 && @vbpr_products.present?
+        = @bpr_products.present?
+        - if rand(0..1) == 1 && @vbpr_products.present?
           /// VBPR ///
           .toppage-news-area
             label.topppage-category-title
@@ -181,11 +181,11 @@
                 / = render "products/product_panel_02", product: pr, r: :top_tnw
                 = render "product_panel_03_img", product: pr, r: :top_vbpr
 
-        - when @bpr_products.present?
+        - elsif @bpr_products.present?
           /// BPR ///
           .toppage-news-area
             label.topppage-category-title
-              span.glyphicon.glyphicon-wrench.text-primary
+              span.glyphicon.glyphicon-gift.text-primary
               span.btn-content あなたへのオススメ
             .top-category-news
               - @bpr_products.each do |pr|
