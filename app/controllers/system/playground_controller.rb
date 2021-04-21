@@ -293,6 +293,7 @@ class System::PlaygroundController < ApplicationController
     limit          = 10
     products       = Product.includes(:product_images).limit(limit)
     start_products = products.status(Product::STATUS[:start])
+    uid            = params[:user_id]
 
     if uid.present?
       ### VBPR結果取得 ###
@@ -366,6 +367,16 @@ class System::PlaygroundController < ApplicationController
   end
 
   def vbpr_top
+    ### ユーザセレクタ ###
+    detail_logs   = DetailLog.where(created_at: DetailLog::VBPR_RANGE)
+    @detail_count = detail_logs.group(:user_id).order("count_all DESC").count
+    @watch_cont   = Watch.where(created_at: DetailLog::VBPR_RANGE).group(:user_id).count
+    @bid_count    = Bid.where(created_at: DetailLog::VBPR_RANGE).group(:user_id).count
+
+    @user_selector = User.where(id: detail_logs.select(:user_id)).order(:id)
+      .map { |us| ["#{us.id} : #{us.company} #{us.name} (#{@bid_count[us.id].to_i} / #{@watch_cont[us.id].to_i} / #{@detail_count[us.id].to_i})", us.id] }
+
+
     @roots    = Category.roots.order(:order_no) # カテゴリ
     @searches = Search.where(publish: true).order("RANDOM()").limit(Search::TOPPAGE_COUNT) # 特集
     @helps    = Help.where(target: 0).order(:order_no).limit(Help::NEWS_LIMIT) # ヘルプ
@@ -376,19 +387,20 @@ class System::PlaygroundController < ApplicationController
     s_products = products.status(Product::STATUS[:start])
 
     ### ユーザ情報 ###
-    user = case
+    @user = case
     when params[:user_id].present?; User.find(params[:user_id])
     when user_signed_in?;           current_user
     else;                           nil
     end
 
-    if user_signed_in? # ログインユーザ
-      @vbpr_products = DetailLog.vbpr_get(user.id, Product::NEWS_LIMIT) # VBPR結果
-      @bpr_products  = DetailLog.vbpr_get(user.id, Product::NEWS_LIMIT, true) #BPR結果
+    # if user_signed_in? # ログインユーザ
+    if @user
+      @vbpr_products = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT) # VBPR結果
+      @bpr_products  = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT, true) #BPR結果
 
-      @watch_products = products.joins(:watches).group(:id).where(watches: {user_id: user.id, soft_destroyed_at: nil})
+      @watch_products = products.joins(:watches).group(:id).where(watches: {user_id: @user.id, soft_destroyed_at: nil})
         .reorder("max(watches.created_at)") # ウォッチ(オススメ用)
-      @bid_products = products.joins(:bids).group(:id).where(bids: {user_id: user.id, soft_destroyed_at: nil})
+      @bid_products = products.joins(:bids).group(:id).where(bids: {user_id: @user.id, soft_destroyed_at: nil})
         .reorder("max(bids.created_at)") # 入札オススメ用
 
       ### ウォッチリストに基づくオススメ ###
@@ -402,17 +414,17 @@ class System::PlaygroundController < ApplicationController
         .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
 
       ### 入札してみませんか ###
-      cat_pids       = DetailLog.where(user_id: user.id).group(:product_id)
+      cat_pids       = DetailLog.where(user_id: @user.id).group(:product_id)
         .order("count() DESC").limit(Product::NEWS_LIMIT).select(:product_id)
       @cart_products = s_products.where(id: @watch_products.limit(nil)).or(s_products.where(id: cat_pids))
         .where.not(id: @bid_products.limit(nil)).reorder("random()")
 
       ### 最近チェックした商品 ###
-      @dl_products = products.joins(:detail_logs).group(:id).where(detail_logs: {user_id: user.id})
+      @dl_products = products.joins(:detail_logs).group(:id).where(detail_logs: {user_id: @user.id})
         .reorder("max(detail_logs.created_at)").limit(Product::NEW_MAX_COUNT)
 
       ### フォローした出品会社の新着商品 ###
-      @fol_products = s_products.where(user_id: user.follows.select(:user_id))
+      @fol_products = s_products.where(user_id: @user.follows.select(:user_id))
         .reorder(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
 
     else # 非ログイン

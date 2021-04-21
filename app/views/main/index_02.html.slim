@@ -136,6 +136,17 @@
 
         / - else
     .col-md-9.col-sm-9.col-xs-12
+      = form_tag("/system/playground/vbpr_top", method: "get", class: "form-inline filtering-form") do
+        = select_tag :user_id, options_for_select(@user_selector, selected: params[:user_id]), {include_blank: "-- ID : ユーザ (入札数 / ウォッチ数 / 閲覧数)--", class: "form-control"}
+
+        = button_tag class: "btn btn-info" do
+          span.glyphicon.glyphicon-search
+          span.btn-content 選択
+
+        = link_to "/system/playground/vbpr_view", class: "btn btn-danger pull-right" do
+          span.glyphicon.glyphicon-remove
+          span.btn-content リセット
+
       / .alert.alert-info
       /   h4
       /     span.glyphicon.glyphicon-info-sign
@@ -157,28 +168,29 @@
       /             = render "products/product_panel_02", product: pr, r: :top_cnw
 
       /// VBPR ///
-      - case rand(0..1)
-      - when 1 && @vbpr_products.present?
-        /// VBPR ///
-        .toppage-news-area
-          label.topppage-category-title
-            span.glyphicon.glyphicon-camera.text-info
-            span.btn-content あなたへの似たものオススメ
-          .top-category-news
-            - @vbpr_products.each do |pr|
-              / = render "products/product_panel_02", product: pr, r: :top_tnw
-              = render "product_panel_03_img", product: pr, r: :top_vbpr
+      - if @user.present?
+        - case rand(0..1)
+        - when 1 && @vbpr_products.present?
+          /// VBPR ///
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-camera.text-info
+              span.btn-content あなたへの似たものオススメ
+            .top-category-news
+              - @vbpr_products.each do |pr|
+                / = render "products/product_panel_02", product: pr, r: :top_tnw
+                = render "product_panel_03_img", product: pr, r: :top_vbpr
 
-      - when @bpr_products.present?
-        /// BPR ///
-        .toppage-news-area
-          label.topppage-category-title
-            span.glyphicon.glyphicon-wrench.text-primary
-            span.btn-content あなたへのオススメ
-          .top-category-news
-            - @bpr_products.each do |pr|
-              / = render "products/product_panel_02", product: pr, r: :top_tnw
-              = render "product_panel_03_img", product: pr, r: :top_bpr
+        - when @bpr_products.present?
+          /// BPR ///
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-wrench.text-primary
+              span.btn-content あなたへのオススメ
+            .top-category-news
+              - @bpr_products.each do |pr|
+                / = render "products/product_panel_02", product: pr, r: :top_tnw
+                = render "product_panel_03_img", product: pr, r: :top_bpr
 
       /// 工具新着 ///
       - if @tool_news.present?
