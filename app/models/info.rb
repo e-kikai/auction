@@ -22,6 +22,8 @@ class Info < ApplicationRecord
   soft_deletable
   default_scope { without_soft_destroyed }
 
+  NEWS_LIMIT = 10 # 新着表示件数
+
   ### validates ###
   validates :title,    presence: true
   validates :content,  presence: true

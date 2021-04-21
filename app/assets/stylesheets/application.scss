@@ -2008,7 +2008,12 @@ ui#footer_banners li img {
     padding-bottom: 0.5rem;
     font-size: 25px;
     border-bottom: 2px dotted #258a01;
+
+    .glyphicon {
+      text-shadow: 1px 1px 1px #333;
+    }
 }
+
 .btn-more {
     background-color: whitesmoke;
     color: #333;

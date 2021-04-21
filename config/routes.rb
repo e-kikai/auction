@@ -190,6 +190,7 @@ Rails.application.routes.draw do
 
           get 'vbpr_test'
           get 'vbpr_view'
+          get 'vbpr_top'
         end
       end
     end

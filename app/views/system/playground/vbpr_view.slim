@@ -20,11 +20,19 @@
       span.glyphicon.glyphicon-info-sign
       span.btn-content ユーザを選択してください
 
-    h4 最近チェックした商品 (IPから取得 : #{@ip})
+    h4 最近閲覧した商品 (IPから取得 : #{@ip})
     - if @detaillog_products.blank?
       . 履歴なし
     - else
       - @detaillog_products.each do |pr|
+        = render "product_panel_03_img", product: pr, r: :top_log
+    hr
+
+    h4 閲覧履歴からのオススメ (IPから取得 : #{@ip})
+    - if @detaillog_osusume.blank?
+      . オススメなし
+    - else
+      - @detaillog_osusume.each do |pr|
         = render "product_panel_03_img", product: pr, r: :top_log
     hr
 
@@ -84,6 +92,10 @@
     - else
       - @watch_products.each do |pr|
         = render "product_panel_03_img", product: pr, r: :top_wtc
+
+        h4 ウォッチからのオススメ
+        - @watch_osusume.each do |pr|
+          = render "product_panel_03_img", product: pr, r: :top_wtc
 
     hr
 
