@@ -166,7 +166,9 @@
             span.btn-content あなたへの似たものオススメ
           .top-category-news
             - @vbpr_products.each do |pr|
-              = render "products/product_panel_02", product: pr, r: :top_tnw
+              / = render "products/product_panel_02", product: pr, r: :top_tnw
+              = render "product_panel_03_img", product: pr, r: :top_vbpr
+
       - when @bpr_products.present?
         /// BPR ///
         .toppage-news-area
@@ -175,7 +177,19 @@
             span.btn-content あなたへのオススメ
           .top-category-news
             - @bpr_products.each do |pr|
-              = render "products/product_panel_02", product: pr, r: :top_tnw
+              / = render "products/product_panel_02", product: pr, r: :top_tnw
+              = render "product_panel_03_img", product: pr, r: :top_bpr
+
+      /// 工具新着 ///
+      - if @tool_news.present?
+        .toppage-news-area
+          label.topppage-category-title
+            span.glyphicon.glyphicon-wrench.text-primary
+            span.btn-content 工具新着
+          .top-category-news
+            - @tool_news.each do |pr|
+              / = render "products/product_panel_02", product: pr, r: :top_tnw
+              = render "product_panel_03_img", product: pr, r: :top_tnw
 
       /// 機械新着 ///
       - if @machine_news.present?
@@ -185,7 +199,8 @@
             span.btn-content 機械新着
           .top-category-news
             - @machine_news.each do |pr|
-              = render "products/product_panel_02", product: pr, r: :top_mnw
+              / = render "products/product_panel_02", product: pr, r: :top_mnw
+              = render "product_panel_03_img", product: pr, r: :top_mnw
 
       /// まもなく終了 ///
       - if @end_products.present?
@@ -195,7 +210,8 @@
             span.btn-content まもなく終了
           .top-category-news
             - @end_products.each do |pr|
-              = render "products/product_panel_02", product: pr, r: :top_last
+              / = render "products/product_panel_02", product: pr, r: :top_last
+              = render "product_panel_03_img", product: pr, r: :top_last
 
       /// こんなものもあります ///
       - if @zero_products.present?
@@ -206,7 +222,8 @@
 
           .top-category-news
             - @zero_products.each do |pr|
-              = render "products/product_panel_02", product: pr, r: :top_zero
+              / = render "products/product_panel_02", product: pr, r: :top_zero
+              = render "product_panel_03_img", product: pr, r: :top_zero
 
       /// 最近チェックした商品 ///
       - if @dl_products.present?
