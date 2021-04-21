@@ -174,7 +174,7 @@
           /// VBPR ///
           .toppage-news-area
             label.topppage-category-title
-              span.glyphicon.glyphicon-camera.text-info
+              span.glyphicon.glyphicon-camera sytle="color:mediumpurple;"
               span.btn-content あなたへの似たものオススメ
             .top-category-news
               - @vbpr_products.each do |pr|
@@ -185,12 +185,25 @@
           /// BPR ///
           .toppage-news-area
             label.topppage-category-title
-              span.glyphicon.glyphicon-gift.text-primary
+              span.glyphicon.glyphicon-gift sytle="color:lightseagreen;"
               span.btn-content あなたへのオススメ
             .top-category-news
               - @bpr_products.each do |pr|
                 / = render "products/product_panel_02", product: pr, r: :top_tnw
                 = render "product_panel_03_img", product: pr, r: :top_bpr
+
+      - else
+        /// 非ログイン : 閲覧履歴に基づくオススメ ///
+        - if @detaillog_osusume.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-gift sytle="color:lightseagreen;"
+              span.btn-content 閲覧履歴に基づくオススメ
+            .top-category-news
+              - @detaillog_osusume.each do |pr|
+                / = render "products/product_panel_02", product: pr, r: :top_dlos
+                = render "product_panel_03_img", product: pr, r: :top_dlos
+
 
       /// 工具新着 ///
       - if @tool_news.present?
@@ -213,6 +226,43 @@
             - @machine_news.each do |pr|
               / = render "products/product_panel_02", product: pr, r: :top_mnw
               = render "product_panel_03_img", product: pr, r: :top_mnw
+
+      /// ログインユーザ ///
+      - if @user.present?
+
+        /// ウォッチリストに基づくオススメ ///
+        - if @watch_osusume.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-star.watch-star
+              span.btn-content ウォッチリストに基づくオススメ
+            .top-category-news
+              - @watch_osusume.each do |pr|
+                / = render "products/product_panel_02", product: pr, r: :top_mnw
+                = render "product_panel_03_img", product: pr, r: :top_waos
+
+        /// 入札履歴に基づくオススメ ///
+        - if @bid_osusume.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-thumbs-up sytle="color:darkorange;"
+              span.btn-content 入札履歴に基づくオススメ
+            .top-category-news
+              - @bid_osusume.each do |pr|
+                / = render "products/product_panel_02", product: pr, r: :top_mnw
+                = render "product_panel_03_img", product: pr, r: :top_waos
+
+        /// 入札してみませんか ///
+        - if @cart_products.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-pencil sytle="color:deeppink;"
+              span.btn-content 入札してみませんか？
+            .top-category-news
+              - @cart_products.each do |pr|
+                / = render "products/product_panel_02", product: pr, r: :top_mnw
+                = render "product_panel_03_img", product: pr, r: :top_waos
+
 
       /// まもなく終了 ///
       - if @end_products.present?
