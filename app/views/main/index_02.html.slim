@@ -169,27 +169,27 @@
 
       /// VBPR ///
       - if @user.present?
-      /   - if rand(0..1) == 1 && @vbpr_products.present?
-      /     /// VBPR ///
-      /     .toppage-news-area
-      /       label.topppage-category-title
-      /         span.glyphicon.glyphicon-camera style="color:mediumpurple;"
-      /         span.btn-content あなたへの似たものオススメ
-      /       .top-category-news
-      /         - @vbpr_products.each do |pr|
-      /           / = render "products/product_panel_02", product: pr, r: :top_tnw
-      /           = render "product_panel_03_img", product: pr, r: :top_vbpr
+        / - if rand(0..1) == 1 && @vbpr_products.present?
+        /   /// VBPR ///
+        /   .toppage-news-area
+        /     label.topppage-category-title
+        /       span.glyphicon.glyphicon-camera style="color:mediumpurple;"
+        /       span.btn-content あなたへの似たものオススメ
+        /     .top-category-news
+        /       - @vbpr_products.each do |pr|
+        /         / = render "products/product_panel_02", product: pr, r: :top_tnw
+        /         = render "product_panel_03_img", product: pr, r: :top_vbpr
 
-      /   - elsif @bpr_products.present?
-      /     /// BPR ///
-      /     .toppage-news-area
-      /       label.topppage-category-title
-      /         span.glyphicon.glyphicon-gift style="color:lightseagreen;"
-      /         span.btn-content あなたへのオススメ
-      /       .top-category-news
-      /         - @bpr_products.each do |pr|
-      /           / = render "products/product_panel_02", product: pr, r: :top_tnw
-      /           = render "product_panel_03_img", product: pr, r: :top_bpr
+        / - elsif @bpr_products.present?
+        /   /// BPR ///
+        /   .toppage-news-area
+        /     label.topppage-category-title
+        /       span.glyphicon.glyphicon-gift style="color:lightseagreen;"
+        /       span.btn-content あなたへのオススメ
+        /     .top-category-news
+        /       - @bpr_products.each do |pr|
+        /         / = render "products/product_panel_02", product: pr, r: :top_tnw
+        /         = render "product_panel_03_img", product: pr, r: :top_bpr
 
         - if @vbpr_products.present?
           /// VBPR ///
