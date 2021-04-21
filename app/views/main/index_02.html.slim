@@ -143,7 +143,7 @@
           span.glyphicon.glyphicon-search
           span.btn-content 選択
 
-        = link_to "/system/playground/vbpr_view", class: "btn btn-danger pull-right" do
+        = link_to "/system/playground/vbpr_top", class: "btn btn-danger pull-right" do
           span.glyphicon.glyphicon-remove
           span.btn-content リセット
 
@@ -168,36 +168,56 @@
       /             = render "products/product_panel_02", product: pr, r: :top_cnw
 
       /// VBPR ///
-      - if @user.present?
-        = @bpr_products.present?
-        - if rand(0..1) == 1 && @vbpr_products.present?
-          /// VBPR ///
-          .toppage-news-area
-            label.topppage-category-title
-              span.glyphicon.glyphicon-camera sytle="color:mediumpurple;"
-              span.btn-content あなたへの似たものオススメ
-            .top-category-news
-              - @vbpr_products.each do |pr|
-                / = render "products/product_panel_02", product: pr, r: :top_tnw
-                = render "product_panel_03_img", product: pr, r: :top_vbpr
+      / - if @user.present?
+      /   - if rand(0..1) == 1 && @vbpr_products.present?
+      /     /// VBPR ///
+      /     .toppage-news-area
+      /       label.topppage-category-title
+      /         span.glyphicon.glyphicon-camera style="color:mediumpurple;"
+      /         span.btn-content あなたへの似たものオススメ
+      /       .top-category-news
+      /         - @vbpr_products.each do |pr|
+      /           / = render "products/product_panel_02", product: pr, r: :top_tnw
+      /           = render "product_panel_03_img", product: pr, r: :top_vbpr
 
-        - elsif @bpr_products.present?
-          /// BPR ///
-          .toppage-news-area
-            label.topppage-category-title
-              span.glyphicon.glyphicon-gift sytle="color:lightseagreen;"
-              span.btn-content あなたへのオススメ
-            .top-category-news
-              - @bpr_products.each do |pr|
-                / = render "products/product_panel_02", product: pr, r: :top_tnw
-                = render "product_panel_03_img", product: pr, r: :top_bpr
+      /   - elsif @bpr_products.present?
+      /     /// BPR ///
+      /     .toppage-news-area
+      /       label.topppage-category-title
+      /         span.glyphicon.glyphicon-gift style="color:lightseagreen;"
+      /         span.btn-content あなたへのオススメ
+      /       .top-category-news
+      /         - @bpr_products.each do |pr|
+      /           / = render "products/product_panel_02", product: pr, r: :top_tnw
+      /           = render "product_panel_03_img", product: pr, r: :top_bpr
 
+      - if rand(0..1) == 1 && @vbpr_products.present?
+        /// VBPR ///
+        .toppage-news-area
+          label.topppage-category-title
+            span.glyphicon.glyphicon-camera style="color:mediumpurple;"
+            span.btn-content あなたへの似たものオススメ
+          .top-category-news
+            - @vbpr_products.each do |pr|
+              / = render "products/product_panel_02", product: pr, r: :top_tnw
+              = render "product_panel_03_img", product: pr, r: :top_vbpr
+
+      - elsif @bpr_products.present?
+        /// BPR ///
+        .toppage-news-area
+          label.topppage-category-title
+            span.glyphicon.glyphicon-gift style="color:lightseagreen;"
+            span.btn-content あなたへのオススメ
+          .top-category-news
+            - @bpr_products.each do |pr|
+              / = render "products/product_panel_02", product: pr, r: :top_tnw
+              = render "product_panel_03_img", product: pr, r: :top_bpr
       - else
         /// 非ログイン : 閲覧履歴に基づくオススメ ///
         - if @detaillog_osusume.present?
           .toppage-news-area
             label.topppage-category-title
-              span.glyphicon.glyphicon-gift sytle="color:lightseagreen;"
+              span.glyphicon.glyphicon-gift style="color:lightseagreen;"
               span.btn-content 閲覧履歴に基づくオススメ
             .top-category-news
               - @detaillog_osusume.each do |pr|
@@ -245,7 +265,7 @@
         - if @bid_osusume.present?
           .toppage-news-area
             label.topppage-category-title
-              span.glyphicon.glyphicon-thumbs-up sytle="color:darkorange;"
+              span.glyphicon.glyphicon-thumbs-up style="color:darkorange;"
               span.btn-content 入札履歴に基づくオススメ
             .top-category-news
               - @bid_osusume.each do |pr|
@@ -256,7 +276,7 @@
         - if @cart_products.present?
           .toppage-news-area
             label.topppage-category-title
-              span.glyphicon.glyphicon-pencil sytle="color:deeppink;"
+              span.glyphicon.glyphicon-pencil style="color:deeppink;"
               span.btn-content 入札してみませんか？
             .top-category-news
               - @cart_products.each do |pr|
