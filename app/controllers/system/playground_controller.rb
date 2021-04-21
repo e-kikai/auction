@@ -415,7 +415,7 @@ class System::PlaygroundController < ApplicationController
 
       ### 入札してみませんか ###
       cat_pids       = DetailLog.where(user_id: @user.id).group(:product_id)
-        .order("count() DESC").limit(Product::NEWS_LIMIT).select(:product_id)
+        .order("count(product_id) DESC").limit(Product::NEWS_LIMIT).select(:product_id)
       @cart_products = s_products.where(id: @watch_products.limit(nil)).or(s_products.where(id: cat_pids))
         .where.not(id: @bid_products.limit(nil)).reorder("random()")
 
