@@ -264,7 +264,7 @@
         - if @bid_osusume.present?
           .toppage-news-area
             label.topppage-category-title
-              span.glyphicon.glyphicon-thumbs-up style="color:darkorange;"
+              span.glyphicon.glyphicon-pencil style="color:darkorange;"
               span.btn-content 入札履歴に基づくオススメ
             .top-category-news
               - @bid_osusume.each do |pr|
@@ -275,7 +275,7 @@
         - if @cart_products.present?
           .toppage-news-area
             label.topppage-category-title
-              span.glyphicon.glyphicon-pencil style="color:deeppink;"
+              span.glyphicon.glyphicon-flash style="color:deeppink;"
               span.btn-content 入札してみませんか？
             .top-category-news
               - @cart_products.each do |pr|
