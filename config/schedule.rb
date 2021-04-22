@@ -2,6 +2,9 @@
 # set :output, 'log/crontab.log'
 set :output, nil
 
+# Rails.rootを使用するために必要
+require File.expand_path(File.dirname(__FILE__) + "/environment")
+
 # 事故防止の為RAILS_ENVの指定が無い場合にはdevelopmentを使用する
 rails_env = ENV['RAILS_ENV'] || :development
 
@@ -71,12 +74,12 @@ if rails_env.to_sym == :staging
   every :day, at: '3:00 am' do
     # runner "Watch.scheduling"
     # command "wget --spider #{scheduling_url + '/watch_scheduling'}"
-    command "cd :path && /usr/bin/python3 ./lib/python/vbpr/vbpr_csv.py --url #{url} --bpr"
+    command "/usr/bin/python3 #{Rails.root}/lib/python/vbpr/vbpr_csv.py --url #{url} --bpr"
   end
 
   every :day, at: '4:00 am' do
     # runner "Watch.scheduling"
     # command "wget --spider #{scheduling_url + '/watch_scheduling'}"
-    command "cd :path && /usr/bin/python3 ./lib/python/vbpr/vbpr_csv.py --url #{url}"
+    command "/usr/bin/python3 #{Rails.root}/lib/python/vbpr/vbpr_csv.py --url #{url}"
   end
 end
