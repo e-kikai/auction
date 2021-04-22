@@ -431,7 +431,7 @@ class System::PlaygroundController < ApplicationController
       next_name = products.where(id: @watch_products.limit(nil)).or(products.where(id: @bid_products.limit(nil)))
         .where.not(max_bid_id: Bid.where(user_id: @user.id))
         .pluck(:name).map(&:split).flatten.uniq.join("|")
-      @next_osusume = if bid_names.present?
+      @next_osusume = if next_name.present?
         s_products.where("products.name ~ ?", next_name)
           .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
       else
