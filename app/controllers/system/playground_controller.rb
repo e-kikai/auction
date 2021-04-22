@@ -404,20 +404,39 @@ class System::PlaygroundController < ApplicationController
         .reorder("max(bids.created_at)") # 入札オススメ用
 
       ### ウォッチリストに基づくオススメ ###
-      watch_names    = @watch_products.pluck(:name).map(&:split).flatten.uniq.join("|")
-      @watch_osusume = s_products.where("products.name ~ ?", watch_names)
-        .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
+      watch_names = @watch_products.pluck(:name).map(&:split).flatten.uniq.join("|")
+      @watch_osusume = if watch_names.present?
+        s_products.where("products.name ~ ?", watch_names)
+          .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
+      else
+        []
+      end
 
       ### 購入履歴に基づくオススメ ###
-      bid_names    = @bid_products.pluck(:name).map(&:split).flatten.uniq.join("|")
-      @bid_osusume = s_products.where("products.name ~ ?", bid_names)
-        .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
+      bid_names = @bid_products.pluck(:name).map(&:split).flatten.uniq.join("|")
+      @bid_osusume = if bid_names.present?
+        s_products.where("products.name ~ ?", bid_names)
+          .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
+      else
+        []
+      end
 
       ### 入札してみませんか ###
-      cat_pids       = DetailLog.where(user_id: @user.id).group(:product_id)
+      cat_pids = DetailLog.where(user_id: @user.id).group(:product_id)
         .order("count(product_id) DESC").limit(Product::NEWS_LIMIT).select(:product_id)
       @cart_products = s_products.where(id: @watch_products.limit(nil)).or(s_products.where(id: cat_pids))
         .where.not(id: @bid_products.limit(nil)).reorder("random()")
+
+      ### こちらもオススメ ###
+      next_name = products.where(id: @watch_products.limit(nil)).or(products.where(id: @bid_products.limit(nil)))
+        .where.not(max_bid_id: Bid.where(user_id: @user.id))
+        .pluck(:name).map(&:split).flatten.uniq.join("|")
+      @next_osusume = if bid_names.present?
+        s_products.where("products.name ~ ?", next_name)
+          .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
+      else
+        []
+      end
 
       ### 最近チェックした商品 ###
       @dl_products = products.joins(:detail_logs).group(:id).where(detail_logs: {user_id: @user.id})

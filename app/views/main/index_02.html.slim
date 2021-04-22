@@ -224,7 +224,6 @@
                 / = render "products/product_panel_02", product: pr, r: :top_dlos
                 = render "product_panel_03_img", product: pr, r: :top_dlos
 
-
       /// 工具新着 ///
       - if @tool_news.present?
         .toppage-news-area
@@ -283,6 +282,16 @@
                 / = render "products/product_panel_02", product: pr, r: :top_mnw
                 = render "product_panel_03_img", product: pr, r: :top_waos
 
+        /// こちらもオススメ ///
+        - if @next_osusume.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-flag style="color:olivedrab;"
+              span.btn-content こちらもオススメ
+            .top-category-news
+              - @next_osusume.each do |pr|
+                / = render "products/product_panel_02", product: pr, r: :top_mnw
+                = render "product_panel_03_img", product: pr, r: :top_waos
 
       /// まもなく終了 ///
       - if @end_products.present?
