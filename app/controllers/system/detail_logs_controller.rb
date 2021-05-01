@@ -226,7 +226,7 @@ class System::DetailLogsController < System::ApplicationController
         [false, lo&.user]
       elsif @user.present?
         [true, @user]
-      elsif @users[@iptable[lo[:ip]]].present?
+      elsif @iptable[lo[:ip].to_s].present? && @users[@iptable[lo[:ip]]].present?
         [true, @users[@iptable[lo[:ip]]]]
       end
 
