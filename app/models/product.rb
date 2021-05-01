@@ -95,7 +95,7 @@ class Product < ApplicationRecord
   REMINDER_MINUTE        = 15.minute
 
   NEWS_DAYS  = 1.day # 新着期間
-  NEWS_LIMIT = 10    # 新着表示件数
+  NEWS_LIMIT = 5     # 新着表示件数
 
   NEWS_PAGE_DAYS   = 7.day
 

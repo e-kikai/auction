@@ -103,6 +103,9 @@
               - ca.children.order(:order_no).each do |ca2|
                 = link_to "　#{ca2.name}", "products?category_id=#{ca2.id}", class: "list-group-item"
 
+        .thumbnail.search-panel.hidden-xs style="border:0;padding:0;"
+          = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
+
         / - if Rails.env != "production"
         .panel.panel-default
           = link_to "#collapse_help", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
@@ -197,6 +200,7 @@
             label.topppage-category-title
               span.glyphicon.glyphicon-camera style="color:mediumpurple;"
               span.btn-content あなたへの似たものオススメ
+              = link_to "もっと見る", "/products?category_id=12", class: "btn btn-more"
             .top-category-news
               - @vbpr_products.each do |pr|
                 / = render "products/product_panel_02", product: pr, r: :top_tnw
@@ -230,6 +234,7 @@
           label.topppage-category-title
             span.glyphicon.glyphicon-wrench.text-primary
             span.btn-content 工具新着
+            = link_to "もっと見る", "/products?category_id=12}", class: "btn btn-more"
           .top-category-news
             - @tool_news.each do |pr|
               / = render "products/product_panel_02", product: pr, r: :top_tnw
@@ -339,13 +344,16 @@
                 = render "main/product_panel", product: pr, r: :top_flw
 
       /// 特集 ///
-      .toppage-searches
-        - if @searches[0]
-          - @searches[0..1].each do |se|
-            = render "main/search_panel", search: se
+      / .toppage-searches
+      /   - if @searches[0]
+      /     - @searches[0..1].each do |se|
+      /       = render "main/search_panel", search: se
 
-        .thumbnail.search-panel style="border:0;"
-          = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
+      /   .thumbnail.search-panel style="border:0;"
+      /     = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
+
+      .thumbnail.search-panel.visible-xs-block style="border:0;padding:0;"
+        = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
 
       .sns-area.visible-xs-block
         = link_to "http://www.facebook.com/sharer.php?u=#{root_url}", target: "_blank", class: "facebook-button" do
