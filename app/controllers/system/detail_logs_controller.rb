@@ -102,17 +102,25 @@ class System::DetailLogsController < System::ApplicationController
     end
   end
 
+  ### ユーザ別ログ出録 ###
   def search
+    ### 日付設定 ###
     @date_start = (params[:date_start] || Date.today - 1.week).to_date
     @date_end   = (params[:date_end] || Date.today).to_date
+    where   = {created_at: @date_start.beginning_of_day..@date_end.end_of_day}
+    reorder = {created_at: :desc}
 
-    where    = {created_at: @date_start.beginning_of_day..@date_end.end_of_day, user_id: 9999999999}
-    ip_where = {created_at: @date_start.beginning_of_day..@date_end.end_of_day}
+    ### 商品指定 ###
+    if params[:product_id].present?
+      @product = Product.find(params[:product_id])
+      where[:product_id] = params[:product_id]
+    end
 
-    if params[:user_id].present?
-      ips = if params[:user_id].strip =~ /^[0-9]+$/
-        @user           = User.find(params[:user_id])
-        where[:user_id] = params[:user_id]
+    ### ユーザ指定 ###
+    logs = if params[:user_id].present?
+      if params[:user_id].strip =~ /^[0-9]+$/
+        ### ユーザID指定 ###
+        @user = User.find(params[:user_id])
 
         # IPからユーザ推測
         ips =  DetailLog.where(user_id: params[:user_id]).distinct.pluck(:ip)
@@ -121,52 +129,72 @@ class System::DetailLogsController < System::ApplicationController
         ips << @user.last_sign_in_ip.to_s
         ips << @user.current_sign_in_ip.to_s
 
-        ips.uniq
+        user_where = ["(user_id = ? OR (user_id IS NULL AND ip IN (?)))", params[:user_id], ips.uniq]
+
+        # ログデータ取得・結合
+        @datail_logs  = DetailLog.includes(:user, :product).where(where).where(user_where)
+        @search_logs  = SearchLog.includes(:user, :category, :company, :search, :nitamono_product).where(where).where(user_where)
+        @toppage_logs = ToppageLog.includes(:user).where(where).where(user_where)
+
+        @watches      = Watch.includes(:user, product:[ :category]).where(where).where(user_id:params[:user_id])
+        @bids         = Bid.includes(:user, product:[ :category] ).where(where).where(user_id:params[:user_id])
+
+        @follows      = Follow.includes(:user, :to_user).where(where).where(user_id:params[:user_id])
+        @trades       = Trade.includes(:user, product:[ :category]).where(where).where(user_id:params[:user_id])
+
+        [] + @datail_logs + @search_logs + @toppage_logs + @watches + @bids + @follows + @trades
       else
-        params[:user_id]
+        ### IP指定 ###
+        where[:ip] = params[:user_id]
+
+        # ログデータ取得・結合
+        @datail_logs  = DetailLog.includes(:user, :product).where(where)
+        @search_logs  = SearchLog.includes(:user, :category, :company, :search, :nitamono_product).where(where)
+        @toppage_logs = ToppageLog.includes(:user).where(where)
+
+        [] + @datail_logs + @search_logs + @toppage_logs
       end
+    else
+      ### ユーザ指定なし ###
+      ### IP検索用テーブル ###
+      @iptable = DetailLog.group(:ip).where.not(ip: nil, user_id:nil).maximum(:user_id)
+      @iptable.merge! SearchLog.group(:ip).where.not(ip: nil, user_id:nil).maximum(:user_id)
+      @iptable.merge! ToppageLog.group(:ip).where.not(ip: nil, user_id:nil).maximum(:user_id)
 
-      ip_where[:ip] = ips
+      ### IP類推用ユーザテーブル ###
+      @users = User.all.group(:id)
+
+      # ログデータ取得・結合
+      @datail_logs  = DetailLog.includes(:user, :product).where(where)
+      @search_logs  = SearchLog.includes(:user, :category, :company, :search, :nitamono_product).where(where)
+      @toppage_logs = ToppageLog.includes(:user).where(where)
+
+      @watches      = Watch.includes(:user, product:[ :category]).where(where)
+      @bids         = Bid.includes(:user, product:[ :category] ).where(where)
+
+      @follows      = Follow.includes(:user, :to_user).where(where)
+      @trades       = Trade.includes(:user, product:[ :category]).where(where)
+
+      [] + @datail_logs + @search_logs + @toppage_logs + @watches + @bids + @follows + @trades
     end
 
-    product_where = {}
-    if params[:product_id].present?
-      @product = Product.find(params[:product_id])
-      product_where[:product_id] = params[:product_id]
-    end
-
-    reorder = {created_at: :desc}
-
-    @datail_logs  = DetailLog.includes(:user, :product).where(ip_where).where(product_where).reorder(reorder)
-    @search_logs  = SearchLog.includes(:user, :category, :company, :search, :nitamono_product).where(ip_where).reorder(reorder)
-    @toppage_logs = ToppageLog.includes(:user).where(ip_where).reorder(reorder)
-
-    @watches      = Watch.includes(:user, :product).where(where).reorder(reorder)
-    @bids         = Bid.includes(:user, :product).where(where).reorder(reorder)
-
-    @follows      = Follow.includes(:user, :to_user).where(where).reorder(reorder)
-    @trades       = Trade.includes(:user, :product).where(where).reorder(reorder)
-
-    logs = [] + @datail_logs + @search_logs + @toppage_logs + @watches + @bids
-    @logs = logs.sort_by { |lo| lo.created_at }.reverse
-
-
-    @product = Product.find(params[:product_id]) if params[:product_id]
+    ### ソート ###
+    logs = logs.sort_by { |lo| lo.created_at }.reverse
 
     ### 事前整形 ###
-    @relogs = @logs .map do |lo|
-
+    @relogs = logs .map do |lo|
       klass = case lo.class.to_s
-      when "DetailLog";  ["詳細", "glyphicon-gift", "#FF9300"]
-      when "SearchLog";  ["検索", "glyphicon-search", "#0433FF"]
-      when "ToppageLog"; ["トップページ", "glyphicon-home", "#AA7942"]
-      when "Watch";      ["ウォッチリスト", "glyphicon-star", "#EE0"]
-      when "Follow";     ["フォロー", "glyphicon-heart", "#D00"]
-      when "Bid";        ["入札", "glyphicon-pencil", "#942192"]
-      when "Trade";      ["問合せ・取引", "glyphicon-comment", "#3c763d"]
-      else; [lo.class, "glyphicon-exclamation-sign", "#919191"]
+      when "DetailLog";  ["詳細",           "glyphicon-gift",             "#FF9300"]
+      when "SearchLog";  ["検索",           "glyphicon-search",           "#0433FF"]
+      when "ToppageLog"; ["トップページ",   "glyphicon-home",             "#AA7942"]
+      when "Watch";      ["ウォッチリスト", "glyphicon-star",             "#EE0"]
+      when "Follow";     ["フォロー",       "glyphicon-heart",            "#D00"]
+      when "Bid";        ["入札",           "glyphicon-pencil",           "#942192"]
+      when "Trade";      ["問合せ・取引",   "glyphicon-comment",          "#3c763d"]
+      else;              [lo.class,         "glyphicon-exclamation-sign", "#919191"]
       end
 
+      ### 内容詳細 ###
       con = []
       if lo[:product_id].present? && lo.product
         con << "[#{lo.product.state}]" unless lo.product.state == "中古"
@@ -175,7 +203,6 @@ class System::DetailLogsController < System::ApplicationController
 
         con << "終了済" if lo.product.dulation_end < lo.created_at
       end
-
 
       if lo.class.to_s == "SearchLog"
         if lo[:search_id].present? && lo.search
@@ -188,39 +215,45 @@ class System::DetailLogsController < System::ApplicationController
           if lo[:nitamono_product_id].present? && lo.nitamono_product
             con <<  "似たものサーチ: [#{lo.nitamono_product_id}] #{lo.nitamono_product.name}"
           end
-          con << "新着: #{$1}"      if lo[:path].present? && lo[:path] =~ /news\/([0-9-]+)/
-          con << "出品中を表示"       if lo[:path].present? && lo[:path] =~ /success\=start/
+          con << "新着: #{$1}"    if lo[:path].present? && lo[:path] =~ /news\/([0-9-]+)/
+          con << "出品中を表示"   if lo[:path].present? && lo[:path] =~ /success\=start/
           con << "落札価格を表示" if lo[:path].present? && lo[:path] =~ /success\=success/
         end
+      end
+
+      # IPからユーザを推測
+      ip_guess, user = if lo[:user_id].present?
+        [false, lo&.user]
+      elsif @user.present?
+        [true, @user]
+      elsif @users[@iptable[lo[:ip]]].present?
+        [true, @users[@iptable[lo[:ip]]]]
       end
 
       {
         created_at:   lo.created_at,
         klass:        klass,
-        ip:           lo[:ip].presence || "",
-        user_id:      lo[:user_id].presence || "",
-        user_name:    lo[:user_id].present? && lo.user ? "#{lo.user.company} #{lo.user.name}" : "",
+        ip:           lo[:ip],
+        host:         lo[:host],
 
-        ip_guess:     (@user.present? && lo[:user_id].blank?) ? true : false,
+        ip_guess:     ip_guess,
+        user:         user,
 
-        product_id:   lo[:product_id].presence || "",
-        product_name: (lo[:product_id].present? && lo.product) ? lo.product.name : "",
+        product:      (lo[:product_id].present? && lo.product) ? lo.product : nil,
 
-        # max_price:    (lo[:product_id].present? && lo.product) ? lo.product.max_price : "",
-        max_price:    (lo[:product_id].present? && lo.product) ? lo.product&.max_price_with_tax : "", # 総額対応
-
-        # amount:       lo[:amount].presence || "",
-        amount:       lo[:amount].present? ? Product.calc_price_with_tax(lo[:amount], lo.product&.dulation_end) : "",
-        bids_count:    (lo[:product_id].present? && lo.product) ? lo.product.bids_count : "",
-
-        page:         lo[:page].presence || "",
+        page:         lo[:page],
         con:          con,
+        referer:      lo[:referer],
         ref:          lo[:referer].present? ? URI.unescape(lo.link_source) : "",
+        r:            lo[:r],
       }
     end
 
     respond_to do |format|
-      format.html
+      format.html {
+        ### ページャ ###
+        @prelogs = Kaminari.paginate_array(@relogs, total_count: @relogs.length).page(params[:page]).per(100)
+      }
       format.csv {
         export_csv "logs_search_#{params[:user_id]}.csv"
       }

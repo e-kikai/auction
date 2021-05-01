@@ -69,57 +69,62 @@
             dt.dt-first IP
             dd = params[:user_id]
 
-- if @logs.blank?
+- if @relogs.blank?
   .alert.alert-success
     span.glyphicon.glyphicon-info-sign
     span.btn-content ログデータがありませんでした。
 - else
+
+  = paginate @prelogs
+
   .table-responsive
     table.table.table-hover.table-condensed.table-striped
       tr
         th アクセス日時
         - if @user.blank?
-          th IP
-          th ユーザ
-        - else
-          th IP推測
+          th.num ユーザ<br />ID
+          th ユーザ名
+        th IP
+        th IP<br />推測
         th アクション
         th 詳細
 
         th リンク元
-      - @relogs.each do |lo|
+      - @prelogs.each do |lo|
         tr
           td = lo[:created_at]
 
           - if @user.blank?
+            td.num = lo[:user]&.id
             td
-              - if lo[:ip].present?
-                = link_to "#{lo[:ip]}", "/system/detail_logs/search?user_id=#{lo[:ip]}"
-            td
-              - if lo[:user_id].present?
-                = link_to "#{lo[:user_id]} : #{lo[:user_name]}", "/system/detail_logs/search?user_id=#{lo[:user_id]}"
-          - else
-            td = "○" if lo[:ip_guess]
+              - if lo[:user].present?
+                = link_to "#{lo[:user]&.company} #{lo[:user]&.name}", "/system/detail_logs/search?user_id=#{lo[:user_id]}"
+          td
+            - if lo[:ip].present?
+              = link_to "#{lo[:ip]}", "/system/detail_logs/search?user_id=#{lo[:ip]}"
+          td = "○" if lo[:ip_guess]
           td
             span.glyphicon class="#{lo[:klass][1]}" style="color:#{lo[:klass][2]};"
             span.btn-content = lo[:klass][0]
 
           td
-            - if lo[:product_id].present?
-              = "[#{lo[:product_id]}] "
-              = link_to lo[:product_name], "/products/#{lo[:product_id]}", target: "_blank"
+            - if lo[:product].present?
+              = "[#{lo[:product]&.id}] "
+              = link_to lo[:product]&.name, "/products/#{lo[:product_id]}", target: "_blank"
 
-              = " (#{number_to_currency(lo[:max_price])})"
+              = " (#{number_to_currency(lo[:product]&.max_price)})"
 
-              = " 入札数: #{number_with_delimiter(lo[:bids_count])}"
+              = " 入札数: #{number_with_delimiter(lo[:product]&.bids_count)}"
 
             = lo[:con].join(' | ')
 
-            /// ページャ ///
+            /// ページ ///
             - if lo[:page].present?
               = " (#{lo[:page]})"
 
             - if lo[:amount].present?
-              = " >> #{number_to_currency(lo[:amount])}"
+              = " >> #{number_to_currency(lo[:amount])} で入札"
 
           td = lo[:ref]
+
+  = paginate @prelogs
