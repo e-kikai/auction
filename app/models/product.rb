@@ -220,7 +220,7 @@ class Product < ApplicationRecord
     where(template: true)
   }
 
-  scope :osusume, -> (command, ip="", user_id=0) {
+  scope :osusume, -> (command, ip="", user_id=nil) {
     ### 事前に整形 ###
     prs   = includes(:product_images)
     s_prs = prs.status(Product::STATUS[:start])
@@ -231,7 +231,7 @@ class Product < ApplicationRecord
       dl_where  = {user_id: user_id} # 詳細履歴取得キー
     else
       watch_prs = Product.none
-      bid_prs = Product.none
+      bid_prs   = Product.none
       dl_where  = {ip: ip}
     end
 
@@ -287,7 +287,6 @@ class Product < ApplicationRecord
       s_prs.where(user_id: Follow.where(user_id: user_id).select(:to_user_id)).reorder(dulation_start: :desc)
     else
       none
-
     end
   }
 
