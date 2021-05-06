@@ -284,6 +284,7 @@ class Product < ApplicationRecord
       s_prs.where(user_id: Follow.where(user_id: user_id).select(:to_user_id)).reorder(dulation_start: :desc)
     else
       none
+
     end
   }
 
