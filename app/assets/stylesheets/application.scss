@@ -2521,11 +2521,11 @@ ui#footer_banners li {
 .top-category-news .product-pannel_02:nth-child(6) {
   display: none;
 
-  @media (max-width:767px) {
+  @media (max-width:992px) {
     display: inline-block;
   }
 
-  @media (min-width:1200px) {
+  @media (min-width:1700px) {
     display: inline-block;
   }
 }

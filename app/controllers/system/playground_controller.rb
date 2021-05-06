@@ -395,8 +395,8 @@ class System::PlaygroundController < ApplicationController
 
     # if user_signed_in? # ログインユーザ
     if @user
-      @vbpr_products = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT) # VBPR結果
-      @bpr_products  = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT, true) #BPR結果
+      @vbpr_products = DetailLog.vbpr_get(@user.id, 6) # VBPR結果
+      @bpr_products  = DetailLog.vbpr_get(@user.id, 6, true) #BPR結果
 
       # @watch_products = products.joins(:watches).group(:id).where(watches: {user_id: @user.id, soft_destroyed_at: nil})
       #   .reorder("max(watches.created_at)") # ウォッチ(オススメ用)
@@ -451,7 +451,7 @@ class System::PlaygroundController < ApplicationController
       @bid_osusume   = Product.osusume("bid_osusume", ip, @user&.id).limit(6)   # 入札オススメ
       @cart_products = Product.osusume("cart", ip, @user&.id).limit(6)          # 入札してみませんか
       # @next_osusume  = Product.osusume("next", ip, @user&.id).limit(6)
-      @dl_products   = Product.osusume("detail_log", ip, @user&.id).limit(6)    # 最近チェックした商品
+      @dl_products   = Product.osusume("detail_log", ip, @user&.id).limit(16)    # 最近チェックした商品
       @fol_products  = Product.osusume("follows", ip, @user&.id).limit(6)       # フォロー新着
     else # 非ログイン
       ### 最近チェックした商品 for IP ###
@@ -464,7 +464,7 @@ class System::PlaygroundController < ApplicationController
       # @dl_osusume = s_products
       #   .where("name ~ ?", "(#{dl_names})").where.not(id: @dl_products.limit(nil)).reorder("random()")
 
-      @dl_products = Product.osusume("detail_log", ip).limit(6) # 最近チェックした商品
+      @dl_products = Product.osusume("detail_log", ip).limit(16) # 最近チェックした商品
       @dl_osusume  = Product.osusume("dl_osusume", ip).limit(6) # 閲覧履歴に基づくオススメ
     end
 
