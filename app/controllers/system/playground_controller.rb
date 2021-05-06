@@ -452,8 +452,8 @@ class System::PlaygroundController < ApplicationController
       @cart_products = Product.osusume("cart", ip, @user&.id).limit(Product::NEWS_LIMIT)          # 入札してみませんか
       @next_osusume  = Product.osusume("next", ip, @user&.id).limit(Product::NEWS_LIMIT)          # こちらもオススメ
       @dl_products   = Product.osusume("detail_log", ip, @user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
-      @fol_products  = Product.osusume("follows", ip, @user&.id).limit(Product::NEWS_LIMIT)       # フォロー新着
-      @oft_products  = Product.osusume("often", ip, @user&.id).limit(Product::NEW_MAX_COUNT)      # よく見る新着
+      @fol_products  = Product.osusume("follows", ip, @user&.id).limit(Product::NEW_MAX_COUNT)    # フォロー新着
+      @oft_products  = Product.osusume("often", ip, @user&.id).limit(Product::NEWS_LIMIT)         # よく見る新着
     else # 非ログイン
       ### 最近チェックした商品 for IP ###
       # @ip = ip
