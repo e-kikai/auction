@@ -37,7 +37,6 @@ class ProductsController < ApplicationController
     when "start";   Product::STATUS[:start]
     else;           Product::STATUS[:mix]
     end
-    # cond = params[:success].present? ? Product::STATUS[:success] : Product::STATUS[:start]
 
     # 初期検索クエリ作成
     @products = Product.status(cond).includes(:product_images, :category, :user)
@@ -78,7 +77,22 @@ class ProductsController < ApplicationController
       @products = @products.reorder(" CASE WHEN dulation_end <= CURRENT_TIMESTAMP THEN 2 ELSE 1 END, dulation_end ")
     end
 
-    # ### オススメ ###
+    ### オススメ ###
+    if params[:osusume].present?
+      if params[:osusume] == "v"
+        @products = DetailLog.vbpr_get(current_user.id, 6) # VBPR結果
+        @bpr_products  = DetailLog.vbpr_get(@user.id, 6, true) #BPR結果
+
+      elsif params[:osusume] == "b"
+        @products = @products.osusume(params[:osusume])
+        @title    = Product.osusume_title(params[:osusume])
+
+      else
+        @products = @products.osusume(params[:osusume])
+        @title    = Product.osusume_title(params[:osusume])
+      end
+    end
+
     # case params[:osusume]
     # when "v";
     # when "b";
@@ -96,9 +110,8 @@ class ProductsController < ApplicationController
       @pproducts = @products.page(params[:page])
     end
 
-
     ### ウォッチリスト ###
-    @watches = user_signed_in? ? current_user.watches.pluck(:product_id) : []
+    @watches = user_signed_in? ? current_user.watches.pluck(:product_id) : Watch.none
 
     # フィルタリングセレクタ
     @category_selector = @products.joins(:category).group(:category_id, "categories.name").reorder("count_id DESC").count
@@ -111,10 +124,10 @@ class ProductsController < ApplicationController
     session[:search_view] = params[:v] if Product::VIEW_SELECTOR.include? params[:v]
 
     ### 最近チェックした商品 ###
-    dl_where     = user_signed_in? ? {user_id: current_user.id} : {ip: ip}
-    @dl_products = Product.includes(:product_images).joins(:detail_logs).group(:id).where(detail_logs: dl_where)
-                    .reorder("max(detail_logs.id)").limit(Product::NEW_MAX_COUNT)
-
+    # dl_where     = user_signed_in? ? {user_id: current_user.id} : {ip: ip}
+    # @dl_products = Product.includes(:product_images).joins(:detail_logs).group(:id).where(detail_logs: dl_where)
+    #                 .reorder("max(detail_logs.id)").limit(Product::NEW_MAX_COUNT)
+    @dl_products   = Product.osusume("detail_log", ip, @user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
   end
 
   def show

@@ -95,7 +95,7 @@ class Product < ApplicationRecord
   REMINDER_MINUTE        = 15.minute
 
   NEWS_DAYS  = 1.day # 新着期間
-  NEWS_LIMIT = 5     # 新着表示件数
+  NEWS_LIMIT = 6     # 新着表示件数
 
   NEWS_PAGE_DAYS   = 7.day
 
@@ -278,7 +278,7 @@ class Product < ApplicationRecord
       s_prs.where(id: watch_prs).or(s_prs.where(id: cat_pids)).where.not(id: bid_prs).reorder(dulation_end: :asc)
     when "next" # こちらもいかがでしょう？
       next_name = Product.where(id: watch_prs).or(Product.where(id: bid_prs))
-        .joins(:max_bid).finished.where.not(max_bid: {user_id: user_id})
+        .finished.where.not(max_bid_id: Bid.where(user_id: user_id))
         .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
 
       s_prs.where("products.name ~ ?", next_name)

@@ -199,8 +199,10 @@
           .toppage-news-area
             label.topppage-category-title
               span.glyphicon.glyphicon-camera style="color:mediumpurple;"
-              span.btn-content あなたへの似たものオススメ
-              = link_to "もっと見る", "/products?category_id=12", class: "btn btn-more"
+              span.btn-content あなたへ画像特徴によるオススメ
+              - if @vbpr_products.length >= Product::NEWS_LIMIT
+                / = link_to "もっと見る", "/products?osusume=v", class: "btn btn-more"
+                = link_to "もっと見る", "/system/playground/vbpr_search?osusume=v", class: "btn btn-more"
             .top-category-news
               - @vbpr_products.each do |pr|
                 / = render "products/product_panel_02", product: pr, r: :top_tnw
@@ -211,7 +213,7 @@
           .toppage-news-area
             label.topppage-category-title
               span.glyphicon.glyphicon-gift style="color:lightseagreen;"
-              span.btn-content あなたへのオススメ
+              span.btn-content あなたへ閲覧特徴によるオススメ
             .top-category-news
               - @bpr_products.each do |pr|
                 / = render "products/product_panel_02", product: pr, r: :top_tnw
