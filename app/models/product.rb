@@ -285,10 +285,16 @@ class Product < ApplicationRecord
         .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
     when "follows" # フォローした出品会社の新着商品
       s_prs.where(user_id: Follow.where(user_id: user_id).select(:to_user_id)).reorder(dulation_start: :desc)
+
+    when "often" # よくアクセスするカテゴリの新着
+      ca_ids = Product.joins(:detail_logs).where(detail_logs: {user_id: user_id})
+        .group(:category_id).reorder("count(*) DESC").limit(5).select("category_id")
+      s_prs.where(category_id: ca_ids)
     else
       none
     end
   }
+
 
     ### オススメ枠のタイトル取得 ###
     def osusume_title(command)
@@ -311,6 +317,7 @@ class Product < ApplicationRecord
       when "cart";          "入札してみませんか？"
       when "next"           "こちらもいかがでしょう？"
       when "follows";       "フォローした出品会社の新着商品"
+      when "often";         "よくアクセスするカテゴリの新着"
 
       else;                 ""
       end
