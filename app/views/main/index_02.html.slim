@@ -265,6 +265,29 @@
               - @oft_products.each do |pr|
                 / = render "products/product_panel_02", product: pr, r: :top_mnw
                 = render "product_panel_03_img", product: pr, r: :top_oft
+        - else
+          /// 工具新着 ///
+          - if @tool_news.present?
+            .toppage-news-area
+              label.topppage-category-title
+                span.glyphicon.glyphicon-wrench.text-primary
+                span.btn-content 工具新着
+                = link_to "もっと見る", "/products?category_id=12}", class: "btn btn-more"
+              .top-category-news
+                - @tool_news.each do |pr|
+                  / = render "products/product_panel_02", product: pr, r: :top_tnw
+                  = render "product_panel_03_img", product: pr, r: :top_tnw
+
+          /// 機械新着 ///
+          - if @machine_news.present?
+            .toppage-news-area
+              label.topppage-category-title
+                span.glyphicon.glyphicon-cog.text-success
+                span.btn-content 機械新着
+              .top-category-news
+                - @machine_news.each do |pr|
+                  / = render "products/product_panel_02", product: pr, r: :top_mnw
+                  = render "product_panel_03_img", product: pr, r: :top_mnw
 
         /// ウォッチリストに基づくオススメ ///
         - if @watch_osusume.present?
