@@ -79,13 +79,11 @@ class ProductsController < ApplicationController
     end
 
     # ### オススメ ###
-    case params[:osusume]
-    when "v";
-    when "b";
-    when nil
-    elsif
-
-    end
+    # case params[:osusume]
+    # when "v";
+    # when "b";
+    # when nil
+    # end
     # if params[:osusume].present?
     #   @products = @products.osusume(params[:osusume])
     #   @title    = Product.osusume_title(params[:osusume])
