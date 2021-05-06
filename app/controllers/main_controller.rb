@@ -12,7 +12,7 @@ class MainController < ApplicationController
 
     # フォローした出品会社の新着
     if user_signed_in?
-      if follows_user_ids = current_user.follows.pluck(:user_id)
+      if follows_user_ids = current_user.follows.pluck(:to_user_id)
         @follows_new_products = Product.status(Product::STATUS[:start]).includes(:product_images).where(user_id: follows_user_ids).reorder(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
       end
     end

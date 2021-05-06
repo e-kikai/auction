@@ -398,73 +398,86 @@ class System::PlaygroundController < ApplicationController
       @vbpr_products = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT) # VBPR結果
       @bpr_products  = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT, true) #BPR結果
 
-      @watch_products = products.joins(:watches).group(:id).where(watches: {user_id: @user.id, soft_destroyed_at: nil})
-        .reorder("max(watches.created_at)") # ウォッチ(オススメ用)
-      @bid_products = products.joins(:bids).group(:id).where(bids: {user_id: @user.id, soft_destroyed_at: nil})
-        .reorder("max(bids.created_at)") # 入札オススメ用
+      # @watch_products = products.joins(:watches).group(:id).where(watches: {user_id: @user.id, soft_destroyed_at: nil})
+      #   .reorder("max(watches.created_at)") # ウォッチ(オススメ用)
+      # @bid_products = products.joins(:bids).group(:id).where(bids: {user_id: @user.id, soft_destroyed_at: nil})
+      #   .reorder("max(bids.created_at)") # 入札オススメ用
 
-      ### ウォッチリストに基づくオススメ ###
-      watch_names = @watch_products.pluck(:name).map(&:split).flatten.uniq.join("|")
-      @watch_osusume = if watch_names.present?
-        s_products.where("products.name ~ ?", watch_names)
-          .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
-      else
-        []
-      end
+      # ### ウォッチリストに基づくオススメ ###
+      # watch_names = @watch_products.pluck(:name).map(&:split).flatten.uniq.join("|")
+      # @watch_osusume = if watch_names.present?
+      #   s_products.where("products.name ~ ?", watch_names)
+      #     .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
+      # else
+      #   []
+      # end
 
-      ### 購入履歴に基づくオススメ ###
-      bid_names = @bid_products.pluck(:name).map(&:split).flatten.uniq.join("|")
-      @bid_osusume = if bid_names.present?
-        s_products.where("products.name ~ ?", bid_names)
-          .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
-      else
-        []
-      end
+      # ### 購入履歴に基づくオススメ ###
+      # bid_names = @bid_products.pluck(:name).map(&:split).flatten.uniq.join("|")
+      # @bid_osusume = if bid_names.present?
+      #   s_products.where("products.name ~ ?", bid_names)
+      #     .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
+      # else
+      #   []
+      # end
 
-      ### 入札してみませんか ###
-      cat_pids = DetailLog.where(user_id: @user.id).group(:product_id)
-        .order("count(product_id) DESC").limit(Product::NEWS_LIMIT).select(:product_id)
-      @cart_products = s_products.where(id: @watch_products.limit(nil)).or(s_products.where(id: cat_pids))
-        .where.not(id: @bid_products.limit(nil)).reorder("random()")
+      # ### 入札してみませんか ###
+      # cat_pids = DetailLog.where(user_id: @user.id).group(:product_id)
+      #   .order("count(product_id) DESC").limit(Product::NEWS_LIMIT).select(:product_id)
+      # @cart_products = s_products.where(id: @watch_products.limit(nil)).or(s_products.where(id: cat_pids))
+      #   .where.not(id: @bid_products.limit(nil)).reorder("random()")
 
-      ### こちらもオススメ ###
-      next_name = Product.where(id: @watch_products.limit(nil)).or(Product.where(id: @bid_products.limit(nil)))
-        .finished
-        .where.not(max_bid_id: Bid.where(user_id: @user.id))
-        .pluck(:name).map(&:split).flatten.uniq.join("|")
-      @next_osusume = if next_name.present?
-        s_products.where("products.name ~ ?", next_name)
-          .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
-      else
-        []
-      end
+      # ### こちらもオススメ ###
+      # next_name = Product.where(id: @watch_products.limit(nil)).or(Product.where(id: @bid_products.limit(nil)))
+      #   .finished
+      #   .where.not(max_bid_id: Bid.where(user_id: @user.id))
+      #   .pluck(:name).map(&:split).flatten.uniq.join("|")
+      # @next_osusume = if next_name.present?
+      #   s_products.where("products.name ~ ?", next_name)
+      #     .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
+      # else
+      #   []
+      # end
 
-      ### 最近チェックした商品 ###
-      @dl_products = products.joins(:detail_logs).group(:id).where(detail_logs: {user_id: @user.id})
-        .reorder("max(detail_logs.created_at)").limit(Product::NEW_MAX_COUNT)
+      # ### 最近チェックした商品 ###
+      # @dl_products = products.joins(:detail_logs).group(:id).where(detail_logs: {user_id: @user.id})
+      #   .reorder("max(detail_logs.created_at)").limit(Product::NEW_MAX_COUNT)
 
-      ### フォローした出品会社の新着商品 ###
-      @fol_products = s_products.where(user_id: @user.follows.select(:user_id))
-        .reorder(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
+      # ### フォローした出品会社の新着商品 ###
+      # @fol_products = s_products.where(user_id: @user.follows.select(:user_id))
+      #   .reorder(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
 
+      @watch_osusume = Product.osusume("watch_osusume", ip, current_user&.id).limit(6)
+      @bid_osusume   = Product.osusume("bid_osusume", ip, current_user&.id).limit(6)
+      @cart_products = Product.osusume("cart", ip, current_user&.id).limit(6)
+      # @next_osusume  = Product.osusume("next", ip, current_user&.id).limit(6)
+      @dl_products   = Product.osusume("detail_log", ip, current_user&.id).limit(6)
+      @fol_products  = Product.osusume("follows", ip, current_user&.id).limit(6)
     else # 非ログイン
       ### 最近チェックした商品 for IP ###
-      @ip = ip
-      @dl_products = products.joins(:detail_logs).group(:id)
-        .where(detail_logs: {ip: ip}).reorder("max(detail_logs.created_at)")
+      # @ip = ip
+      # @dl_products = products.joins(:detail_logs).group(:id)
+      #   .where(detail_logs: {ip: ip}).reorder("max(detail_logs.created_at)")
 
-      ### 閲覧履歴に基づくオススメ ###
-      dl_names =  @dl_products.pluck(:name).map(&:split).flatten.uniq.join("|")
-      @detaillog_osusume = s_products
-        .where("name ~ ?", "(#{dl_names})").where.not(id: @dl_products.limit(nil)).reorder("random()")
+      # ### 閲覧履歴に基づくオススメ ###
+      # dl_names =  @dl_products.pluck(:name).map(&:split).flatten.uniq.join("|")
+      # @dl_osusume = s_products
+      #   .where("name ~ ?", "(#{dl_names})").where.not(id: @dl_products.limit(nil)).reorder("random()")
+
+      @dl_products = Product.osusume("detail_log", ip).limit(6)
+      @dl_osusume  = Product.osusume("dl_osusume", ip).limit(6)
     end
 
     ### ユーザ共通 : 現在出品中の商品からのみ取得 ###
-    @end_products  = s_products.reorder(:dulation_end) # まもなく終了
-    news           = s_products.reorder(dulation_start: :desc)
-    @tool_news     = news.where(category_id: Category.find(1).subtree_ids) rescue [] # 機械新着
-    @machine_news  = news.where(category_id: Category.find(107).subtree_ids) rescue [] # 工具新着
-    @zero_products = s_products.joins(:detail_logs).group(:id).reorder("count(detail_logs.id), random()") # 閲覧少
+    # @end_products  = s_products.reorder(:dulation_end) # まもなく終了
+    # news           = s_products.reorder(dulation_start: :desc)
+    # @tool_news     = news.where(category_id: Category.find(1).subtree_ids) rescue [] # 機械新着
+    # @machine_news  = news.where(category_id: Category.find(107).subtree_ids) rescue [] # 工具新着
+    # @zero_products = s_products.joins(:detail_logs).group(:id).reorder("count(detail_logs.id), random()") # 閲覧少
+    @end_products  = Product.osusume("end").limit(6)
+    @tool_news     = Product.osusume("news_tool").limit(6)
+    @machine_news  = Product.osusume("news_machine").limit(6)
+    @zero_products = Product.osusume("zero").limit(6)
 
     render template: "main/index_02"
   end

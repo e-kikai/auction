@@ -218,13 +218,13 @@
                 = render "product_panel_03_img", product: pr, r: :top_bpr
       - else
         /// 非ログイン : 閲覧履歴に基づくオススメ ///
-        - if @detaillog_osusume.present?
+        - if @dl_osusume.present?
           .toppage-news-area
             label.topppage-category-title
               span.glyphicon.glyphicon-gift style="color:lightseagreen;"
               span.btn-content 閲覧履歴に基づくオススメ
             .top-category-news
-              - @detaillog_osusume.each do |pr|
+              - @dl_osusume.each do |pr|
                 / = render "products/product_panel_02", product: pr, r: :top_dlos
                 = render "product_panel_03_img", product: pr, r: :top_dlos
 

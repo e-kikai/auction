@@ -124,6 +124,8 @@ class Product < ApplicationRecord
     "残り時間"      => "dulation_end asc",
   }
 
+  VIEW_SELECTOR = ["panel", "list"]
+
 
   ### relations ###
   belongs_to :user,     required: true
@@ -217,6 +219,99 @@ class Product < ApplicationRecord
   scope :templates, -> {
     where(template: true)
   }
+
+  scope :osusume, -> (command, ip="", user_id=0) {
+    ### 事前に整形 ###
+    prs   = includes(:product_images)
+    s_prs = prs.status(Product::STATUS[:start])
+
+    if user_id.present?
+      watch_prs = Product.joins(:watches).group(:id).where(watches: {user_id: user_id, soft_destroyed_at: nil})
+      bid_prs   = Product.joins(:bids).group(:id).where(bids: {user_id: user_id, soft_destroyed_at: nil})
+    end
+
+    dl_where = user_id.present? ? {user_id: user_id} : {ip: ip} # 詳細履歴取得キー
+
+    case command
+
+    ### ユーザ共通 ###
+    when "end" # まもなく終了
+      s_prs.reorder(:dulation_end)
+    when "news_tool" # 工具新着
+      s_prs.where(category_id: Category.find_by(id: 1)&.subtree_ids).reorder(dulation_start: :desc)
+    when "news_machine" # 機械新着
+      s_prs.where(category_id: Category.find_by(id: 107)&.subtree_ids).reorder(dulation_start: :desc)
+    when "zero" # こんなのもあります(閲覧数少)
+      s_prs.joins(:detail_logs).group(:id).reorder("count(detail_logs.id), random()")
+
+    when "detail_log" #最近チェックした商品
+      prs.joins(:detail_logs).group(:id).where(detail_logs: dl_where).reorder("max(detail_logs.id) DESC")
+
+    when "dl_osusume" #閲覧履歴に基づくオススメ
+      dl_prs   = joins(:detail_logs).group(:id).where(detail_logs: dl_where)
+      dl_names = dl_prs.reorder("max(detail_logs.id) DESC").limit(10)
+        .pluck(:name).map(&:split).flatten.uniq.join("|")
+
+      s_prs.where("name ~ ?", "(#{dl_names}|XXXX)").where.not(id: dl_prs).reorder("random()")
+
+    ### ログインユーザ ###
+    when "watch_osusume" # ウォッチおすすめ
+      watch_names = watch_prs.reorder("max(watches.id) DESC").limit(10)
+        .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
+
+      s_prs.where("products.name ~ ?", watch_names)
+        .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
+
+    when "bid_osusume" # 入札履歴に基づくオススメ
+      bid_names = bid_prs.reorder("max(bids.id) DESC").limit(10)
+        .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
+
+      s_prs.where("products.name ~ ?", bid_names)
+        .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
+    when "cart" # 入札してみませんか？
+      cat_pids = DetailLog.where(user_id: user_id).group(:product_id)
+        .order("count(id) DESC").limit(10).select(:product_id)
+
+      s_prs.where(id: watch_prs).or(s_prs.where(id: cat_pids)).where.not(id: bid_prs).reorder(dulation_end: :asc)
+    when "next" # こちらもいかがでしょう？
+      next_name = Product.where(id: watch_prs).or(Product.where(id: bid_prs))
+        .joins(:max_bid).finished.where.not(max_bid: {user_id: user_id})
+        .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
+
+      s_prs.where("products.name ~ ?", next_name)
+        .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
+    when "follows" # フォローした出品会社の新着商品
+      s_prs.where(user_id: Follow.where(user_id: user_id).select(:to_user_id)).reorder(dulation_start: :desc)
+    else
+      none
+    end
+  }
+
+    ### オススメ枠のタイトル取得 ###
+    def osusume_title(command)
+      case command
+
+      ### 共通 ###
+      when "end";          "まもなく終了"
+      when "news_tool";    "工具新着"
+      when "news_machine"; "機械新着"
+      when "zero";         "こんなのもあります"
+
+      when "detail_log";   "最近チェックした商品"
+      when "dl_osusume";   "閲覧履歴に基づくオススメ"
+
+      ### ログインユーザ ###
+      when "nitamono";      "画像特徴からのオススメ"
+      when "user";          "閲覧傾向からのオススメ"
+      when "watch_osusume"; "ウォッチに基づくオススメ"
+      when "bid_osusume";   "入札履歴に基づくオススメ"
+      when "cart";          "入札してみませんか？"
+      when "next"           "こちらもいかがでしょう？"
+      when "follows";       "フォローした出品会社の新着商品"
+
+      else;                 ""
+      end
+    end
 
   ### 関連商品(おなじカテゴリの商品) ###
   scope :related_products, -> prs {

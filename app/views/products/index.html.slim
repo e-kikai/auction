@@ -81,13 +81,13 @@
       .panel-body#collapse_filter.panel-collapse.collapse.in.sm-close
         label カテゴリ
         . = link_to "すべてのカテゴリ", @pms.deep_merge(category_id: nil)
-        - @select_categories.each do |i, count|
+        - @category_selector.each do |i, count|
           . = link_to "#{i[1]} (#{count})", @pms.merge(category_id: i[0])
 
         br
         label 発送元
         . = link_to "すべての地域", @pms.deep_merge(q: {addr_1_eq: nil})
-        - @select_addr1.each do |i, count|
+        - @addr1_selector.each do |i, count|
           - next if i.blank?
           . = link_to "#{i} (#{count})", @pms.deep_merge(q: {addr_1_eq: i})
 
@@ -164,7 +164,7 @@
         span.glyphicon.glyphicon-sort
         select.form-control.sort_select onchange="window.location.href = $(this).val();"
           option value=url_for(@pms.deep_merge(q: {s: nil})) ▼ 並び順 ▼
-          - @select_sort.each do |k, v|
+          - @sort_selector.each do |k, v|
             - if @pms[:q][:s] == v
               option value=url_for(@pms.deep_merge(q: {s: v})) selected="selected" = k
             - else
@@ -365,7 +365,7 @@
         span.glyphicon.glyphicon-sort
         select.form-control.sort_select onchange="window.location.href = $(this).val();"
           option value=url_for(@pms.deep_merge(q: {s: nil})) ▼ 並び順 ▼
-          - @select_sort.each do |k, v|
+          - @sort_selector.each do |k, v|
             - if @pms[:q][:s] == v
               option value=url_for(@pms.deep_merge(q: {s: v})) selected="selected" = k
             - else
@@ -379,7 +379,7 @@
 
       br style="clear:both;"
 
-    - if @detaillog_products.present?
+    - if @dl_products.present?
       .row
         label
           span.glyphicon.glyphicon-ok.check-icon
@@ -387,7 +387,7 @@
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
-              - @detaillog_products.each do |pr|
+              - @dl_products.each do |pr|
                 = render "/main/product_panel", product: pr, r: :src_chk
 
 = render "/main/ads_frames", okw: title

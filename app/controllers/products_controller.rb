@@ -40,12 +40,13 @@ class ProductsController < ApplicationController
     # cond = params[:success].present? ? Product::STATUS[:success] : Product::STATUS[:start]
 
     # 初期検索クエリ作成
-    @search = Product.status(cond).with_keywords(@keywords).search(@pms[:q])
+    @products = Product.status(cond).includes(:product_images, :category, :user)
+      .with_keywords(@keywords).search(@pms[:q]).result
 
     # 新着(週)
     if @pms[:news_week].present?
-      date = @pms[:news_week].to_date
-      @search   = @search.result.search(news_week: date.strftime("%F"))
+      date         = @pms[:news_week].to_date
+      @products    = @products.news_week(date.strftime("%F"))
 
       @title       = "新着商品 #{(date - 6.day).strftime("%Y/%-m/%-d")} 〜 #{date.strftime("%-m/%-d")}"
       @description = "#{(date - 6.day).strftime("%Y/%-m/%-d")} 〜 #{date.strftime("%-m/%-d")}の新着機械・工具です。お買い得商品を探してみましょう。"
@@ -53,25 +54,22 @@ class ProductsController < ApplicationController
 
     # 新着(日)
     if @pms[:news_day].present?
-      date = @pms[:news_day].to_date
-      @search   = @search.result.search(news_day: date.strftime("%F"))
-
-      @title  = "#{date.strftime("%Y/%-m/%-d")} の新着商品"
+      date      = @pms[:news_day].to_date
+      @products = @products.news_day(date.strftime("%F"))
+      @title    = "#{date.strftime("%Y/%-m/%-d")} の新着商品"
     end
 
     # カテゴリ
     if @pms[:category_id].present?
       @category = Category.find(@pms[:category_id])
-      @search   = @search.result.search(category_id_in: @category.subtree_ids)
+      @products = @products.where(category_id: @category.subtree_ids)
     end
 
     # 出品会社
     if @pms[:company_id].present?
-      @company = User.companies.find(@pms[:company_id])
-      @search  = @search.result.search(user_id_eq: @pms[:company_id])
+      @company  = User.companies.find(@pms[:company_id])
+      @products = @products.where(user_id: @pms[:company_id])
     end
-
-    @products  = @search.result.includes(:product_images, :category, :user)
 
     ### 似たもの・残り時間ソート ###
     if params[:nitamono].present?
@@ -79,6 +77,19 @@ class ProductsController < ApplicationController
     elsif @pms[:q][:s] == "dulation_end asc"
       @products = @products.reorder(" CASE WHEN dulation_end <= CURRENT_TIMESTAMP THEN 2 ELSE 1 END, dulation_end ")
     end
+
+    # ### オススメ ###
+    case params[:osusume]
+    when "v";
+    when "b";
+    when nil
+    elsif
+
+    end
+    # if params[:osusume].present?
+    #   @products = @products.osusume(params[:osusume])
+    #   @title    = Product.osusume_title(params[:osusume])
+    # end
 
     ### ページャ ###
     if params[:nitamono].present?
@@ -91,24 +102,21 @@ class ProductsController < ApplicationController
     ### ウォッチリスト ###
     @watches = user_signed_in? ? current_user.watches.pluck(:product_id) : []
 
-    # フィルタリング
-    @select_categories = @products.joins(:category).group(:category_id).group("categories.name").reorder("count_id DESC").count
-    @select_addr1      = @products.group(:addr_1).reorder(:addr_1).count
-
-    @select_sort = Product::SORT_SELECTOR
+    # フィルタリングセレクタ
+    @category_selector = @products.joins(:category).group(:category_id, "categories.name").reorder("count_id DESC").count
+    @addr1_selector    = @products.group(:addr_1).reorder(:addr_1).count
+    @sort_selector     = Product::SORT_SELECTOR
 
     @roots = Category.roots.order(:order_no)
 
     ### 表示切り替え ###
-    if ["panel", "list"].include? params[:v]
-      session[:search_view] = params[:v]
-    end
+    session[:search_view] = params[:v] if Product::VIEW_SELECTOR.include? params[:v]
 
     ### 最近チェックした商品 ###
-    where_query = user_signed_in? ? {user_id: current_user.id} : {ip: ip}
+    dl_where     = user_signed_in? ? {user_id: current_user.id} : {ip: ip}
+    @dl_products = Product.includes(:product_images).joins(:detail_logs).group(:id).where(detail_logs: dl_where)
+                    .reorder("max(detail_logs.id)").limit(Product::NEW_MAX_COUNT)
 
-    detaillog_ids = DetailLog.order(id: :desc).limit(Product::NEW_MAX_COUNT).select(:product_id).where(where_query)
-    @detaillog_products = Product.includes(:product_images).where(id: detaillog_ids)
   end
 
   def show
