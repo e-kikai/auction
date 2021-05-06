@@ -228,9 +228,12 @@ class Product < ApplicationRecord
     if user_id.present?
       watch_prs = Product.joins(:watches).group(:id).where(watches: {user_id: user_id, soft_destroyed_at: nil})
       bid_prs   = Product.joins(:bids).group(:id).where(bids: {user_id: user_id, soft_destroyed_at: nil})
+      dl_where  = {user_id: user_id} # 詳細履歴取得キー
+    else
+      watch_prs = Product.none
+      bid_prs = Product.none
+      dl_where  = {ip: ip}
     end
-
-    dl_where = user_id.present? ? {user_id: user_id} : {ip: ip} # 詳細履歴取得キー
 
     case command
 
@@ -250,9 +253,9 @@ class Product < ApplicationRecord
     when "dl_osusume" #閲覧履歴に基づくオススメ
       dl_prs   = joins(:detail_logs).group(:id).where(detail_logs: dl_where)
       dl_names = dl_prs.reorder("max(detail_logs.id) DESC").limit(10)
-        .pluck(:name).map(&:split).flatten.uniq.join("|")
+        .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
 
-      s_prs.where("name ~ ?", "(#{dl_names}|XXXX)").where.not(id: dl_prs).reorder("random()")
+      s_prs.where("name ~ ?", dl_names).where.not(id: dl_prs).reorder("random()")
 
     ### ログインユーザ ###
     when "watch_osusume" # ウォッチおすすめ

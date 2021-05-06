@@ -447,12 +447,12 @@ class System::PlaygroundController < ApplicationController
       # @fol_products = s_products.where(user_id: @user.follows.select(:user_id))
       #   .reorder(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
 
-      @watch_osusume = Product.osusume("watch_osusume", ip, current_user&.id).limit(6)
-      @bid_osusume   = Product.osusume("bid_osusume", ip, current_user&.id).limit(6)
-      @cart_products = Product.osusume("cart", ip, current_user&.id).limit(6)
+      @watch_osusume = Product.osusume("watch_osusume", ip, current_user&.id).limit(6) # ウォッチオススメ
+      @bid_osusume   = Product.osusume("bid_osusume", ip, current_user&.id).limit(6)   # 入札オススメ
+      @cart_products = Product.osusume("cart", ip, current_user&.id).limit(6)          # 入札してみませんか
       # @next_osusume  = Product.osusume("next", ip, current_user&.id).limit(6)
-      @dl_products   = Product.osusume("detail_log", ip, current_user&.id).limit(6)
-      @fol_products  = Product.osusume("follows", ip, current_user&.id).limit(6)
+      @dl_products   = Product.osusume("detail_log", ip, current_user&.id).limit(6)    # 最近チェックした商品
+      @fol_products  = Product.osusume("follows", ip, current_user&.id).limit(6)       # フォロー新着
     else # 非ログイン
       ### 最近チェックした商品 for IP ###
       # @ip = ip
@@ -464,8 +464,8 @@ class System::PlaygroundController < ApplicationController
       # @dl_osusume = s_products
       #   .where("name ~ ?", "(#{dl_names})").where.not(id: @dl_products.limit(nil)).reorder("random()")
 
-      @dl_products = Product.osusume("detail_log", ip).limit(6)
-      @dl_osusume  = Product.osusume("dl_osusume", ip).limit(6)
+      @dl_products = Product.osusume("detail_log", ip).limit(6) # 最近チェックした商品
+      @dl_osusume  = Product.osusume("dl_osusume", ip).limit(6) # 閲覧履歴に基づくオススメ
     end
 
     ### ユーザ共通 : 現在出品中の商品からのみ取得 ###
@@ -474,10 +474,10 @@ class System::PlaygroundController < ApplicationController
     # @tool_news     = news.where(category_id: Category.find(1).subtree_ids) rescue [] # 機械新着
     # @machine_news  = news.where(category_id: Category.find(107).subtree_ids) rescue [] # 工具新着
     # @zero_products = s_products.joins(:detail_logs).group(:id).reorder("count(detail_logs.id), random()") # 閲覧少
-    @end_products  = Product.osusume("end").limit(6)
-    @tool_news     = Product.osusume("news_tool").limit(6)
-    @machine_news  = Product.osusume("news_machine").limit(6)
-    @zero_products = Product.osusume("zero").limit(6)
+    @end_products  = Product.osusume("end").limit(6)          # まもなく終了
+    @tool_news     = Product.osusume("news_tool").limit(6)    # 工具新着
+    @machine_news  = Product.osusume("news_machine").limit(6) # 機械新着
+    @zero_products = Product.osusume("zero").limit(6)         # 閲覧少
 
     render template: "main/index_02"
   end
