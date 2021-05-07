@@ -483,6 +483,16 @@ class System::PlaygroundController < ApplicationController
     render template: "main/index_02"
   end
 
+  def categories
+    @categories = Category.includes(:products).order(:id)
+
+    respond_to do |format|
+      format.csv {
+        export_csv "categories.csv"
+      }
+    end
+  end
+
   private
 
   ### キャッシュ更新 ###
