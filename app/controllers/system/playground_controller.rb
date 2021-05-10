@@ -396,7 +396,7 @@ class System::PlaygroundController < ApplicationController
     # if user_signed_in? # ログインユーザ
     if @user
       @vbpr_products = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT) # VBPR結果
-      @bpr_products  = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT, true) #BPR結果
+      # @bpr_products  = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT, true) #BPR結果
 
       # @watch_products = products.joins(:watches).group(:id).where(watches: {user_id: @user.id, soft_destroyed_at: nil})
       #   .reorder("max(watches.created_at)") # ウォッチ(オススメ用)

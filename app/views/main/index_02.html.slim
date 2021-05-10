@@ -199,25 +199,24 @@
           .toppage-news-area
             label.topppage-category-title
               span.glyphicon.glyphicon-camera style="color:mediumpurple;"
-              span.btn-content あなたへ画像特徴によるオススメ
+              span.btn-content あなたへのオススメ
               - if @vbpr_products.length >= Product::NEWS_LIMIT
                 / = link_to "もっと見る", "/products?osusume=v", class: "btn btn-more"
-                = link_to "もっと見る", "/system/playground/vbpr_search?osusume=v", class: "btn btn-more"
             .top-category-news
               - @vbpr_products.each do |pr|
                 / = render "products/product_panel_02", product: pr, r: :top_tnw
                 = render "product_panel_03_img", product: pr, r: :top_vbpr
 
-        - if @bpr_products.present?
-          /// BPR ///
-          .toppage-news-area
-            label.topppage-category-title
-              span.glyphicon.glyphicon-gift style="color:lightseagreen;"
-              span.btn-content あなたへ閲覧特徴によるオススメ
-            .top-category-news
-              - @bpr_products.each do |pr|
-                / = render "products/product_panel_02", product: pr, r: :top_tnw
-                = render "product_panel_03_img", product: pr, r: :top_bpr
+        / - if @bpr_products.present?
+        /   /// BPR ///
+        /   .toppage-news-area
+        /     label.topppage-category-title
+        /       span.glyphicon.glyphicon-gift style="color:lightseagreen;"
+        /       span.btn-content あなたへ閲覧特徴によるオススメ
+        /     .top-category-news
+        /       - @bpr_products.each do |pr|
+        /         / = render "products/product_panel_02", product: pr, r: :top_tnw
+        /         = render "product_panel_03_img", product: pr, r: :top_bpr
       - else
         /// 非ログイン : 閲覧履歴に基づくオススメ ///
         - if @dl_osusume.present?
