@@ -363,7 +363,7 @@
           .panel-body.toppage-contents
             .toppage-scroll
               - @dl_products.each do |pr|
-                = render "main/product_panel_04", product: pr, r: :top_chk
+                = render "product_panel_04", product: pr, r: :top_chk
 
       /// フォローした出品会社の新着商品 ///
       - if @fo_products.present?
@@ -374,7 +374,7 @@
           .panel-body.toppage-contents
             .toppage-scroll
               - @fo_products.each do |pr|
-                = render "main/product_panel_04", product: pr, r: :top_flw
+                = render "product_panel_04", product: pr, r: :top_flw
 
       /// 特集 ///
       / .toppage-searches

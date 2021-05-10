@@ -380,7 +380,8 @@ article
         .panel-body.toppage-contents
           .toppage-scroll
             - @nitamono_products.each do |pr|
-              = render "/main/product_panel_04", product: pr, r: :dtl_nmr
+              / = render "/main/product_panel", product: pr, r: :dtl_nmr
+              = render "product_panel_04", product: pr, r: :dtl_nmr
 
   - if @popular_products.present?
     .special-area
@@ -391,7 +392,8 @@ article
         .panel-body.toppage-contents
           .toppage-scroll
             - @popular_products.each do |pr|
-              = render "/main/product_panel_04", product: pr, r: :dtl_sca
+              / = render "/main/product_panel", product: pr, r: :dtl_sca
+              = render "product_panel_04", product: pr, r: :dtl_sca
 
   - if @osusume.present?
     .special-area
@@ -402,7 +404,8 @@ article
         .panel-body.toppage-contents
           .toppage-scroll
             - @osusume.each do |pr|
-              = render "/main/product_panel_04", product: pr, r: "dtl_#{@osusume_titles[1]}"
+              / = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
+              = render "product_panel_04", product: pr, r: "dtl_#{@osusume_titles[1]}"
 
   .description-area
     h4.product-description
