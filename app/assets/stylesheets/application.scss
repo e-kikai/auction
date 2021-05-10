@@ -2529,3 +2529,9 @@ ui#footer_banners li {
     display: inline-block;
   }
 }
+
+.special-area  label {
+  .glyphicon {
+    text-shadow: 1px 1px 1px #333;
+  }
+}

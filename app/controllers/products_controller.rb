@@ -93,16 +93,6 @@ class ProductsController < ApplicationController
       end
     end
 
-    # case params[:osusume]
-    # when "v";
-    # when "b";
-    # when nil
-    # end
-    # if params[:osusume].present?
-    #   @products = @products.osusume(params[:osusume])
-    #   @title    = Product.osusume_title(params[:osusume])
-    # end
-
     ### ページャ ###
     if params[:nitamono].present?
       @pproducts = Kaminari.paginate_array(nitamono_products, total_count: @products.count).page(params[:page])
@@ -127,7 +117,7 @@ class ProductsController < ApplicationController
     # dl_where     = user_signed_in? ? {user_id: current_user.id} : {ip: ip}
     # @dl_products = Product.includes(:product_images).joins(:detail_logs).group(:id).where(detail_logs: dl_where)
     #                 .reorder("max(detail_logs.id)").limit(Product::NEW_MAX_COUNT)
-    @dl_products   = Product.osusume("detail_log", ip, @user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
+    @dl_products = Product.osusume("detail_log", ip, @user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
   end
 
   def show
@@ -140,6 +130,7 @@ class ProductsController < ApplicationController
 
   # 入札履歴ページ
   def bids
+
   end
 
   def ads
@@ -189,5 +180,23 @@ class ProductsController < ApplicationController
     ### 似たものサーチ ###
     @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
   end
+
+  ### オススメを1枠取得 ###
+  def get_osusume
+    key_array =  %w|dl_osusume end news_tool news_machine zero|
+    key_array += %w|v watch_osusume bid_osusume cart next often| if user_signed_in? # ログイン時
+
+    ### オススメをランダム(0件でないもの)取得 ###
+    key_array.shuffle.each do |key|
+      @osusume = case key
+      when "v"; DetailLog.vbpr_get(current_user&.id, Product::NEWS_LIMIT) # VBPR結果
+      else;     Product.osusume(key, ip, current_user&.id).limit(Product::NEWS_LIMIT)
+      end
+
+      break if @osusume.length > 0
+    end
+  end
+
+
 
 end

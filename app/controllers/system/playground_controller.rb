@@ -5,6 +5,8 @@ class System::PlaygroundController < ApplicationController
   before_action :change_db
   after_action  :restore_db
 
+  before_action :user_selector, only: [:vbpr_top, :vbpr_detail]
+
   UTILS_PATH   = "/var/www/yoshida/utils"
   VECTORS_PATH = "#{UTILS_PATH}/static/image_vectors"
 
@@ -367,16 +369,6 @@ class System::PlaygroundController < ApplicationController
   end
 
   def vbpr_top
-    ### ユーザセレクタ ###
-    detail_logs   = DetailLog.where(created_at: DetailLog::VBPR_RANGE)
-    @detail_count = detail_logs.group(:user_id).order("count_all DESC").count
-    @watch_cont   = Watch.where(created_at: DetailLog::VBPR_RANGE).group(:user_id).count
-    @bid_count    = Bid.where(created_at: DetailLog::VBPR_RANGE).group(:user_id).count
-
-    @user_selector = User.where(id: detail_logs.select(:user_id)).order(:id)
-      .map { |us| ["#{us.id} : #{us.company} #{us.name} (#{@bid_count[us.id].to_i} / #{@watch_cont[us.id].to_i} / #{@detail_count[us.id].to_i})", us.id] }
-
-
     @roots    = Category.roots.order(:order_no) # カテゴリ
     @searches = Search.where(publish: true).order("RANDOM()").limit(Search::TOPPAGE_COUNT) # 特集
     @helps    = Help.where(target: 0).order(:order_no).limit(Help::NEWS_LIMIT) # ヘルプ
@@ -386,66 +378,10 @@ class System::PlaygroundController < ApplicationController
     products   = Product.includes(:product_images).limit(Product::NEWS_LIMIT)
     s_products = products.status(Product::STATUS[:start])
 
-    ### ユーザ情報 ###
-    @user = case
-    when params[:user_id].present?; User.find(params[:user_id])
-    when user_signed_in?;           current_user
-    else;                           nil
-    end
-
     # if user_signed_in? # ログインユーザ
     if @user
       @vbpr_products = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT) # VBPR結果
       # @bpr_products  = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT, true) #BPR結果
-
-      # @watch_products = products.joins(:watches).group(:id).where(watches: {user_id: @user.id, soft_destroyed_at: nil})
-      #   .reorder("max(watches.created_at)") # ウォッチ(オススメ用)
-      # @bid_products = products.joins(:bids).group(:id).where(bids: {user_id: @user.id, soft_destroyed_at: nil})
-      #   .reorder("max(bids.created_at)") # 入札オススメ用
-
-      # ### ウォッチリストに基づくオススメ ###
-      # watch_names = @watch_products.pluck(:name).map(&:split).flatten.uniq.join("|")
-      # @watch_osusume = if watch_names.present?
-      #   s_products.where("products.name ~ ?", watch_names)
-      #     .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
-      # else
-      #   []
-      # end
-
-      # ### 購入履歴に基づくオススメ ###
-      # bid_names = @bid_products.pluck(:name).map(&:split).flatten.uniq.join("|")
-      # @bid_osusume = if bid_names.present?
-      #   s_products.where("products.name ~ ?", bid_names)
-      #     .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
-      # else
-      #   []
-      # end
-
-      # ### 入札してみませんか ###
-      # cat_pids = DetailLog.where(user_id: @user.id).group(:product_id)
-      #   .order("count(product_id) DESC").limit(Product::NEWS_LIMIT).select(:product_id)
-      # @cart_products = s_products.where(id: @watch_products.limit(nil)).or(s_products.where(id: cat_pids))
-      #   .where.not(id: @bid_products.limit(nil)).reorder("random()")
-
-      # ### こちらもオススメ ###
-      # next_name = Product.where(id: @watch_products.limit(nil)).or(Product.where(id: @bid_products.limit(nil)))
-      #   .finished
-      #   .where.not(max_bid_id: Bid.where(user_id: @user.id))
-      #   .pluck(:name).map(&:split).flatten.uniq.join("|")
-      # @next_osusume = if next_name.present?
-      #   s_products.where("products.name ~ ?", next_name)
-      #     .where.not(id: @watch_products.limit(nil)).where.not(id: @bid_products.limit(nil)).reorder("random()")
-      # else
-      #   []
-      # end
-
-      # ### 最近チェックした商品 ###
-      # @dl_products = products.joins(:detail_logs).group(:id).where(detail_logs: {user_id: @user.id})
-      #   .reorder("max(detail_logs.created_at)").limit(Product::NEW_MAX_COUNT)
-
-      # ### フォローした出品会社の新着商品 ###
-      # @fol_products = s_products.where(user_id: @user.follows.select(:user_id))
-      #   .reorder(dulation_start: :desc).limit(Product::NEW_MAX_COUNT)
 
       @watch_osusume = Product.osusume("watch_osusume", ip, @user&.id).limit(Product::NEWS_LIMIT) # ウォッチオススメ
       @bid_osusume   = Product.osusume("bid_osusume", ip, @user&.id).limit(Product::NEWS_LIMIT)   # 入札オススメ
@@ -454,33 +390,44 @@ class System::PlaygroundController < ApplicationController
       @dl_products   = Product.osusume("detail_log", ip, @user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
       @fol_products  = Product.osusume("follows", ip, @user&.id).limit(Product::NEW_MAX_COUNT)    # フォロー新着
       @oft_products  = Product.osusume("often", ip, @user&.id).limit(Product::NEWS_LIMIT)         # よく見る新着
+
     else # 非ログイン
-      ### 最近チェックした商品 for IP ###
-      # @ip = ip
-      # @dl_products = products.joins(:detail_logs).group(:id)
-      #   .where(detail_logs: {ip: ip}).reorder("max(detail_logs.created_at)")
-
-      # ### 閲覧履歴に基づくオススメ ###
-      # dl_names =  @dl_products.pluck(:name).map(&:split).flatten.uniq.join("|")
-      # @dl_osusume = s_products
-      #   .where("name ~ ?", "(#{dl_names})").where.not(id: @dl_products.limit(nil)).reorder("random()")
-
       @dl_products = Product.osusume("detail_log", ip).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
       @dl_osusume  = Product.osusume("dl_osusume", ip).limit(Product::NEWS_LIMIT)    # 閲覧履歴に基づくオススメ
     end
 
     ### ユーザ共通 : 現在出品中の商品からのみ取得 ###
-    # @end_products  = s_products.reorder(:dulation_end) # まもなく終了
-    # news           = s_products.reorder(dulation_start: :desc)
-    # @tool_news     = news.where(category_id: Category.find(1).subtree_ids) rescue [] # 機械新着
-    # @machine_news  = news.where(category_id: Category.find(107).subtree_ids) rescue [] # 工具新着
-    # @zero_products = s_products.joins(:detail_logs).group(:id).reorder("count(detail_logs.id), random()") # 閲覧少
     @end_products  = Product.osusume("end").limit(Product::NEWS_LIMIT)          # まもなく終了
     @tool_news     = Product.osusume("news_tool").limit(Product::NEWS_LIMIT)    # 工具新着
     @machine_news  = Product.osusume("news_machine").limit(Product::NEWS_LIMIT) # 機械新着
     @zero_products = Product.osusume("zero").limit(Product::NEWS_LIMIT)         # 閲覧少
 
     render template: "main/index_02"
+  end
+
+  def vbpr_detail
+    @product = Product.find(params[:id])
+
+    @bid = @product.bids.new
+    @shipping_label = ShippingLabel.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no)
+    if user_signed_in?
+      @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: current_user.addr_1)
+    end
+
+    key_array =  %w|dl_osusume end news_tool news_machine zero|
+    key_array += %w|v watch_osusume bid_osusume cart next often| if user_signed_in? # ログイン時
+
+    ### オススメをランダム(0件でないもの)取得 ###
+    key_array.shuffle.each do |key|
+      @osusume = case key
+      when "v"; DetailLog.vbpr_get(current_user&.id, Product::NEW_MAX_COUNT) # VBPR結果
+      else;     Product.osusume(key, ip, current_user&.id).limit(Product::NEW_MAX_COUNT)
+      end
+
+      @osusume_titles = Product.osusume_titles(key); break if @osusume.length > 0
+    end
+
+    render template: "products/show_02"
   end
 
   def categories
@@ -691,5 +638,23 @@ class System::PlaygroundController < ApplicationController
 
   def s3_bucket
     s3_resource.bucket(@bucket_name)
+  end
+end
+
+### ユーザセレクタ ###
+def user_selector
+  dls    = DetailLog.where(created_at: DetailLog::VBPR_RANGE)
+  dl_cnt = dls.group(:user_id).order("count_all DESC").count
+  wa_cnt = Watch.where(created_at: DetailLog::VBPR_RANGE).group(:user_id).count
+  bi_cnt = Bid.where(created_at: DetailLog::VBPR_RANGE).group(:user_id).count
+
+  @user_selector = User.where(id: dls.select(:user_id)).order(:id)
+    .map { |us| ["#{us.id} : #{us.company} #{us.name} (#{bi_cnt[us.id].to_i} / #{wa_cnt[us.id].to_i} / #{dl_cnt[us.id].to_i})", us.id] }
+
+  ### ユーザ情報 ###
+  @user = case
+  when params[:user_id].present?; User.find(params[:user_id])
+  when user_signed_in?;           current_user
+  else;                           nil
   end
 end

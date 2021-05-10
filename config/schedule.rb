@@ -71,15 +71,11 @@ if rails_env.to_sym == :production
 end
 
 if rails_env.to_sym == :staging
-  every :day, at: '3:00 am' do
-    # runner "Watch.scheduling"
-    # command "wget --spider #{scheduling_url + '/watch_scheduling'}"
-    command "/usr/bin/python3 #{Rails.root}/lib/python/vbpr/vbpr_csv.py --url #{url} --bpr"
-  end
+  # every :day, at: '3:00 am' do
+  #   command "/usr/bin/python3 #{Rails.root}/lib/python/vbpr/vbpr_csv.py --url #{url} --bpr"
+  # end
 
-  every :day, at: '4:00 am' do
-    # runner "Watch.scheduling"
-    # command "wget --spider #{scheduling_url + '/watch_scheduling'}"
+  every :day, at: '3:00 am' do
     command "/usr/bin/python3 #{Rails.root}/lib/python/vbpr/vbpr_csv.py --url #{url}"
   end
 end

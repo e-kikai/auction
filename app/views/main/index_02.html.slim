@@ -235,7 +235,6 @@
             label.topppage-category-title
               span.glyphicon.glyphicon-wrench.text-primary
               span.btn-content 工具新着
-              = link_to "もっと見る", "/products?category_id=12}", class: "btn btn-more"
             .top-category-news
               - @tool_news.each do |pr|
                 / = render "products/product_panel_02", product: pr, r: :top_tnw
@@ -364,7 +363,7 @@
           .panel-body.toppage-contents
             .toppage-scroll
               - @dl_products.each do |pr|
-                = render "main/product_panel", product: pr, r: :top_chk
+                = render "main/product_panel_04", product: pr, r: :top_chk
 
       /// フォローした出品会社の新着商品 ///
       - if @fo_products.present?
@@ -375,7 +374,7 @@
           .panel-body.toppage-contents
             .toppage-scroll
               - @fo_products.each do |pr|
-                = render "main/product_panel", product: pr, r: :top_flw
+                = render "main/product_panel_04", product: pr, r: :top_flw
 
       /// 特集 ///
       / .toppage-searches

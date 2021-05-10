@@ -296,32 +296,31 @@ class Product < ApplicationRecord
   }
 
 
-    ### オススメ枠のタイトル取得 ###
-    def osusume_title(command)
-      case command
+  ### オススメ枠のタイトル・ログキー・アイコン・アイコンカラー取得 ###
+  def self.osusume_titles(command)
+    case command.to_s
 
-      ### 共通 ###
-      when "end";          "まもなく終了"
-      when "news_tool";    "工具新着"
-      when "news_machine"; "機械新着"
-      when "zero";         "こんなのもあります"
+    ### 共通 ###
+    when "end";          ["まもなく終了",                    :endo, :time,     "#a"]
+    when "news_tool";    ["工具新着",                        :tnew, :wrench,   :lightseagreen]
+    when "news_machine"; ["機械新着",                        :mnew, :cog,      "#3c763d"]
+    when "zero";         ["こんなのもあります",              :zer,  "zoom-in", "#8a6d3b"]
+    # when "detail_log";   ["最近チェックした商品",            :chk,  :ok]
+    when "dl_osusume";   ["閲覧履歴に基づくオススメ",        :dlos, :gift,     :lightseagreen]
 
-      when "detail_log";   "最近チェックした商品"
-      when "dl_osusume";   "閲覧履歴に基づくオススメ"
+    ### ログインユーザ ###
+    when "nitamono";      ["あなたへのオススメ",             :vos,  :camera,   :mediumpurple]
+    when "user";          ["閲覧傾向からのオススメ",         :bos,  :gift,     :lightseagreen]
+    when "watch_osusume"; ["ウォッチに基づくオススメ",       :waos, :star,     "#FF0"]
+    when "bid_osusume";   ["入札履歴に基づくオススメ",       :bios, :pencil,   :darkorange]
+    when "cart";          ["入札してみませんか？",           :crt,  :flash,    :deeppink]
+    when "next";          ["こちらもいかがでしょう？",       :nxt,  :flag,     :olivedrab]
+    # when "follows";       ["フォローした出品会社の新着商品", :flw,  :heart]
+    when "often";         ["よくアクセスするカテゴリの新着", :onew, :wrench,   "#337ab7"]
 
-      ### ログインユーザ ###
-      when "nitamono";      "画像特徴からのオススメ"
-      when "user";          "閲覧傾向からのオススメ"
-      when "watch_osusume"; "ウォッチに基づくオススメ"
-      when "bid_osusume";   "入札履歴に基づくオススメ"
-      when "cart";          "入札してみませんか？"
-      when "next"           "こちらもいかがでしょう？"
-      when "follows";       "フォローした出品会社の新着商品"
-      when "often";         "よくアクセスするカテゴリの新着"
-
-      else;                 ""
-      end
+    else;                 ["",                               "",    "",     ""]
     end
+  end
 
   ### 関連商品(おなじカテゴリの商品) ###
   scope :related_products, -> prs {

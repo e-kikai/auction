@@ -191,7 +191,10 @@ Rails.application.routes.draw do
           get 'vbpr_test'
           get 'vbpr_view'
           get 'vbpr_top'
-          get 'categories'
+        end
+
+        member do
+          get 'vbpr_detail'
         end
       end
     end

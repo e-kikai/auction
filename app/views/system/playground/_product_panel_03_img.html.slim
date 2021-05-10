@@ -1,6 +1,7 @@
 .thumbnail.product-pannel_02
   / = link_to "/products/#{product.id}?r=#{r}", target: "_blank", title: product.name, class: "product_link" do
-  = link_to "javascript:void(0);", title: product.name, class: "product_link" do
+  / = link_to "javascript:void(0);", title: product.name, class: "product_link" do
+  = link_to "/system/playground/#{product.id}/vbpr_detail?user_id#{@user&.id}r=#{r}", target: "_blank", title: product.name, class: "product_link" do
     .thumb_img
       - if product.product_images.first.present?
         = image_tag("#{@img_base}/#{product.product_images.first.id}/thumb_#{product.product_images&.first&.image_identifier}", alt: product.name)
