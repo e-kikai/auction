@@ -2,8 +2,7 @@
   / = link_to "/products/#{product.id}?r=#{r}", target: "_blank", title: product.name do
   = link_to "/system/playground/#{product.id}/vbpr_detail?user_id#{@user&.id}r=#{r}", target: "_blank", title: product.name, class: "product_link" do
 
-    / = image_tag(product.thumb_url, alt: product.name)
-    = image_tag("#{@img_base}/#{product.product_images.first.id}/thumb_#{product.product_images&.first&.image_identifier}", alt: product.name)
+    = image_tag(product.thumb_url, alt: product.name)
 
     - if product.state_before_type_cast > 0
       .state class="state_#{product.state_before_type_cast}" = product.state
@@ -19,3 +18,7 @@
         - else
           span.max_price_label 現在
           span.max_price = number_to_currency(product.max_price_with_tax)
+
+  .watch_area
+    / = render "products/nitamono_02", product: product
+    = render "products/watch_02", product: product, active: true

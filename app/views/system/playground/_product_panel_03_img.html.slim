@@ -4,7 +4,8 @@
   = link_to "/system/playground/#{product.id}/vbpr_detail?user_id#{@user&.id}r=#{r}", target: "_blank", title: product.name, class: "product_link" do
     .thumb_img
       - if product.product_images.first.present?
-        = image_tag("#{@img_base}/#{product.product_images.first.id}/thumb_#{product.product_images&.first&.image_identifier}", alt: product.name)
+        = image_tag(product.thumb_url, srcset: {product.product_images.first.try(:image).try(:view).try(:url) || product.thumb_url => "2x"}, alt: product.name)
+
       - else
         = image_tag(ProductImage::NOIMAGE_THUMB, alt: product.name)
 
@@ -45,6 +46,6 @@
           - unless product.prompt_dicision?
             = product.remaining_time
 
-  / .watch_area
-  /   = render "products/nitamono_02", product: product
-  /   = render "products/watch_02", product: product, active: true
+  .watch_area
+    / = render "products/nitamono_02", product: product
+    = render "products/watch_02", product: product, active: true
