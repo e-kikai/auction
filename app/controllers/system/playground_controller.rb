@@ -414,6 +414,12 @@ class System::PlaygroundController < ApplicationController
       @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: current_user.addr_1)
     end
 
+    ### 人気商品 ###
+    @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
+
+    ### 似たものサーチ ###
+    @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
+
     key_array =  %w|dl_osusume end news_tool news_machine zero|
     key_array += %w|v watch_osusume bid_osusume cart next often| if user_signed_in? # ログイン時
 

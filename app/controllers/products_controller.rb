@@ -77,22 +77,6 @@ class ProductsController < ApplicationController
       @products = @products.reorder(" CASE WHEN dulation_end <= CURRENT_TIMESTAMP THEN 2 ELSE 1 END, dulation_end ")
     end
 
-    ### オススメ ###
-    if params[:osusume].present?
-      if params[:osusume] == "v"
-        @products = DetailLog.vbpr_get(current_user.id, 6) # VBPR結果
-        @bpr_products  = DetailLog.vbpr_get(@user.id, 6, true) #BPR結果
-
-      elsif params[:osusume] == "b"
-        @products = @products.osusume(params[:osusume])
-        @title    = Product.osusume_title(params[:osusume])
-
-      else
-        @products = @products.osusume(params[:osusume])
-        @title    = Product.osusume_title(params[:osusume])
-      end
-    end
-
     ### ページャ ###
     if params[:nitamono].present?
       @pproducts = Kaminari.paginate_array(nitamono_products, total_count: @products.count).page(params[:page])
