@@ -56,6 +56,19 @@ article
     /// 状態 ///
     span.state class="state_#{@product.state_before_type_cast}" = @product.state
 
+  /// エラーメッセージ ///
+  - if @bid.errors.full_messages.present?
+    .col-md-offset-2.col-md-8
+      .alert.alert-danger
+        ul
+          - @bid.errors.full_messages.each do |msg|
+            li = msg
+
+  = hidden_field_tag :product_id, @product.id
+  = hidden_field_tag :referer,    request.referer
+  = hidden_field_tag :r,          params[:r]
+
+  /// 落札表示 ///
   - if @product.finished?
     - if @product.cancel?
       .alert.alert-danger
@@ -89,9 +102,6 @@ article
     .alert.alert-warning
         span.glyphicon.glyphicon-alert
         span.btn-content このオークションは開始前です
-
-
-
 
   /// 終了後、現在開催中の商品リスト ///
   - if @product.finished? || @product.before?
@@ -130,16 +140,7 @@ article
                 / = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
                 = render "product_panel_04", product: pr, r: "dtl_#{@osusume_titles[1]}"
 
-  - if @bid.errors.full_messages.present?
-    .col-md-offset-2.col-md-8
-      .alert.alert-danger
-        ul
-          - @bid.errors.full_messages.each do |msg|
-            li = msg
-
-  = hidden_field_tag :product_id, @product.id
-  = hidden_field_tag :referer,    request.referer
-  = hidden_field_tag :r,          params[:r]
+    h4.product-description style="margin-top:64px;" 商品情報
 
   /// 情報枠 ///
   .row
@@ -147,31 +148,31 @@ article
       .panel.panel-default
         .panel-body
           .row
-            .col-md-4.col-sm-4.col-xs-6.text-right style="padding: 0 8px;"
+            .col-md-4.col-sm-4.col-xs-4.text-right style="padding: 0 8px;"
               span.glyphicon.glyphicon-tags
               span.btn-content 入札件数
               .
                 span.h3> #{@product.bids_count}
                 span 件
 
-                = link_to "/products/#{@product.id}/bids", class: "btn btn-default", style: "margin-top: 12px;" do
-                  span.glyphicon.glyphicon-info-sign
-                  span.btn-content 入札履歴・残り時間詳細
-
-            .col-md-4.col-sm-4.col-xs-6.text-right style="padding: 0 8px;border-left: 1px dotted #CCC;"
+            .col-md-4.col-sm-4.col-xs-4.text-right style="padding: 0 8px;border-left: 1px dotted #CCC;"
               - unless @product.prompt_dicision?
                 span.glyphicon.glyphicon-time
                 span.btn-content 残り時間
                 .
                   span.h3> #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
                   | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
-            .col-md-4.col-sm-4.col-xs-6.col-md-offset-0.col-sm-offset-0.col-xs-offset-3.text-center style="padding: 0;"
+            .col-md-4.col-sm-4.col-xs-4.col-md-offset-0.col-sm-offset-0.col-xs-offset-0.text-center style="padding: 0;;border-left: 1px dotted #CCC;"
               - unless @product.finished?
                 / = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
                 /   span.glyphicon.glyphicon-star.watch-star
                 /   span.btn-content ウォッチ
+                . ウォッチリスト
+                . = render "products/watch_02", product: @product
 
-                = render "products/watch_02", product: @product
+            . = link_to "/products/#{@product.id}/bids", class: "btn btn-default", style: "margin: 8px 0 8px 12px" do
+              span.glyphicon.glyphicon-info-sign
+              span.btn-content 入札履歴・残り時間詳細
 
           /// ウォッチ、閲覧数 ///
           - if @product.unique_user_count > 0
