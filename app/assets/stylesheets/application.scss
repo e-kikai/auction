@@ -1039,13 +1039,23 @@ hr.detail-price-calc {
 }
 
 .success_message {
-    // background-color: #ff9;
-    background-color: #FFF;
+    background-color: #ff9;
     border-color: #833c14;
     border-width: 3px;
     color: #833c14;
     font-size: 120%;
     padding: 8px 20px;
+}
+
+.finish_message {
+  background-color: #FFF;
+  border-color: #833c14;
+  border-width: 3px;
+  color: #833c14;
+  font-size: 120%;
+  padding: 8px 20px;
+  max-width: 660px;
+  margin: 15px 0;
 }
 
 .bid-message {
@@ -1285,8 +1295,6 @@ dl.star-dl {
   &:nth-child(even) {
     background: #EEE;
   }
-
-  &:nth-child(odd) {}
 }
 
 .max_price {
@@ -2523,8 +2531,9 @@ ui#footer_banners li {
 .top-category-news .product-pannel_02:nth-child(6) {
   display: none;
 
-  @media (max-width:992px) {
-    display: inline-block;
+  // @media (max-width:992px) {
+  @media (max-width:1414px) {
+      display: inline-block;
   }
 
   @media (min-width:1700px) {

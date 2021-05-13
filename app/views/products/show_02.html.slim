@@ -8,11 +8,9 @@
 - elsif @product.success?
   - desc_price_label = "落札価格"
   - desc_gobi = "出品していた"
-  - set_meta_tags nofollow: false, noindex: true
 - else
   - desc_price_label = "終了価格"
   - desc_gobi = "出品していた"
-  - set_meta_tags nofollow: false, noindex: true
 
 - desc =  "中古工具が見つかる「ものづくりオークション」。"
 
@@ -71,11 +69,11 @@ article
   /// 落札表示 ///
   - if @product.finished?
     - if @product.cancel?
-      .alert.alert-danger
+      .alert.finish_message
         .
           span.glyphicon.glyphicon-remove
           span.btn-content このオークションは、以下の理由により出品キャンセルされました。
-        . = markdown(@product.cancel)
+        . = markdown(@product.cancel.strip)
 
     - elsif @product.trade_success?(current_user)
       .alert.success_message
@@ -85,7 +83,7 @@ article
           span.glyphicon.glyphicon-transfer
           span.btn-content 出品会社と取引する
     - elsif @product.success?
-      .alert.success_message
+      .alert.finish_message
         span.glyphicon.glyphicon-ok
         span.btn-content  このオークションは終了しました。沢山の入札ありがとうございました。
 
