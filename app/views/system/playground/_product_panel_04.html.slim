@@ -1,6 +1,6 @@
 .thumbnail.product-pannel
   / = link_to "/products/#{product.id}?r=#{r}", target: "_blank", title: product.name do
-  = link_to "/system/playground/#{product.id}/vbpr_detail?user_id#{@user&.id}r=#{r}", target: "_blank", title: product.name, class: "product_link" do
+  = link_to "/system/playground/#{product.id}/vbpr_detail?user_id=#{@user&.id}r=#{r}", target: "_blank", title: product.name, class: "product_link" do
 
     = image_tag(product.thumb_url, alt: product.name)
 
