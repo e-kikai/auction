@@ -87,7 +87,7 @@ article
     - elsif @product.success?
       .alert.success_message
         span.glyphicon.glyphicon-ok
-        span.btn-content  このオークションは終了しました。たくさんの入札ありがとうございました。
+        span.btn-content  このオークションは終了しました。沢山の入札ありがとうございました。
 
 
     - elsif @product.lower_price.to_i > @product.max_price
@@ -164,9 +164,6 @@ article
                   | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
             .col-md-4.col-sm-4.col-xs-4.col-md-offset-0.col-sm-offset-0.col-xs-offset-0.text-center style="padding: 0;;border-left: 1px dotted #CCC;"
               - unless @product.finished?
-                / = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
-                /   span.glyphicon.glyphicon-star.watch-star
-                /   span.btn-content ウォッチ
                 . ウォッチリスト
                 . = render "products/watch_02", product: @product
 

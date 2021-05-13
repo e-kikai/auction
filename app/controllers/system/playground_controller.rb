@@ -421,7 +421,7 @@ class System::PlaygroundController < ApplicationController
     @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
 
     key_array =  %w|dl_osusume end news_tool news_machine zero|
-    key_array += %w|v watch_osusume bid_osusume cart next often| if user_signed_in? # ログイン時
+    key_array += %w|v watch_osusume bid_osusume cart next often| if @user.present? # ログイン時
 
     ### オススメをランダム(0件でないもの)取得 ###
     key_array.shuffle.each do |key|
@@ -430,8 +430,33 @@ class System::PlaygroundController < ApplicationController
       else;     Product.osusume(key, ip, current_user&.id).limit(Product::NEW_MAX_COUNT)
       end
 
-      @osusume_titles = Product.osusume_titles(key); break if @osusume.length > 0
+      next if @osusume.length == 0
+
+      @osusume_key    = key
+      @osusume_titles = Product.osusume_titles(key)
+      break
     end
+
+    ### 終了時おすすめ ###
+    if @product.finished?
+      key_array =  %w|dl_osusume|
+      key_array += %w|v watch_osusume bid_osusume cart next often| if @user.present? # ログイン時
+
+      ### オススメをランダム(0件でないもの)取得 ###
+      key_array.shuffle.each do |key|
+        @fin_osusume = case key
+        when "v"; DetailLog.vbpr_get(current_user&.id, Product::NEW_MAX_COUNT) # VBPR結果
+        else;     Product.osusume(key, ip, current_user&.id).limit(Product::NEW_MAX_COUNT)
+        end
+
+        next if key == @osusume_key ||  @fin_osusume.length == 0 # ない場合 or 下の表示と一緒のとき
+
+        @fin_osusume_key    = key
+        @fin_osusume_titles = Product.osusume_titles(key)
+        break
+      end
+    end
+
 
     render template: "products/show_02"
   end

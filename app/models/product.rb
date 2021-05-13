@@ -302,10 +302,10 @@ class Product < ApplicationRecord
 
     ### 共通 ###
     when "end";          ["まもなく終了",                    :endo, :time,     "#a"]
-    when "news_tool";    ["工具新着",                        :tnew, :wrench,   :lightseagreen]
+    when "news_tool";    ["工具新着",                        :onew, :wrench,   :lightseagreen]
     when "news_machine"; ["機械新着",                        :mnew, :cog,      "#3c763d"]
     when "zero";         ["こんなのもあります",              :zer,  "zoom-in", "#8a6d3b"]
-    # when "detail_log";   ["最近チェックした商品",            :chk,  :ok]
+    when "detail_log";   ["最近チェックした商品",            :chk,  :ok,       "#000080"]
     when "dl_osusume";   ["閲覧履歴に基づくオススメ",        :dlos, :gift,     :lightseagreen]
 
     ### ログインユーザ ###

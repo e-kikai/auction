@@ -1039,8 +1039,10 @@ hr.detail-price-calc {
 }
 
 .success_message {
-    background-color: #ff9;
+    // background-color: #ff9;
+    background-color: #FFF;
     border-color: #833c14;
+    border-width: 3px;
     color: #833c14;
     font-size: 120%;
     padding: 8px 20px;
@@ -2553,4 +2555,9 @@ ui#footer_banners li {
   &:hover {
     border: 0;
   }
+}
+
+.thumbnail.search-panel {
+  border: 0;
+  padding: 0;
 }

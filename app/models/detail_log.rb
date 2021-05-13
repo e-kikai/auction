@@ -56,9 +56,15 @@ class DetailLog < ApplicationRecord
 
     # 外部サイト
     "machinelife" => "マシンライフ", "dst" => "デッドストック", "ekikai" => "e-kikai",
-
     # ブラウザ
     "reload" => "リロード", "back" => "履歴",
+
+    # オススメ枠
+    "vos" => "VBPR", "bos" => "BPR",
+    "waos" => "ウォッチオススメ", "bios" => "入札履歴オススメ", "dlos" => "閲覧履歴オススメ",
+    "crt"  => "入札してみませんか", "nxt" => "こちらもいかが", "endo" => "まもなく終了", "zer" => "こんなのも",
+    "onew" => "上位カテゴリ新着", "tnew" => "工具新着", "mos" => "機械新着",
+
   }
 
   VBPR_BIAS      = {detail: 1, watch: 4, bid: 10}
