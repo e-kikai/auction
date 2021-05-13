@@ -1045,6 +1045,13 @@ hr.detail-price-calc {
     color: #833c14;
     font-size: 120%;
     padding: 8px 20px;
+    max-width: 680px;
+    border-width: 3px;
+    margin: 32px auto;
+
+    .glyphicon-ok {
+      color: blueviolet;
+    }
 }
 
 .finish_message {
@@ -1054,8 +1061,16 @@ hr.detail-price-calc {
   color: #833c14;
   font-size: 120%;
   padding: 8px 20px;
-  max-width: 660px;
-  margin: 15px 0;
+  max-width: 680px;
+  margin: 32px auto;
+
+  .markdown-area {
+    margin: 8px;
+
+    p {
+      margin: 0;
+    }
+  }
 }
 
 .bid-message {
