@@ -87,7 +87,6 @@ article
         span.glyphicon.glyphicon-ok
         span.btn-content  このオークションは終了しました。沢山の入札ありがとうございました。
 
-
     - elsif @product.lower_price.to_i > @product.max_price
       .alert.alert-danger
         span.glyphicon.glyphicon-ok
@@ -117,8 +116,11 @@ article
     - elsif @popular_products.present?
       .special-area
         label
-          span.glyphicon.glyphicon-thumbs-up.check-icon
-          span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
+          / span.glyphicon.glyphicon-thumbs-up.check-icon
+          / span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
+          span.glyphicon.glyphicon-camera.check-icon
+          span.btn-content = "#{@product.name} と似た商品"
+
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
@@ -126,17 +128,17 @@ article
                 / = render "/main/product_panel", product: pr, r: :dtl_sca
                 = render "product_panel_04", product: pr, r: :dtl_sca
 
-    - if @osusume.present?
+    - if @fin_osusume.present?
       .special-area
         label
-          span.glyphicon.glyphicon-gift class="glyphicon-#{@osusume_titles[2]}" style="color:#{@osusume_titles[3]};"
-          span.btn-content = @osusume_titles[0]
+          span.glyphicon.glyphicon-gift class="glyphicon-#{@fin_osusume_titles[2]}" style="color:#{@fin_osusume_titles[3]};"
+          span.btn-content = @fin_osusume_titles[0]
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
-              - @osusume.each do |pr|
+              - @fin_osusume.each do |pr|
                 / = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
-                = render "product_panel_04", product: pr, r: "dtl_#{@osusume_titles[1]}"
+                = render "product_panel_04", product: pr, r: "dtl_#{@fin_osusume_titles[1]}"
 
     h4.product-description style="margin-top:64px;" 商品情報
 
@@ -397,6 +399,17 @@ article
               = render "product_panel_04", product: pr, r: :dtl_nmr
 
   - if @popular_products.present?
+    .special-area
+      label
+        span.glyphicon.glyphicon-camera.check-icon
+        span.btn-content = "#{@product.name} と似た商品 (xxx dummy xxx)"
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @popular_products.each do |pr|
+              / = render "/main/product_panel", product: pr, r: :dtl_sca
+              = render "product_panel_04", product: pr, r: :dtl_sca
+
     .special-area
       label
         span.glyphicon.glyphicon-thumbs-up.check-icon
