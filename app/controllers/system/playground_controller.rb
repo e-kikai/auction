@@ -420,14 +420,11 @@ class System::PlaygroundController < ApplicationController
     ### 似たものサーチ ###
     @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
 
+    ### 終了時おすすめ ###
     key_array =  %w|dl_osusume|
     key_array += %w|v watch_osusume bid_osusume cart next often| if @user.present? # ログイン時
 
-    ### 終了時おすすめ ###
     if @product.finished?
-      key_array =  %w|dl_osusume|
-      key_array += %w|v watch_osusume bid_osusume cart next often| if @user.present? # ログイン時
-
       ### オススメをランダム(0件でないもの)取得 ###
       key_array.shuffle.each do |key|
         @fin_osusume = case key
@@ -436,15 +433,15 @@ class System::PlaygroundController < ApplicationController
         end
 
         next if @fin_osusume.length == 0 # ない場合は次へ
-        key_array.delete!(key)
+        key_array.delete(key)
         @fin_osusume_titles = Product.osusume_titles(key)
         break
       end
     end
 
+   ### オススメをランダム(0件でないもの)取得 ###
     key_array +=  %w|end news_tool news_machine zero| # そのほかオススメ項目追加
 
-    ### オススメをランダム(0件でないもの)取得 ###
     key_array.shuffle.each do |key|
       @osusume = case key
       when "v"; DetailLog.vbpr_get(current_user&.id, Product::NEW_MAX_COUNT) # VBPR結果
