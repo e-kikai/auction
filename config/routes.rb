@@ -200,5 +200,11 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :data do
+      collection do
+        post 'vbpr'
+      end
+    end
+
   end
 end

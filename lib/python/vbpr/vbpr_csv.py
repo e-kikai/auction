@@ -42,7 +42,7 @@ args   = parser.parse_args()
 # epochs = args.epochs
 
 ### 1. JSONデータ読み込み ###
-json_url = '%s/system/playground/vbpr_test.json' % args.url
+json_url = '%s/system/data/vbpr.json' % args.url
 data     = requests.get(json_url, headers={"content-type": "application/json"}).json()
 # data = json.loads(input())
 
