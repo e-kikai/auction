@@ -44,6 +44,63 @@
 
 / = jsonld_script_tag
 
+- if @product.finished?
+  - if @product.cancel?
+    .alert.alert-danger
+      .
+        span.glyphicon.glyphicon-remove
+        span.btn-content このオークションは、以下の理由により出品キャンセルされました。
+      . = markdown(@product.cancel)
+
+  - elsif @product.trade_success?(current_user)
+    .alert.success_message
+      span.glyphicon.glyphicon-ok
+      span.btn-content おめでとうございます！あなたが落札しました。
+      = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
+        span.glyphicon.glyphicon-transfer
+        span.btn-content 出品会社と取引する
+  - elsif @product.success?
+    .alert.success_message
+      span.glyphicon.glyphicon-ok
+      span.btn-content  このオークションは終了しました。たくさんの入札ありがとうございました。
+
+
+  - elsif @product.lower_price.to_i > @product.max_price
+    .alert.alert-danger
+      span.glyphicon.glyphicon-ok
+      span.btn-content  最低落札価格に達しなかったため、このオークションは未落札で終了しています。
+  - else
+    .alert.alert-danger
+      span.glyphicon.glyphicon-ok
+      span.btn-content  このオークションは終了しています。
+- elsif @product.before?
+  .alert.alert-warning
+      span.glyphicon.glyphicon-alert
+      span.btn-content このオークションは開始前です
+
+/// 終了後、現在開催中の商品リスト ///
+- if @product.finished? || @product.before?
+  - if @nitamono_products.present?
+    .special-area
+      label
+        span.glyphicon.glyphicon-camera.check-icon
+        span.btn-content = "#{@product.name} と似た商品"
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @nitamono_products.each do |pr|
+              = render "/main/product_panel", product: pr, r: :dtl_nmr
+  - elsif @popular_products.present?
+    .special-area
+      label
+        span.glyphicon.glyphicon-thumbs-up.check-icon
+        span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @popular_products.each do |pr|
+              = render "/main/product_panel", product: pr, r: :dtl_sca
+
 article
   h1.product-title
     span.glyphicon.glyphicon-wrench
@@ -54,7 +111,6 @@ article
     /// 状態 ///
     span.state class="state_#{@product.state_before_type_cast}" = @product.state
 
-  /// エラーメッセージ ///
   - if @bid.errors.full_messages.present?
     .col-md-offset-2.col-md-8
       .alert.alert-danger
@@ -66,105 +122,37 @@ article
   = hidden_field_tag :referer,    request.referer
   = hidden_field_tag :r,          params[:r]
 
-  /// 落札表示 ///
-  - if @product.finished?
-    - if @product.cancel?
-      .alert.finish_message
-        .
-          span.glyphicon.glyphicon-remove
-          span.btn-content このオークションは、以下の理由により出品キャンセルされました。
-        . = markdown(@product.cancel.strip)
-
-    - elsif @product.trade_success?(current_user)
-      .alert.success_message
-        span.glyphicon.glyphicon-ok
-        span.btn-content おめでとうございます！あなたが落札しました。
-        = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
-          span.glyphicon.glyphicon-transfer
-          span.btn-content 出品会社と取引する
-    - elsif @product.success?
-      .alert.finish_message
-        span.glyphicon.glyphicon-ok
-        span.btn-content  このオークションは終了しました。沢山の入札ありがとうございました。
-
-    - elsif @product.lower_price.to_i > @product.max_price
-      .alert.alert-danger
-        span.glyphicon.glyphicon-ok
-        span.btn-content  最低落札価格に達しなかったため、このオークションは未落札で終了しています。
-    - else
-      .alert.alert-danger
-        span.glyphicon.glyphicon-ok
-        span.btn-content  このオークションは終了しています。
-  - elsif @product.before?
-    .alert.alert-warning
-        span.glyphicon.glyphicon-alert
-        span.btn-content このオークションは開始前です
-
-  /// 終了後、現在開催中の商品リスト ///
-  - if @product.finished? || @product.before?
-    - if @nitamono_products.present?
-      .special-area
-        label
-          span.glyphicon.glyphicon-camera.check-icon
-          span.btn-content = "#{@product.name} と似た商品"
-        .panel.panel-default
-          .panel-body.toppage-contents
-            .toppage-scroll
-              - @nitamono_products.each do |pr|
-                = render "/main/product_panel", product: pr, r: :dtl_nmr
-    - elsif @popular_products.present?
-      .special-area
-        label
-          span.glyphicon.glyphicon-thumbs-up.check-icon
-          span.btn-content = "#{@product.name} とおなじカテゴリの人気商品"
-
-        .panel.panel-default
-          .panel-body.toppage-contents
-            .toppage-scroll
-              - @popular_products.each do |pr|
-                = render "/main/product_panel", product: pr, r: :dtl_sca
-
-    - if @fin_osusume.present?
-      .special-area
-        label
-          span.glyphicon.glyphicon-gift class="glyphicon-#{@fin_osusume_titles[2]}" style="color:#{@fin_osusume_titles[3]};"
-          span.btn-content = @fin_osusume_titles[0]
-        .panel.panel-default
-          .panel-body.toppage-contents
-            .toppage-scroll
-              - @fin_osusume.each do |pr|
-                = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
-
-    h4.product-description style="margin-top:64px;" 商品情報
-
   /// 情報枠 ///
   .row
     .col-md-4.col-md-push-8
       .panel.panel-default
         .panel-body
           .row
-            .col-md-4.col-sm-4.col-xs-4.text-right style="padding: 0 8px;"
+            .col-md-4.col-sm-4.col-xs-6.text-right style="padding: 0 8px;"
               span.glyphicon.glyphicon-tags
               span.btn-content 入札件数
               .
                 span.h3> #{@product.bids_count}
                 span 件
 
-            .col-md-4.col-sm-4.col-xs-4.text-right style="padding: 0 8px;border-left: 1px dotted #CCC;"
+                = link_to "/products/#{@product.id}/bids", class: "btn btn-default", style: "margin-top: 12px;" do
+                  span.glyphicon.glyphicon-info-sign
+                  span.btn-content 入札履歴・残り時間詳細
+
+            .col-md-4.col-sm-4.col-xs-6.text-right style="padding: 0 8px;border-left: 1px dotted #CCC;"
               - unless @product.prompt_dicision?
                 span.glyphicon.glyphicon-time
                 span.btn-content 残り時間
                 .
                   span.h3> #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
                   | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
-            .col-md-4.col-sm-4.col-xs-4.col-md-offset-0.col-sm-offset-0.col-xs-offset-0.text-center style="padding: 0;;border-left: 1px dotted #CCC;"
+            .col-md-4.col-sm-4.col-xs-6.col-md-offset-0.col-sm-offset-0.col-xs-offset-3.text-center style="padding: 0;"
               - unless @product.finished?
-                . ウォッチリスト
-                . = render "products/watch_02", product: @product
+                / = link_to "/myauction/watches?id=#{@product.id}", method: :post, class: "btn btn-default btn-square" do
+                /   span.glyphicon.glyphicon-star.watch-star
+                /   span.btn-content ウォッチ
 
-            . = link_to "/products/#{@product.id}/bids", class: "btn btn-default", style: "margin: 8px 0 8px 12px" do
-              span.glyphicon.glyphicon-info-sign
-              span.btn-content 入札履歴・残り時間詳細
+                = render "products/watch_02", product: @product
 
           /// ウォッチ、閲覧数 ///
           - if @product.unique_user_count > 0
@@ -402,17 +390,6 @@ article
           .toppage-scroll
             - @popular_products.each do |pr|
               = render "/main/product_panel", product: pr, r: :dtl_sca
-
-  - if @osusume.present?
-    .special-area
-      label
-        span.glyphicon.glyphicon-gift class="glyphicon-#{@osusume_titles[2]}" style="color:#{@osusume_titles[3]};"
-        span.btn-content = @osusume_titles[0]
-      .panel.panel-default
-        .panel-body.toppage-contents
-          .toppage-scroll
-            - @osusume.each do |pr|
-              = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
 
   .description-area
     h4.product-description

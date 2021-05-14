@@ -16,3 +16,7 @@
         - else
           span.max_price_label 現在
           span.max_price = number_to_currency(product.max_price_with_tax)
+
+  .watch_area
+    / = render "products/nitamono_02", product: product
+    = render "products/watch_02", product: product, active: true

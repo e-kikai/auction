@@ -27,7 +27,6 @@
           span.btn-content = se.name
 
   .row
-    / .col-xs-12 class='#{Rails.env.production? ? "col-md-2 col-sm-4" : "col-md-3 col-sm-3"}'
     .col-xs-12 class='col-md-3 col-sm-3'
 
         / - if (Time.parse('2020-03-20 00:00:00')..Time.parse('2020-04-02 23:59:59')).include? Time.now
@@ -47,9 +46,9 @@
         /     = link_to(image_tag("https://www.zenkiren.net/imgs/bids_31.png", alt: "マシンライフ 第31回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=31&r=bnr", target: "_blank")
 
 
-        / - if (Time.parse('2020-05-22 00:00:00')..Time.parse('2020-06-05 23:59:59')).include? Time.now
-        /   .thumbnail.search-panel
-        /     = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_191.png", alt: "大阪機械卸業団地協同組合 第191回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+        - if (Time.parse('2021-05-21 00:00:00')..Time.parse('2021-06-11 23:59:59')).include? Time.now
+          .thumbnail.search-panel
+            = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_195.jpg", alt: "大阪機械卸業団地協同組合 第195回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
         / - if (Time.parse('2020-08-21 00:00:00')..Time.parse('2020-09-04 23:59:59')).include? Time.now
         /   .thumbnail.search-panel
@@ -97,16 +96,15 @@
             span.btn-content カテゴリからさがす
             span.glyphicon.glyphicon-chevron-down
 
-            / = link_to "categories" do
-            /   | カテゴリから探す
-            /   .pull-right
-            /     .glyphicon.glyphicon-menu-right
           ul.list-group#collapse_category.panel-collapse.collapse.in.xs-close
             = link_to "すべて", "products", class: "list-group-item"
             - @roots.each do |ca|
               = link_to "#{ca.name}", "products?category_id=#{ca.id}", class: "list-group-item"
               - ca.children.order(:order_no).each do |ca2|
                 = link_to "　#{ca2.name}", "products?category_id=#{ca2.id}", class: "list-group-item"
+
+        .thumbnail.search-panel.hidden-xs
+          = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
 
         / - if Rails.env != "production"
         .panel.panel-default
@@ -139,203 +137,199 @@
         .twitter-area.hidden-xs
           <a class="twitter-timeline" data-lang="ja" data-height="400" data-link-color="#981CEB" href="https://twitter.com/mnok_official?ref_src=twsrc%5Etfw">Tweets by mnok_official</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-        / - if Rails.env == "production"
-        /   .col-md-7.col-sm-8.col-xs-12
-        /     .toppage-searches
-        /       - if @searches[0]
-        /         - @searches[0..2].each do |se|
-        /           = render "search_panel", search: se
-        /
-        /     label
-        /       span.new-icon
-        /       span.btn-content 新着商品
-        /       = link_to "/news/#{Time.now.strftime("%Y-%m-%d")}", class: "btn btn-warning", style: "margin-left: 4px;" do
-        /         span.new-icon
-        /         span.btn-content すべての新着商品を見る
-        /         span.new-icon
-        /
-        /     .panel.panel-default
-        /       .panel-body.toppage-contents
-        /         .toppage-scroll
-        /           - @new_products.each do |pr|
-        /             = render "product_panel", product: pr, r: :top_new
-        /
-        /     .toppage-searches
-        /       - if @searches[3]
-        /         - @searches[3..5].each do |se|
-        /           = render "search_panel", search: se
-        /
-        /
-        /     - if @detaillog_products.present?
-        /       label
-        /         span.glyphicon.glyphicon-ok.check-icon
-        /         span.btn-content 最近チェックした商品
-        /       .panel.panel-default
-        /         .panel-body.toppage-contents
-        /           .toppage-scroll
-        /             - @detaillog_products.each do |pr|
-        /               = render "product_panel", product: pr, r: :top_chk
-        /
-        /     .toppage-searches
-        /       - if @searches[6]
-        /         - @searches[6..8].each do |se|
-        /           = render "search_panel", search: se
-        /
-        /     - if @follows_new_products.present?
-        /       label
-        /         span.glyphicon.glyphicon-heart.follow-heart
-        /         span.btn-content フォローした出品会社の新着商品
-        /       .panel.panel-default
-        /         .panel-body.toppage-contents
-        /           .toppage-scroll
-        /             - @follows_new_products.each do |pr|
-        /               = render "product_panel", product: pr, r: :top_flw
-        /
-        /
-        /     .toppage-searches
-        /       - if @searches[9]
-        /         - @searches[9..10].each do |se|
-        /           = render "search_panel", search: se
-        /
-        /       .thumbnail.search-panel style="border:0;"
-        /         = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
-        /
-        /
-        /   .col-md-3.col-sm-4.col-xs-12.bid-banner-area
-        /     / - if (Time.parse('2020-03-20 00:00:00')..Time.parse('2020-04-02 23:59:59')).include? Time.now
-        /     /   .thumbnail.search-panel
-        /     /     = link_to(image_tag("https://www.zenkiren.net/imgs/bids_28.png", alt: "マシンライフ 第28回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=28&r=bnr", target: "_blank")
-        /     /
-        /     / - if (Time.parse('2020-06-26 00:00:00')..Time.parse('2020-07-09 23:59:59')).include? Time.now
-        /     /   .thumbnail.search-panel
-        /     /     = link_to(image_tag("https://www.zenkiren.net/imgs/bids_29.png", alt: "マシンライフ 第29回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=29&r=bnr", target: "_blank")
-        /
-        /     - if (Time.parse('2020-09-25 00:00:00')..Time.parse('2020-10-07 23:59:59')).include? Time.now
-        /       .thumbnail.search-panel
-        /         = link_to(image_tag("https://www.zenkiren.net/imgs/bids_30.png", alt: "マシンライフ 第30回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=30&r=bnr", target: "_blank")
-        /
-        /     - if (Time.parse('2020-12-18 00:00:00')..Time.parse('2021-01-14 23:59:59')).include? Time.now
-        /       .thumbnail.search-panel
-        /         = link_to(image_tag("https://www.zenkiren.net/imgs/bids_31.png", alt: "マシンライフ 第31回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=31&r=bnr", target: "_blank")
-        /
-        /
-        /     / - if (Time.parse('2020-05-22 00:00:00')..Time.parse('2020-06-05 23:59:59')).include? Time.now
-        /     /   .thumbnail.search-panel
-        /     /     = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_191.png", alt: "大阪機械卸業団地協同組合 第191回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
-        /
-        /     - if (Time.parse('2020-08-21 00:00:00')..Time.parse('2020-09-04 23:59:59')).include? Time.now
-        /       .thumbnail.search-panel
-        /         = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_192.png", alt: "大阪機械卸業団地協同組合 第192回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
-        /
-        /     - if (Time.parse('2020-11-13 00:00:00')..Time.parse('2020-11-27 23:59:59')).include? Time.now
-        /       .thumbnail.search-panel
-        /         = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_193.png", alt: "大阪機械卸業団地協同組合 第193回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
-        /
-        /     - if (Time.parse('2021-02-19 00:00:00')..Time.parse('2021-03-05 23:59:59')).include? Time.now
-        /       .thumbnail.search-panel
-        /         = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_194.png", alt: "大阪機械卸業団地協同組合 第194回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
-        /
-        /     .panel.panel-default
-        /       = link_to "#collapse_help", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
-        /         span.glyphicon.glyphicon-question-sign
-        /         span.btn-content ヘルプ
-        /         span.glyphicon.glyphicon-chevron-down
-        /       .panel-body#collapse_help.panel-collapse.collapse.in.xs-close
-        /
-        /         p = link_to "ものづくりオークションとは？", "/lp/index.html", target: "_blank"
-        /         - @helps.each do |he|
-        /           p = link_to he.title, "/helps/#{he.uid}"
-        /         p = link_to "利用規約", asset_path("terms_of_service_01.pdf"), target: "_blank"
-        /         p = link_to ">> ヘルプ一覧", "/helps"
-        /
-        /     //// SNSボタン ///
-        /     .sns-area
-        /       = link_to "http://www.facebook.com/sharer.php?u=#{root_url}", target: "_blank", class: "facebook-button" do
-        /         = image_tag "fb_icon.png", alt: "facebook"
-        /         span シェア
-        /
-        /       = link_to "http://twitter.com/share?hashtags=ものオク&text=ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！&url=#{root_url}", target: "_blank", class: "twitter-button" do
-        /         = image_tag "twitter_icon.png", alt: "Twitter"
-        /         span Tweet
-        /
-        /       = link_to "LINEで送る", "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！ #{root_url}",target: "_blank", class: "line-button", alt: "LINE"
-        /
-        /       = link_to "RSS", "/rss", target: "_blank", style: "background:#f39800;"
-        /
-        /     .twitter-area
-        /       <a class="twitter-timeline" data-lang="ja" data-height="400" data-link-color="#981CEB" href="https://twitter.com/mnok_official?ref_src=twsrc%5Etfw">Tweets by mnok_official</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-        /
-        /     / <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmonooku%2F&tabs=timeline&width=300&height=400&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false&appId" width="100%" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
-        /
-        /     .banner-area
-        /       = link_to(image_tag(asset_url("e-kikai-header-logo.gif"), alt: "e-kikai", style: "border:1px solid #009c0c;"), "https://www.e-kikai.com/", target: "_blank")
-        /
-        /       = link_to(image_tag(asset_url("kowa_logo.jpg"), alt: "興和機械", style: "border:1px solid #CCC;"), "http://www.kowakikai.jp/", target: "_blank")
-        /
-        /       / = link_to(image_tag(asset_url("ciba_logo.png"), alt: "芝産業"), "https://www.ciba.jp/", target: "_blank")
-        /
-        /       / = link_to(image_tag(asset_url("ham_logo.gif"), alt: "ヒューマン・アーク・マシナリー HAM", style: "border:1px solid #479d45;"), "http://www.ham-jp.com/jp/", target: "_blank")
-        /       / = link_to(image_tag(asset_url("kobayashi_logo.png"), alt: "小林機械"), "http://www.kkmt.co.jp/", target: "_blank")
-        /       = link_to "立川商店", "http://www.tachikawa-kikai.com/", target: "_blank", style: "margin-top:4px;display:block;"
-        /       / = link_to(image_tag(asset_url("endokikai_logo.gif"), alt: "遠藤機械工業", style: "border:1px solid #CCC;padding: 4px;background: #FFF;"), "http://www.endo-kikai.co.jp/", target: "_blank")
-        /       / = link_to(image_tag(asset_url("tohokumachine_logo.png"), alt: "東北マシン", style: "border:1px solid #CCC;padding: 4px;background: #FFF;"), "http://www.tohoku-machine.com/", target: "_blank")
-        /       = link_to(image_tag(asset_url("uniseiki_logo.png"), alt: "ユニセイキ"), "http://www.uniseiki.co.jp/", target: "_blank")
-        /       / = link_to(image_tag(asset_url("spotsale_logo_03.png"), alt: "デッドストックツール.com 機械団地のデッドストックツール通販サイト", style: "border:1px solid #CCC;padding: 4px;"), "https://www.deadstocktool.com/", target: "_blank")
-        /       = link_to(image_tag(asset_url("logo_machinelife.png"), alt: "マシンライフ 全機連の中古機械情報サイト", style: "border:1px solid #26347d;padding: 4px;"), "http://www.zenkiren.net/", target: "_blank")
-
         / - else
     .col-md-9.col-sm-9.col-xs-12
+      / = form_tag("/system/playground/vbpr_top", method: "get", class: "form-inline filtering-form") do
+      /   = select_tag :user_id, options_for_select(@user_selector, selected: params[:user_id]), {include_blank: "-- ID : ユーザ (入札数 / ウォッチ数 / 閲覧数)--", class: "form-control"}
+
+      /   = button_tag class: "btn btn-info" do
+      /     span.glyphicon.glyphicon-search
+      /     span.btn-content 選択
+
+      /   = link_to "/system/playground/vbpr_top", class: "btn btn-danger pull-right" do
+      /     span.glyphicon.glyphicon-remove
+      /     span.btn-content リセット
+
       / .alert.alert-info
       /   h4
       /     span.glyphicon.glyphicon-info-sign
       /     span.btn-content システムメンテナンスのお知らせ
       /   p 消費税の総額表示対応のため、2021/4/1 0:00 〜 4:00 まで、システムメンテナンスを行います。
       /   p = link_to "→ くわしくはこちら", "/helps/tax_included_2021"
-      - @roots.each do |ca|
-        - ca.children.order(:order_no).each do |ca2|
-          - ca_products = Product.search(category_id_in: ca2.subtree_ids).result.status(Product::STATUS[:start]).order(dulation_start: :desc).limit(10)
-          - if ca_products.present?
-            .toppage-news-area
-              label.topppage-category-title
-                span.btn-content = "#{ca2.name}の新着商品"
-                = link_to "もっと見る", "/products?category_id=#{ca.id}", class: "btn btn-more"
 
-              .top-category-news
-                - ca_products.each do |pr|
-                  = render "products/product_panel_02", product: pr, r: :top_cnw
+      / - @roots.each do |ca|
+      /   - ca.children.order(:order_no).each do |ca2|
+      /     - ca_products = Product.search(category_id_in: ca2.subtree_ids).result.status(Product::STATUS[:start]).order(dulation_start: :desc).limit(10)
+      /     - if ca_products.present?
+      /       .toppage-news-area
+      /         label.topppage-category-title
+      /           span.btn-content = "#{ca2.name}の新着商品"
+      /           = link_to "もっと見る", "/products?category_id=#{ca.id}", class: "btn btn-more"
 
-      - if @detaillog_products.present?
+      /         .top-category-news
+      /           - ca_products.each do |pr|
+      /             = render "products/product_panel_02", product: pr, r: :top_cnw
+
+      /// VBPR ///
+      - if @user.present?
+        - if @vbpr_products.present?
+          /// VBPR ///
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-camera style="color:mediumpurple;"
+              span.btn-content あなたへのオススメ
+              - if @vbpr_products.length >= Product::NEWS_LIMIT
+            .top-category-news
+              - @vbpr_products.each do |pr|
+                = render "products/product_panel_02", product: pr, r: :top_vos
+
+        / - if @bpr_products.present?
+        /   /// BPR ///
+        /   .toppage-news-area
+        /     label.topppage-category-title
+        /       span.glyphicon.glyphicon-gift style="color:lightseagreen;"
+        /       span.btn-content あなたへ閲覧特徴によるオススメ
+        /     .top-category-news
+        /       - @bpr_products.each do |pr|
+        /         / = render "products/product_panel_02", product: pr, r: :top_tnw
+        /         = render "product_panel_03_img", product: pr, r: :top_bpr
+
+        /// よく見る新着 ///
+        - if @oft_products.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-wrench.text-primary
+              span.btn-content よくアクセスするカテゴリの新着
+            .top-category-news
+              - @oft_products.each do |pr|
+                = render "products/product_panel_02", product: pr, r: :top_mnw
+      - else
+        /// 非ログイン : 閲覧履歴に基づくオススメ ///
+        - if @dl_osusume.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-gift style="color:lightseagreen;"
+              span.btn-content 閲覧履歴に基づくオススメ
+            .top-category-news
+              - @dl_osusume.each do |pr|
+                = render "products/product_panel_02", product: pr, r: :top_dlos
+
+        /// 工具新着 ///
+        - if @tool_news.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-wrench.text-primary
+              span.btn-content 工具新着
+            .top-category-news
+              - @tool_news.each do |pr|
+                = render "products/product_panel_02", product: pr, r: :top_tnew
+
+        /// 機械新着 ///
+        - if @machine_news.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-cog.text-success
+              span.btn-content 機械新着
+            .top-category-news
+              - @machine_news.each do |pr|
+                = render "products/product_panel_02", product: pr, r: :top_mnew
+
+      /// 最近チェックした商品(共通) ///
+      - if @dl_products.present?
         label
           span.glyphicon.glyphicon-ok.check-icon
           span.btn-content 最近チェックした商品
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
-              - @detaillog_products.each do |pr|
+              - @dl_products.each do |pr|
                 = render "product_panel", product: pr, r: :top_chk
 
-      .toppage-searches
-        - if @searches[0]
-          - @searches[0..2].each do |se|
-            = render "search_panel", search: se
+      /// ログインユーザ ///
+      - if @user.present?
+        /// ウォッチリストに基づくオススメ ///
+        - if @watch_osusume.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-star.watch-star
+              span.btn-content ウォッチリストに基づくオススメ
+            .top-category-news
+              - @watch_osusume.each do |pr|
+                = render "products/product_panel_02", product: pr, r: :top_waos
 
-      - if @follows_new_products.present?
+        /// 入札履歴に基づくオススメ ///
+        - if @bid_osusume.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-pencil style="color:darkorange;"
+              span.btn-content 入札履歴に基づくオススメ
+            .top-category-news
+              - @bid_osusume.each do |pr|
+                = render "products/product_panel_02", product: pr, r: :top_bios
+
+        /// 入札してみませんか ///
+        - if @cart_products.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-flash style="color:deeppink;"
+              span.btn-content 入札してみませんか？
+            .top-category-news
+              - @cart_products.each do |pr|
+                = render "products/product_panel_02", product: pr, r: :top_crt
+
+        /// こちらもオススメ ///
+        - if @next_osusume.present?
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-flag style="color:olivedrab;"
+              span.btn-content こちらもオススメ
+            .top-category-news
+              - @next_osusume.each do |pr|
+                = render "products/product_panel_02", product: pr, r: :top_nxt
+
+      /// まもなく終了 ///
+      - if @end_products.present?
+        .toppage-news-area
+          label.topppage-category-title
+            span.glyphicon.glyphicon-time.text-danger
+            span.btn-content まもなく終了
+          .top-category-news
+            - @end_products.each do |pr|
+              = render "products/product_panel_02", product: pr, r: :top_endo
+
+      /// こんなものもあります ///
+      - if @zero_products.present?
+        .toppage-news-area
+          label.topppage-category-title
+            span.glyphicon.glyphicon-zoom-in.text-warning
+            span.btn-content こんなものもあります
+
+          .top-category-news
+            - @zero_products.each do |pr|
+              = render "products/product_panel_02", product: pr, r: :top_zer
+
+      /// フォローした出品会社の新着商品 ///
+      - if @fo_products.present?
         label
           span.glyphicon.glyphicon-heart.follow-heart
           span.btn-content フォローした出品会社の新着商品
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
-              - @follows_new_products.each do |pr|
+              - @fo_products.each do |pr|
                 = render "product_panel", product: pr, r: :top_flw
 
-      .toppage-searches
-        - if @searches[3]
-          - @searches[3..4].each do |se|
-            = render "search_panel", search: se
+      /// 特集 ///
+      / .toppage-searches
+      /   - if @searches[0]
+      /     - @searches[0..1].each do |se|
+      /       = render "main/search_panel", search: se
 
-        .thumbnail.search-panel style="border:0;"
-          = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
+      /   .thumbnail.search-panel style="border:0;"
+      /     = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
+
+      .thumbnail.search-panel.visible-xs-block
+        = link_to(image_tag("what_01.png", alt: "ものづくりのための機械・工具専門オークション ものづくりオークションとは？ 落札！"), "/lp/index.html?r=top_bnr", target: "_blank")
 
       .sns-area.visible-xs-block
         = link_to "http://www.facebook.com/sharer.php?u=#{root_url}", target: "_blank", class: "facebook-button" do
