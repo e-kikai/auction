@@ -227,6 +227,65 @@ class System::TotalController < System::ApplicationController
     end
   end
 
+  ### VBPR・オススメ集計 ###
+  def osusume
+    ### 詳細リンク集計 ###
+    dls = DetailLog.where(@where_cr).group(@group) # base
+
+    @dl_counts = dls.count               # 総数
+    @dl_ips    = dls.where.not(ip: nil).distinct.count(:ip) # 総IP数
+    @dl_users  = dls.where.not(user_id: nil).distinct.count(:user_id) # 総人数
+
+    vbpr = dls.where.not(user_id: nil).where("r LIKE '%vos%'") #VBPR
+    @vbpr_counts = vbpr.count
+    @vbpr_users  = vbpr.distinct.count(:user_id)
+
+    watches = dls.where.not(user_id: nil).where("r LIKE '%waos%'") # ウォッチオススメ
+    @watch_counts = watches.count
+    @watch_users  = watches.distinct.count(:user_id)
+
+    bids = dls.where.not(user_id: nil).where("r LIKE '%wbios%'") # 入札オススメ
+    @bid_counts = bids.count
+    @bid_users  = bids.distinct.count(:user_id)
+
+    cart = dls.where.not(user_id: nil).where("r LIKE '%crt%'") # 入札してみませんか？
+    @cart_counts = cart.count
+    @cart_users  = cart.distinct.count(:user_id)
+
+    nxt = dls.where.not(user_id: nil).where("r LIKE '%nxt%'") # こちらもいかがでしょう
+    @nxt_counts = nxt.count
+    @nxt_users  = nxt.distinct.count(:user_id)
+
+    often = dls.where.not(user_id: nil).where("r LIKE '%onew%'") # よくアクセスするカテゴリの新着
+    @often_counts = often.count
+    @often_users  = often.distinct.count(:user_id)
+
+    endo = dls.where.not(ip: nil).where("r LIKE '%endo%'") # まもなく終了
+    @endo_counts = endo.count
+    @endo_ips    = endo.distinct.count(:ip)
+
+    tnew = dls.where.not(ip: nil).where("r LIKE '%tnew%'") # 工具新着
+    @tnew_counts = tnew.count
+    @tnew_ips    = tnew.distinct.count(:ip)
+
+    mnew = dls.where.not(ip: nil).where("r LIKE '%mnew%'") # 機械新着
+    @mnew_counts = mnew.count
+    @mnew_ips    = mnew.distinct.count(:ip)
+
+    zero = dls.where.not(ip: nil).where("r LIKE '%zer%'") # こんなのもあります
+    @zero_counts = zero.count
+    @zero_ips    = zero.distinct.count(:ip)
+
+    check = dls.where.not(ip: nil).where("r LIKE '%chk%'") # 最近チェックした商品
+    @check_counts = check.count
+    @check_ips    = check.distinct.count(:ip)
+
+    dlos = dls.where.not(ip: nil).where("r LIKE '%dlos%'") # 閲覧履歴に基づくオススメ
+    @dlos_counts = dlos.count
+    @dlos_ips    = dlos.distinct.count(:ip)
+
+  end
+
   private
 
   def company_selectors

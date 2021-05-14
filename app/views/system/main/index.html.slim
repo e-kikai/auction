@@ -66,6 +66,18 @@
           span.text-danger.glyphicon.glyphicon-fire
           span.btn-content 画像特徴ベクトル一括抽出
 
+    .panel.panel-default
+      .panel-heading
+        span.glyphicon.glyphicon-camera
+        span.btn-content VBPR管理
+      ul.nav.nav-pills.nav-stacked
+        li = link_to "/system/total/osusume" do
+          span.glyphicon.glyphicon-calendar
+          span.btn-content VBPR・オススメ履歴集計
+
+        / li = link_to "/system/products/all_process_vector", method: :patch do
+        /   span.text-danger.glyphicon.glyphicon-fire
+        /   span.btn-content 画像特徴ベクトル一括抽出
 
   .col-md-3
     .panel.panel-default

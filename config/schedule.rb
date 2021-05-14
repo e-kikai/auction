@@ -70,7 +70,7 @@ if rails_env.to_sym == :production
   # end
 end
 
-if rails_env.to_sym == :staging
+# if rails_env.to_sym == :staging
   # every :day, at: '3:00 am' do
   #   command "/usr/bin/python3 #{Rails.root}/lib/python/vbpr/vbpr_csv.py --url #{url} --bpr"
   # end
@@ -78,4 +78,4 @@ if rails_env.to_sym == :staging
   every :day, at: '3:00 am' do
     command "/usr/bin/python3 #{Rails.root}/lib/python/vbpr/vbpr_csv.py --url #{url}"
   end
-end
+# end

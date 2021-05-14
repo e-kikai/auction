@@ -161,6 +161,7 @@ Rails.application.routes.draw do
         get 'formula'
         get 'categories'
         get 'nitamono'
+        get 'osusume'
       end
     end
 
