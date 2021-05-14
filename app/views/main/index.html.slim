@@ -171,7 +171,7 @@
       /             = render "products/product_panel_02", product: pr, r: :top_cnw
 
       /// VBPR ///
-      - if @user.present?
+      - if user_signed_in?
         - if @vbpr_products.present?
           /// VBPR ///
           .toppage-news-area
@@ -246,7 +246,7 @@
                 = render "product_panel", product: pr, r: :top_chk
 
       /// ログインユーザ ///
-      - if @user.present?
+      - if user_signed_in?
         /// ウォッチリストに基づくオススメ ///
         - if @watch_osusume.present?
           .toppage-news-area

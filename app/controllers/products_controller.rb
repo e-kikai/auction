@@ -166,7 +166,7 @@ class ProductsController < ApplicationController
 
     ### 終了時オススメをランダム(0件でないもの)取得 ###
     key_array =  %w|dl_osusume|
-    key_array += %w|v watch_osusume bid_osusume cart next often| if @user.present? # ログイン時
+    key_array += %w|v watch_osusume bid_osusume cart next often| if user_signed_in? # ログイン時
 
     if @product.finished?
       key_array.shuffle.each do |key|
