@@ -165,16 +165,16 @@ h1.product-title
           - @popular_products.each do |pr|
             = render "/main/product_panel", product: pr, r: :dtl_sca
 
-- if @fin_osusume.present?
-  .special-area
-    label
-      span.glyphicon.glyphicon-gift class="glyphicon-#{@fin_osusume_titles[2]}" style="color:#{@fin_osusume_titles[3]};"
-      span.btn-content = @fin_osusume_titles[0]
-    .panel.panel-default
-      .panel-body.toppage-contents
-        .toppage-scroll
-          - @fin_osusume.each do |pr|
-            = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
+  - if @osusume.present?
+    .special-area
+      label
+        span.glyphicon.glyphicon-gift class="glyphicon-#{@osusume_titles[2]}" style="color:#{@osusume_titles[3]};"
+        span.btn-content = @osusume_titles[0]
+      .panel.panel-default
+        .panel-body.toppage-contents
+          .toppage-scroll
+            - @osusume.each do |pr|
+              = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
 
 .button-center.text-left
   = link_to "/products/#{@product.id}?r=bck", class: "btn btn-default" do
