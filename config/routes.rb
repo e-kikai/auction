@@ -202,7 +202,7 @@ Rails.application.routes.draw do
 
     resources :data do
       collection do
-        post 'vbpr'
+        get 'vbpr'
       end
     end
 
