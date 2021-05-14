@@ -50,8 +50,8 @@ class System::DataController < ApplicationController
 
       # 設定類
       config: {
-        # bucket_name: Rails.application.secrets.aws_s3_bucket,
-        bucket_name: @bucket_name,
+        bucket_name: Rails.application.secrets.aws_s3_bucket,
+        # bucket_name: @bucket_name,
         vbpr_csv_file: DetailLog::VBPR_CSV_FILE,
         bpr_csv_file:  DetailLog::BPR_CSV_FILE,
         npz_file:      DetailLog::VBPR_NPZ_FILE,
