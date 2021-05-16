@@ -1,5 +1,5 @@
-- set_meta_tags title: "VBPR・オススメ履歴集計(クリック)"
-- breadcrumb :system_something, "VBPR・オススメ履歴集計(クリック)"
+- set_meta_tags title: "VBPR・オススメ履歴集計"
+- breadcrumb :system_something, "VBPR・オススメ履歴集計"
 
 css:
   table.product-table thead th {
@@ -36,9 +36,14 @@ css:
     .table-responsive
       table.table.table-hover.table-condensed.table-striped.product-table
         thead
+          tr.sub_head
+            th.num.sepa
+            th.sepa colspan="13" 詳細クリック回数
+            th.sepa colspan="7" 詳細クリック ユーザ数
+            th colspan="7" 詳細クリック IP数
           tr
             th.num.sepa 日付
-            th.num.sepa 総回数
+            th.num 総回数
             th.num VBPR
             th.num ウォッ<br />チオス
             th.num 入札<br />オス
@@ -55,9 +60,24 @@ css:
             th.num 似サ結果
             th.num 同カテゴリ
             th.num.sepa 似た商品
-            th.num メール
-            th.num.span chimp
-            th.num 検索<br />結果
+            th.num 検索
+            th.num
+
+
+            th.num 総人数
+            th.num VBPR
+            th.num ウォッ<br />チオス
+            th.num 入札<br />オス
+            th.num しませ<br />んか？
+            th.num こち<br />らも
+            th.num.sepa  上位<br />新着
+            th.num 総IP数
+            th.num  まもな<br />く終了
+            th.num 工具<br />新着
+            th.num 機械<br />新着
+            th.num こんな<br />ものも
+            th.num 最近<br />閲覧
+            th.num 履歴<br />オス
 
         / - (@date.beginning_of_month..@date.end_of_month).each do |day|
         - @rows.each do |day|
@@ -76,15 +96,13 @@ css:
               - else
                 = I18n.l(day, format: "%e (%a)")
 
-            td.num.sepa = number_with_delimiter(@dl_counts[day])
+            td.num = number_with_delimiter(@dl_counts[day])
             td.num = number_with_delimiter(@vbpr_counts[day])
             td.num = number_with_delimiter(@watch_counts[day])
             td.num = number_with_delimiter(@bid_counts[day])
             td.num = number_with_delimiter(@cart_counts[day])
             td.num = number_with_delimiter(@nxt_counts[day])
-            td.num = number_with_delimiter(@often_counts[day])
-            td.num.sepa = number_with_delimiter(@follow_counts[day])
-
+            td.num.sepa = number_with_delimiter(@often_counts[day])
             td.num = number_with_delimiter(@endo_counts[day])
             td.num = number_with_delimiter(@tnew_counts[day])
             td.num = number_with_delimiter(@mnew_counts[day])
@@ -92,13 +110,20 @@ css:
             td.num = number_with_delimiter(@check_counts[day])
             td.num.sepa = number_with_delimiter(@dlos_counts[day])
 
-            td.num = number_with_delimiter(@sca_counts[day])
-            td.num = number_with_delimiter(@nmr_counts[day])
-            td.num.sepa = number_with_delimiter(@to_nms_counts[day])
-            td.num = number_with_delimiter(@mail_counts[day])
-            td.num.sepa = number_with_delimiter(@mailchimp_counts[day])
-            td.num = number_with_delimiter(@search_counts[day])
-
+            td.num = number_with_delimiter(@dl_users[day])
+            td.num = number_with_delimiter(@vbpr_users[day])
+            td.num = number_with_delimiter(@watch_users[day])
+            td.num = number_with_delimiter(@bid_users[day])
+            td.num = number_with_delimiter(@cart_users[day])
+            td.num = number_with_delimiter(@nxt_users[day])
+            td.num.sepa = number_with_delimiter(@often_users[day])
+            td.num = number_with_delimiter(@dl_ips[day])
+            td.num = number_with_delimiter(@endo_ips[day])
+            td.num = number_with_delimiter(@tnew_ips[day])
+            td.num = number_with_delimiter(@mnew_ips[day])
+            td.num = number_with_delimiter(@zero_ips[day])
+            td.num = number_with_delimiter(@check_ips[day])
+            td.num = number_with_delimiter(@dlos_ips[day])
 
         thead
           tr.sub_head
@@ -108,26 +133,33 @@ css:
             th colspan="7" 詳細クリック IP数
           tr
             th.num.sepa 日付
-            th.nun.sepa 総回数
+            th.num 総回数
             th.num VBPR
             th.num ウォッ<br />チオス
             th.num 入札<br />オス
             th.num しませ<br />んか？
             th.num こち<br />らも
-            th.num 上位<br />新着
-            th.num.sepa フォ<br />ロー
+            th.num.sepa  上位<br />新着
             th.num  まもな<br />く終了
             th.num 工具<br />新着
             th.num 機械<br />新着
             th.num こんな<br />ものも
             th.num 最近<br />閲覧
-            th.num.sepa 履歴<br />オス
-            th.num 似サ結果
-            th.num 同カテゴリ
-            th.num.sepa 似た商品
-            th.num メール
-            th.num.span chimp
-            th.num 検索<br />結果
+            th.num.sepa  履歴<br />から
+            th.num 総人数
+            th.num VBPR
+            th.num ウォッ<br />チオス
+            th.num 入札<br />から
+            th.num しませ<br />んか？
+            th.num こち<br />らも
+            th.num.sepa  上位<br />新着
+            th.num 総IP数
+            th.num  まもな<br />く終了
+            th.num 工具<br />新着
+            th.num 機械<br />新着
+            th.num こんな<br />ものも
+            th.num 最近<br />閲覧
+            th.num 履歴<br />オス
 
         tfoot
           tr
@@ -138,9 +170,7 @@ css:
             td.num = number_with_delimiter(@bid_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@cart_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@nxt_counts.sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@often_counts.sum { |k, v| v.to_i })
-            td.num.sepa = number_with_delimiter(@follows_counts.sum { |k, v| v.to_i })
-
+            td.num.sepa = number_with_delimiter(@often_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@endo_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@tnew_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@mnew_counts.sum { |k, v| v.to_i })
@@ -148,9 +178,17 @@ css:
             td.num = number_with_delimiter(@check_counts.sum { |k, v| v.to_i })
             td.num.sepa = number_with_delimiter(@dlos_counts.sum { |k, v| v.to_i })
 
-            td.num = number_with_delimiter(@sca_counts.sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@nmr_counts.sum { |k, v| v.to_i })
-            td.num.sepa = number_with_delimiter(@to_nms_counts.sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@mail_counts.sum { |k, v| v.to_i })
-            td.num.sepa = number_with_delimiter(@mailchimp_counts.sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@search_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@dl_users.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@vbpr_users.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@watch_users.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@bid_users.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@cart_users.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@nxt_users.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@often_users.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@dl_ips.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@endo_ips.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@tnew_ips.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@mnew_ips.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@zero_ips.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@check_ips.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@dlos_ips.sum { |k, v| v.to_i })

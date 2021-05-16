@@ -284,6 +284,41 @@ class System::TotalController < System::ApplicationController
     @dlos_counts = dlos.count
     @dlos_ips    = dlos.distinct.count(:ip)
 
+    follow = dls.where("r LIKE '%fls%'") # フォロー新着
+    @follow_counts = follow.count
+    @follow_ips    = follow.distinct.count(:ip)
+
+    ### 従来のアクセス ###
+    same_categories = dls.where("r LIKE '%sca%'")
+    @sca_counts = same_categories.count
+    @sca_ips    = same_categories.distinct.count(:ip)
+
+    nitamono_recommends = dls.where("r LIKE '%nmr%'")
+    @nmr_counts = nitamono_recommends.count
+    @nmr_ips    = nitamono_recommends.distinct.count(:ip)
+
+    to_nitamono = dls.where("r LIKE '%nms%'")
+    @to_nms_counts = to_nitamono.count
+    @to_nms_ips    = to_nitamono.distinct.count(:ip)
+
+    mail = dls.where("r LIKE '%mail_%'")
+    @mail_counts = mail.count
+    @mail_ips    = mail.distinct.count(:ip)
+
+    mailchimp = dls.where("r LIKE '%mailchimp%'")
+    @mailchimp_counts = mailchimp.count
+    @mailchimp_ips    = mailchimp.distinct.count(:ip)
+
+    search = dls.where("r LIKE '%src%'")
+    @search_counts = search.count
+    @search_ips    = search.distinct.count(:ip)
+
+    respond_to do |format|
+      format.html {
+        render template: :osusume_user if params[:user]
+      }
+      format.csv { export_csv "osusume_total_#{params[:range]}_#{Time.now.strftime('%Y%m%d')}.csv" }
+    end
   end
 
   private
