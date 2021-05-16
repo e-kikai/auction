@@ -56,7 +56,7 @@ css:
             th.num 同カテゴリ
             th.num.sepa 似た商品
             th.num メール
-            th.num.span chimp
+            th.num.sepa Mail<br />chimp
             th.num 検索<br />結果
 
         / - (@date.beginning_of_month..@date.end_of_month).each do |day|
@@ -101,11 +101,6 @@ css:
 
 
         thead
-          tr.sub_head
-            th.num.sepa
-            th.sepa colspan="13" 詳細クリック回数
-            th.sepa colspan="7" 詳細クリック ユーザ数
-            th colspan="7" 詳細クリック IP数
           tr
             th.num.sepa 日付
             th.nun.sepa 総回数
@@ -126,7 +121,7 @@ css:
             th.num 同カテゴリ
             th.num.sepa 似た商品
             th.num メール
-            th.num.span chimp
+            th.num.sepa Mail<br />chimp
             th.num 検索<br />結果
 
         tfoot
@@ -139,7 +134,7 @@ css:
             td.num = number_with_delimiter(@cart_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@nxt_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@often_counts.sum { |k, v| v.to_i })
-            td.num.sepa = number_with_delimiter(@follows_counts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@follow_counts.sum { |k, v| v.to_i })
 
             td.num = number_with_delimiter(@endo_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@tnew_counts.sum { |k, v| v.to_i })
