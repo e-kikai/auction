@@ -82,7 +82,7 @@ class System::DataController < ApplicationController
       id:       category.id,
       name:     category.name,
       products: products,
-    }
+    }.to_json
 
     respond_to do |format|
       format.json { render plain: res }
