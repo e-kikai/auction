@@ -65,4 +65,27 @@ class System::DataController < ApplicationController
       format.json { render plain: res }
     end
   end
+
+  def top_url_by_category
+    category = Category.find(params[:id])
+    products = category.products.includes(:product_images).map do |pr|
+      next if pr.product_images.blank?
+
+      {
+        id:      pr.id,
+        name:    pr.name,
+        top_img: pr.product_images&.first&.image&.url
+      }
+    end.compact
+
+    res = {
+      id:       category.id,
+      name:     category.name,
+      products: products,
+    }
+
+    respond_to do |format|
+      format.json { render plain: res }
+    end
+  end
 end

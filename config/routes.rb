@@ -203,6 +203,7 @@ Rails.application.routes.draw do
     resources :data do
       collection do
         get 'vbpr'
+        get 'top_url_by_category'
       end
     end
 
