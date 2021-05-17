@@ -55,9 +55,11 @@ css:
             th.num 似サ結果
             th.num 同カテゴリ
             th.num.sepa 似た商品
+            th.num.sepa 検索<br />結果
             th.num メール
-            th.num.sepa Mail<br />chimp
-            th.num 検索<br />結果
+            th.num マシン<br />ライフ
+            th.num.sepa e-<br />kikai
+            th.num 検索<br />エンジン
 
         / - (@date.beginning_of_month..@date.end_of_month).each do |day|
         - @rows.each do |day|
@@ -95,10 +97,12 @@ css:
             td.num = number_with_delimiter(@sca_counts[day])
             td.num = number_with_delimiter(@nmr_counts[day])
             td.num.sepa = number_with_delimiter(@to_nms_counts[day])
-            td.num = number_with_delimiter(@mail_counts[day])
-            td.num.sepa = number_with_delimiter(@mailchimp_counts[day])
-            td.num = number_with_delimiter(@search_counts[day])
+            td.num.sepa = number_with_delimiter(@search_counts[day])
 
+            td.num = number_with_delimiter(@mail_counts[day])
+            td.num = number_with_delimiter(@ml_counts[day])
+            td.num.sepa = number_with_delimiter(@ekikai_counts[day])
+            td.num = number_with_delimiter(@google_counts[day])
 
         thead
           tr
@@ -120,9 +124,11 @@ css:
             th.num 似サ結果
             th.num 同カテゴリ
             th.num.sepa 似た商品
+            th.num.sepa 検索<br />結果
             th.num メール
-            th.num.sepa Mail<br />chimp
-            th.num 検索<br />結果
+            th.num マシン<br />ライフ
+            th.num.sepa e-<br />kikai
+            th.num 検索<br />エンジン
 
         tfoot
           tr
@@ -146,6 +152,9 @@ css:
             td.num = number_with_delimiter(@sca_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@nmr_counts.sum { |k, v| v.to_i })
             td.num.sepa = number_with_delimiter(@to_nms_counts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@search_counts.sum { |k, v| v.to_i })
+
             td.num = number_with_delimiter(@mail_counts.sum { |k, v| v.to_i })
-            td.num.sepa = number_with_delimiter(@mailchimp_counts.sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@search_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@ml_counts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@ekikai_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@google_counts.sum { |k, v| v.to_i })

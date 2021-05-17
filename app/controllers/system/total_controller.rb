@@ -305,13 +305,25 @@ class System::TotalController < System::ApplicationController
     @mail_counts = mail.count
     @mail_ips    = mail.distinct.count(:ip)
 
-    mailchimp = dls.where("r LIKE '%mailchimp%'")
-    @mailchimp_counts = mailchimp.count
-    @mailchimp_ips    = mailchimp.distinct.count(:ip)
+    # mailchimp = dls.where("r LIKE '%mailchimp%'")
+    # @mailchimp_counts = mailchimp.count
+    # @mailchimp_ips    = mailchimp.distinct.count(:ip)
 
     search = dls.where("r LIKE '%src%'")
     @search_counts = search.count
     @search_ips    = search.distinct.count(:ip)
+
+    ml = dls.where("r LIKE '%machinelife%'")
+    @ml_counts = ml.count
+    @ml_ips    = ml.distinct.count(:ip)
+
+    ekikai = dls.where("r LIKE '%ekikai%'")
+    @ekikai_counts = ekikai.count
+    @ekikai_ips    = ekikai.distinct.count(:ip)
+
+    google = dls.where("referer ~ '(google|yahoo|bing|baidu)'")
+    @google_counts = google.count
+    @google_ips    = google.distinct.count(:ip)
 
     respond_to do |format|
       format.html {

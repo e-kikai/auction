@@ -51,7 +51,7 @@ class DetailLog < ApplicationRecord
     "cnt" => "問合せ・取引",
 
     # Mailchimp
-    # "cmp" => "Mailchimp",
+    "cmp" => "Mailchimp",
     "mailchimp" => "Mailchimp",
 
     # 外部サイト
