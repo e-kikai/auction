@@ -30,6 +30,9 @@
         tr
           th.num ID
           th 出品会社名
+          th 担当者
+          th メールアドレス
+          th.num 総出品<br />件数
           th.num 出品<br />件数
           th.num 終了<br />件数
           th.num 落札<br />件数
@@ -37,6 +40,7 @@
           th.num ウォッ<br />チ総数
           th.total_price 落札金額合計
           th.total_price システム使用料<br />(#{Product::FEE_RATE}%)
+
       - @companies.each do |co|
         - total = co.products.where(template: false).where("dulation_start <= ?" ,@date.end_of_month).where("dulation_end >= ?", @date.beginning_of_month).count
         - total_total += total
@@ -65,6 +69,9 @@
         tr
           td.num = co.id
           td = co.company
+          td = co.charge
+          td = co.email
+          td.num.sepa = number_with_delimiter(@product_counts[co.id])
           td.num = number_with_delimiter(total)
           td.num = number_with_delimiter(count)
           td.num = number_with_delimiter(success)
@@ -72,10 +79,27 @@
           td.num = number_with_delimiter(watch)
           td.total_price = number_to_currency(Product.calc_price_with_tax(price, @date))
           td.total_price = number_to_currency(Product.calc_price_with_tax(fee, @date))
+      thead
+        tr
+          th.num ID
+          th 出品会社名
+          th 担当者
+          th メールアドレス
+          th.num 総出品<br />件数
+          th.num 出品<br />件数
+          th.num 終了<br />件数
+          th.num 落札<br />件数
+          th.num 閲覧<br />総数
+          th.num ウォッ<br />チ総数
+          th.total_price 落札金額合計
+          th.total_price システム使用料<br />(#{Product::FEE_RATE}%)
       tfooter
         tr
           td
           th 合計
+          td
+          td
+          td.num.sepa = number_with_delimiter(@product_counts.values.sum)
           td.num = number_with_delimiter(total_total)
           td.num = number_with_delimiter(total_conunt)
           td.num = number_with_delimiter(total_success)

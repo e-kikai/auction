@@ -96,7 +96,9 @@ prawn_document do |pdf|
       [ {content: "", colspan: 2}, {content: "落札金額合計", colspan: 2}, {content: number_to_currency(price), colspan: 2},],
       [ {content: "", colspan: 2}, {content: "システム使用料", colspan: 2}, {content: number_to_currency(fee), colspan: 2},],
       # [ {content: "", colspan: 2}, {content: "消費税 (#{Product::TAX_RATE}%)", colspan: 2}, {content: number_to_currency(fee_tax), colspan: 2},],
-      [ {content: "", colspan: 2}, {content: "消費税 (#{Product.tax_rate(@date)}%)", colspan: 2}, {content: number_to_currency(fee_tax), colspan: 2},],
+
+      ### @ba-ta 20210401 税込対応 ###
+      # [ {content: "", colspan: 2}, {content: "消費税 (#{Product.tax_rate(@date)}%)", colspan: 2}, {content: number_to_currency(fee_tax), colspan: 2},],
 
       [ {content: "", colspan: 2}, {content: "請求金額", colspan: 2}, {content: number_to_currency(fee_with_tax), colspan: 2},],
     ]
@@ -119,12 +121,16 @@ prawn_document do |pdf|
       t.row(-1).columns(0).border_width = 0
       t.row(-2).columns(0).border_width = 0
       t.row(-3).columns(0).border_width = 0
-      t.row(-4).columns(0).border_width = 0
+
+      ### @ba-ta 20210401 税込対応 ###
+      # t.row(-4).columns(0).border_width = 0
 
       t.row(-1).columns([2, 4]).style(align: :right, size: 12)
       t.row(-2).columns([2, 4]).style(align: :right, size: 12)
       t.row(-3).columns([2, 4]).style(align: :right, size: 12)
-      t.row(-4).columns([2, 4]).style(align: :right, size: 12)
+
+      ### @ba-ta 20210401 税込対応 ###
+      # t.row(-4).columns([2, 4]).style(align: :right, size: 12)
     end
 
     ### 領収証 ####
@@ -144,19 +150,31 @@ prawn_document do |pdf|
 
         arr = [
           # ["システム使用料(税抜)", "消費税(#{Product::TAX_RATE}%)", "合計請求金額"],
-          ["システム使用料(税抜)", "消費税(#{Product.tax_rate(@date)}%)", "合計請求金額"],
-          [number_to_currency(fee), number_to_currency(fee_tax), number_to_currency(fee_with_tax)]
+
+          ### @ba-ta 20210401 税込対応 ###
+          # ["システム使用料(税抜)", "消費税(#{Product.tax_rate(@date)}%)", "合計請求金額"],
+          # [number_to_currency(fee), number_to_currency(fee_tax), number_to_currency(fee_with_tax)]
+
+          ["合計請求金額(税込)"],
+          [number_to_currency(fee_with_tax)]
+
         ]
 
         pdf.move_down 55.mm
         pdf.table arr, {
-          header: true, position: 3.mm
+          ### @ba-ta 20210401 税込対応 ###
+          # header: true, position: 3.mm
+          header: true, position: 49.mm
         } do |t|
           t.cells.style(size: 16)
 
-          t.columns(0).style(width: 67.mm, align: :right)
-          t.columns(1).style(width: 45.mm, align: :right)
-          t.columns(2).style(width: 72.mm, align: :right)
+          ### @ba-ta 20210401 税込対応 ###
+          # t.columns(0).style(width: 67.mm, align: :right)
+          # t.columns(1).style(width: 45.mm, align: :right)
+          # t.columns(2).style(width: 72.mm, align: :right)
+
+          t.columns(0).style(width: 92.mm, align: :right)
+          # t.columns(1).style(width: 92.mm, align: :right)
 
           t.row(0).style(align: :center, size: 12)
           t.row(1).style(align: :right, size: 16, height: 15.mm, padding: 4.mm)

@@ -7,6 +7,8 @@ class System::TotalController < System::ApplicationController
   def index
     @companies = User.companies.order(:id)
 
+    @product_counts = Product.group(:user_id).where(template: false).count()
+
     respond_to do |format|
       format.html
       format.pdf {
