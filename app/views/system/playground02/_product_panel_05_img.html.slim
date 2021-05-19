@@ -1,0 +1,51 @@
+.thumbnail.product-pannel_02
+  / = link_to "/products/#{product.id}?r=#{r}", target: "_blank", title: product.name, class: "product_link" do
+  / = link_to "javascript:void(0);", title: product.name, class: "product_link" do
+  = link_to "/system/playground/#{product.id}/vbpr_detail?user_id=#{@user&.id}r=#{r}", target: "_blank", title: product.name, class: "product_link" do
+    .thumb_img
+      - if product.product_images.first.present?
+        = image_tag(product.thumb_url, srcset: {product.product_images.first.try(:image).try(:view).try(:url) || product.thumb_url => "2x"}, alt: product.name)
+
+      - else
+        = image_tag(ProductImage::NOIMAGE_THUMB, alt: product.name)
+
+    - if product.state_before_type_cast > 0
+      .state class="state_#{product.state_before_type_cast}" = product.state
+
+    .name
+      - if product.dulation_start.present?
+        - if product.dulation_start > Time.now.yesterday
+          span.new-icon
+      = product.name
+
+    - if product.finished?
+      .success_date = I18n.l(product.dulation_end, format: :full_date) + "に落札"
+      .finish_price
+        span.bid_label 入札
+        span.bid = product.bids_count > 0 ? number_with_delimiter(product.bids_count) : "-"
+
+        span.max_price_label 価格
+        span.success_price = number_to_currency(product.max_price_with_tax)
+
+      .success_label 落札
+
+    - else
+      .price
+        - if product.prompt_dicision_price
+          span.prompt_dicision_price_label 即売
+          span.max_price = number_to_currency(product.prompt_dicision_price_with_tax)
+        - else
+          span.max_price_label 現在
+          span.max_price = number_to_currency(product.max_price_with_tax)
+      .bids
+        span.bid_label 入札
+        span.bid = product.bids_count > 0 ? number_with_delimiter(product.bids_count) : "-"
+
+        span.end_label 残り時間
+        span.end
+          - unless product.prompt_dicision?
+            = product.remaining_time
+
+  .watch_area
+    = render "nitamono_03", product: product
+    / = render "products/watch_02", product: product, active: true

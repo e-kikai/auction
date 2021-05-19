@@ -12,13 +12,13 @@ class System::Playground02Controller < ApplicationController
       .includes(:product_images, :category, :user)
       .order(id: :desc)
 
-    if params[:product_id]
+    if params[:nitamono]
       ### 似たものサーチ(比較) ###
       @time = Benchmark.realtime do
-        @target   = Product.find(params[:product_id])
+        @target   = Product.find(params[:nitamono])
         # @sorts = sort_by_vector(@target, @products)
-        @products = @target.nitamono(Product::NEW_MAX_COUNT)
 
+        @products    = @target.nitamono(Product::NEW_MAX_COUNT)
         @products_02 = @target.nitamono(Product::NEW_MAX_COUNT) # 比較
       end
     else

@@ -39,11 +39,11 @@ css:
 
     - if @target.present?
       h4 この商品に類似した商品ソート (検索速度 : #{@time} sec)
-      = render "product_panel_03_img", product: @target, r: :src_pnl
+      = render "product_panel_05_img", product: @target, r: :src_pnl
       hr
 
     -(@pproducts || @products).each do |pr|
-      = render "product_panel_03_img", product: pr, r: :src_pnl
+      = render "product_panel_05_img", product: pr, r: :src_pnl
 
   - if @pproducts.present?
     . = paginate @pproducts
