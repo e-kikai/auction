@@ -1,0 +1,49 @@
+- set_meta_tags title: "画像ベクトル検索 比較"
+/ - breadcrumb :system_something, "出品商品履歴"
+
+css:
+  .thumbnail.product-pannel_02 .btn-sort-img {
+    position: absolute;
+    top: 194px;
+    left: 8px;
+  }
+
+  .thumbnail.product-pannel_02 .dist-label {
+    position: absolute;
+    top: 218px;
+    right: 8px;
+  }
+
+= form_tag("/system/playground_02/search_02", method: "get", class: "form-inline filtering-form") do
+  = text_field_tag :keywords, @keywords.to_s, class: "form-control", placeholder: "キーワードから探す - 空白区切りでAND検索できます"
+  = select_tag :category_id, options_for_select(@categories_selector, selected: params[:category_id]), {include_blank: "-- カテゴリ --", class: "form-control"}
+
+  / = select_tag :type, options_for_select({"ノルム(NArray)" => :narray, "ノルム(NArray) + 一括キャッシュ" => :redis, "ノルム(NArray) + 個別キャッシュ" => :solo_cache, "ノルム" => :norm, "角度(コサイン類似度)" => :angle}, selected: params[:type]), {class: "form-control"}
+
+  = button_tag class: "btn btn-info" do
+    span.glyphicon.glyphicon-search
+    span.btn-content 検索
+
+  = link_to "/system/playground/search_01", class: "btn btn-danger pull-right" do
+    span.glyphicon.glyphicon-remove
+    span.btn-content リセット
+
+
+  - if @pproducts.present?
+    . = paginate @pproducts
+  .row
+    - if @products.blank?
+      .alert.alert-success
+        span.glyphicon.glyphicon-info-sign
+        span.btn-content フォームから検索してください
+
+    - if @target.present?
+      h4 この商品に類似した商品ソート (検索速度 : #{@time} sec)
+      = render "product_panel_03_img", product: @target, r: :src_pnl
+      hr
+
+    -(@pproducts || @products).each do |pr|
+      = render "product_panel_03_img", product: pr, r: :src_pnl
+
+  - if @pproducts.present?
+    . = paginate @pproducts

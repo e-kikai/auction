@@ -309,8 +309,8 @@ class Product < ApplicationRecord
     when "dl_osusume";   ["閲覧履歴に基づくオススメ",        :dlos, :gift,     :lightseagreen]
 
     ### ログインユーザ ###
-    when "nitamono";      ["あなたへのオススメ",             :vos,  :camera,   :mediumpurple]
-    when "user";          ["閲覧傾向からのオススメ",         :bos,  :gift,     :lightseagreen]
+    when "v";             ["あなたへのオススメ",             :vos,  :camera,   :mediumpurple]
+    when "b";             ["閲覧傾向からのオススメ",         :bos,  :gift,     :lightseagreen]
     when "watch_osusume"; ["ウォッチに基づくオススメ",       :waos, :star,     "#FF0"]
     when "bid_osusume";   ["入札履歴に基づくオススメ",       :bios, :pencil,   :darkorange]
     when "cart";          ["入札してみませんか？",           :crt,  :flash,    :deeppink]
@@ -716,9 +716,8 @@ class Product < ApplicationRecord
   def process_vector
     bucket = Product.s3_bucket # S3バケット取得
 
-    vector_key = "#{S3_VECTORS_PATH}/vector_#{id}.npy"
-
-    image = product_images.first
+    vector_key = "#{S3_VECTORS_PATH}/vector_#{id}.npy" # ベクトルを保存するS3パス
+    image      = product_images.first                  # ベクトル変換する画像ファイルパス
 
     if image.blank?  # 画像の有無チェック
       errors.add(:base, '商品に画像が登録されていません') and return false
@@ -726,7 +725,7 @@ class Product < ApplicationRecord
       errors.add(:base, 'ベクトルファイルがすでに存在します') and return false
     end
 
-    logger.debug "*** 2 : #{vector_key}"
+    # logger.debug "*** 2 : #{vector_key}"
 
     filename    = image.image_identifier
     image_id    = image.id
@@ -735,28 +734,23 @@ class Product < ApplicationRecord
     image_path  = "#{UTILS_PATH}/static/img/#{filename}"
     vector_path = "#{VECTORS_PATH}/#{filename}.npy"
 
-    logger.debug "*** 3 : #{image_key}"
+    # logger.debug "*** 3 : #{image_key}"
 
     bucket.object(image_key).download_file(image_path) # S3より画像ファイルの取得
 
     # プロセス
     cmd = "cd #{UTILS_PATH} && python3 process_images.py --image_files=\"#{image_path}\";"
-    logger.debug "*** 4 : #{cmd}"
+    # logger.debug "*** 4 : #{cmd}"
     o, e, s = Open3.capture3(cmd)
     # logger.debug o
     # logger.debug e
     # logger.debug s
 
-    logger.debug "*** 5 : #{vector_path}"
+    # logger.debug "*** 5 : #{vector_path}"
 
     bucket.object(vector_key).upload_file(vector_path) # ベクトルファイルアップロード
 
-    logger.debug "*** 6 : upload"
-
-    ### 不要になった画像ファイル、ベクトルファイルの削除
-    File.delete(vector_path, image_path)
-
-    logger.debug "*** 7 : delete"
+    File.delete(vector_path, image_path) # 不要になった画像ファイル、ベクトルファイルの削除
 
     self
   rescue

@@ -198,6 +198,13 @@ Rails.application.routes.draw do
           get 'vbpr_detail'
         end
       end
+
+      resources :playground_02, only: [:index] do
+        collection do
+          get 'search_02'
+          get 'all_process_vector'
+        end
+      end
     end
 
     resources :data do
