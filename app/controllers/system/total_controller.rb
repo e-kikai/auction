@@ -258,7 +258,7 @@ class System::TotalController < System::ApplicationController
     @nxt_counts = nxt.count
     @nxt_users  = nxt.distinct.count(:user_id)
 
-    often = dls.where.not(user_id: nil).where("r LIKE '%onew%'") # よくアクセスするカテゴリの新着
+    often = dls.where.not(user_id: nil).where("r ~ '(onew|mnw)'") # よくアクセスするカテゴリの新着
     @often_counts = often.count
     @often_users  = often.distinct.count(:user_id)
 
@@ -326,6 +326,41 @@ class System::TotalController < System::ApplicationController
     google = dls.where("referer ~ '(google|yahoo|bing|baidu)'")
     @google_counts = google.count
     @google_ips    = google.distinct.count(:ip)
+
+    ### 詳細 ###
+    dls_us = dls.where.not(user_id: nil)
+
+    @top_vbpr = dls_us.where("r LIKE '%top_vos%'").count
+    @dtl_vbpr = dls_us.where("r LIKE '%dtl_vos%'").count
+    @top_watch = dls_us.where("r LIKE '%top_waos%'").count
+    @dtl_watch = dls_us.where("r LIKE '%dtl_waos%'").count
+    @top_bid = dls_us.where("r LIKE '%top_bios%'").count
+    @dtl_bid = dls_us.where("r LIKE '%dtl_bios%'").count
+    @top_cart = dls_us.where("r LIKE '%top_crt%'").count
+    @dtl_cart = dls_us.where("r LIKE '%dtl_crt%'").count
+    @top_nxt = dls_us.where("r LIKE '%top_nxt%'").count
+    @dtl_nxt = dls_us.where("r LIKE '%dtl_nxt%'").count
+    @top_often = dls_us.where("r ~ 'top_(onew|mnw)'").count
+    @dtl_often = dls_us.where("r ~ 'dtl_(onew|mnw)'").count
+
+    @top_follow = dls_us.where("r LIKE '%top_fls%'").count
+
+    dls_ip = dls.where.not(ip: nil)
+    @top_dl = dls_us.where("r LIKE '%top%'").count
+    @dtl_dl = dls_us.where("r LIKE '%dtl%'").count
+
+    @top_endo = dls_ip.where("r LIKE '%top_endo%'").count
+    @dtl_endo = dls_ip.where("r LIKE '%dtl_endo%'").count
+    @top_tnew = dls_ip.where("r LIKE '%top_tnew%'").count
+    @dtl_tnew = dls_ip.where("r LIKE '%dtl_tnew%'").count
+    @top_mnew = dls_ip.where("r LIKE '%top_mnew%'").count
+    @dtl_mnew = dls_ip.where("r LIKE '%dtl_mnew%'").count
+    @top_zero = dls_ip.where("r LIKE '%top_zer%'").count
+    @dtl_zero = dls_ip.where("r LIKE '%dtl_zer%'").count
+    @top_check = dls_ip.where("r LIKE '%top_chk%'").count
+    @dtl_check = dls_ip.where("r LIKE '%dtl_chk%'").count
+    @top_dlos = dls_ip.where("r LIKE '%top_dlos%'").count
+    @dtl_dlos = dls_ip.where("r LIKE '%dtl_dlos%'").count
 
     respond_to do |format|
       format.html {

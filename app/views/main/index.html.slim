@@ -202,7 +202,7 @@
               span.btn-content よくアクセスするカテゴリの新着
             .top-category-news
               - @oft_products.each do |pr|
-                = render "products/product_panel_02", product: pr, r: :top_mnw
+                = render "products/product_panel_02", product: pr, r: :top_onew
       - else
         /// 非ログイン : 閲覧履歴に基づくオススメ ///
         - if @dl_osusume.present?
