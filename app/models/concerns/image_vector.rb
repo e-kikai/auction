@@ -50,7 +50,7 @@ module ImageVector
 
     vectors = Rails.cache.read(self.class.vector_cache(version)) || {} # キャッシュからベクトル群を取得
     bucket  = Product.s3_bucket # S3バケット取得
-    logger.debug self.vector_s3_key(version, id)
+    logger.debug self.class.vector_s3_key(version, id)
 
     ### ターゲットベクトル取得 ###
     if vectors[id].present? # キャッシュからベクトル取得
