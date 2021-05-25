@@ -94,9 +94,9 @@ css:
             td.num = number_with_delimiter(@check_counts[day])
             td.num.sepa = number_with_delimiter(@dlos_counts[day])
 
+            td.num = number_with_delimiter(@to_nms_counts[day])
             td.num = number_with_delimiter(@sca_counts[day])
-            td.num = number_with_delimiter(@nmr_counts[day])
-            td.num.sepa = number_with_delimiter(@to_nms_counts[day])
+            td.num.sepaå = number_with_delimiter(@nmr_counts[day])
             td.num.sepa = number_with_delimiter(@search_counts[day])
 
             td.num = number_with_delimiter(@mail_counts[day])
@@ -149,9 +149,9 @@ css:
             td.num = number_with_delimiter(@check_counts.sum { |k, v| v.to_i })
             td.num.sepa = number_with_delimiter(@dlos_counts.sum { |k, v| v.to_i })
 
+            td.num= number_with_delimiter(@to_nms_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@sca_counts.sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@nmr_counts.sum { |k, v| v.to_i })
-            td.num.sepa = number_with_delimiter(@to_nms_counts.sum { |k, v| v.to_i })
+            td.num.sepa  = number_with_delimiter(@nmr_counts.sum { |k, v| v.to_i })
             td.num.sepa = number_with_delimiter(@search_counts.sum { |k, v| v.to_i })
 
             td.num = number_with_delimiter(@mail_counts.sum { |k, v| v.to_i })
