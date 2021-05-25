@@ -46,6 +46,13 @@ class System::Playground02Controller < ApplicationController
     end
   end
 
+  def process_vector
+    @product = Product.find(params[:id])
+    @product.vector_process_02('vol00')
+
+    redirect_to "/playground_02/search_02?nitamono=#{params[:id]}", notice: "画像特徴ベクトル変換処理を行いました"
+  end
+
   ### 画像特徴ベクトル一括変換 ###
   def all_process_vector
     @products = Product.includes(:product_images).where(template: false).order(id: :desc).each do |pr|
