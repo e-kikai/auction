@@ -44,6 +44,30 @@ module ImageVector
     return
   end
 
+  ### この商品のベクトルを取得(バージョン対応) ###
+  def get_vector_02(version)
+    return nil unless top_image? # 画像の有無チェック
+
+    vectors = Rails.cache.read(self.class.vector_cache(version)) || {} # キャッシュからベクトル群を取得
+    bucket  = Product.s3_bucket # S3バケット取得
+
+    ### ターゲットベクトル取得 ###
+    if vectors[id].present? # キャッシュからベクトル取得
+      logger.debug "get by cache :: #{id}"
+      vectors[id]
+    elsif bucket.object(self.class.vector_s3_key(version, pid)).exists? # アップロードファイルからベクトル取得
+      logger.debug "get by bucket :: #{id}"
+      logger.debug self.vector_s3_key(version, pid)
+
+      str = bucket.object(self.class.vector_s3_key(version, pid)).get.body.read
+      Npy.load_string(str)
+    else # ない場合
+      logger.debug "!!!!!! nil !!!!!! :: #{id}"
+
+      nil
+    end
+  end
+
   class_methods do
     ### 画像特徴ベクトル検索処理(バージョン対応) ###
     def vector_search_02(version, target, limit=nil, page=1, mine=false)
