@@ -72,6 +72,8 @@ class Product < ApplicationRecord
   require 'csv'
   require "open3"
 
+  include ImageVector # 画像特徴ベクトル関係
+
   soft_deletable
   default_scope { without_soft_destroyed }
 
@@ -884,6 +886,7 @@ class Product < ApplicationRecord
     end
   end
 
+  ### S3リソース設定 ###
   def self.s3_resource
     Aws::S3::Resource.new(
       access_key_id:     Rails.application.secrets.aws_access_key_id,
@@ -892,7 +895,10 @@ class Product < ApplicationRecord
     )
   end
 
+  ### S3バケット取得 ###
   def self.s3_bucket
     s3_resource.bucket(Rails.application.secrets.aws_s3_bucket)
   end
+
+
 end
