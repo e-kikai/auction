@@ -246,7 +246,7 @@ class System::TotalController < System::ApplicationController
     @watch_counts = watches.count
     @watch_users  = watches.distinct.count(:user_id)
 
-    bids = dls.where.not(user_id: nil).where("r LIKE '%wbios%'") # 入札オススメ
+    bids = dls.where.not(user_id: nil).where("r LIKE '%bios%'") # 入札オススメ
     @bid_counts = bids.count
     @bid_users  = bids.distinct.count(:user_id)
 
