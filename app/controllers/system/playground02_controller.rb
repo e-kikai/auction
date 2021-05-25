@@ -16,10 +16,6 @@ class System::Playground02Controller < ApplicationController
       ### 似たものサーチ(比較) ###
       @time = Benchmark.realtime do
         @target   = Product.find(params[:nitamono])
-        # @sorts = sort_by_vector(@target, @products)
-
-        # @products    = @target.nitamono(Product::NEW_MAX_COUNT)
-        # @products_02 = @target.nitamono(Product::NEW_MAX_COUNT) # 比較
 
         @products    = Product.status(Product::STATUS[:start]).vector_search_02("vector", @target.get_vector, 10)
         @products_02 = Product.status(Product::STATUS[:start]).vector_search_02("vol00", @target.get_vector, 10)

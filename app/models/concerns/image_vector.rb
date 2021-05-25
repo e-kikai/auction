@@ -49,7 +49,7 @@ module ImageVector
     def vector_search_02(version, target, limit=nil, page=1, mine=false)
       return Product.none if target.nil?
 
-      vectors = Rails.cache.read(self.vector_cache(version)) || {} # キャッシュからベクトル群を取得
+      vectors = Rails.cache.read(self.class.vector_cache(version)) || {} # キャッシュからベクトル群を取得
       bucket  = Product.s3_bucket # S3バケット取得
       update_flag = false
 
@@ -62,9 +62,9 @@ module ImageVector
           vectors[pid]
         else # 新規(ファイルからベクトル取得して追加)
           update_flag = true
-          vectors[pid] = if bucket.object(self.vector_s3_key(version, pid)).exists?
+          vectors[pid] = if bucket.object(self.class.vector_s3_key(version, pid)).exists?
 
-            str = bucket.object(self.vector_s3_key(version, pid)).get.body.read
+            str = bucket.object(self.class.vector_s3_key(version, pid)).get.body.read
             Npy.load_string(str) rescue ZERO_NARRAY_02
           else
             ZERO_NARRAY_02
@@ -92,7 +92,7 @@ module ImageVector
       sorts = sorts.to_h
 
       # ベクトルキャシュ更新
-      Rails.cache.write(self.vector_cache(version), vectors) if update_flag == true
+      Rails.cache.write(self.class.vector_cache(version), vectors) if update_flag == true
 
       ### 結果を返す ###
       where(id: sorts.keys).sort_by { |pr| sorts[pr.id] }
