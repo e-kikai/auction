@@ -55,11 +55,11 @@ module ImageVector
     if vectors[id].present? # キャッシュからベクトル取得
       logger.debug "get by cache :: #{id}"
       vectors[id]
-    elsif bucket.object(self.class.vector_s3_key(version, pid)).exists? # アップロードファイルからベクトル取得
+    elsif bucket.object(self.class.vector_s3_key(version, id)).exists? # アップロードファイルからベクトル取得
       logger.debug "get by bucket :: #{id}"
-      logger.debug self.vector_s3_key(version, pid)
+      logger.debug self.vector_s3_key(version, id)
 
-      str = bucket.object(self.class.vector_s3_key(version, pid)).get.body.read
+      str = bucket.object(self.class.vector_s3_key(version, id)).get.body.read
       Npy.load_string(str)
     else # ない場合
       logger.debug "!!!!!! nil !!!!!! :: #{id}"
