@@ -7,10 +7,7 @@ class System::Playground02Controller < ApplicationController
 
   def search_02
     # 初期検索クエリ作成
-    @products = Product.status(Product::STATUS[:mix])
-      .where("products.created_at <= ?", Date.new(2020, 7, 3).to_time)
-      .includes(:product_images, :category, :user)
-      .order(id: :desc)
+    @products = Product.status(Product::STATUS[:start]).includes(:product_images, :category).order(id: :desc)
 
     if params[:nitamono]
       ### 似たものサーチ(比較) ###
@@ -18,8 +15,8 @@ class System::Playground02Controller < ApplicationController
         @target   = Product.find(params[:nitamono])
 
         ### 比較 ###
-        @products_01 = Product.status(Product::STATUS[:start]).vector_search_02("vector", @target.get_vector, 10)
-        @products_02 = Product.status(Product::STATUS[:start]).vector_search_02("vol00", @target.get_vector, 10)
+        @products_01 = @products.vector_search_02("vector", @target.get_vector, 10)
+        # @products_02 = @products.vector_search_02("vol00", @target.get_vector, 10)
       end
     else
       ### 通常サーチ ###
