@@ -42,9 +42,7 @@ css:
         . = paginate @pproducts
 
     /// 比較検索 ///
-    / - elsif @products_01.present? && @products_02.present?
-    / - elsif @products_01.present?
-    - else
+    - elsif @products_01.present? && @products_02.present?
       .col-md-12
         h4 この商品に類似した商品ソート <br />(検索速度 : #{@time} sec)
         = render "product_panel_05_img", product: @target, r: :src_pnl
@@ -58,11 +56,11 @@ css:
       .col-md-6
         h5 新アルゴリズム
         .products_area
-          / - @products_02.each do |pr|
-          /   = render "product_panel_05_img", product: pr, r: :src_pnl
+          - @products_02.each do |pr|
+            = render "product_panel_05_img", product: pr, r: :src_pnl
 
-    / - else
-    /   .col-md-12
-    /     .alert.alert-success
-    /       span.glyphicon.glyphicon-info-sign
-    /       span.btn-content フォームから検索してください
+    - else
+      .col-md-12
+        .alert.alert-success
+          span.glyphicon.glyphicon-info-sign
+          span.btn-content フォームから検索してください
