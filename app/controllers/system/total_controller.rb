@@ -288,7 +288,7 @@ class System::TotalController < System::ApplicationController
 
     follow = dls.where("r LIKE '%fls%'") # フォロー新着
     @follow_counts = follow.count
-    @follow_ips    = follow.distinct.count(:ip)
+    @follow_users  = follow.distinct.count(:user_id)
 
     ### 従来のアクセス ###
     same_categories = dls.where("r LIKE '%sca%'")
