@@ -46,7 +46,7 @@ css:
     / - elsif @products_01.present?
     - else
       .col-md-12
-        h4 この商品に類似した商品ソート (検索速度 : #{@time} sec)
+        h4 この商品に類似した商品ソート <br />(検索速度 : #{@time} sec)
         = render "product_panel_05_img", product: @target, r: :src_pnl
         hr
 

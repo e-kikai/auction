@@ -16,8 +16,8 @@ class System::Playground02Controller < ApplicationController
 
         ### 比較 ###
         logger.debug @target.get_vector_02("vector")
-        @products_01 = @products.vector_search_02("vector", @target.get_vector_02("vector"), 10)
-        # @products_02 = @products.vector_search_02("vol00", @target.get_vector_02("vol00"), 10)
+        @products_01 = @products.vector_search_02("vector", @target.get_vector_02("vector"), 16)
+        @products_02 = @products.vector_search_02("vol00", @target.get_vector_02("vol00"), 16)
       end
     else
       ### 通常サーチ ###

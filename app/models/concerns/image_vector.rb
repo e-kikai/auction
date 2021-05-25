@@ -24,14 +24,14 @@ module ImageVector
     image_path  = "#{lib_path}/../image/#{filename}"
     vector_path = "#{lib_path}/../image_vectors/#{filename}.npy"
 
-    # logger.debug image_path
-    # logger.debug vector_path
+    logger.debug image_path
+    logger.debug vector_path
 
     bucket.object(image_key).download_file(image_path) # S3より画像ファイルの取得
 
     ### 画像特徴ベクトル処理実行 ###
     cmd = "cd #{lib_path} && python3 process_images.py --output_folder=\"../\" \"#{image_path}\";"
-    # logger.debug cmd
+    logger.debug cmd
     o, e, s = Open3.capture3(cmd)
 
     bucket.object(vector_key).upload_file(vector_path) # ベクトルファイルアップロード
@@ -39,9 +39,9 @@ module ImageVector
     File.delete(vector_path, image_path) # 不要になった画像ファイル、ベクトルファイルの削除
 
     self
-  rescue
-    logger.debug "*** X : rescue"
-    return
+  # rescue
+  #   logger.debug "*** X : rescue"
+  #   return
   end
 
   ### この商品のベクトルを取得(バージョン対応) ###
