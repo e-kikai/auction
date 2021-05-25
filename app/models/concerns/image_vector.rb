@@ -47,6 +47,8 @@ module ImageVector
   class_methods do
     ### 画像特徴ベクトル検索処理(バージョン対応) ###
     def vector_search_02(version, target, limit=nil, page=1, mine=false)
+      logger.debug "# vector_search_02 #"
+
       return Product.none if target.nil?
 
       vectors = Rails.cache.read(self.vector_cache(version)) || {} # キャッシュからベクトル群を取得
@@ -57,6 +59,8 @@ module ImageVector
       pids = pluck(:id).uniq # 検索対象(出品中)の商品ID取得
 
       sorts = pids.map do |pid|
+        logger.debug pid
+
         ### ベクトルの取得 ###
         pr_narray = if vectors[pid].present? && vectors[pid] != ZERO_NARRAY_02 # 既存
           vectors[pid]
@@ -67,6 +71,7 @@ module ImageVector
             str = bucket.object(self.vector_s3_key(version, pid)).get.body.read
             Npy.load_string(str) rescue ZERO_NARRAY_02
           else
+            logger.debug "ZERO"
             ZERO_NARRAY_02
           end
 
