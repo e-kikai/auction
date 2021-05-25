@@ -17,7 +17,8 @@ class System::Playground02Controller < ApplicationController
       @time = Benchmark.realtime do
         @target   = Product.find(params[:nitamono])
 
-        @products    = Product.status(Product::STATUS[:start]).vector_search_02("vector", @target.get_vector, 10)
+        ### 比較 ###
+        @products_01 = Product.status(Product::STATUS[:start]).vector_search_02("vector", @target.get_vector, 10)
         @products_02 = Product.status(Product::STATUS[:start]).vector_search_02("vol00", @target.get_vector, 10)
       end
     else
