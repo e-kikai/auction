@@ -203,6 +203,7 @@ Rails.application.routes.draw do
         collection do
           get 'search_02'
           get 'all_process_vector'
+          get 'process_vector'
         end
       end
     end
