@@ -24,14 +24,14 @@ module ImageVector
     image_path  = "#{lib_path}/../image/#{filename}"
     vector_path = "#{lib_path}/../image_vectors/#{filename}.npy"
 
-    logger.debug image_path
-    logger.debug vector_path
+    # logger.debug image_path
+    # logger.debug vector_path
 
     bucket.object(image_key).download_file(image_path) # S3より画像ファイルの取得
 
     ### 画像特徴ベクトル処理実行 ###
     cmd = "cd #{lib_path} && python3 process_images.py --output_folder=\"../\" \"#{image_path}\";"
-    logger.debug cmd
+    # logger.debug cmd
     o, e, s = Open3.capture3(cmd)
 
     bucket.object(vector_key).upload_file(vector_path) # ベクトルファイルアップロード
@@ -83,7 +83,7 @@ module ImageVector
       pids = pluck(:id).uniq # 検索対象(出品中)の商品ID取得
 
       sorts = pids.map do |pid|
-        logger.debug pid
+        # logger.debug pid
 
         ### ベクトルの取得 ###
         pr_narray = if vectors[pid].present? && vectors[pid] != ZERO_NARRAY_02 # 既存
@@ -95,7 +95,7 @@ module ImageVector
             str = bucket.object(self.vector_s3_key(version, pid)).get.body.read
             Npy.load_string(str) rescue ZERO_NARRAY_02
           else
-            logger.debug "ZERO"
+            # logger.debug "ZERO"
             ZERO_NARRAY_02
           end
 
