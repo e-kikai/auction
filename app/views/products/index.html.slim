@@ -327,12 +327,7 @@
                 td.price.absolute
                   - unless pr.prompt_dicision?
                     = pr.remaining_time
-                  / .td-under.right = link_to "/myauction/watches?id=#{pr.id}", method: :post, class: "btn btn-default" do
-                  /   span.glyphicon.glyphicon-star.watch-star
-                  /   span.btn-content ウォッチ
-
                   .td-under.right
-                    / = render "products/nitamono", product: pr
                     = render "products/nitamono_02", product: pr
                     = render "products/watch_02", product: pr
 

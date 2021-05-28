@@ -139,17 +139,6 @@
 
         / - else
     .col-md-9.col-sm-9.col-xs-12
-      / = form_tag("/system/playground/vbpr_top", method: "get", class: "form-inline filtering-form") do
-      /   = select_tag :user_id, options_for_select(@user_selector, selected: params[:user_id]), {include_blank: "-- ID : ユーザ (入札数 / ウォッチ数 / 閲覧数)--", class: "form-control"}
-
-      /   = button_tag class: "btn btn-info" do
-      /     span.glyphicon.glyphicon-search
-      /     span.btn-content 選択
-
-      /   = link_to "/system/playground/vbpr_top", class: "btn btn-danger pull-right" do
-      /     span.glyphicon.glyphicon-remove
-      /     span.btn-content リセット
-
       / .alert.alert-info
       /   h4
       /     span.glyphicon.glyphicon-info-sign
