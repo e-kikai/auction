@@ -1,15 +1,3 @@
-/ - if product.top_image? && @pms.present?
-
-/   - if params[:nitamono].to_i == product.id
-/     .nitamono.target
-/       span.glyphicon.glyphicon-camera
-/       .nitamono_label この写真と似たもの順
-
-/   - else
-/     = link_to url_for(@pms.merge(nitamono: product.id)), class: "nitamono",
-/       data: { toggle: :tooltip, container: :html, placement: :left, html: true, trigger: :hover }, title: "この写真と似たもの順で並び替え" do
-/       span.glyphicon.glyphicon-camera
-
 - if product.top_image?
   = link_to "/system/playground_02/search_02?nitamono=#{product.id}", class: "nitamono",
     data: { toggle: :tooltip, container: :html, placement: :left, trigger: :hover }, title: "似たものサーチ" do

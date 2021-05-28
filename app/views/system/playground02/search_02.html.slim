@@ -53,9 +53,10 @@ css:
       .col-md-6
         h5 従来のアルゴリズム(vector)
         .products_area
-          / = render partial: "product_panel_05_img", collection: @products_01, as: "product", locals: { r: :src_pnl }
-          - @products_01.each do |pr|
-            = render "product_panel_05_img", product: pr, r: :src_pnl
+          / - @products_01.each do |pr|
+          /   = render "product_panel_05_img", product: pr, r: :src_pnl
+          = render partial: "product_panel_05_img", collection: @products_01, as: "product", locals: { r: :src_pnl }
+
       .col-md-6
         h5 新アルゴリズム(vol00)
         .products_area
