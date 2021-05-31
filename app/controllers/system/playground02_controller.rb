@@ -15,8 +15,17 @@ class System::Playground02Controller < ApplicationController
         @target   = Product.find(params[:nitamono])
 
         ### 比較 ###
-        @products_01 = @products.vector_search_02("vector", @target.get_vector_02("vector"), 16)
-        @products_02 = @products.vector_search_02("vol00", @target.get_vector_02("vol00"), 16)
+        # @products_01 = @products.vector_search_02("vector", @target.get_vector_02("vector"), 16)
+        # @products_02 = @products.vector_search_02("vol00", @target.get_vector_02("vol00"), 16)
+
+        ### キャッシュテスト ###
+        @products_01 = Rails.cache.fetch("vector_search_vector_#{@target.id}_16", expires_in: 1.minutes) do
+          @products.vector_search_02("vector", @target.get_vector_02("vector"), 16)
+        end
+
+        @products_02 = Rails.cache.fetch("vector_search_vol00_#{@target.id}_16", expires_in: 1.minutes) do
+          @products.vector_search_02("vector", @target.get_vector_02("vol00"), 16)
+        end
       end
     else
       ### 通常サーチ ###
