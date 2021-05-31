@@ -52,8 +52,9 @@ hr
     .panel.panel-default
       .panel-body.toppage-contents
         .toppage-scroll
-          - @nitamono_products.each do |pr|
-            = render "/main/product_panel", product: pr, r: :bfn_nmr
+          / - @nitamono_products.each do |pr|
+          /   = render "/main/product_panel", product: pr, r: :bfn_nmr
+          = render partial: "/main/product_panel", collection: @nitamono_products, as: "product", locals: { r: :bfn_nmr }
 
 - if @popular_products.present?
   .special-area
@@ -63,8 +64,9 @@ hr
     .panel.panel-default
       .panel-body.toppage-contents
         .toppage-scroll
-          - @popular_products.each do |pr|
-            = render "/main/product_panel", product: pr, r: :bfn_sca
+          / - @popular_products.each do |pr|
+          /   = render "/main/product_panel", product: pr, r: :bfn_sca
+          = render partial: "/main/product_panel", collection: @popular_products, as: "product", locals: { r: :bfn_sca }
 
 .button-center.text-left
   = link_to "/products/#{@bid.product.id}?r=bfn_bck", class: "btn btn-default" do

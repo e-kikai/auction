@@ -83,8 +83,8 @@ h4 ウォッチリスト
               /   span.glyphicon.glyphicon-remove
               /   span.btn-content 削除
 
-              = render "/products/watch_02", product: pr
-
+              / = render "/products/watch_02", product: pr
+              = watch(pr)
 
 
       thead
@@ -113,5 +113,6 @@ h4 ウォッチリスト
       .panel.panel-default
         .panel-body.toppage-contents
           .toppage-scroll
-            - @popular_products.each do |pr|
-              = render "/main/product_panel", product: pr, r: :wtc_oss
+            / - @popular_products.each do |pr|
+            /   = render "/main/product_panel", product: pr, r: :wtc_oss
+            = render partial: "/main/product_panel", collection: @popular_products, as: "product", locals: { r: :wtc_oss }

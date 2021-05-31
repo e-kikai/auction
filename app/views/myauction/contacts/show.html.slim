@@ -61,7 +61,8 @@ javascript:
                 dd = "#{@product.remaining_time.gsub(/[^0-9,]*/, "")} #{@product.remaining_time.gsub(/[0-9,]*/, "")}"
 
                 - if @product.start?
-                  = render "/products/watch_02", product: @product
+                  / = render "/products/watch_02", product: @product
+                  = watch(@product)
                   = link_to "/myauction/bids/new?id=#{@product.id}&bid%5Bamount%5D=", class: "btn btn-warning pull-right clearfix"  do
                     span.glyphicon.glyphicon-pencil
                     span.btn-content 入札
@@ -260,8 +261,9 @@ javascript:
       .panel.panel-default
         .panel-body.toppage-contents
           .toppage-scroll
-            - @nitamono_products.each do |pr|
-              = render "/main/product_panel", product: pr, r: :cnt_nmr
+            / - @nitamono_products.each do |pr|
+            /   = render "/main/product_panel", product: pr, r: :cnt_nmr
+            = render partial: "/main/product_panel", collection: @nitamono_products, as: "product", locals: { r: :cnt_nmr }
 
   - if @popular_products.present?
     .special-area
@@ -271,5 +273,6 @@ javascript:
       .panel.panel-default
         .panel-body.toppage-contents
           .toppage-scroll
-            - @popular_products.each do |pr|
-              = render "/main/product_panel", product: pr, r: :cnt_sca
+            / - @popular_products.each do |pr|
+            /   = render "/main/product_panel", product: pr, r: :cnt_sca
+            = render partial: "/main/product_panel", collection: @popular_products, as: "product", locals: { r: :cnt_sca }
