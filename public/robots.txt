@@ -5,3 +5,6 @@ Disallow: /users
 Disallow: /toppage_logs
 Disallow: /detail_logs
 Disallow: /search_logs
+
+Disallow: /*?nitamono=
+Disallow: /*?*&nitamono=
