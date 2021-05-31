@@ -396,7 +396,7 @@ article
           .toppage-scroll
             / - @nitamono_products.each do |pr|
             /   = render "/main/product_panel", product: pr, r: :dtl_nmr
-           = render partial: "/main/product_panel", collection: @nitamono_products, as: "product", locals: { r: :dtl_nmr }
+            = render partial: "/main/product_panel", collection: @nitamono_products, as: "product", locals: { r: :dtl_nmr }
 
   - if @popular_products.present?
     .special-area
@@ -408,7 +408,7 @@ article
           .toppage-scroll
             / - @popular_products.each do |pr|
             /   = render "/main/product_panel", product: pr, r: :dtl_sca
-           = render partial: "/main/product_panel", collection: @popular_products, as: "product", locals: { r: :dtl_sca }
+            = render partial: "/main/product_panel", collection: @popular_products, as: "product", locals: { r: :dtl_sca }
 
   - if @osusume.present?
     .special-area
@@ -420,7 +420,7 @@ article
           .toppage-scroll
             / - @osusume.each do |pr|
             /   = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
-           = render partial: "/main/product_panel", collection: @popular_osusumeproducts, as: "product", locals: { r: "dtl_#{@osusume_titles[1]}" }
+            = render partial: "/main/product_panel", collection: @popular_osusumeproducts, as: "product", locals: { r: "dtl_#{@osusume_titles[1]}" }
 
   .description-area
     h4.product-description
