@@ -67,11 +67,18 @@ class Myauction::BidsController < Myauction::ApplicationController
   def show
     @bid = Bid.find(params[:id])
 
-    # 人気商品
-    @popular_products = Product.related_products(@bid.product).populars.limit(Product::NEW_MAX_COUNT)
+    ### 人気商品 ###
+    # @popular_products = Product.related_products(@bid.product).populars.limit(Product::NEW_MAX_COUNT)
+    @popular_products = Rails.cache.fetch("popular_#{@bid.product.id}_#{Product::NEW_MAX_COUNT}", expires_in: 1.day) do
+      Product.related_products(@bid.product).populars.limit(Product::NEW_MAX_COUNT)
+    end
 
     ### 似たものサーチ ###
-    @nitamono_products = @bid.product.nitamono(Product::NEW_MAX_COUNT)
+    # @nitamono_products = @bid.product.nitamono(Product::NEW_MAX_COUNT)
+    @nitamono_products = Rails.cache.fetch("nitamono_#{@bid.product.id}_#{Product::NEW_MAX_COUNT}", expires_in: 1.day) do
+      @bid.product.nitamono(Product::NEW_MAX_COUNT)
+    end
+
   end
 
   private

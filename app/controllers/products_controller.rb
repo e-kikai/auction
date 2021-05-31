@@ -159,10 +159,16 @@ class ProductsController < ApplicationController
   ### 人気商品 or 画像特徴ベクトル検索 ###
   def get_populars
     ### 人気商品 ###
-    @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
+    # @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
+    @popular_products = Rails.cache.fetch("popular_#{@product.id}_#{Product::NEW_MAX_COUNT}", expires_in: 1.day) do
+      Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
+    end
 
     ### 似たものサーチ ###
-    @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
+    # @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
+    @nitamono_products = Rails.cache.fetch("nitamono_#{@product.id}_#{Product::NEW_MAX_COUNT}", expires_in: 1.day) do
+      @product.nitamono(Product::NEW_MAX_COUNT)
+    end
 
     ### 終了時オススメをランダム(0件でないもの)取得 ###
     key_array =  %w|dl_osusume|
