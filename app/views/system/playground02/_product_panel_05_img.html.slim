@@ -49,7 +49,7 @@
   .watch_area
     / = render "nitamono_03", product: product
     / = render "products/watch_02", product: product, active: true
-
+    = watch(product)
     - if product.top_image?
       = link_to "/system/playground_02/search_02?nitamono=#{product.id}", class: "nitamono",
         data: { toggle: :tooltip, container: :html, placement: :left, trigger: :hover }, title: "似たものサーチ" do

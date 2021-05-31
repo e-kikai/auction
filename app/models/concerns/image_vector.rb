@@ -71,6 +71,7 @@ module ImageVector
   class_methods do
     ### 画像特徴ベクトル検索処理(バージョン対応) ###
     def vector_search_02(version, target, limit=nil, page=1, mine=false)
+
       logger.debug "# vector_search_02 #"
 
       return Product.none if target.nil?
@@ -125,6 +126,7 @@ module ImageVector
 
       ### 結果を返す ###
       where(id: sorts.keys).sort_by { |pr| sorts[pr.id] }
+
     end
 
     ### 画像特徴ベクトルライブラリパス ###

@@ -110,8 +110,10 @@ article
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
-              - @nitamono_products.each do |pr|
-                = render "/main/product_panel", product: pr, r: :dtl_nmr
+              / - @nitamono_products.each do |pr|
+              /   = render "/main/product_panel", product: pr, r: :dtl_nmr
+              = render partial: "/main/product_panel", collection: @nitamono_products, as: "product", locals: { r: :dtl_nmr }
+
     - elsif @popular_products.present?
       .special-area
         label
@@ -121,8 +123,9 @@ article
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
-              - @popular_products.each do |pr|
-                = render "/main/product_panel", product: pr, r: :dtl_sca
+              / - @popular_products.each do |pr|
+              /   = render "/main/product_panel", product: pr, r: :dtl_sca
+              = render partial: "/main/product_panel", collection: @popular_products, as: "product", locals: { r: :dtl_sca }
 
     - if @fin_osusume.present?
       .special-area
@@ -132,8 +135,9 @@ article
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
-              - @fin_osusume.each do |pr|
-                = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
+              / - @fin_osusume.each do |pr|
+              /   = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
+              = render partial: "/main/product_panel", collection: @fin_osusume, as: "product", locals: { r: "dtl_#{@osusume_titles[1]}" }
 
     h4.product-description style="margin-top:64px;" 商品情報
 
@@ -160,7 +164,8 @@ article
             .col-md-4.col-sm-4.col-xs-4.col-md-offset-0.col-sm-offset-0.col-xs-offset-0.text-center style="padding: 0;;border-left: 1px dotted #CCC;"
               - unless @product.finished?
                 . ウォッチリスト
-                . = render "products/watch_02", product: @product
+                / . = render "products/watch_02", product: @product
+                . = watch(@product)
 
             . = link_to "/products/#{@product.id}/bids", class: "btn btn-default", style: "margin: 8px 0 8px 12px" do
               span.glyphicon.glyphicon-info-sign
@@ -389,8 +394,9 @@ article
       .panel.panel-default
         .panel-body.toppage-contents
           .toppage-scroll
-            - @nitamono_products.each do |pr|
-              = render "/main/product_panel", product: pr, r: :dtl_nmr
+            / - @nitamono_products.each do |pr|
+            /   = render "/main/product_panel", product: pr, r: :dtl_nmr
+           = render partial: "/main/product_panel", collection: @nitamono_products, as: "product", locals: { r: :dtl_nmr }
 
   - if @popular_products.present?
     .special-area
@@ -400,8 +406,9 @@ article
       .panel.panel-default
         .panel-body.toppage-contents
           .toppage-scroll
-            - @popular_products.each do |pr|
-              = render "/main/product_panel", product: pr, r: :dtl_sca
+            / - @popular_products.each do |pr|
+            /   = render "/main/product_panel", product: pr, r: :dtl_sca
+           = render partial: "/main/product_panel", collection: @popular_products, as: "product", locals: { r: :dtl_sca }
 
   - if @osusume.present?
     .special-area
@@ -411,8 +418,9 @@ article
       .panel.panel-default
         .panel-body.toppage-contents
           .toppage-scroll
-            - @osusume.each do |pr|
-              = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
+            / - @osusume.each do |pr|
+            /   = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
+           = render partial: "/main/product_panel", collection: @popular_osusumeproducts, as: "product", locals: { r: "dtl_#{@osusume_titles[1]}" }
 
   .description-area
     h4.product-description

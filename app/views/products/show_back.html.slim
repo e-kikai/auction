@@ -152,7 +152,8 @@ article
                 /   span.glyphicon.glyphicon-star.watch-star
                 /   span.btn-content ウォッチ
 
-                = render "products/watch_02", product: @product
+                / = render "products/watch_02", product: @product
+                . = watch(@product)
 
           /// ウォッチ、閲覧数 ///
           - if @product.unique_user_count > 0

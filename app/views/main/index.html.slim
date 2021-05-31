@@ -169,8 +169,9 @@
               span.btn-content あなたへのオススメ
               - if @vbpr_products.length >= Product::NEWS_LIMIT
             .top-category-news
-              - @vbpr_products.each do |pr|
-                = render "products/product_panel_02", product: pr, r: :top_vos
+              / - @vbpr_products.each do |pr|
+              /   = render "products/product_panel_02", product: pr, r: :top_vos
+              = render partial: "products/product_panel_02", collection: @vbpr_products, as: "product", locals: { r: :top_vos }
 
         / - if @bpr_products.present?
         /   /// BPR ///
@@ -190,8 +191,10 @@
               span.glyphicon.glyphicon-wrench.text-primary
               span.btn-content よくアクセスするカテゴリの新着
             .top-category-news
-              - @oft_products.each do |pr|
-                = render "products/product_panel_02", product: pr, r: :top_onew
+              / - @oft_products.each do |pr|
+              /   = render "products/product_panel_02", product: pr, r: :top_onew
+              = render partial: "products/product_panel_02", collection: @oft_products, as: "product", locals: { r: :top_onew }
+
       - else
         /// 非ログイン : 閲覧履歴に基づくオススメ ///
         - if @dl_osusume.present?
@@ -200,8 +203,9 @@
               span.glyphicon.glyphicon-gift style="color:lightseagreen;"
               span.btn-content 閲覧履歴に基づくオススメ
             .top-category-news
-              - @dl_osusume.each do |pr|
-                = render "products/product_panel_02", product: pr, r: :top_dlos
+              / - @dl_osusume.each do |pr|
+              /   = render "products/product_panel_02", product: pr, r: :top_dlos
+              = render partial: "products/product_panel_02", collection: @dl_osusume, as: "product", locals: { r: :top_dlos }
 
         /// 工具新着 ///
         - if @tool_news.present?
@@ -210,8 +214,9 @@
               span.glyphicon.glyphicon-wrench.text-primary
               span.btn-content 工具新着
             .top-category-news
-              - @tool_news.each do |pr|
-                = render "products/product_panel_02", product: pr, r: :top_tnew
+              / - @tool_news.each do |pr|
+              /   = render "products/product_panel_02", product: pr, r: :top_tnew
+              = render partial: "products/product_panel_02", collection: @tool_news, as: "product", locals: { r: :top_tnew }
 
         /// 機械新着 ///
         - if @machine_news.present?
@@ -220,8 +225,9 @@
               span.glyphicon.glyphicon-cog.text-success
               span.btn-content 機械新着
             .top-category-news
-              - @machine_news.each do |pr|
-                = render "products/product_panel_02", product: pr, r: :top_mnew
+              / - @machine_news.each do |pr|
+              /   = render "products/product_panel_02", product: pr, r: :top_mnew
+              = render partial: "products/product_panel_02", collection: @machine_news, as: "product", locals: { r: :top_mnew }
 
       /// 最近チェックした商品(共通) ///
       - if @dl_products.present?
@@ -231,8 +237,9 @@
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
-              - @dl_products.each do |pr|
-                = render "product_panel", product: pr, r: :top_chk
+              / - @dl_products.each do |pr|
+              /   = render "product_panel", product: pr, r: :top_chk
+              = render partial: "product_panel", collection: @dl_products, as: "product", locals: { r: :top_chk }
 
       /// ログインユーザ ///
       - if user_signed_in?
@@ -243,8 +250,9 @@
               span.glyphicon.glyphicon-star.watch-star
               span.btn-content ウォッチリストに基づくオススメ
             .top-category-news
-              - @watch_osusume.each do |pr|
-                = render "products/product_panel_02", product: pr, r: :top_waos
+              / - @watch_osusume.each do |pr|
+              /   = render "products/product_panel_02", product: pr, r: :top_waos
+              = render partial: "products/product_panel_02", collection: @watch_osusume, as: "product", locals: { r: :top_waos }
 
         /// 入札履歴に基づくオススメ ///
         - if @bid_osusume.present?
@@ -253,8 +261,9 @@
               span.glyphicon.glyphicon-pencil style="color:darkorange;"
               span.btn-content 入札履歴に基づくオススメ
             .top-category-news
-              - @bid_osusume.each do |pr|
-                = render "products/product_panel_02", product: pr, r: :top_bios
+              / - @bid_osusume.each do |pr|
+              /   = render "products/product_panel_02", product: pr, r: :top_bios
+              = render partial: "products/product_panel_02", collection: @bid_osusume, as: "product", locals: { r: :top_bios }
 
         /// 入札してみませんか ///
         - if @cart_products.present?
@@ -263,8 +272,9 @@
               span.glyphicon.glyphicon-flash style="color:deeppink;"
               span.btn-content 入札してみませんか？
             .top-category-news
-              - @cart_products.each do |pr|
-                = render "products/product_panel_02", product: pr, r: :top_crt
+              / - @cart_products.each do |pr|
+              /   = render "products/product_panel_02", product: pr, r: :top_crt
+              = render partial: "products/product_panel_02", collection: @cart_products, as: "product", locals: { r: :top_crt }
 
         /// こちらもオススメ ///
         - if @next_osusume.present?
@@ -273,8 +283,9 @@
               span.glyphicon.glyphicon-flag style="color:olivedrab;"
               span.btn-content こちらもオススメ
             .top-category-news
-              - @next_osusume.each do |pr|
-                = render "products/product_panel_02", product: pr, r: :top_nxt
+              / - @next_osusume.each do |pr|
+              /   = render "products/product_panel_02", product: pr, r: :top_nxt
+              = render partial: "products/product_panel_02", collection: @next_osusume, as: "product", locals: { r: :top_nxt }
 
       /// まもなく終了 ///
       - if @end_products.present?
@@ -283,8 +294,10 @@
             span.glyphicon.glyphicon-time.text-danger
             span.btn-content まもなく終了
           .top-category-news
-            - @end_products.each do |pr|
-              = render "products/product_panel_02", product: pr, r: :top_endo
+            / - @end_products.each do |pr|
+            /   = render "products/product_panel_02", product: pr, r: :top_endo
+            = render partial: "products/product_panel_02", collection: @end_products, as: "product", locals: { r: :top_endo }
+
 
       /// こんなものもあります ///
       - if @zero_products.present?
@@ -294,8 +307,9 @@
             span.btn-content こんなものもあります
 
           .top-category-news
-            - @zero_products.each do |pr|
-              = render "products/product_panel_02", product: pr, r: :top_zer
+            / - @zero_products.each do |pr|
+            /   = render "products/product_panel_02", product: pr, r: :top_zer
+            = render partial: "products/product_panel_02", collection: @zero_products, as: "product", locals: { r: :top_zer }
 
       /// フォローした出品会社の新着商品 ///
       - if @fo_products.present?
@@ -305,8 +319,9 @@
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
-              - @fo_products.each do |pr|
-                = render "product_panel", product: pr, r: :top_flw
+              / - @fo_products.each do |pr|
+              /   = render "product_panel", product: pr, r: :top_flw
+              = render partial: "product_panel", collection: @fo_products, as: "product", locals: { r: :top_flw }
 
       /// 特集 ///
       / .toppage-searches

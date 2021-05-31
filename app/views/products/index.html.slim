@@ -238,8 +238,10 @@
 
               .mobile-button-area
                 / = render "products/nitamono", product: pr
-                = render "products/nitamono_02", product: pr
-                = render "products/watch_02", product: pr
+                / = render "products/nitamono_02", product: pr
+                / = render "products/watch_02", product: pr
+                = nitamono_sort(pr)
+                = watch(pr)
 
       .table-responsive.hidden-sm.hidden-xs
         table.product-table.table.table-striped.table-hover.table-condensed
@@ -328,13 +330,16 @@
                   - unless pr.prompt_dicision?
                     = pr.remaining_time
                   .td-under.right
-                    = render "products/nitamono_02", product: pr
-                    = render "products/watch_02", product: pr
+                    / = render "products/nitamono_02", product: pr
+                    / = render "products/watch_02", product: pr
+                    = nitamono_sort(pr)
+                    = watch(pr)
 
     - else
       .products_area
-        - @pproducts.each do |pr|
-          = render "product_panel_02", product: pr, r: "#{rbase}_pnl"
+        / - @pproducts.each do |pr|
+        /   = render "product_panel_02", product: pr, r: "#{rbase}_pnl"
+        = render partial: "product_panel_02", collection: @pproducts, as: "product", locals: { r: "#{rbase}_pnl" }
 
     = paginate @pproducts
 
@@ -382,8 +387,10 @@
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
-              - @dl_products.each do |pr|
-                = render "/main/product_panel", product: pr, r: :src_chk
+              / - @dl_products.each do |pr|
+              /   = render "/main/product_panel", product: pr, r: :src_chk
+              = render partial: "/main/product_panel", collection: @dl_products, as: "product", locals: { r: :src_chk }
+
 
 = render "/main/ads_frames", okw: title
 
