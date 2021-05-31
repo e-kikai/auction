@@ -793,9 +793,11 @@ class Product < ApplicationRecord
 
   ### 似たものでソート ###
   def self.nitamono_sort(product_id, page=1)
-    target = Product.find(product_id).get_vector
+    target = Product.unscoped.find(product_id).get_vector
 
     self.nitamono_search(target, 25, page, true)
+  rescue
+    Product.none
   end
 
   ### 画像特徴ベクトル検索処理 ###
