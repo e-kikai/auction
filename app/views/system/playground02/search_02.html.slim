@@ -40,14 +40,13 @@ css:
           /   = render "product_panel_05_img", product: pr, r: :src_pnl
           = render partial: "product_panel_05_img", collection: @pproducts, as: "product", locals: { r: :src_pnl }
 
-
         . = paginate @pproducts
 
     /// 比較検索 ///
     - elsif @products_01.present? && @products_02.present?
       .col-md-12
         h4 この商品に類似した商品ソート <br />(検索速度 : #{@time} sec)
-        = render "product_panel_05_img", product: @target, cached: true, r: :src_pnl
+        = render "product_panel_05_img", product: @target, r: :src_pnl
         hr
 
       .col-md-6
@@ -55,14 +54,16 @@ css:
         .products_area
           / - @products_01.each do |pr|
           /   = render "product_panel_05_img", product: pr, r: :src_pnl
-          = render partial: "product_panel_05_img", collection: @products_01, as: "product", cached: true, locals: { r: :src_pnl }
+          - cache "vector_#{@target.id}", expires_in: 1.minutes, skip_digest: true do
+            = render partial: "product_panel_05_img", collection: @products_01, as: "product", locals: { r: :src_pnl }
 
       .col-md-6
         h5 新アルゴリズム(vol00)
         .products_area
           / - @products_02.each do |pr|
           /   = render "product_panel_05_img", product: pr, r: :src_pnl
-          = render partial: "product_panel_05_img", collection: @products_02, as: "product", cached: true, locals: { r: :src_pnl }
+          - cache "vol00_#{@target.id}", expires_in: 1.minutes, skip_digest: true do
+            = render partial: "product_panel_05_img", collection: @products_02, as: "product", locals: { r: :src_pnl }
     - else
       .col-md-12
         .alert.alert-success
