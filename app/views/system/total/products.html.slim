@@ -26,7 +26,12 @@
             th.num 入札数
             th.num 入札<br />人数
             th.num 閲覧数
+            th.num ログ<br />イン
+            th.num.sepa 未ログ<br />イン
             th.num 閲覧<br />人数
+            th.num ログ<br />イン
+            th.num.sepa 未ログ<br />イン
+
             th.num ウォ<br />ッチ
             th.num.sepa ウォッチ<br />人数
             th.num 登録<br />人数
@@ -62,7 +67,12 @@
 
             td.num = number_with_delimiter @bid_user_counts[day]
             td.num = number_with_delimiter @detail_log_counts[day]
+            td.num = number_with_delimiter @login_dl_counts[day]
+            td.num = number_with_delimiter @unlogin_dl_counts[day]
             td.num = number_with_delimiter @detail_user_counts[day]
+            td.num = number_with_delimiter @login_du_counts[day]
+            td.num = number_with_delimiter @unlogin_du_counts[day]
+
             td.num = number_with_delimiter @watch_counts[day]
             td.num.sepa = number_with_delimiter @watch_user_counts[day]
             td.num = number_with_delimiter @user_counts[day]
@@ -80,7 +90,11 @@
             th.num 入札数
             th.num 入札<br />人数
             th.num 閲覧数
+            th.num ログ<br />イン
+            th.num.sepa 未ログ<br />イン
             th.num 閲覧<br />人数
+            th.num ログ<br />イン
+            th.num.sepa 未ログ<br />イン
             th.num ウォ<br />ッチ
             th.num.sepa ウォッチ<br />人数
             th.num 登録<br />人数
@@ -98,7 +112,13 @@
             td.num = number_with_delimiter(@bid_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@bid_user_total)
             td.num = number_with_delimiter(@detail_log_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@login_dl_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@unlogin_dl_counts.sum { |k, v| v.to_i })
+
             td.num = number_with_delimiter(@detail_user_total)
+            td.num = number_with_delimiter(@login_du_total)
+            td.num = number_with_delimiter(@unlogin_du_total)
+
             td.num = number_with_delimiter(@watch_counts.sum { |k, v| v.to_i })
             td.num.sepa = number_with_delimiter(@watch_user_total)
             td.num = number_with_delimiter(@user_counts.sum { |k, v| v.to_i })
