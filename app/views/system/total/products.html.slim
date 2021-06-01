@@ -65,13 +65,13 @@
               - if @bid_counts[day].present?
                 = link_to(number_with_delimiter(@bid_counts[day]), "/system/bids?date[year]=#{day.year}&date[month]=#{day.month}&date[day]=#{day.day}&company=#{@company}")
 
-            td.num = number_with_delimiter @bid_user_counts[day]
+            td.num.sepa = number_with_delimiter @bid_user_counts[day]
             td.num = number_with_delimiter @detail_log_counts[day]
             td.num = number_with_delimiter @login_dl_counts[day]
-            td.num = number_with_delimiter @unlogin_dl_counts[day]
+            td.num.sepa = number_with_delimiter @unlogin_dl_counts[day]
             td.num = number_with_delimiter @detail_user_counts[day]
             td.num = number_with_delimiter @login_du_counts[day]
-            td.num = number_with_delimiter @unlogin_du_counts[day]
+            td.num.sepa = number_with_delimiter @unlogin_du_counts[day]
 
             td.num = number_with_delimiter @watch_counts[day]
             td.num.sepa = number_with_delimiter @watch_user_counts[day]
@@ -110,14 +110,14 @@
             td.num = number_with_delimiter(@success_counts.sum { |k, v| v.to_i })
             td.total_price.sepa = number_to_currency(@success_prices.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@bid_counts.sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@bid_user_total)
+            td.num.sepa = number_with_delimiter(@bid_user_total)
             td.num = number_with_delimiter(@detail_log_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@login_dl_counts.sum { |k, v| v.to_i })
-            td.num = number_with_delimiter(@unlogin_dl_counts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@unlogin_dl_counts.sum { |k, v| v.to_i })
 
             td.num = number_with_delimiter(@detail_user_total)
             td.num = number_with_delimiter(@login_du_total)
-            td.num = number_with_delimiter(@unlogin_du_total)
+            td.num.sepa = number_with_delimiter(@unlogin_du_total)
 
             td.num = number_with_delimiter(@watch_counts.sum { |k, v| v.to_i })
             td.num.sepa = number_with_delimiter(@watch_user_total)

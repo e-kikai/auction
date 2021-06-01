@@ -59,7 +59,7 @@ class System::TotalController < System::ApplicationController
     @unlogin_du_counts   = DetailLog.where(product_id: @products, user_id: nil).where(@where_cr).group(gro).distinct.count(:ip)
     @login_du_counts     = DetailLog.where(product_id: @products).where.not(user_id: nil).where(@where_cr).group(gro).distinct.count(:user_id)
     @unlogin_du_total    = DetailLog.where(product_id: @products, user_id: nil).where(@where_cr).distinct.count(:ip)
-    @login_du_total      = DetailLog.where(product_id: @products).where.not(user_id: nil)..where(@where_cr).distinct.count(:user_id)
+    @login_du_total      = DetailLog.where(product_id: @products).where.not(user_id: nil).where(@where_cr).distinct.count(:user_id)
 
 
     @start_count        = @products.where("dulation_start <= ? AND dulation_end > ?", @rstart, @rstart).count
