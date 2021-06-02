@@ -94,6 +94,14 @@ class System::TotalController < System::ApplicationController
     @watch_user_counts   = Watch.where(product_id: @products).group(gro).distinct.count(:user_id)
     @user_counts         = User.group(gro).count
 
+    ### 追加 ###
+    @unlogin_dl_counts   = DetailLog.where(product_id: @products, user_id: nil).group(gro).count
+    @login_dl_counts     = DetailLog.where(product_id: @products).where.not(user_id: nil).group(gro).count
+    @unlogin_du_counts   = DetailLog.where(product_id: @products, user_id: nil).group(gro).distinct.count(:ip)
+    @login_du_counts     = DetailLog.where(product_id: @products).where.not(user_id: nil).group(gro).distinct.count(:user_id)
+    @unlogin_du_total    = DetailLog.where(product_id: @products, user_id: nil).distinct.count(:ip)
+    @login_du_total      = DetailLog.where(product_id: @products).where.not(user_id: nil).distinct.count(:user_id)
+
     @start_count        = 0
   end
 

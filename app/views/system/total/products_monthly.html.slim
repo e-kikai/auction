@@ -22,9 +22,13 @@
             th.num 落札数
             th.total_price.sepa 落札金額
             th.num 入札数
-            th.num 入札<br />人数
+            th.num.sepa 入札<br />人数
             th.num 閲覧数
+            th.num ログ<br />イン
+            th.num.sepa 未ログ<br />イン
             th.num 閲覧<br />人数
+            th.num ログ<br />イン
+            th.num.sepa 未ログ<br />イン
             th.num ウォ<br />ッチ
             th.num.sepa ウォッチ<br />人数
             th.num 登録<br />人数
@@ -56,14 +60,18 @@
             td.num
               - if @bid_counts[month].present?
                 = number_with_delimiter(@bid_counts[month])
-            td.num = number_with_delimiter @bid_user_counts[month]
+
+            td.num.sepa = number_with_delimiter @bid_user_counts[month]
             td.num = number_with_delimiter @detail_log_counts[month]
+            td.num = number_with_delimiter @login_dl_counts[month]
+            td.num.sepa = number_with_delimiter @unlogin_dl_counts[month]
             td.num = number_with_delimiter @detail_user_counts[month]
+            td.num = number_with_delimiter @login_du_counts[month]
+            td.num.sepa = number_with_delimiter @unlogin_du_counts[month]
+
             td.num = number_with_delimiter @watch_counts[month]
             td.num.sepa = number_with_delimiter @watch_user_counts[month]
-
             td.num = number_with_delimiter @user_counts[month]
-
 
         thead
           tr
@@ -75,9 +83,13 @@
             th.num 落札数
             th.total_price.sepa 落札金額
             th.num 入札数
-            th.num 入札<br />人数
+            th.num.sepa 入札<br />人数
             th.num 閲覧数
+            th.num ログ<br />イン
+            th.num.sepa 未ログ<br />イン
             th.num 閲覧<br />人数
+            th.num ログ<br />イン
+            th.num.sepa 未ログ<br />イン
             th.num ウォ<br />ッチ
             th.num.sepa ウォッチ<br />人数
             th.num 登録<br />人数
