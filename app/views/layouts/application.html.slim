@@ -36,13 +36,17 @@ html
 
         - if user_signed_in?
           p.navbar-text.login
-            span> ようこそ
-            strong #{current_user.company} #{current_user.name}
-            span< さん [
-            = link_to "/users/sign_out", method: :delete
-              span.glyphicon.glyphicon-log-out
-              span.btn-content ログアウト
-            | ]
+            span style="display:inline-block;"
+              = "ようこそ "
+              strong = "#{current_user.company} #{current_user.name}"
+              = " さん "
+            span style="display:inline-block;"
+              = "[ "
+              = link_to "/users/sign_out", method: :delete
+                span.glyphicon.glyphicon-log-out
+                span.btn-content ログアウト
+              = " ]"
+
         - else
           p.navbar-text.logout ものづくりの現場で活躍する機械・工具を安心安全な業者からオークションで購入！
 
@@ -77,7 +81,7 @@ html
       - if request.fullpath !~ /(myauction|users|system)/
         .row
           /// キーワード検索フォーム ///
-          .col-md-6
+          .col-md-6.col-sm-6
             .form-group.search-area
               = form_tag "/products", method: :get, class: "form-inline" do
                 = hidden_field_tag :category_id, params[:category_id], id: "keyword_search_categoy_id"
@@ -90,12 +94,12 @@ html
                       span.btn-content 検索
 
           /// ヘッダメニュー ///
-          .col-md-6.header-menu
+          .col-md-6.col-sm-6.header-menu
             - if user_signed_in?
               = link_to "/myauction" do
                 span.glyphicon.glyphicon-user
-                span.btn-content マイ・オークション
-              = link_to "/myauction/watches" do
+                span.btn-content マイオク
+              = link_to "/myauction/watches"  do
                 span.glyphicon.glyphicon-star
                 span.btn-content ウォッチリスト
               - if current_user.seller?
@@ -103,12 +107,37 @@ html
                   span.glyphicon.glyphicon-plus
                   span.btn-content 出品する
             - else
+              = link_to "/myauction" do
+                span.glyphicon.glyphicon-user
+                span.btn-content マイオク
+              = link_to "/myauction/watches"  do
+                span.glyphicon.glyphicon-star
+                span.btn-content ウォッチリスト
               = link_to "/users/sign_in" do
                 span.glyphicon.glyphicon-log-in
-                span.btn-content オークションに参加
+                span.btn-content ログイン
               = link_to "/users/sign_up", class: "bg-success" do
                 span.glyphicon.glyphicon-thumbs-up
-                span.btn-content 初めての方はこちら
+                span.btn-content 新規登録
+
+            / - if user_signed_in?
+            /   = link_to "/myauction" do
+            /     span.glyphicon.glyphicon-user
+            /     span.btn-content マイ・オークション
+            /   = link_to "/myauction/watches"  do
+            /     span.glyphicon.glyphicon-star
+            /     span.btn-content ウォッチリスト
+            /   - if current_user.seller?
+            /     = link_to "/myauction/products/new" , target: "_blank" do
+            /       span.glyphicon.glyphicon-plus
+            /       span.btn-content 出品する
+            / - else
+            /   = link_to "/users/sign_in" do
+            /     span.glyphicon.glyphicon-log-in
+            /     span.btn-content オークションに参加
+            /   = link_to "/users/sign_up", class: "bg-success" do
+            /     span.glyphicon.glyphicon-thumbs-up
+            /     span.btn-content 初めての方はこちら
 
       /// パンくずリスト ///
       / = raw breadcrumbs style: :bootstrap, semantic: true

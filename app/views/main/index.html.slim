@@ -89,6 +89,15 @@
               = link_to "/myauction/products?cond=2", class: "list-group-item" do
                 span.glyphicon.glyphicon-transfer
                 span.btn-content 出品終了 - 落札済
+              = link_to "/myauction/answers", class: "list-group-item" do
+                span.glyphicon.glyphicon-comment
+                span.btn-content ユーザからの問合せ・取引一覧
+
+            - else
+              = link_to "/myauction/contacts", class: "list-group-item" do
+                span.glyphicon.glyphicon-comment
+                span.btn-content 商品問合せ・取引一覧
+
 
         .panel.panel-success
           = link_to "#collapse_category", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do

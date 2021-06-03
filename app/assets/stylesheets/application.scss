@@ -2587,3 +2587,50 @@ ui#footer_banners li {
   font-weight: normal;
   font-size: 1.5rem;
 }
+
+.header-menu {
+  padding-left: 0;
+
+  a {
+    text-align: center;
+    touch-action: manipulation;
+    cursor: pointer;
+    white-space: nowrap;
+    line-height: 1.428571429;
+    user-select: none;
+    text-decoration: none;
+
+    border-radius: 0;
+    display: inline-block;
+    vertical-align: top;
+    background: inherit;
+    border: 0;
+    color: #333;
+    padding: 0;
+    width: 82px;
+    height: 48px;
+    margin: 0;
+
+    @media (min-width: 991px) {
+      margin: 0 8px;
+    }
+
+    &:hover {
+      opacity: 0.7;
+      background: inherit;
+    }
+
+    .glyphicon,
+    .glyphicon:before {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 2px;
+    }
+
+    .btn-content {
+      margin-left: 0;
+      font-size: 11px;
+      font-weight: bold;
+    }
+  }
+}
