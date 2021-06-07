@@ -177,7 +177,7 @@
         .top-category-news
           = render partial: "products/product_panel_02", collection: @populars, as: "product", locals: { r: :top_pops }
 
-          - @populars.each do |pr|
+          - @counttest.each do |pr|
             = "#{pr.name} : #{pr.count}, "
 
 
