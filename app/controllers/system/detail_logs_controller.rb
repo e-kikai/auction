@@ -3,7 +3,7 @@ class System::DetailLogsController < System::ApplicationController
 
   def index
     @date = params[:date] ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.now
-    @detail_logs  = DetailLog.includes(:product, :user).where(created_at: @date.beginning_of_month..@date.end_of_month).order(created_at: :desc)
+    @detail_logs  = DetailLog.includes(:user, product: [:category, :max_bid, :user]).where(created_at: @date.beginning_of_month..@date.end_of_month).order(created_at: :desc)
 
     respond_to do |format|
       format.html {

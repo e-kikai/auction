@@ -13,6 +13,8 @@
 - set_meta_tags "msvalidate.01" => "CD6C752835253EA8CB5CECA5CEB50CCB"
 
 .toppage.clearfix
+  / .test = @populars.to_sql
+
   = hidden_field_tag :referer, request.referer
   = hidden_field_tag :r,       params[:r]
 
@@ -168,7 +170,13 @@
       /           - ca_products.each do |pr|
       /             = render "products/product_panel_02", product: pr, r: :top_cnw
 
-      /// VBPR ///
+      .toppage-news-area
+        label.topppage-category-title
+          span.glyphicon.glyphicon-usd style="color:goldenrod;"
+          span.btn-content 売れ筋商品
+        .top-category-news
+          = render partial: "products/product_panel_02", collection: @populars, as: "product", locals: { r: :top_pops }
+
       - if user_signed_in?
         - if @vbpr_products.present?
           /// VBPR ///
