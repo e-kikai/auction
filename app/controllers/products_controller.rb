@@ -188,6 +188,16 @@ class ProductsController < ApplicationController
       end
     end
 
+    ### 売れ筋 ###
+    us_where = Watch.where(product_id: Product.where(name: @product.name)).distinct.select(:user_id)
+    temp = Product.joins(:watches).where("watches.user_id IN (?)", us_where)
+      .group(:name).select("name, count(watches.id) as count")
+    @populars = Product.status(Product::STATUS[:start]).includes(:product_images).limit(Product::NEW_MAX_COUNT)
+      .where.not(name: @product.name)
+      .joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name = pr2.name")
+      .reorder("pr2.count DESC, products.dulation_end ASC")
+
+
     ### ページ下部のオススメをランダム(0件でないもの)取得 ###
     key_array +=  %w|end news_tool news_machine zero| # そのほかオススメ項目追加
 
