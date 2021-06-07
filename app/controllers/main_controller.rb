@@ -43,7 +43,7 @@ class MainController < ApplicationController
     temp = Product.joins(:watches).group(:name).select("name, count(watches.id) as count")
     @populars = Product.status(Product::STATUS[:start]).includes(:product_images).limit(Product::NEWS_LIMIT)
       .joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name = pr2.name")
-      .reorder("pr2.count DESC, products.dulation_end ASC")
+      .reorder("pr2.count DESC, products.dulation_end ASC").select("products.*, pr2.count")
 
   end
 
