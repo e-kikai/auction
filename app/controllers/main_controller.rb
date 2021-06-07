@@ -45,7 +45,7 @@ class MainController < ApplicationController
       .joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name = pr2.name")
       .reorder("pr2.count DESC, products.dulation_end ASC")
 
-    @counttest = temp.reorder("count(watches.id) DESC").limit(20)
+    # @counttest = temp.reorder("count(watches.id) DESC").limit(20)
 
   end
 

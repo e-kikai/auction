@@ -177,8 +177,8 @@
         .top-category-news
           = render partial: "products/product_panel_02", collection: @populars, as: "product", locals: { r: :top_pops }
 
-          - @counttest.each do |pr|
-            = "#{pr.name} : #{pr.count}, "
+          / - @counttest.each do |pr|
+          /   = "#{pr.name} : #{pr.count}, "
 
 
       - if user_signed_in?
