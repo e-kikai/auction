@@ -379,6 +379,11 @@ class System::TotalController < System::ApplicationController
     @top_dlos = dls_ip.where("r LIKE '%top_dlos%'").count
     @dtl_dlos = dls_ip.where("r LIKE '%dtl_dlos%'").count
 
+    ### 売れ筋 ###
+    pops = dls.where("r LIKE '%pops%'")
+    @pops_counts = pops.count
+    @pops_ips    = pops.distinct.count(:ip)
+
     respond_to do |format|
       format.html {
         render template: :osusume_user if params[:user]

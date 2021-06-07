@@ -52,9 +52,10 @@ css:
             th.num こんな<br />ものも
             th.num 最近<br />閲覧
             th.num.sepa 履歴<br />オス
-            th.num 似サ結果
-            th.num 同カテゴリ
-            th.num.sepa 似た商品
+            th.num.sepa 売筋
+            th.num 似サ<br />結果
+            th.num 同<br />カテ
+            th.num.sepa 似た<br />商品
             th.num.sepa 検索<br />結果
             th.num メール
             th.num マシン<br />ライフ
@@ -93,7 +94,7 @@ css:
             td.num = number_with_delimiter(@zero_counts[day])
             td.num = number_with_delimiter(@check_counts[day])
             td.num.sepa = number_with_delimiter(@dlos_counts[day])
-
+            td.num.sepa = number_with_delimiter(@pops_counts[day])
             td.num = number_with_delimiter(@to_nms_counts[day])
             td.num = number_with_delimiter(@sca_counts[day])
             td.num.sepa = number_with_delimiter(@nmr_counts[day])
@@ -121,9 +122,10 @@ css:
             th.num こんな<br />ものも
             th.num 最近<br />閲覧
             th.num.sepa 履歴<br />オス
-            th.num 似サ結果
-            th.num 同カテゴリ
-            th.num.sepa 似た商品
+            th.num.sepa 売筋
+            th.num 似サ<br />結果
+            th.num 同<br />カテ
+            th.num.sepa 似た<br />商品
             th.num.sepa 検索<br />結果
             th.num メール
             th.num マシン<br />ライフ
@@ -148,7 +150,7 @@ css:
             td.num = number_with_delimiter(@zero_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@check_counts.sum { |k, v| v.to_i })
             td.num.sepa = number_with_delimiter(@dlos_counts.sum { |k, v| v.to_i })
-
+            td.num.sepa = number_with_delimiter(@pops_counts.sum { |k, v| v.to_i })
             td.num= number_with_delimiter(@to_nms_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@sca_counts.sum { |k, v| v.to_i })
             td.num.sepa  = number_with_delimiter(@nmr_counts.sum { |k, v| v.to_i })
