@@ -130,14 +130,14 @@ article
     - if @fin_osusume.present?
       .special-area
         label
-          span.glyphicon.glyphicon-gift class="glyphicon-#{@fin_osusume_titles[2]}" style="color:#{@fin_osusume_titles[3]};"
+          span.glyphicon class="glyphicon-#{@fin_osusume_titles[2]}" style="color:#{@fin_osusume_titles[3]};"
           span.btn-content = @fin_osusume_titles[0]
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
               / - @fin_osusume.each do |pr|
               /   = render "/main/product_panel", product: pr, r: "dtl_#{@osusume_titles[1]}"
-              = render partial: "/main/product_panel", collection: @fin_osusume, as: "product", locals: { r: "dtl_#{@osusume_titles[1]}" }
+              = render partial: "/main/product_panel", collection: @fin_osusume, as: "product", locals: { r: "dtl_#{@fin_osusume_titles[1]}" }
 
     h4.product-description style="margin-top:64px;" 商品情報
 
@@ -413,7 +413,7 @@ article
   - if @osusume.present?
     .special-area
       label
-        span.glyphicon.glyphicon-gift class="glyphicon-#{@osusume_titles[2]}" style="color:#{@osusume_titles[3]};"
+        span.glyphicon class="glyphicon-#{@osusume_titles[2]}" style="color:#{@osusume_titles[3]};"
         span.btn-content = @osusume_titles[0]
       .panel.panel-default
         .panel-body.toppage-contents
