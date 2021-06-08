@@ -38,15 +38,8 @@ class MainController < ApplicationController
     @machine_news  = Product.osusume("news_machine").limit(Product::NEWS_LIMIT) # 機械新着
     @zero_products = Product.osusume("zero").limit(Product::NEWS_LIMIT)         # 閲覧少
 
-
     ### 売れ筋商品 ###
-    temp = Product.joins(:watches).group(:name).select("name, count(watches.id) as count")
-    @populars = Product.status(Product::STATUS[:start]).includes(:product_images).limit(Product::NEWS_LIMIT)
-      .joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name = pr2.name")
-      .reorder("pr2.count DESC, products.dulation_end ASC")
-
-    # @counttest = temp.reorder("count(watches.id) DESC").limit(20)
-
+    @populars      = Product.osusume("pops").limit(Product::NEWS_LIMIT)
   end
 
   def rss

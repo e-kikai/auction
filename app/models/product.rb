@@ -292,6 +292,11 @@ class Product < ApplicationRecord
       ca_ids = Product.joins(:detail_logs).where(detail_logs: {user_id: user_id, created_at: DetailLog::VBPR_RANGE})
         .group(:category_id).reorder("count(*) DESC").limit(5).select("category_id")
       s_prs.where(category_id: ca_ids)
+
+    when "pops" # 売れ筋商品
+      temp = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")
+      s_prs.joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name = pr2.name")
+        .reorder("pr2.count DESC, products.dulation_end ASC")
     else
       none
     end

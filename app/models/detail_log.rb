@@ -66,7 +66,7 @@ class DetailLog < ApplicationRecord
     "crt"  => "入札してみませんか", "nxt" => "こちらもいかが", "endo" => "まもなく終了", "zer" => "こんなのも",
     "onew" => "上位カテゴリ新着", "mnw" => "上位カテゴリ新着", "tnew" => "工具新着", "mnew" => "機械新着",
 
-    "pops" => "売れ筋",
+    "pops" => "売れ筋", "upops" => "商品の売れ筋",
 
   }
 
