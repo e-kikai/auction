@@ -204,6 +204,7 @@ Rails.application.routes.draw do
           get 'search_02'
           get 'all_process_vector'
           get 'process_vector'
+          get "csv"
         end
       end
     end

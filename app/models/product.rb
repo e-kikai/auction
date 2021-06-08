@@ -308,7 +308,7 @@ class Product < ApplicationRecord
     case command.to_s
 
     ### 共通 ###
-    when "end";          ["まもなく終了",                    :endo, :time,     "#a"]
+    when "end";          ["まもなく終了",                    :endo, :time,     "#a94442"]
     when "news_tool";    ["工具新着",                        :tnew, :wrench,   :lightseagreen]
     when "news_machine"; ["機械新着",                        :mnew, :cog,      "#3c763d"]
     when "zero";         ["こんなのもあります",              :zer,  "zoom-in", "#8a6d3b"]

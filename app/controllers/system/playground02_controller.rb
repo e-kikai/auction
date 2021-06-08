@@ -70,4 +70,17 @@ class System::Playground02Controller < ApplicationController
 
     redirect_to "/system/playground_02/search_02", notice: "すべての画像特徴ベクトル変換処理を行いました"
   end
+
+  def csv
+    # @populars = Product.osusume("pops")
+    temp = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")
+    @populars = Product.status(Product::STATUS[:start])
+      .joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name = pr2.name")
+      .reorder("pr2.count DESC, products.dulation_end ASC").select("products.*, pr2.count")
+
+    respond_to do |format|
+      format.html
+      format.csv { export_csv "populars.csv" }
+    end
+  end
 end
