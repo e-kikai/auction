@@ -319,6 +319,7 @@ class Product < ApplicationRecord
     when "next";          ["こちらもいかがでしょう？",       :nxt,  :flag,     :olivedrab]
     # when "follows";       ["フォローした出品会社の新着商品", :flw,  :heart]
     when "often";         ["よくアクセスするカテゴリの新着", :onew, :wrench,   "#337ab7"]
+    when "upop";          ["この商品を見た人の売れ筋商品",   :upop, :usd,      :goldenrod]
 
     else;                 ["",                               "",    "",     ""]
     end

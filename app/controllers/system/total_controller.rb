@@ -384,6 +384,10 @@ class System::TotalController < System::ApplicationController
     @pops_counts = pops.count
     @pops_ips    = pops.distinct.count(:ip)
 
+    upop = dls.where("r LIKE '%upop%'")
+    @upop_counts = upop.count
+    @upop_ips    = upop.distinct.count(:ip)
+
     respond_to do |format|
       format.html {
         render template: :osusume_user if params[:user]
