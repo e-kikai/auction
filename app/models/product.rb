@@ -809,7 +809,7 @@ class Product < ApplicationRecord
   def self.nitamono_sort(product_id, page=1)
     target = Product.unscoped.find(product_id).get_vector
 
-    self.nitamono_search(target, 25, page, true)
+    self.nitamono_search(target, 30, page, true)
   rescue
     Product.none
   end

@@ -63,5 +63,8 @@ class MainController < ApplicationController
     @pops_4000  = @pops .where(start_price: 4000...5000)
     @pops_5000  = @pops .where(start_price: 5000...6000)
     @pops_6000m = @pops .where(start_price: 6000...Float::INFINITY)
+
+    ### 最近チェックした商品 ###
+    @dl_products = Product.osusume("detail_log", ip, @user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
   end
 end

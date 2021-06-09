@@ -98,9 +98,6 @@ class ProductsController < ApplicationController
     session[:search_view] = params[:v] if Product::VIEW_SELECTOR.include? params[:v]
 
     ### 最近チェックした商品 ###
-    # dl_where     = user_signed_in? ? {user_id: current_user.id} : {ip: ip}
-    # @dl_products = Product.includes(:product_images).joins(:detail_logs).group(:id).where(detail_logs: dl_where)
-    #                 .reorder("max(detail_logs.id)").limit(Product::NEW_MAX_COUNT)
     @dl_products = Product.osusume("detail_log", ip, @user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
   end
 
