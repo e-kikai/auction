@@ -2547,6 +2547,11 @@ ui#footer_banners li {
   }
 }
 
+.toppage-news-area {
+  margin-left: -6px;
+  margin-right: -6px;
+}
+
 .special-area  label {
   .glyphicon {
     text-shadow: 1px 1px 1px #333;
@@ -2632,5 +2637,27 @@ ui#footer_banners li {
       font-size: 11px;
       font-weight: bold;
     }
+  }
+}
+
+.btn-more_02 {
+  float: right;
+  margin-right: 1rem;
+  border: none;
+  position: relative;
+  padding: 0.75rem 0 0 0;
+  font-size: 1.5rem;
+}
+
+footer {
+  a,
+  span {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 767px){
+  iframe.machinelife_ads {
+    max-width: inherit;
   }
 }

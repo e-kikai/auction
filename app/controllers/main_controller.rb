@@ -56,7 +56,7 @@ class MainController < ApplicationController
 
   ### 売れ筋商品 ###
   def pops
-    @pops       = Product.osusume("pops").limit(Product::NEWS_LIMIT)
+    @pops       = Product.osusume("pops").limit(7)
     @pops_1000  = @pops .where(start_price: 0...2000)
     @pops_2000  = @pops .where(start_price: 2000...3000)
     @pops_3000  = @pops .where(start_price: 3000...4000)
