@@ -68,7 +68,7 @@ class MainController < ApplicationController
     @dl_products = Product.osusume("detail_log", ip, @user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
 
     respond_to do |format|
-      format.html { @products.limit(12) }
+      format.html { @products = @products.limit(12) }
       format.rss  { render template: "/main/rss.rss.builder" }
     end
   end
