@@ -1,0 +1,66 @@
+- set_meta_tags title: "売れ筋商品"
+- breadcrumb    :something, "売れ筋商品"
+
+/// 概要 ///
+- desc = "ものづくりオークションの売れ筋商品をご紹介！"
+- set_meta_tags description: desc
+
+/// Twitterカード ///
+- set_meta_tags twitter: { card: "summary", site: "@mnok_official" }
+
+/// OGP ///
+- set_meta_tags og: { type: "article", title:  "売れ筋商品", description: desc,  site_name: "ものづくりオークション" }
+
+- if img = @pops .first&.product_images&.first
+  - set_meta_tags twitter: { image: img.image.thumb.url }
+  - set_meta_tags og:      { image: img.image.view.url }
+
+.row
+  .col-md-12.col-sm-12.col-xs-12
+    - if @pops_1000.present?
+      .toppage-news-area
+        label.topppage-category-title
+          span.glyphicon.glyphicon-usd style="color:goldenrod;"
+          span.btn-content 最低入札価格1,000円台の売れ筋商品
+        .top-category-news
+          = render partial: "products/product_panel_02", collection: @pops_1000, as: "product", locals: { r: :posp_pops_1000 }
+
+    - if @pops_2000.present?
+      .toppage-news-area
+        label.topppage-category-title
+          span.glyphicon.glyphicon-usd style="color:goldenrod;"
+          span.btn-content 最低入札価格2,000円台の売れ筋商品
+        .top-category-news
+          = render partial: "products/product_panel_02", collection: @pops_2000, as: "product", locals: { r: :posp_pops_2000 }
+
+    - if @pops_3000.present?
+      .toppage-news-area
+        label.topppage-category-title
+          span.glyphicon.glyphicon-usd style="color:goldenrod;"
+          span.btn-content 最低入札価格3,000円台の売れ筋商品
+        .top-category-news
+          = render partial: "products/product_panel_02", collection: @pops_3000, as: "product", locals: { r: :posp_pops_3000 }
+
+    - if @pops_4000.present?
+      .toppage-news-area
+        label.topppage-category-title
+          span.glyphicon.glyphicon-usd style="color:goldenrod;"
+          span.btn-content 最低入札価格4,000円台の売れ筋商品
+        .top-category-news
+          = render partial: "products/product_panel_02", collection: @pops_4000, as: "product", locals: { r: :posp_pops_4000 }
+
+    - if @pops_5000.present?
+      .toppage-news-area
+        label.topppage-category-title
+          span.glyphicon.glyphicon-usd style="color:goldenrod;"
+          span.btn-content 最低入札価格5,000円台の売れ筋商品
+        .top-category-news
+          = render partial: "products/product_panel_02", collection: @pops_5000, as: "product", locals: { r: :posp_pops_5000 }
+
+    - if @pops_6000m.present?
+      .toppage-news-area
+        label.topppage-category-title
+          span.glyphicon.glyphicon-usd style="color:goldenrod;"
+          span.btn-content 最低入札価格6,000円以上の売れ筋商品
+        .top-category-news
+          = render partial: "products/product_panel_02", collection: @pops_6000m, as: "product", locals: { r: :posp_pops_6000m }

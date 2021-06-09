@@ -174,6 +174,7 @@
         label.topppage-category-title
           span.glyphicon.glyphicon-usd style="color:goldenrod;"
           span.btn-content 売れ筋商品
+          = link_to "もっと見る", "/pops", class: "btn btn-more"
         .top-category-news
           = render partial: "products/product_panel_02", collection: @populars, as: "product", locals: { r: :top_pops }
 

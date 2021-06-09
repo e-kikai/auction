@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   root to: "main#index"
   get "rss" => "main#rss", defaults: { format: :rss }
+  get "pops" => "main#pops"
 
   resources :products,   only: [:index, :show] do
     member do

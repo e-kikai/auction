@@ -53,4 +53,15 @@ class MainController < ApplicationController
       format.rss
     end
   end
+
+  ### 売れ筋商品 ###
+  def pops
+    @pops       = Product.osusume("pops").limit(Product::NEWS_LIMIT)
+    @pops_1000  = @pops .where(start_price: 0...2000)
+    @pops_2000  = @pops .where(start_price: 2000...3000)
+    @pops_3000  = @pops .where(start_price: 3000...4000)
+    @pops_4000  = @pops .where(start_price: 4000...5000)
+    @pops_5000  = @pops .where(start_price: 5000...6000)
+    @pops_6000m = @pops .where(start_price: 6000...Float::INFINITY)
+  end
 end

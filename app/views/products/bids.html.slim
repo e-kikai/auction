@@ -167,6 +167,16 @@ h1.product-title
           /   = render "/main/product_panel", product: pr, r: :dtl_sca
           = render partial: "/main/product_panel", collection: @popular_products, as: "product", locals: { r: :dtl_sca }
 
+- if @populars.present?
+  .special-area
+    label
+      span.glyphicon.glyphicon-usd style="color:goldenrod;"
+      span.btn-content = "この商品を見た人の売れ筋商品"
+    .panel.panel-default
+      .panel-body.toppage-contents
+        .toppage-scroll
+          = render partial: "/main/product_panel", collection: @populars, as: "product", locals: { r: :dtl_upop }
+
   - if @osusume.present?
     .special-area
       label

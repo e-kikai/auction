@@ -330,6 +330,14 @@ class Product < ApplicationRecord
     end
   end
 
+  ### 売れ筋商品 ###
+  # scope :pops, -> (price=0..Float::INFINITY) {
+  #   wa = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")
+  #   s_prs.includes(:product_images).status(Product::STATUS[:start])
+  #     .joins("INNER JOIN (#{wa.to_sql}) as pr2 ON products.name = pr2.name")
+  #     .where(start_price_with_tax: price).reorder("pr2.count DESC, products.dulation_end ASC")
+  # }
+
   ### 関連商品(おなじカテゴリの商品) ###
   scope :related_products, -> prs {
     res = if prs.class.name == "Product"

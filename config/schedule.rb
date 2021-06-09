@@ -19,30 +19,32 @@ end
 
 scheduling_url = url + "/system/scheduling"
 
-# sitemap
-every 1.day, at: '5:00 am' do
-  rake '-s sitemap:refresh'
-end
+if rails_env.to_sym == :production # テスト用に
+  # sitemap
+  every 1.day, at: '5:00 am' do
+    rake '-s sitemap:refresh'
+  end
 
-# 落札確認処理
-every :minute do
-  # runner "Product.scheduling"
-  # command "wget --spider #{scheduling_url + '/product_scheduling'}"
-  command "curl -s -X POST #{scheduling_url + '/product_scheduling'}"
-end
+  # 落札確認処理
+  every :minute do
+    # runner "Product.scheduling"
+    # command "wget --spider #{scheduling_url + '/product_scheduling'}"
+    command "curl -s -X POST #{scheduling_url + '/product_scheduling'}"
+  end
 
-# 新着アラート
-every :day, at: '7:00 am' do
-  # runner "Alert.scheduling"
-  # command "wget --spider #{scheduling_url + '/alert_scheduling'}"
-  command "curl -s -X POST #{scheduling_url + '/alert_scheduling'}"
-end
+  # 新着アラート
+  every :day, at: '7:00 am' do
+    # runner "Alert.scheduling"
+    # command "wget --spider #{scheduling_url + '/alert_scheduling'}"
+    command "curl -s -X POST #{scheduling_url + '/alert_scheduling'}"
+  end
 
-# ウォッチおすすめ新着
-every :day, at: '8:00 am' do
-  # runner "Watch.scheduling"
-  # command "wget --spider #{scheduling_url + '/watch_scheduling'}"
-  command "curl -s -X POST #{scheduling_url + '/watch_scheduling'}"
+  # ウォッチおすすめ新着
+  every :day, at: '8:00 am' do
+    # runner "Watch.scheduling"
+    # command "wget --spider #{scheduling_url + '/watch_scheduling'}"
+    command "curl -s -X POST #{scheduling_url + '/watch_scheduling'}"
+  end
 end
 
 # Twitter自動投稿
