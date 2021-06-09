@@ -11,7 +11,7 @@
 /// OGP ///
 - set_meta_tags og: { type: "article", title:  "売れ筋商品", description: desc,  site_name: "ものづくりオークション" }
 
-- if img = @pops .first&.product_images&.first
+- if img = @products.first&.product_images&.first
   - set_meta_tags twitter: { image: img.image.thumb.url }
   - set_meta_tags og:      { image: img.image.view.url }
 

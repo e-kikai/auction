@@ -56,15 +56,20 @@ class MainController < ApplicationController
 
   ### 売れ筋商品 ###
   def pops
-    @pops       = Product.osusume("pops").limit(Product::NEWS_LIMIT)
-    @pops_1000  = @pops .where(start_price: 0...2000)
-    @pops_2000  = @pops .where(start_price: 2000...3000)
-    @pops_3000  = @pops .where(start_price: 3000...4000)
-    @pops_4000  = @pops .where(start_price: 4000...5000)
-    @pops_5000  = @pops .where(start_price: 5000...6000)
-    @pops_6000m = @pops .where(start_price: 6000...Float::INFINITY)
+    @products   = Product.osusume("pops").limit(Product::NEWS_LIMIT)
+    @pops_1000  = @products.where(start_price: 0...2000)
+    @pops_2000  = @products.where(start_price: 2000...3000)
+    @pops_3000  = @products.where(start_price: 3000...4000)
+    @pops_4000  = @products.where(start_price: 4000...5000)
+    @pops_5000  = @products.where(start_price: 5000...6000)
+    @pops_6000m = @products.where(start_price: 6000...Float::INFINITY)
 
     ### 最近チェックした商品 ###
     @dl_products = Product.osusume("detail_log", ip, @user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
+
+    respond_to do |format|
+      format.html { @products.limit(12) }
+      format.rss  { render template: "/main/rss.rss.builder" }
+    end
   end
 end
