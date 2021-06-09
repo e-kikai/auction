@@ -65,4 +65,14 @@
         .top-pops-news
           = render partial: "products/product_panel_02", collection: @pops_6000m, as: "product", locals: { r: :posp_pops_6000m }
 
+    - if @dl_products.present?
+      .row
+        label
+          span.glyphicon.glyphicon-ok.check-icon
+          span.btn-content 最近チェックした商品
+        .panel.panel-default
+          .panel-body.toppage-contents
+            .toppage-scroll
+              = render partial: "/main/product_panel", collection: @dl_products, as: "product", locals: { r: :posp_chk }
+
 = render "/main/ads_frames", okw: "工具"

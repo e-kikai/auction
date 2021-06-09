@@ -79,9 +79,9 @@ class ProductsController < ApplicationController
 
     ### ページャ ###
     if params[:nitamono].present?
-      @pproducts = Kaminari.paginate_array(nitamono_products, total_count: @products.count).page(params[:page])
+      @pproducts = Kaminari.paginate_array(nitamono_products, total_count: @products.count).page(params[:page]).per(30)
     else
-      @pproducts = @products.page(params[:page])
+      @pproducts = @products.page(params[:page]).per(30)
     end
 
     ### ウォッチリスト ###
