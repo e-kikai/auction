@@ -52,4 +52,13 @@ SitemapGenerator::Sitemap.create do
   Help.where(target: 0).pluck(:uid).each do |uid|
     add "/helps/#{uid}", priority: 0.3, changefreq: 'daily'
   end
+
+  ### 売れ筋 ###
+  add "/pops",       priority: 0.75, changefreq: 'daily'
+  add "/pops/1000",  priority: 0.75, changefreq: 'daily'
+  add "/pops/2000",  priority: 0.75, changefreq: 'daily'
+  add "/pops/3000",  priority: 0.75, changefreq: 'daily'
+  add "/pops/4000",  priority: 0.75, changefreq: 'daily'
+  add "/pops/5000",  priority: 0.75, changefreq: 'daily'
+  add "/pops/6000m", priority: 0.75, changefreq: 'daily'
 end
