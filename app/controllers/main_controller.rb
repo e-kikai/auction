@@ -79,9 +79,12 @@ class MainController < ApplicationController
     rate      = pops_rate[params[:lank]]
     @title    = rate[1]
     @lank     = params[:lank]
-    @products = Product.osusume("pops").where(start_price: rate[0])
-      .reorder("products.start_price, pr2.count DESC, products.dulation_end")
-  end
+    @products = Product.osusume("pops")
+      .reorder("(CASE WHEN prompt_dicision_price IS NULL THEN start_price ELSE prompt_dicision_price END), pr2.count DESC, dulation_end")
+      .where("(CASE WHEN prompt_dicision_price IS NULL THEN start_price ELSE prompt_dicision_price END) BETWEEN ? AND ? ", rate[0].first, rate[0].last)
+        # .where(start_price: rate[0])
+        # .reorder("products.start_price, pr2.count DESC, products.dulation_end")
+      end
 
   private
 
