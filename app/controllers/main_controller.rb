@@ -1,4 +1,6 @@
 class MainController < ApplicationController
+  before_action :dl_products
+
   def index
     @roots = Category.roots.order(:order_no) # カテゴリ
 
@@ -24,11 +26,9 @@ class MainController < ApplicationController
       @bid_osusume   = Product.osusume("bid_osusume", ip, current_user&.id).limit(Product::NEWS_LIMIT)   # 入札オススメ
       @cart_products = Product.osusume("cart", ip, current_user&.id).limit(Product::NEWS_LIMIT)          # 入札してみませんか
       @next_osusume  = Product.osusume("next", ip, current_user&.id).limit(Product::NEWS_LIMIT)          # こちらもオススメ
-      @dl_products   = Product.osusume("detail_log", ip, current_user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
       @fol_products  = Product.osusume("follows", ip, current_user&.id).limit(Product::NEW_MAX_COUNT)    # フォロー新着
       @oft_products  = Product.osusume("often", ip, current_user&.id).limit(Product::NEWS_LIMIT)         # よく見る新着
     else # 非ログイン
-      @dl_products = Product.osusume("detail_log", ip).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
       @dl_osusume  = Product.osusume("dl_osusume", ip).limit(Product::NEWS_LIMIT)    # 閲覧履歴に基づくオススメ
     end
 
@@ -57,19 +57,47 @@ class MainController < ApplicationController
   ### 売れ筋商品 ###
   def pops
     @products   = Product.osusume("pops").limit(Product::NEWS_LIMIT)
-    @pops_1000  = @products.where(start_price: 0...2000)
-    @pops_2000  = @products.where(start_price: 2000...3000)
-    @pops_3000  = @products.where(start_price: 3000...4000)
-    @pops_4000  = @products.where(start_price: 4000...5000)
-    @pops_5000  = @products.where(start_price: 5000...6000)
-    @pops_6000m = @products.where(start_price: 6000...Float::INFINITY)
+      .reorder("products.start_price, pr2.count DESC, products.dulation_end")
 
-    ### 最近チェックした商品 ###
-    @dl_products = Product.osusume("detail_log", ip, @user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
+    @pops = pops_rate.map do |lank, rate|
+      {
+        lank:     lank,
+        title:    rate[1],
+        products: @products.where(start_price: rate[0])
+      }
+    end
 
     respond_to do |format|
       format.html { @products = @products.limit(12) }
       format.rss  { render template: "/main/rss.rss.builder" }
     end
+  end
+
+  def pops_lank
+    redirect_to "/pops/" unless pops_rate.key? params[:lank]
+
+    rate      = pops_rate[params[:lank]]
+    @title    = rate[1]
+    @lank     = params[:lank]
+    @products = Product.osusume("pops").where(start_price: rate[0])
+      .reorder("products.start_price, pr2.count DESC, products.dulation_end")
+  end
+
+  private
+
+  ### 最近チェックした商品 ###
+  def dl_products
+    @dl_products = Product.osusume("detail_log", ip, current_user&.id).limit(Product::NEW_MAX_COUNT)
+  end
+
+  def pops_rate
+     {
+      "1000"  => [0...2000,               "最低価格1,000円台の売れ筋商品"],
+      "2000"  => [2000...3000,            "最低価格2,000円台の売れ筋商品"],
+      "3000"  => [3000...4000,            "最低価格3,000円台の売れ筋商品"],
+      "4000"  => [4000...5000,            "最低価格4,000円台の売れ筋商品"],
+      "5000"  => [5000...6000,            "最低価格5,000円台の売れ筋商品"],
+      "6000m" => [6000...Float::INFINITY, "最低価格6,000円以上の売れ筋商品"],
+    }
   end
 end

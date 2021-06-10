@@ -69,6 +69,16 @@ crumb :infos_show do |inf|
   parent :infos
 end
 
+crumb :pops do
+  link   "売れ筋商品", "/pops/"
+  parent :root
+end
+
+crumb :pops_lank do |lank, title|
+  link   title, "/pops/#{lank}"
+  parent :pops
+end
+
 ### マイ・オークション ###
 crumb :myauction do
   link   "マイ・オークション", "/myauction/"

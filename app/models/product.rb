@@ -296,7 +296,7 @@ class Product < ApplicationRecord
     when "pops" # 売れ筋商品
       temp = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")
       s_prs.joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name = pr2.name")
-        .reorder("pr2.count DESC, products.dulation_end ASC")
+        .reorder("pr2.count DESC, products.start_price, products.dulation_end")
     else
       none
     end
@@ -329,14 +329,6 @@ class Product < ApplicationRecord
     else;                 ["",                               "",    "",     ""]
     end
   end
-
-  ### 売れ筋商品 ###
-  # scope :pops, -> (price=0..Float::INFINITY) {
-  #   wa = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")
-  #   s_prs.includes(:product_images).status(Product::STATUS[:start])
-  #     .joins("INNER JOIN (#{wa.to_sql}) as pr2 ON products.name = pr2.name")
-  #     .where(start_price_with_tax: price).reorder("pr2.count DESC, products.dulation_end ASC")
-  # }
 
   ### 関連商品(おなじカテゴリの商品) ###
   scope :related_products, -> prs {
