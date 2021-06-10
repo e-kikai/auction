@@ -57,13 +57,15 @@ class MainController < ApplicationController
   ### 売れ筋商品 ###
   def pops
     @products   = Product.osusume("pops").limit(Product::NEWS_LIMIT)
-      .reorder("products.start_price, pr2.count DESC, products.dulation_end")
+      .reorder("(CASE WHEN prompt_dicision_price IS NULL THEN start_price ELSE prompt_dicision_price END), pr2.count DESC, dulation_end")
+      # .reorder("products.start_price, pr2.count DESC, products.dulation_end")
 
     @pops = pops_rate.map do |lank, rate|
       {
         lank:     lank,
         title:    rate[1],
-        products: @products.where(start_price: rate[0])
+        # products: @products.where(start_price: rate[0])
+        products: @products.where("(CASE WHEN prompt_dicision_price IS NULL THEN start_price ELSE prompt_dicision_price END) BETWEEN ? AND ? ", rate[0].first, rate[0].last)
       }
     end
 
@@ -100,7 +102,7 @@ class MainController < ApplicationController
       "3000"  => [3000...4000,            "最低価格3,000円台の売れ筋商品"],
       "4000"  => [4000...5000,            "最低価格4,000円台の売れ筋商品"],
       "5000"  => [5000...6000,            "最低価格5,000円台の売れ筋商品"],
-      "6000m" => [6000...Float::INFINITY, "最低価格6,000円以上の売れ筋商品"],
+      "6000m" => [6000...9999999999, "最低価格6,000円以上の売れ筋商品"],
     }
   end
 end
