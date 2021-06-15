@@ -17,7 +17,8 @@
     tr
       th アクセス日時
       th IP/ホスト名
-      th.name.sepa アカウント/会社・ユーザ名
+      th utag
+      th.name.sepa 会社・ユーザ名
       th 出品会社
       th カテゴリ
       th.sepa キーワード
@@ -31,13 +32,14 @@
         td
           . = lo.ip
           . = lo.host
+        td = lo&.utag
         td.name.sepa
-          . = lo.user.try(:account)
-          . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip
-        td = lo.company.try(:company_remove_kabu)
-        td = lo.category.try(:name)
+          / . = lo.user&.account)
+          . = "#{lo.user&.company} #{lo.user&.name}".strip
+        td = lo.company&.company_remove_kabu
+        td = lo.category&.name
         td.sepa = lo.keywords
-        td.num #{lo.search_id}
-        td = "○" if lo.search.try(:publish)
-        td.sepa = lo.search.try(:name)
-        td.name title="#{URI.unescape(lo.referer)}" = URI.unescape(lo.link_source)
+        td.num = lo.search_id
+        td = "○" if lo.search&.publish
+        td.sepa = lo.search&.name
+        td.name title="#{URI.unescape(lo.referer.to_s)}" = URI.unescape(lo.link_source.to_s)

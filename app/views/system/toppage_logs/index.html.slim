@@ -16,6 +16,7 @@
     tr
       th アクセス日時
       th IP/ホスト名
+      th utag
       th.name.sepa アカウント/会社・ユーザ名
       th.name リンク元
       th style="line-break: anywhere;" リファラ
@@ -25,11 +26,14 @@
         td
           . = lo.ip
           . = lo.host
+        td = lo&.utag
         td.name.sepa
-          . = lo.user.try(:account)
-          . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip
+          . = lo.user&.account
+          . = "#{lo.user&.company} #{lo.user&.name}".strip
 
-        td.name title="#{URI.unescape(lo.referer)}" = URI.unescape(lo.link_source)
+        / td.name title="#{URI.unescape(lo.referer)}" = URI.unescape(lo.link_source)
+        td.name title="#{URI.unescape(lo.referer.to_s)}" = URI.unescape(lo.link_source.to_s)
+
         td style="line-break: anywhere;"
           - if lo.referer.present?
-            = link_to URI.unescape(lo.referer), lo.referer, target: "_blank"
+            = link_to URI.unescape(lo.referer.to_s), lo.referer, target: "_blank"

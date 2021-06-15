@@ -1,6 +1,6 @@
 module ProductHelper
   ### ウォッチボタン生成 ###
-  def watch(product)
+  def watch(product, r="")
     unless product.finished?
       if user_signed_in?
         ac, ti = if current_user.watch?(product.id)
@@ -9,7 +9,8 @@ module ProductHelper
           ["", "ウォッチリストに登録"]
         end
 
-        link_to("/myauction/watches/toggle?id=#{product.id}", method: :post, remote: true, class: "watch_02 #{ac}",
+        link_to("/myauction/watches/toggle?id=#{product.id}&r=#{r}",
+          method: :post, remote: true, class: "watch_02 #{ac}",
           data: { pid: product.id, toggle: :tooltip, container: :html, placement: :left, trigger: :hover },
           title: ti) do
           tag.span class: "glyphicon glyphicon-star"

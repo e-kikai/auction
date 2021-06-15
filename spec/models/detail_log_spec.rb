@@ -8,6 +8,7 @@
 #  r          :string           default(""), not null
 #  referer    :string
 #  ua         :string
+#  utag       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  product_id :bigint

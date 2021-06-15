@@ -241,7 +241,7 @@
                 / = render "products/nitamono_02", product: pr
                 / = render "products/watch_02", product: pr
                 = nitamono_sort(pr)
-                = watch(pr)
+                = watch(pr, "#{rbase}_lst")
 
       .table-responsive.hidden-sm.hidden-xs
         table.product-table.table.table-striped.table-hover.table-condensed
@@ -333,7 +333,7 @@
                     / = render "products/nitamono_02", product: pr
                     / = render "products/watch_02", product: pr
                     = nitamono_sort(pr)
-                    = watch(pr)
+                    = watch(pr, "#{rbase}_lst")
 
     - else
       .products_area

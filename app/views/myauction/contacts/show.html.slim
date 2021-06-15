@@ -62,7 +62,7 @@ javascript:
 
                 - if @product.start?
                   / = render "/products/watch_02", product: @product
-                  = watch(@product)
+                  = watch(@product, "cnt")
                   = link_to "/myauction/bids/new?id=#{@product.id}&bid%5Bamount%5D=", class: "btn btn-warning pull-right clearfix"  do
                     span.glyphicon.glyphicon-pencil
                     span.btn-content 入札

@@ -46,4 +46,4 @@
     / = render "products/watch_02", product: product, active: true
     - if product.top_image? && @pms.present?
       = nitamono_sort(product)
-    = watch(product)
+    = watch(product, r)

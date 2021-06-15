@@ -9,29 +9,32 @@
   table.table.table-hover.table-condensed.table-striped
     tr
       th.num ID
+      th utag
       th.num ユーザID
-      th アカウント
+      / th アカウント
       th.sepa 会社・ユーザ名
       th.num 商品ID
       th 商品名
       / th 開始日時
-      th 終了日時
+      / th 終了日時
       th 落札
       / th.price 開始価格
       th.price.sepa 現在価格
       th 保存日時
       th 削除日時
+      th.name リンク元
 
     - @pwatches.each do |wa|
       tr
         td.num = wa.id
+        td = wa&.utag
         td.num = wa.user&.id
-        td = wa.user&.account
+        / td = wa.user&.account
         td.sepa = "#{wa.user&.company} #{wa.user&.name}".strip
         td.num = wa.product_id
         td = link_to wa.product&.name, "/products/#{wa.product_id}", target: "_blank"
         / td = wa.product&.dulation_start
-        td = wa.product&.dulation_end
+        / td = wa.product&.dulation_end
         td
           - if wa.product&.dulation_end.blank?
             . エラー
@@ -48,5 +51,6 @@
         td.price.sepa = number_to_currency(wa.product&.max_price_with_tax)
         td = wa.created_at
         td = wa.soft_destroyed_at
+        td.name title="#{URI.unescape(wa.referer.to_s)}" = URI.unescape(wa.link_source.to_s)
 
 = paginate @pwatches

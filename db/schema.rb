@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_11_075902) do
+ActiveRecord::Schema.define(version: 2021_06_11_004115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(version: 2020_10_11_075902) do
     t.datetime "updated_at", null: false
     t.string "referer"
     t.string "r", default: "", null: false
+    t.string "utag"
     t.index ["product_id"], name: "index_detail_logs_on_product_id"
     t.index ["user_id"], name: "index_detail_logs_on_user_id"
   end
@@ -292,6 +293,7 @@ ActiveRecord::Schema.define(version: 2020_10_11_075902) do
     t.bigint "nitamono_product_id"
     t.string "path", default: "", null: false
     t.integer "page", default: 1, null: false
+    t.string "utag"
     t.index ["category_id"], name: "index_search_logs_on_category_id"
     t.index ["search_id"], name: "index_search_logs_on_search_id"
     t.index ["user_id"], name: "index_search_logs_on_user_id"
@@ -354,6 +356,7 @@ ActiveRecord::Schema.define(version: 2020_10_11_075902) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "r", default: "", null: false
+    t.string "utag"
     t.index ["user_id"], name: "index_toppage_logs_on_user_id"
   end
 
@@ -423,6 +426,12 @@ ActiveRecord::Schema.define(version: 2020_10_11_075902) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "soft_destroyed_at"
+    t.string "r"
+    t.string "referer"
+    t.string "ip"
+    t.string "host"
+    t.string "ua"
+    t.string "utag"
     t.index ["product_id"], name: "index_watches_on_product_id"
     t.index ["soft_destroyed_at"], name: "index_watches_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_watches_on_user_id"

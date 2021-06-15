@@ -19,7 +19,8 @@
     tr
       th アクセス日時
       th IP/ホスト名
-      th.name.sepa ユーザID・アカウント/<br/>会社・ユーザ名
+      th utag
+      th.name.sepa ユーザID/<br/>会社・ユーザ名
       th.num 商品ID
       th 商品名
       th.price 最高金額
@@ -31,9 +32,11 @@
         td
           . = lo.ip
           . = lo.host
+        td = lo&.utag
         td.name.sepa
-          . = "#{lo.user.try(:id)} #{lo.user.try(:account)}"
-          . = "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip
+          / . = "#{lo.user&.id)} #{lo.user&.account)}"
+          . = lo.user&.id
+          . = "#{lo.user&.company} #{lo.user&.name}".strip
         td.num = lo.product_id
         - if lo.product
           td
@@ -48,4 +51,4 @@
           td.price
           td.num
 
-        td.name title="#{URI.unescape(lo.referer)}" = URI.unescape(lo.link_source)
+        td.name title="#{URI.unescape(lo.referer.to_s)}" = URI.unescape(lo.link_source.to_s)

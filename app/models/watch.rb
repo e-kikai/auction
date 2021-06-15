@@ -3,7 +3,13 @@
 # Table name: watches
 #
 #  id                :bigint           not null, primary key
+#  host              :string
+#  ip                :string
+#  r                 :string
+#  referer           :string
 #  soft_destroyed_at :datetime
+#  ua                :string
+#  utag              :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  product_id        :bigint           not null
@@ -41,5 +47,9 @@ class Watch < ApplicationRecord
 
       BidMailer.watch_news(us, products).deliver
     end
+  end
+
+  def link_source
+    DetailLog.link_source(r, referer)
   end
 end

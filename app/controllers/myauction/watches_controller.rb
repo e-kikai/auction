@@ -35,8 +35,18 @@ class Myauction::WatchesController <  Myauction::ApplicationController
     @product_id = params[:id]
     @watch      = current_user.watches.find_by(product_id: @product_id)
 
-    @res = if @watch.blank?
-      @watch = current_user.watches.create(product_id: @product_id)
+    @res = if @watch.blank? # 登録
+      @watch = current_user.watches.create(
+        product_id: @product_id,
+        r:          params[:r],
+        # referer:    params[:referer],
+        referer:    request.referer,
+        ip:         ip,
+        host:       (Resolv.getname(ip) rescue ""),
+        ua:         request.user_agent,
+
+        utag:       session[:utag],
+      )
       :on
     else
       @watch.soft_destroy!

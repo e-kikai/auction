@@ -1,11 +1,11 @@
-%w[ID アクセス日時 IP ホスト名 アカウント 会社・ユーザ名
+%w[ID アクセス日時 IP ホスト名 utag ユーザID
+  アカウント 会社名 ユーザ名
   リンク元 リファラ].to_csv +
 @toppage_logs.sum do |lo|
-
   [
-    lo.id, lo.created_at, lo.ip, lo.host,
-    lo.user.try(:account), "#{lo.user.try(:company)} #{lo.user.try(:name)}".strip,
+    lo.id, lo.created_at, lo.ip, lo.host, lo.utag, lo.user_id,
+    lo.user&.account, lo.user&.company, lo.user&.name,
 
-    lo.link_source, URI.unescape(lo.referer),
+    URI.unescape(lo.link_source.to_s), URI.unescape(lo.referer.to_s),
   ].to_csv
 end

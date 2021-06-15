@@ -166,7 +166,7 @@ article
               - unless @product.finished?
                 . ウォッチリスト
                 / . = render "products/watch_02", product: @product
-                . = watch(@product)
+                . = watch(@product, "dtl")
 
             . = link_to "/products/#{@product.id}/bids", class: "btn btn-default", style: "margin: 8px 0 8px 12px" do
               span.glyphicon.glyphicon-info-sign

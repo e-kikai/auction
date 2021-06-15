@@ -27,6 +27,7 @@
             th.num ログ<br />イン
             th.num.sepa 未ログ<br />イン
             th.num 閲覧<br />人数
+            th.num utag<br />人数
             th.num ログ<br />イン
             th.num.sepa 未ログ<br />イン
             th.num ウォ<br />ッチ
@@ -66,6 +67,7 @@
             td.num = number_with_delimiter @login_dl_counts[month]
             td.num.sepa = number_with_delimiter @unlogin_dl_counts[month]
             td.num = number_with_delimiter @detail_user_counts[month]
+            td.num = number_with_delimiter @detail_utag_counts[month]
             td.num = number_with_delimiter @login_du_counts[month]
             td.num.sepa = number_with_delimiter @unlogin_du_counts[month]
 
@@ -88,6 +90,7 @@
             th.num ログ<br />イン
             th.num.sepa 未ログ<br />イン
             th.num 閲覧<br />人数
+            th.num utag<br />人数
             th.num ログ<br />イン
             th.num.sepa 未ログ<br />イン
             th.num ウォ<br />ッチ

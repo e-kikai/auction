@@ -61,8 +61,11 @@ class System::TotalController < System::ApplicationController
     @unlogin_du_total    = DetailLog.where(product_id: @products, user_id: nil).where(@where_cr).distinct.count(:ip)
     @login_du_total      = DetailLog.where(product_id: @products).where.not(user_id: nil).where(@where_cr).distinct.count(:user_id)
 
+    @start_count         = @products.where("dulation_start <= ? AND dulation_end > ?", @rstart, @rstart).count
 
-    @start_count        = @products.where("dulation_start <= ? AND dulation_end > ?", @rstart, @rstart).count
+    ### utag追加 ###
+    @detail_utag_counts  = DetailLog.where(product_id: @products).where(@where_cr).group(gro).distinct.count(:utag)
+    @detail_utag_total   = DetailLog.where(product_id: @products).where(@where_cr).distinct.count(:utag)
   end
 
   def products_monthly
@@ -102,7 +105,10 @@ class System::TotalController < System::ApplicationController
     @unlogin_du_total    = DetailLog.where(product_id: @products, user_id: nil).distinct.count(:ip)
     @login_du_total      = DetailLog.where(product_id: @products).where.not(user_id: nil).distinct.count(:user_id)
 
-    @start_count        = 0
+    @start_count         = 0
+
+    ### utag追加 ###
+    @detail_utag_counts  = DetailLog.where(product_id: @products).where(@where_cr).group(gro).distinct.count(:utag)
   end
 
   def formula
