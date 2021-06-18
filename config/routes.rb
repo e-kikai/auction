@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   resources :helps,      only: [:index, :show]
   resources :infos,      only: [:index, :show]
 
-  resources :detail_logs,  only: [:create]
+  resources :detail_logs,  only: [:index, :create]
   resources :search_logs,  only: [:create]
   resources :toppage_logs, only: [:create]
 
@@ -105,6 +105,8 @@ Rails.application.routes.draw do
         get 'products'
       end
     end
+
+    resources :detail_logs,  only: [:index]
   end
 
   ### 管理者ページ ###

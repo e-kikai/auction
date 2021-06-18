@@ -123,7 +123,7 @@ ja:
         forgot_your_password: "パスワードを忘れましたか?"
         sign_in: "すでにユーザ登録しています - ログイン"
         sign_in_with_provider: "%{provider}でログイン"
-        sign_up: "初めての方はこちら - 入札ユーザ登録"
+        sign_up: "初めての方はこちら - 入札ユーザ新規登録"
     unlocks:
       new:
         resend_unlock_instructions: "入札ユーザ登録の凍結解除方法を再送する"

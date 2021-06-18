@@ -98,7 +98,8 @@ class ProductsController < ApplicationController
     session[:search_view] = params[:v] if Product::VIEW_SELECTOR.include? params[:v]
 
     ### 最近チェックした商品 ###
-    @dl_products = Product.osusume("detail_log", ip, @user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
+    dl_where = user_signed_in? ? {user_id: current_user&.id} : {utag: session[:utag]}
+    @dl_products = Product.osusume("detail_log", dl_where).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
   end
 
   def show
@@ -175,7 +176,7 @@ class ProductsController < ApplicationController
       key_array.shuffle.each do |key|
         @fin_osusume = case key
         when "v"; DetailLog.vbpr_get(current_user&.id, Product::NEW_MAX_COUNT) # VBPR結果
-        else;     Product.osusume(key, ip, current_user&.id).limit(Product::NEW_MAX_COUNT)
+        else;     Product.osusume(key, {user_id: current_user&.id}).limit(Product::NEW_MAX_COUNT)
         end
 
         next if @fin_osusume.length == 0 # ない場合は次へ
@@ -201,7 +202,7 @@ class ProductsController < ApplicationController
     key_array.shuffle.each do |key|
       @osusume = case key
       when "v"; DetailLog.vbpr_get(current_user&.id, Product::NEW_MAX_COUNT) # VBPR結果
-      else;     Product.osusume(key, ip, current_user&.id).limit(Product::NEW_MAX_COUNT)
+      else;     Product.osusume(key, {user_id: current_user&.id}).limit(Product::NEW_MAX_COUNT)
       end
 
       next if @osusume.length == 0 # ない場合は次へ

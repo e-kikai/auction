@@ -383,17 +383,19 @@ class System::PlaygroundController < ApplicationController
       @vbpr_products = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT) # VBPR結果
       # @bpr_products  = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT, true) #BPR結果
 
-      @watch_osusume = Product.osusume("watch_osusume", ip, @user&.id).limit(Product::NEWS_LIMIT) # ウォッチオススメ
-      @bid_osusume   = Product.osusume("bid_osusume", ip, @user&.id).limit(Product::NEWS_LIMIT)   # 入札オススメ
-      @cart_products = Product.osusume("cart", ip, @user&.id).limit(Product::NEWS_LIMIT)          # 入札してみませんか
-      @next_osusume  = Product.osusume("next", ip, @user&.id).limit(Product::NEWS_LIMIT)          # こちらもオススメ
-      @dl_products   = Product.osusume("detail_log", ip, @user&.id).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
-      @fol_products  = Product.osusume("follows", ip, @user&.id).limit(Product::NEW_MAX_COUNT)    # フォロー新着
-      @oft_products  = Product.osusume("often", ip, @user&.id).limit(Product::NEWS_LIMIT)         # よく見る新着
+      @watch_osusume = Product.osusume("watch_osusume", {user_id: @user&.id}).limit(Product::NEWS_LIMIT) # ウォッチオススメ
+      @bid_osusume   = Product.osusume("bid_osusume", {user_id: @user&.id}).limit(Product::NEWS_LIMIT)   # 入札オススメ
+      @cart_products = Product.osusume("cart", {user_id: @user&.id}).limit(Product::NEWS_LIMIT)          # 入札してみませんか
+      @next_osusume  = Product.osusume("next", {user_id: @user&.id}).limit(Product::NEWS_LIMIT)          # こちらもオススメ
+      @dl_products   = Product.osusume("detail_log", {user_id: @user&.id}).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
+      @fol_products  = Product.osusume("follows", {user_id: @user&.id}).limit(Product::NEW_MAX_COUNT)    # フォロー新着
+      @oft_products  = Product.osusume("often", {user_id: @user&.id}).limit(Product::NEWS_LIMIT)         # よく見る新着
 
     else # 非ログイン
-      @dl_products = Product.osusume("detail_log", ip).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
-      @dl_osusume  = Product.osusume("dl_osusume", ip).limit(Product::NEWS_LIMIT)    # 閲覧履歴に基づくオススメ
+      # @dl_products = Product.osusume("detail_log", {ip: ip}).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
+      # @dl_osusume  = Product.osusume("dl_osusume", {ip: ip}).limit(Product::NEWS_LIMIT)    # 閲覧履歴に基づくオススメ
+      @dl_products = Product.osusume("detail_log", {utag: session[:utag]}).limit(Product::NEW_MAX_COUNT) # 最近チェックした商品
+      @dl_osusume  = Product.osusume("dl_osusume", {utag: session[:utag]}).limit(Product::NEWS_LIMIT)    # 閲覧履歴に基づくオススメ
     end
 
     ### ユーザ共通 : 現在出品中の商品からのみ取得 ###
@@ -429,7 +431,7 @@ class System::PlaygroundController < ApplicationController
       key_array.shuffle.each do |key|
         @fin_osusume = case key
         when "v"; DetailLog.vbpr_get(current_user&.id, Product::NEW_MAX_COUNT) # VBPR結果
-        else;     Product.osusume(key, ip, current_user&.id).limit(Product::NEW_MAX_COUNT)
+        else;     Product.osusume(key, {user_id: current_user&.id}).limit(Product::NEW_MAX_COUNT)
         end
 
         next if @fin_osusume.length == 0 # ない場合は次へ
@@ -445,7 +447,7 @@ class System::PlaygroundController < ApplicationController
     key_array.shuffle.each do |key|
       @osusume = case key
       when "v"; DetailLog.vbpr_get(current_user&.id, Product::NEW_MAX_COUNT) # VBPR結果
-      else;     Product.osusume(key, ip, current_user&.id).limit(Product::NEW_MAX_COUNT)
+      else;     Product.osusume(key, {user_id: current_user&.id}).limit(Product::NEW_MAX_COUNT)
       end
 
       next if @osusume.length == 0 # ない場合は次へ

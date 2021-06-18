@@ -2,12 +2,19 @@ class DetailLogsController < ApplicationController
   require 'resolv'
 
   def index
-    @products = Products.includes(:product_images).joins(:detail_logs).where(detail_logs: dl_where)
-      .reorder("max(detail_logs.id) DESC")
+    redirect_to "/myauction/detail_logs" if user_signed_in?
 
+    @products = Product.includes(:product_images).joins(:detail_logs)
+      .select("products.*, detail_logs.created_at as ca")
+      .reorder("detail_logs.id DESC")
+      .where.not(detail_logs: {r: ["reload", "back"]})
+      .where(detail_logs: {utag: session[:utag]})
+      # .where(detail_logs: {ip: ip})
 
-    @dl_osusume  = Product.osusume("dl_osusume", ip).limit(Product::NEWS_LIMIT)    # 閲覧履歴に基づくオススメ
+    # @dl_osusume  = Product.osusume("dl_osusume", {ip: ip}).limit(Product::NEWS_LIMIT) # 閲覧履歴に基づくオススメ
+    @dl_osusume  = Product.osusume("dl_osusume", {utag: session[:utag]}).limit(Product::NEWS_LIMIT) # 閲覧履歴に基づくオススメ
 
+    @pproducts = @products.page(params[:page]).per(50)
   end
 
   def create

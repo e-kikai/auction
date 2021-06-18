@@ -245,13 +245,14 @@
 
       .table-responsive.hidden-sm.hidden-xs
         table.product-table.table.table-striped.table-hover.table-condensed
-          tr
-            th
-            th
-            th.price 現在価格
-            th.price 即売価格
-            th.num 入札数
-            th.price 残り時間
+          thead
+            tr
+              th
+              th
+              th.price 現在価格
+              th.price 即売価格
+              th.num 入札数
+              th.price 残り時間
 
           - @pproducts.each do |pr|
             - if pr.success?
@@ -334,6 +335,14 @@
                     / = render "products/watch_02", product: pr
                     = nitamono_sort(pr)
                     = watch(pr, "#{rbase}_lst")
+          thead
+            tr
+              th
+              th
+              th.price 現在価格
+              th.price 即売価格
+              th.num 入札数
+              th.price 残り時間
 
     - else
       .products_area

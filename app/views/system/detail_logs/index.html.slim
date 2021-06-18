@@ -15,17 +15,18 @@
 
 = paginate @pdetail_logs
 .table-responsive
-  table.table.table-hover.table-condensed.table-striped
-    tr
-      th アクセス日時
-      th IP/ホスト名
-      th utag
-      th.name.sepa ユーザID/<br/>会社・ユーザ名
-      th.num 商品ID
-      th 商品名
-      th.price 最高金額
-      th.num 入札数
-      th.name リンク元
+  table.table.table-hover.table-condensed.table-striped.product-table
+    thead
+      tr
+        th アクセス日時
+        th IP/ホスト名
+        th utag
+        th.name.sepa ユーザID/<br/>会社・ユーザ名
+        th.num 商品ID
+        th 商品名
+        th.price 最高金額
+        th.num 入札数
+        th.name リンク元
     - @pdetail_logs.each do |lo|
       tr
         td = lo.created_at
@@ -52,3 +53,15 @@
           td.num
 
         td.name title="#{URI.unescape(lo.referer.to_s)}" = URI.unescape(lo.link_source.to_s)
+
+    thead
+      tr
+        th アクセス日時
+        th IP/ホスト名
+        th utag
+        th.name.sepa ユーザID/<br/>会社・ユーザ名
+        th.num 商品ID
+        th 商品名
+        th.price 最高金額
+        th.num 入札数
+        th.name リンク元

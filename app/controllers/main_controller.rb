@@ -15,31 +15,33 @@ class MainController < ApplicationController
     @infos = Info.where(target: 0).order(start_at: :desc).limit(10)
 
     ### VBPR・オススメ枠初期設定 ###
-    products   = Product.includes(:product_images).limit(Product::NEWS_LIMIT)
-    s_products = products.status(Product::STATUS[:start])
+    prs = Product.limit(Product::NEWS_LIMIT)
 
     if user_signed_in? # ログインユーザ
-      @vbpr_products = DetailLog.vbpr_get(current_user.id, Product::NEWS_LIMIT) # VBPR結果
+      @vbpr_products = DetailLog.vbpr_get(current_user&.id, Product::NEWS_LIMIT) # VBPR結果
       # @bpr_products  = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT, true) #BPR結果
 
-      @watch_osusume = Product.osusume("watch_osusume", ip, current_user&.id).limit(Product::NEWS_LIMIT) # ウォッチオススメ
-      @bid_osusume   = Product.osusume("bid_osusume", ip, current_user&.id).limit(Product::NEWS_LIMIT)   # 入札オススメ
-      @cart_products = Product.osusume("cart", ip, current_user&.id).limit(Product::NEWS_LIMIT)          # 入札してみませんか
-      @next_osusume  = Product.osusume("next", ip, current_user&.id).limit(Product::NEWS_LIMIT)          # こちらもオススメ
-      @fol_products  = Product.osusume("follows", ip, current_user&.id).limit(Product::NEW_MAX_COUNT)    # フォロー新着
-      @oft_products  = Product.osusume("often", ip, current_user&.id).limit(Product::NEWS_LIMIT)         # よく見る新着
+      dl_where = {user_id: current_user&.id}
+      @watch_osusume = prs.osusume("watch_osusume", dl_where)                        # ウォッチオススメ
+      @bid_osusume   = prs.osusume("bid_osusume",dl_where)                           # 入札オススメ
+      @cart_products = prs.osusume("cart",dl_where)                                  # 入札してみませんか
+      @next_osusume  = prs.osusume("next",dl_where)                                  # こちらもオススメ
+      @oft_products  = prs.osusume("often",dl_where)                                 # よく見る新着
+      @fol_products  = prs.osusume("follows",dl_where).limit(Product::NEW_MAX_COUNT) # フォロー新着
+
     else # 非ログイン
-      @dl_osusume  = Product.osusume("dl_osusume", ip).limit(Product::NEWS_LIMIT)    # 閲覧履歴に基づくオススメ
+      # @dl_osusume  = Product.osusume("dl_osusume", {ip: ip}).limit(Product::NEWS_LIMIT)    # 閲覧履歴に基づくオススメ
+      @dl_osusume  = prs.osusume("dl_osusume", {utag: session[:utag]}) # 閲覧履歴に基づくオススメ
     end
 
     ### ユーザ共通 : 現在出品中の商品からのみ取得 ###
-    @end_products  = Product.osusume("end").limit(Product::NEWS_LIMIT)          # まもなく終了
-    @tool_news     = Product.osusume("news_tool").limit(Product::NEWS_LIMIT)    # 工具新着
-    @machine_news  = Product.osusume("news_machine").limit(Product::NEWS_LIMIT) # 機械新着
-    @zero_products = Product.osusume("zero").limit(Product::NEWS_LIMIT)         # 閲覧少
+    @end_products  = prs.osusume("end")          # まもなく終了
+    @tool_news     = prs.osusume("news_tool")    # 工具新着
+    @machine_news  = prs.osusume("news_machine") # 機械新着
+    @zero_products = prs.osusume("zero")         # 閲覧少
 
     ### 売れ筋商品 ###
-    @populars      = Product.osusume("pops").limit(Product::NEWS_LIMIT)
+    @populars      = prs.osusume("pops")
   end
 
   def rss
@@ -92,7 +94,8 @@ class MainController < ApplicationController
 
   ### 最近チェックした商品 ###
   def dl_products
-    @dl_products = Product.osusume("detail_log", ip, current_user&.id).limit(Product::NEW_MAX_COUNT)
+    dl_where = user_signed_in? ? {user_id: current_user&.id} : {utag: session[:utag]}
+    @dl_products = Product.osusume("detail_log", dl_where).limit(Product::NEW_MAX_COUNT)
   end
 
   def pops_rate

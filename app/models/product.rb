@@ -222,19 +222,20 @@ class Product < ApplicationRecord
     where(template: true)
   }
 
-  scope :osusume, -> (command, ip="", user_id=nil) {
+  scope :osusume, -> (command, dl_where={}) {
     ### 事前に整形 ###
     prs   = includes(:product_images)
     s_prs = prs.status(Product::STATUS[:start])
 
-    if user_id.present?
-      watch_prs = Product.joins(:watches).group(:id).where(watches: {user_id: user_id, soft_destroyed_at: nil})
-      bid_prs   = Product.joins(:bids).group(:id).where(bids: {user_id: user_id, soft_destroyed_at: nil})
-      dl_where  = {user_id: user_id} # 詳細履歴取得キー
+    if dl_where[:user_id].present?
+      watch_prs = Product.joins(:watches).group(:id).where(watches: {user_id: dl_where[:user_id], soft_destroyed_at: nil})
+      bid_prs   = Product.joins(:bids).group(:id).where(bids: {user_id: dl_where[:user_id], soft_destroyed_at: nil})
+      # dl_where  = {user_id: user_id} # 詳細履歴取得キー
     else
-      watch_prs = Product.none
+      # watch_prs = Product.none
+      watch_prs = Product.joins(:watches).group(:id).where(watches: {utag: dl_where[:utag], soft_destroyed_at: nil})
       bid_prs   = Product.none
-      dl_where  = {ip: ip}
+      # dl_where  = {ip: ip}
     end
 
     case command
@@ -274,29 +275,29 @@ class Product < ApplicationRecord
       s_prs.where("products.name ~ ?", bid_names)
         .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
     when "cart" # 入札してみませんか？
-      cat_pids = DetailLog.where(user_id: user_id).group(:product_id)
+      cat_pids = DetailLog.where(user_id: dl_where[:user_id]).group(:product_id)
         .order("count(id) DESC").limit(10).select(:product_id)
 
       s_prs.where(id: watch_prs).or(s_prs.where(id: cat_pids)).where.not(id: bid_prs).reorder(dulation_end: :asc)
     when "next" # こちらもいかがでしょう？
       next_name = Product.where(id: watch_prs).or(Product.where(id: bid_prs))
-        .finished.where.not(max_bid_id: Bid.where(user_id: user_id))
+        .finished.where.not(max_bid_id: Bid.where(user_id: dl_where[:user_id]))
         .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
 
       s_prs.where("products.name ~ ?", next_name)
         .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
     when "follows" # フォローした出品会社の新着商品
-      s_prs.where(user_id: Follow.where(user_id: user_id).select(:to_user_id)).reorder(dulation_start: :desc)
+      s_prs.where(user_id: Follow.where(user_id: dl_where[:user_id]).select(:to_user_id)).reorder(dulation_start: :desc)
 
     when "often" # よくアクセスするカテゴリの新着
-      ca_ids = Product.joins(:detail_logs).where(detail_logs: {user_id: user_id, created_at: DetailLog::VBPR_RANGE})
+      ca_ids = Product.joins(:detail_logs).where(detail_logs: {user_id: dl_where[:user_id], created_at: DetailLog::VBPR_RANGE})
         .group(:category_id).reorder("count(*) DESC").limit(5).select("category_id")
       s_prs.where(category_id: ca_ids)
 
     when "pops" # 売れ筋商品
       temp = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")
       s_prs.joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name = pr2.name")
-        .reorder("pr2.count DESC, products.start_price, products.dulation_end")
+        .reorder("pr2.count DESC, products.start_price, products.dulation_end ASC")
     else
       none
     end

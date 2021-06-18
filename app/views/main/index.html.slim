@@ -73,14 +73,17 @@
               span.glyphicon.glyphicon-user
               span.btn-content マイ・オークション
             = link_to "/myauction/watches", class: "list-group-item" do
-              span.glyphicon.glyphicon-star
+              span.glyphicon.glyphicon-star.watch-star
               span.btn-content ウォッチリスト
             = link_to "/myauction/bids", class: "list-group-item" do
-              span.glyphicon.glyphicon-pencil
+              span.glyphicon.glyphicon-pencil.color-black
               span.btn-content 入札中
             = link_to "/myauction/bids?cond=2", class: "list-group-item" do
-              span.glyphicon.glyphicon-transfer
+              span.glyphicon.glyphicon-transfer.text-success
               span.btn-content 落札分(取引)
+            = link_to "/detail_logs", class: "list-group-item" do
+              span.glyphicon.glyphicon-th-list.check-icon
+              span.btn-content 閲覧履歴一覧
             - if current_user.try(:seller?)
               = link_to "/myauction/products", class: "list-group-item" do
                 span.glyphicon.glyphicon-gift
@@ -92,12 +95,12 @@
                 span.glyphicon.glyphicon-transfer
                 span.btn-content 出品終了 - 落札済
               = link_to "/myauction/answers", class: "list-group-item" do
-                span.glyphicon.glyphicon-comment
+                span.glyphicon.glyphicon-comment.text-success
                 span.btn-content ユーザからの問合せ・取引一覧
 
             - else
               = link_to "/myauction/contacts", class: "list-group-item" do
-                span.glyphicon.glyphicon-comment
+                span.glyphicon.glyphicon-comment.text-success
                 span.btn-content 商品問合せ・取引一覧
 
 
@@ -259,6 +262,10 @@
         label
           span.glyphicon.glyphicon-ok.check-icon
           span.btn-content 最近チェックした商品
+          = link_to "/detail_logs", class: "btn btn-more_02 btn-primary" do
+            span.glyphicon.glyphicon-arrow-right
+            span.btn-content 閲覧履歴一覧を見る
+
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
