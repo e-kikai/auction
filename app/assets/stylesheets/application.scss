@@ -2669,3 +2669,19 @@ footer {
     width: 200px;
   }
 }
+
+.badge.watch-badge {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+  text-align: center;
+}
+
+.header-menu a {
+  position: relative;
+
+ .badge.watch-badge {
+    position: absolute;
+    bottom: 18px;
+    right: 0;
+ }
+}

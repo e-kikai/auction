@@ -37,9 +37,9 @@
             - ca << pr.ca
             - if pr.id != @pproducts[i+1]&.id
               tr
-                td.img_mini = link_to image_tag(pr.thumb_url, alt: "#{pr.name}"), "/products/#{pr.id}?r=hst_lst", target: "_blank"
+                td.img_mini = link_to image_tag(pr.thumb_url, alt: "#{pr.name}"), "/products/#{pr.id}?r=mya_hst_lst", target: "_blank"
                 td.absolute
-                  = link_to("/products/#{pr.id}?r=hst_lst", target: "_blank", title: pr.name) do
+                  = link_to("/products/#{pr.id}?r=mya_hst_lst", target: "_blank", title: pr.name) do
                     /// 新着 ///
                     - if pr.dulation_start.present? && pr.dulation_start > Time.now.yesterday
                       span.new-icon
@@ -91,7 +91,7 @@
 
                 td
                   - unless pr.finished?
-                    = watch(pr, "hst_lst")
+                    = watch(pr, "mya_hst_lst")
                 td
                   - ca.each do |c|
                     . = c
@@ -121,4 +121,4 @@
         .panel.panel-default
           .panel-body.toppage-contents
             .toppage-scroll
-              = render partial: "/main/product_panel", collection: @dl_osusume, as: "product", locals: { r: :hst_dlos }
+              = render partial: "/main/product_panel", collection: @dl_osusume, as: "product", locals: { r: :mya_hst_dlos }

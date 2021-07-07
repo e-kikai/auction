@@ -95,24 +95,27 @@ html
 
           /// ヘッダメニュー ///
           .col-md-6.col-sm-6.header-menu
-            - if user_signed_in?
-              = link_to "/myauction" do
-                span.glyphicon.glyphicon-user
-                span.btn-content マイオク
-              = link_to "/myauction/watches"  do
-                span.glyphicon.glyphicon-star
+            = link_to "/myauction" do
+              span.glyphicon.glyphicon-user
+              span.btn-content マイ・オク
+            = link_to "/myauction/watches", data: { toggle: :popover, content: "24時間以内に終了するオークションがあります", placement: :bottom, trigger: :hover} do
+              - if @watches.blank?
+                / span.glyphicon.glyphicon-star
+                / span.btn-content ウォッチリスト
+
+                span.glyphicon.glyphicon-star.watch-star
                 span.btn-content ウォッチリスト
+                / .badge.watch-badge = 13
+              - else
+                span.glyphicon.glyphicon-star.watch-star
+                span.btn-content ウォッチリスト
+                / .badge.watch-badge = @watches.length
+            - if user_signed_in?
               - if current_user.seller?
                 = link_to "/myauction/products/new", target: "_blank" do
                   span.glyphicon.glyphicon-plus
                   span.btn-content 出品する
             - else
-              = link_to "/myauction" do
-                span.glyphicon.glyphicon-user
-                span.btn-content マイ・オク
-              = link_to "/myauction/watches"  do
-                span.glyphicon.glyphicon-star
-                span.btn-content ウォッチリスト
               = link_to "/users/sign_in" do
                 span.glyphicon.glyphicon-log-in
                 span.btn-content ログイン

@@ -15,21 +15,21 @@
 
     - else
       p 過去に閲覧した商品の履歴を 新しい順に一覧表示しています。
-      .row
-        .alert.alert-warning.col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
-          p
-            span.glyphicon.glyphicon-info-sign
-            span.btn-content  ログインしていない時の閲覧履歴には、保持期間など一部制限がございます。 <br /> <br />
-            | ユーザ登録・ログインすることで、本機能をより便利にご利用いただけるほか、 <br />
-            | 商品へのお問い合わせ、入札などの機能もご利用いただけるようになります。
-          .button-center.button-middle
-            = link_to "/users/sign_in", class: "btn btn-default" do
-              span.glyphicon.glyphicon-log-in
-              span.btn-content ログイン
+      / .row
+      /   .alert.alert-warning.col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+      /     p
+      /       span.glyphicon.glyphicon-info-sign
+      /       span.btn-content  ログインしていない時の閲覧履歴には、保持期間など一部制限がございます。 <br /> <br />
+      /       | ユーザ登録・ログインすることで、本機能をより便利にご利用いただけるほか、 <br />
+      /       | 商品へのお問い合わせ、入札などの機能もご利用いただけるようになります。
+      /     .button-center.button-middle
+      /       = link_to "/users/sign_in", class: "btn btn-default" do
+      /         span.glyphicon.glyphicon-log-in
+      /         span.btn-content ログイン
 
-            = link_to "/users/sign_up", class: "btn btn-default" do
-              span.glyphicon.glyphicon-thumbs-up
-              span.btn-content 入札ユーザ新規登録
+      /       = link_to "/users/sign_up", class: "btn btn-default" do
+      /         span.glyphicon.glyphicon-thumbs-up
+      /         span.btn-content 入札ユーザ新規登録
 
       table.table.table-hover.table-condensed.table-striped.product-table
         thead

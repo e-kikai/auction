@@ -26,6 +26,10 @@ class System::Playground02Controller < ApplicationController
         @products_02 = Rails.cache.fetch("vector_search_vol00_#{@target.id}_16", expires_in: 1.minutes) do
           @products.vector_search_02("vector", @target.get_vector_02("vol00"), 16)
         end
+
+        @products_03 = Rails.cache.fetch("vector_search_vol01_0706_#{@target.id}_16", expires_in: 1.minutes) do
+          @products.vector_search_02("vector", @target.get_vector_02("vol01_0706"), 16)
+        end
       end
     else
       ### 通常サーチ ###
@@ -56,7 +60,7 @@ class System::Playground02Controller < ApplicationController
 
   def process_vector
     @product = Product.find(params[:id])
-    @product.vector_process_02('vol00')
+    @product.vector_process_02(params[:version])
 
     redirect_to "/system/playground_02/search_02?nitamono=#{params[:id]}", notice: "画像特徴ベクトル変換処理を行いました"
   end
@@ -65,7 +69,7 @@ class System::Playground02Controller < ApplicationController
   def all_process_vector
     # @products = Product.includes(:product_images).where(template: false).order(id: :desc).each do |pr|
     Product.includes(:product_images).status(Product::STATUS[:start]).order(id: :desc).each do |pr|
-      pr.vector_process_02('vol00')
+      pr.vector_process_02(params[:version])
     end
 
     redirect_to "/system/playground_02/search_02", notice: "すべての画像特徴ベクトル変換処理を行いました"

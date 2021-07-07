@@ -161,6 +161,9 @@ $(document).on 'turbolinks:load', ->
   $('.tooltip').remove()
   $('[data-toggle="tooltip"]').tooltip()
 
+  # popover
+  $('[data-toggle="popover"]').popover();
+
 
 priceUnformat = (str) ->
   num = new String(str).replace(/[^0-9]/g, "")

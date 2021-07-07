@@ -71,13 +71,15 @@
           ul.list-group#collapse_myauction.panel-collapse.collapse.in.xs-close
             = link_to "/myauction/", class: "list-group-item" do
               span.glyphicon.glyphicon-user
-              span.btn-content マイ・オークション
+              span.btn-content マイ・オークション - トップ
             = link_to "/myauction/watches", class: "list-group-item" do
               span.glyphicon.glyphicon-star.watch-star
               span.btn-content ウォッチリスト
+              / span.badge.watch-badge = 13
             = link_to "/myauction/bids", class: "list-group-item" do
               span.glyphicon.glyphicon-pencil.color-black
               span.btn-content 入札中
+              / span.badge.watch-badge = 3
             = link_to "/myauction/bids?cond=2", class: "list-group-item" do
               span.glyphicon.glyphicon-transfer.text-success
               span.btn-content 落札分(取引)
@@ -391,3 +393,10 @@
       li = link_to(image_tag(asset_url("banner_tachikawa.jpg"), alt: "立川商店"), "http://www.tachikawa-kikai.com/", target: "_blank")
       li = link_to(image_tag(asset_url("banner_uniseiki.jpg"), alt: "ユニセイキ"), "http://www.uniseiki.co.jp/", target: "_blank")
       li = link_to(image_tag(asset_url("banner_machinelife.jpg"), alt: "マシンライフ 全機連の中古機械情報サイト"), "http://www.zenkiren.net/", target: "_blank")
+
+/ .alert.alert-warning.alert-dismissible.fade.in role="alert" style="position: fixed;bottom: 0; width: 100%; height: 100px;"
+/   button.close type="button" data-dismiss="alert"
+/     span aria-hidden="true" x
+/   strong 警告
+/   | アラート
+/   <p><a href="#" data-dismiss="alert">閉じる</a></p>
