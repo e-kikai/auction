@@ -76,7 +76,7 @@ class System::DataController < ApplicationController
     @now_products = Product.status(Product::STATUS[:start]).where(id: img_ids).pluck(:id)
 
     ### バイアスを集計 ###
-    @biases = @watches.map { |wa| [[wa[0], wa[1]] , 1 }.to_h
+    @biases = @watches.map { |wa| [wa[0], wa[1]] ,1 }.to_h
 
     ### スパース行列に変換 ###
     user, product, bias = [], [], []
