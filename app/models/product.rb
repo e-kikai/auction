@@ -307,11 +307,9 @@ class Product < ApplicationRecord
   }
 
   scope :get_by_names, -> (names) {
-    names_array = names.map do |name|
-      name.gsub(/[\-\/\:\-\@\\\[\-\~]/, "?").split(/[\s　]/).flatten.uniq.push('__blank__').join("|")
-    end
+    names_where = names.uniq.join("|").gsub("　", " ").strip.gsub(/[\-\/\:\-\@\\\[\-\~]/, "?").gsub(/\s+/, "|")
 
-    where("products.name ~ ?", names_array).reorder("random()")
+    where("products.name ~ ?", (names_where || "__xblankx__")).reorder("random()")
   }
 
   ### オススメ枠のタイトル・ログキー・アイコン・アイコンカラー取得 ###
