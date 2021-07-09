@@ -259,35 +259,44 @@ class Product < ApplicationRecord
 
       # s_prs.where("name ~ ?", dl_names).where.not(id: dl_prs).reorder("random()")
 
-      dl_names = dl_prs.reorder("max(detail_logs.id) DESC").limit(10).pluck(:name)
-      s_prs.get_by_names(dl_names).where.not(id: dl_prs)
+      names = dl_prs.reorder("max(detail_logs.id) DESC").limit(10).pluck(:name)
+      s_prs.like_names(names).where.not(id: dl_prs)
 
     ### ログインユーザ ###
     when "watch_osusume" # ウォッチおすすめ
-      watch_names = watch_prs.reorder("max(watches.id) DESC").limit(10)
-        .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
+      # watch_names = watch_prs.reorder("max(watches.id) DESC").limit(10)
+      #   .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
 
-      s_prs.where("products.name ~ ?", watch_names)
-        .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
+      # s_prs.where("products.name ~ ?", watch_names)
+      #   .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
 
+      names = watch_prs.reorder("max(watches.id) DESC").limit(10).pluck(:name)
+      s_prs.like_names(names).where.not(id: bid_prs)
     when "bid_osusume" # 入札履歴に基づくオススメ
-      bid_names = bid_prs.reorder("max(bids.id) DESC").limit(10)
-        .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
+      # bid_names = bid_prs.reorder("max(bids.id) DESC").limit(10)
+      #   .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
 
-      s_prs.where("products.name ~ ?", bid_names)
-        .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
+      # s_prs.where("products.name ~ ?", bid_names)
+      #   .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
+
+      names = bid_prs.reorder("max(bids.id) DESC").limit(10).pluck(:name)
+      s_prs.like_names(names).where.not(id: bid_prs)
     when "cart" # 入札してみませんか？
       cat_pids = DetailLog.where(user_id: dl_where[:user_id]).group(:product_id)
         .order("count(id) DESC").limit(10).select(:product_id)
 
       s_prs.where(id: watch_prs).or(s_prs.where(id: cat_pids)).where.not(id: bid_prs).reorder(dulation_end: :asc)
     when "next" # こちらもいかがでしょう？
-      next_name = Product.where(id: watch_prs).or(Product.where(id: bid_prs))
-        .finished.where.not(max_bid_id: Bid.where(user_id: dl_where[:user_id]))
-        .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
+      # next_name = Product.where(id: watch_prs).or(Product.where(id: bid_prs))
+      #   .finished.where.not(max_bid_id: Bid.where(user_id: dl_where[:user_id]))
+      #   .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
 
-      s_prs.where("products.name ~ ?", next_name)
-        .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
+      # s_prs.where("products.name ~ ?", next_name)
+      #   .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
+
+      names = Product.where(id: watch_prs).or(Product.where(id: bid_prs))
+        .finished.where.not(max_bid_id: Bid.where(user_id: dl_where[:user_id])).pluck(:name)
+      s_prs.like_names(names).where.not(id: watch_prs).where.not(id: bid_prs)
     when "follows" # フォローした出品会社の新着商品
       s_prs.where(user_id: Follow.where(user_id: dl_where[:user_id]).select(:to_user_id)).reorder(dulation_start: :desc)
 
@@ -306,10 +315,9 @@ class Product < ApplicationRecord
     end
   }
 
-  scope :get_by_names, -> (names) {
-    names_where = names.uniq.join("|").gsub("　", " ").strip.gsub(/[\-\/\:\-\@\\\[\-\~]/, "?").gsub(/\s+/, "|")
-
-    where("products.name ~ ?", (names_where || "__xblankx__")).reorder("random()")
+  scope :like_names, -> (names) {
+    reg = names.uniq.join("|").gsub("　", " ").strip.gsub(/[\-\/\:\-\@\\\[\-\~\(\)]/, "?").gsub(/\s+/, "|")
+    where("products.name ~ ?", (reg || "_xblankx_")).reorder("random()")
   }
 
   ### オススメ枠のタイトル・ログキー・アイコン・アイコンカラー取得 ###
