@@ -18,6 +18,19 @@
  */
 // $icon-font-path: "bootstrap-sass/assets/fonts/bootstrap/";
 // @import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+@import 'font-awesome-sprockets';
+@import 'font-awesome';
+
+i.fas, i.fab {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 $main-color: #edc9ff;
 $heavy-color: #707;
 

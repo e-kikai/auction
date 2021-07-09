@@ -168,3 +168,5 @@ gem 'aws-sdk-s3', '~> 1'
 # gem "numo-linalg"
 
 gem "turnout"
+
+gem 'font-awesome-sass'

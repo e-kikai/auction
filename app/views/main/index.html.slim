@@ -66,12 +66,14 @@
 
         .panel.panel-warning
           = link_to "#collapse_myauction", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
+            i.fas.fa-user-circle
             span マイ・オークション
             span.glyphicon.glyphicon-chevron-down
           ul.list-group#collapse_myauction.panel-collapse.collapse.in.xs-close
             = link_to "/myauction/", class: "list-group-item" do
-              span.glyphicon.glyphicon-user
-              span.btn-content マイ・オークション - トップ
+              / span.glyphicon.glyphicon-user
+              i.fas.fa-user-circle.glyphicon
+              span.btn-content マイ・オク - トップ
             = link_to "/myauction/watches", class: "list-group-item" do
               span.glyphicon.glyphicon-star.watch-star
               span.btn-content ウォッチリスト
@@ -84,7 +86,8 @@
               span.glyphicon.glyphicon-transfer.text-success
               span.btn-content 落札分(取引)
             = link_to "/detail_logs", class: "list-group-item" do
-              span.glyphicon.glyphicon-th-list.check-icon
+              / span.glyphicon.glyphicon-th-list.check-icon
+              i.fas.fa-history.check-icon
               span.btn-content 閲覧履歴一覧
             - if current_user.try(:seller?)
               = link_to "/myauction/products", class: "list-group-item" do

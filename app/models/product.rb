@@ -232,7 +232,6 @@ class Product < ApplicationRecord
       bid_prs   = Product.joins(:bids).group(:id).where(bids: {user_id: dl_where[:user_id], soft_destroyed_at: nil})
       # dl_where  = {user_id: user_id} # 詳細履歴取得キー
     else
-      # watch_prs = Product.none
       watch_prs = Product.joins(:watches).group(:id).where(watches: {utag: dl_where[:utag], soft_destroyed_at: nil})
       bid_prs   = Product.none
       # dl_where  = {ip: ip}
@@ -255,10 +254,13 @@ class Product < ApplicationRecord
 
     when "dl_osusume" #閲覧履歴に基づくオススメ
       dl_prs   = joins(:detail_logs).group(:id).where(detail_logs: dl_where)
-      dl_names = dl_prs.reorder("max(detail_logs.id) DESC").limit(10)
-        .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
+      # dl_names = dl_prs.reorder("max(detail_logs.id) DESC").limit(10)
+      #   .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
 
-      s_prs.where("name ~ ?", dl_names).where.not(id: dl_prs).reorder("random()")
+      # s_prs.where("name ~ ?", dl_names).where.not(id: dl_prs).reorder("random()")
+
+      dl_names = dl_prs.reorder("max(detail_logs.id) DESC").limit(10).pluck(:name)
+      s_prs.get_by_names(dl_names).where.not(id: dl_prs)
 
     ### ログインユーザ ###
     when "watch_osusume" # ウォッチおすすめ
@@ -296,13 +298,21 @@ class Product < ApplicationRecord
 
     when "pops" # 売れ筋商品
       temp = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")
-      s_prs.joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name = pr2.name")
+      # s_prs.joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name = pr2.name")
+      s_prs.joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name LIKE '#{pr2.name}%'")
         .reorder("pr2.count DESC, products.start_price, products.dulation_end ASC")
     else
       none
     end
   }
 
+  scope :get_by_names, -> (names) {
+    names_array = names.map do |name|
+      name.gsub(/[\-\/\:\-\@\\\[\-\~]/, "?").split(/[\s　]/).flatten.uniq.push('__blank__').join("|")
+    end
+
+    where("products.name ~ ?", names_array).reorder("random()")
+  }
 
   ### オススメ枠のタイトル・ログキー・アイコン・アイコンカラー取得 ###
   def self.osusume_titles(command)
