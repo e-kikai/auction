@@ -299,7 +299,7 @@ class Product < ApplicationRecord
     when "pops" # 売れ筋商品
       temp = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")
       # s_prs.joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name = pr2.name")
-      s_prs.joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name LIKE '#{pr2.name}%'")
+      s_prs.joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name LIKE pr2.name || '%'")
         .reorder("pr2.count DESC, products.start_price, products.dulation_end ASC")
     else
       none
