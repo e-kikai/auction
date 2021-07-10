@@ -806,7 +806,7 @@ class Product < ApplicationRecord
 
   ### 商品から似たものサーチ ###
   def nitamono(limit=Product::VECTORS_LIMIT)
-    Product.status(STATUS[:start]).nitamono_search(self.get_vector, limit)
+    Product.includes(:product_images).status(STATUS[:start]).nitamono_search(self.get_vector, limit)
   end
 
   ### 画像ファイルから検索(途中) ###
