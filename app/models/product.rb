@@ -316,8 +316,11 @@ class Product < ApplicationRecord
   }
 
   scope :like_names, -> (names) {
-    reg = names.uniq.join("|").gsub("　", " ").strip.gsub(/[\-\/\:\-\@\\\[\-\~\(\)]/, "?").gsub(/\s+/, "|")
-    where("products.name ~ ?", (reg || "_xblankx_")).reorder("random()")
+    reg = names.map do |na|
+      na.gsub("　", " ").gsub(/[\-\/\:\-\@\\\[\-\~\(\)]+/, "?").split
+    end.flatten.uniq.delete_if { |x| x =~ /^.{,1}$/ }.join("|")
+
+    reg.present? ? where("products.name ~ ?", reg).reorder("random()") : none
   }
 
   ### オススメ枠のタイトル・ログキー・アイコン・アイコンカラー取得 ###
