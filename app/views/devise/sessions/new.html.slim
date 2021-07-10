@@ -43,6 +43,7 @@
               = t('.remember_me', default: 'Remember me')
         / = f.submit  t('.sign_in', default: 'Sign in'), class: 'btn btn-primary'
         = f.button :button, data: { "disable-with" => "ログイン中..." }, class: "btn btn-default btn-square btn-submit center-block" do
-          span.glyphicon.glyphicon-log-in
+          / span.glyphicon.glyphicon-log-in
+          i.fas.fa-sign-in-alt
           span.btn-content ログイン
   = render 'devise/shared/links'

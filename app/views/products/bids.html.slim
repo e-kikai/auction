@@ -120,28 +120,23 @@ h1.product-title
                 = number_to_currency(bi.amount_with_tax)
             td = I18n.l(bi.created_at, format: :full_date)
     - elsif @product.start?
-      .alert.alert-success
-        span.glyphicon.glyphicon-info-sign
+      / .alert.alert-success
+      .alert.success_message
+        / span.glyphicon.glyphicon-info-sign
+        i.fas.fa-exclamation.follow-heart
         span.btn-content
-          / | この商品への入札はまだありません。今なら開始価格 #{number_to_currency(@product.max_price)}(税抜) で入札できるチャンスです！！
-          | この商品への入札はまだありません。今なら開始価格 #{number_to_currency(@product.max_price_with_tax)}(税込) で入札できるチャンスです！！
+          | この商品への入札はまだありません。<br />今なら開始価格 #{number_to_currency(@product.max_price_with_tax)}(税込) で入札できるチャンスです！！
     - else
       .alert.alert-warning
         span.glyphicon.glyphicon-info-sign
         span.btn-content
           | この商品への入札はありませんでした。
 
-    - if @product.start? && @product.user_id != current_user.try(:id)
-
-      . = link_to "/myauction/bids/new?id=#{@product.id}&bid%5Bamount%5D=", class: "btn btn-warning"  do
+    - if @product.start? && @product.user_id != current_user&.id
+    - if @product.start?
+      . = link_to "/myauction/bids/new?id=#{@product.id}&bid%5Bamount%5D=", class: "btn btn-warning btn-lg center-block"  do
         span.glyphicon.glyphicon-pencil
-        span.btn-content 入札
-
-
-.button-center.text-left
-  = link_to "/products/#{@product.id}?r=bck", class: "btn btn-default" do
-    span.glyphicon.glyphicon-arrow-left
-    span.btn-content 商品詳細ページに戻る
+        span.btn-content 入札する
 
 - if @nitamono_products.present?
   .special-area

@@ -3,11 +3,17 @@
   .panel.panel-default.devise-bs
     .panel-heading
       h4
-        = t('.forgot_your_password', default: 'Forgot your password?')
+        .inline-block
+          span.glyphicon.glyphicon-question-sign
+          span.btn-content = t('.forgot_your_password', default: 'Forgot your password?')
+        .inline-block = " - パスワード再設定方法を送信"
     .panel-body
       = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, role: "form" }) do |f|
         .form-group
           = f.label :email
           = f.email_field :email, autofocus: true, class: 'form-control'
-        = f.submit t('.send_me_reset_password_instructions', default: 'Send me reset password instructions'), class: 'btn btn-primary'
+        / = f.submit t('.send_me_reset_password_instructions', default: 'Send me reset password instructions'), class: 'btn btn-primary'
+        = f.button :button, data: { "disable-with" => "送信中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+          i.fas.fa-paper-plane
+          span.btn-content 設定方法を送信
   = render 'devise/shared/links'

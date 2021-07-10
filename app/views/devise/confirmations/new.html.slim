@@ -3,11 +3,16 @@
   .panel.panel-default.devise-bs
     .panel-heading
       h4
-        = t('.resend_confirmation_instructions', default: 'Resend confirmation instructions')
+        span.glyphicon.glyphicon-info-sign
+        .inline-block = "登録確認メールが届いていません - "
+        span.btn-content = t('.resend_confirmation_instructions', default: 'Resend confirmation instructions')
     .panel-body
       = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, role: 'form' }) do |f|
         .form-group
           = f.label :email
           = f.email_field :email, autofocus: true, class: "form-control"
-        = f.submit t('.resend_confirmation_instructions', default: 'Resend confirmation instructions'), class: 'btn btn-primary'
+        / = f.submit t('.resend_confirmation_instructions', default: 'Resend confirmation instructions'), class: 'btn btn-primary'
+        = f.button :button, data: { "disable-with" => "再送信中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+          i.fas.fa-paper-plane
+          span.btn-content 再送信
   = render 'devise/shared/links'

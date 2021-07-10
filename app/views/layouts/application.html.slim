@@ -43,7 +43,8 @@ html
             span style="display:inline-block;"
               = "[ "
               = link_to "/users/sign_out", method: :delete
-                span.glyphicon.glyphicon-log-out
+                / span.glyphicon.glyphicon-log-out
+                i.fas.fa-sign-out-alt
                 span.btn-content ログアウト
               = " ]"
 
@@ -118,7 +119,8 @@ html
                   span.btn-content 出品する
             - else
               = link_to "/users/sign_in" do
-                span.glyphicon.glyphicon-log-in
+                / span.glyphicon.glyphicon-log-in
+                i.fas.fa-sign-in-alt
                 span.btn-content ログイン
               = link_to "/users/sign_up", class: "bg-success" do
                 / span.glyphicon.glyphicon-thumbs-up

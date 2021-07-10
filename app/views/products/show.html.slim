@@ -168,7 +168,8 @@ article
                 . = watch(@product, "dtl")
 
             . = link_to "/products/#{@product.id}/bids", class: "btn btn-default", style: "margin: 8px 0 8px 12px" do
-              span.glyphicon.glyphicon-info-sign
+              / span.glyphicon.glyphicon-info-sign
+              span.glyphicon.glyphicon-time
               span.btn-content 入札履歴・残り時間詳細
 
           /// ウォッチ、閲覧数 ///
@@ -231,13 +232,15 @@ article
         .panel-body
           section.detail-company-area
             .
-              span.glyphicon.glyphicon-home
+              / span.glyphicon.glyphicon-home
+              i.fas.fa-building
               span.btn-content = "出品会社 : "
               span.h4 = @product.user.company
 
             .company-button-area
               = link_to "/companies/#{@product.user_id}", class: "btn btn-default" do
-                span.glyphicon.glyphicon-home
+                / span.glyphicon.glyphicon-home
+                i.fas.fa-building
                 span.btn-content 会社情報
               = link_to "/products/?company_id=#{@product.user_id}", class: "btn btn-default"  do
                 span.glyphicon.glyphicon-list
@@ -249,7 +252,8 @@ article
               span.h4
                 =<> number_with_delimiter @product.user.count_star
                 | (
-                span.glyphicon.glyphicon-certificate.star-good
+                / span.glyphicon.glyphicon-certificate.star-good
+                i.fas.fa-sun.star-good
                 =<> number_with_delimiter @product.user.count_star_good
                 span.glyphicon.glyphicon-cloud.star-bad
                 =< number_with_delimiter @product.user.count_star_bad
@@ -258,7 +262,8 @@ article
               span.glyphicon.glyphicon-map-marker
               span.btn-content = "出品地域 : #{@product.user.addr_1} #{@product.user.addr_2}"
             .
-              span.glyphicon.glyphicon-file
+              / span.glyphicon.glyphicon-file
+              i.fas.fa-id-badge
               span.btn-content = "免許情報 : #{@product.user.license}"
 
           .trade-button-area
@@ -272,7 +277,8 @@ article
             .contact-button-area
               - if current_user.blank?
                 = link_to "/users/sign_in" do
-                  span.glyphicon.glyphicon-log-in
+                  / span.glyphicon.glyphicon-log-in
+                  i.fas.fa-sign-in-alt
                   span.btn-content ログインすると、商品についての問合せができます
               - elsif @product.trade_success?(current_user)
                 = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
@@ -286,14 +292,18 @@ article
       //// SNSボタン ///
       .sns-area
         = link_to "http://www.facebook.com/sharer.php?u=#{root_url}products/#{@product.id}", target: "_blank", class: "facebook-button" do
-          = image_tag "fb_icon.png"
-          span シェア
+          / = image_tag "fb_icon.png"
+          i.fab.fa-facebook-square
+          span.btn-content = "シェア"
 
         = link_to "http://twitter.com/share?hashtags=ものオク&text=#{@product.name}｜ものづくりオークション&url=#{root_url}products/#{@product.id}", target: "_blank", class: "twitter-button" do
-          = image_tag "twitter_icon.png"
-          span Tweet
+          / = image_tag "twitter_icon.png"
+          i.fab.fa-twitter
+          span.btn-content = "ツイート"
 
-        = link_to "LINEで送る", "http://line.me/R/msg/text/?#{@product.name}｜ものづくりオークション #{root_url}products/#{@product.id}",target: "_blank", class: "line-button"
+        = link_to "http://line.me/R/msg/text/?#{@product.name}｜ものづくりオークション #{root_url}products/#{@product.id}",target: "_blank", class: "line-button" do
+          i.fab.fa-line
+          span.btn-content = "LINEで送る"
 
       /// ハッシュダグ ///
       h5

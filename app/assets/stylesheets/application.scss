@@ -1440,6 +1440,7 @@ iframe.machinelife_ads {
 
 .btn-lg.center-block {
   margin: 24px auto 12px;
+  width:200px;
 }
 
 /// 検索結果 : 並び順 ///
@@ -1842,7 +1843,7 @@ footer {
     padding-bottom: 10px;
     margin-bottom: 2rem;
 
-  .glyphicon, i.fas, i.fab {
+  .glyphicon, i.fas, i.fab, i.far {
     color: #258a01;
     top: 4px;
   }
@@ -2089,16 +2090,23 @@ a.btn.btn-more {
     margin-bottom: 1.5em;
 }
 .sns-area a {
-    width: 49.5%;
-    font-size: 0.8rem;
+    // width: 49.5%;
+    // font-size: 0.8rem;
+    width: 32%;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     display: inline-block;
     margin: 0 1% 2px 0;
 }
-.sns-area a:nth-child(2n) {
-    margin-right: 0;
+
+#main-index .sns-area a {
+  width: 24%;
 }
+
+// .sns-area a:nth-child(2n) {
+//    margin-right: 0;
+// }
+
 .mobile-product {
     width: 100%;
     display: inline-block;
@@ -2699,4 +2707,8 @@ footer {
     bottom: 18px;
     right: 0;
  }
+}
+
+.inline-block {
+  display: inline-block;
 }

@@ -8,7 +8,8 @@
 .row
   .col-md-offset-3.col-md-6
     h1.product-title
-      span.glyphicon.glyphicon-home
+      / span.glyphicon.glyphicon-home
+      i.fas.fa-building
       span.btn-content #{@company.company} 出品会社情報
 
     .button-center
@@ -24,7 +25,8 @@
     table.table.table-striped.table-hover.table-condensed.company-table
       tr
         th
-          span.glyphicon.glyphicon-home
+          / span.glyphicon.glyphicon-home
+          i.fas.fa-building
           span.btn-content 会社名
         td = @company.company
 
@@ -46,7 +48,8 @@
         td = @company.tel
       tr
         th
-          span.glyphicon.glyphicon-phone-alt
+          / span.glyphicon.glyphicon-phone-alt
+          i.fas.fa-fax
           span.btn-content FAX
         td = @company.fax
       tr
@@ -71,7 +74,8 @@
         td = @company.business_hours
       tr
         th
-          span.glyphicon.glyphicon-file
+          / span.glyphicon.glyphicon-file
+          i.fas.fa-id-badge
           span.btn-content 免許情報
         td = @company.license
       tr
@@ -88,7 +92,8 @@
            dt 総合評価
            dd = number_with_delimiter(@company.count_star)
            dt
-             span.glyphicon.glyphicon-certificate.star-good
+             / span.glyphicon.glyphicon-certificate.star-good
+             i.fas.fa-sun.star-good
              span.btn-content 良い評価の割合
            dd #{@company.count_star_good * 100 / @company.count_star rescue 0} %
            dt.star ★★★★★

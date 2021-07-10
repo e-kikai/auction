@@ -72,7 +72,7 @@
           ul.list-group#collapse_myauction.panel-collapse.collapse.in.xs-close
             = link_to "/myauction/", class: "list-group-item" do
               / span.glyphicon.glyphicon-user
-              i.fas.fa-user-circle.glyphicon
+              i.fas.fa-house-user.glyphicon
               span.btn-content マイ・オク - トップ
             = link_to "/myauction/watches", class: "list-group-item" do
               span.glyphicon.glyphicon-star.watch-star
@@ -142,16 +142,22 @@
         //// SNSボタン ///
         .sns-area.hidden-xs
           = link_to "http://www.facebook.com/sharer.php?u=#{root_url}", target: "_blank", class: "facebook-button" do
-            = image_tag "fb_icon.png", alt: "facebook"
+            / = image_tag "fb_icon.png", alt: "facebook"
+            i.fab.fa-facebook-square
             span シェア
 
           = link_to "http://twitter.com/share?hashtags=ものオク&text=ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！&url=#{root_url}", target: "_blank", class: "twitter-button" do
-            = image_tag "twitter_icon.png", alt: "Twitter"
-            span Tweet
+            / = image_tag "twitter_icon.png", alt: "Twitter"
+            i.fab.fa-twitter
+            span.btn-content Tweet
 
-          = link_to "LINEで送る", "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！ #{root_url}",target: "_blank", class: "line-button", alt: "LINE"
+          = link_to "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！ #{root_url}",target: "_blank", class: "line-button" do
+            i.fab.fa-line
+            span.btn-content 送る
 
-          = link_to "RSS", "/rss", target: "_blank", style: "background:#f39800;"
+          = link_to "/rss", target: "_blank", style: "background:#f39800;" do
+            i.fas.fa-rss
+            span.btn-content RSS
 
         .twitter-area.hidden-xs
           <a class="twitter-timeline" data-lang="ja" data-height="400" data-link-color="#981CEB" href="https://twitter.com/mnok_official?ref_src=twsrc%5Etfw">Tweets by mnok_official</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -374,19 +380,28 @@
 
       .sns-area.visible-xs-block
         = link_to "http://www.facebook.com/sharer.php?u=#{root_url}", target: "_blank", class: "facebook-button" do
-          = image_tag "fb_icon.png", alt: "facebook"
-          span シェア
+          / = image_tag "fb_icon.png", alt: "facebook"
+          i.fab.fa-facebook-square
+          span.btn-content シェア
 
         = link_to "http://twitter.com/share?hashtags=ものオク&text=ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！&url=#{root_url}", target: "_blank", class: "twitter-button" do
-          = image_tag "twitter_icon.png", alt: "Twitter"
-          span Tweet
+          / = image_tag "twitter_icon.png", alt: "Twitter"
+          i.fab.fa-twitter
+          span.btn-content Tweet
 
-        = link_to "LINEで送る", "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！ #{root_url}",target: "_blank", class: "line-button", alt: "LINE"
+        = link_to "http://line.me/R/msg/text/?ものづくりオークション〜ものづくりに特化したオークションサイト。新品も中古も！欲しかったあの工具が格安で手に入るかも！ものづくりの現場で活躍する機械・工具を安心安全な業者からネットオークションで購入！ #{root_url}",target: "_blank", class: "line-button" do
+          i.fab.fa-line
+          span.btn-content 送る
 
-        = link_to "RSS", "/rss", target: "_blank", style: "background:#f39800;"
+        = link_to "/rss", target: "_blank", style: "background:#f39800;" do
+          i.fas.fa-rss
+          span.btn-content RSS
 
-      .sns-area.visible-xs-block
-        = link_to "ものオク 公式Twitter", "https://twitter.com/mnok_official", target: "_blank", class: "twitter-button"
+      .visible-xs-block
+        = link_to "https://twitter.com/mnok_official", target: "_blank", class: "btn btn-primary" do
+          i.fab.fa-twitter
+          span.btn-content ものづくりオークション 公式Twitter
+
 
   / - unless Rails.env.production?
   section
