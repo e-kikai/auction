@@ -8,9 +8,16 @@
         span.glyphicon.glyphicon-pencil
         span.btn-content 入札メニュー
       ul.nav.nav-pills.nav-stacked
+        li = link_to "/myauction/detail_logs" do
+          i.fas.fa-history.check-icon
+          span.btn-content 閲覧履歴一覧
         li = link_to "/myauction/watches" do
           span.glyphicon.glyphicon-star.watch-star
           span.btn-content ウォッチリスト
+          - if @watch_pids.length > 0
+            .badge.watch-badge.pull-right = @watch_pids.length
+          - else
+            .badge.watch-badge.hidden
         li = link_to "/myauction/searches" do
           span.glyphicon.glyphicon-paperclip.search-pushpin
           span.btn-content 検索条件のお気に入り一覧
@@ -20,12 +27,9 @@
         li = link_to "/myauction/follows" do
           span.glyphicon.glyphicon-heart.follow-heart
           span.btn-content フォローリスト
-        li = link_to "/myauction/detail_logs" do
-          span.glyphicon.glyphicon-th-list.check-icon
-          span.btn-content 閲覧履歴一覧
         hr
         li = link_to "/myauction/bids" do
-          span.glyphicon.glyphicon-pencil.color-black
+          span.glyphicon.glyphicon-pencil.bid-pencil
           span.btn-content 入札中
         li = link_to "/myauction/bids?cond=2" do
           span.glyphicon.glyphicon-transfer.text-success

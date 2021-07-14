@@ -6,6 +6,7 @@
 #  host                :string
 #  ip                  :string
 #  keywords            :string
+#  nonlogin            :boolean          default(TRUE)
 #  page                :integer          default(1), not null
 #  path                :string           default(""), not null
 #  r                   :string           default(""), not null

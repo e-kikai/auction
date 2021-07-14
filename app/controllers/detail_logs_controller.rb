@@ -28,6 +28,8 @@ class DetailLogsController < ApplicationController
       ua:         request.user_agent,
 
       utag:       session[:utag],
+      nonlogin:   user_signed_in? ? false : true,
+
     ) ? "success" : "error"
 
     render json: { status: status }

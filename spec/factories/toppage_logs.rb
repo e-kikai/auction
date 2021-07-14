@@ -5,6 +5,7 @@
 #  id         :bigint           not null, primary key
 #  host       :string
 #  ip         :string
+#  nonlogin   :boolean          default(TRUE)
 #  r          :string           default(""), not null
 #  referer    :string
 #  ua         :string

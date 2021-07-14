@@ -26,10 +26,10 @@
               th.price 即売価格
               th.num 入札数
               th 出品会社
-              th 残り時間
-              th 問合せ
-              th 入札
-              th ウォッチ
+              th.price 残り時間
+              th.watch 問合せ
+              th.watch 入札
+              th.watch ウォッチ
               th 閲覧日時
 
           - ca = []
@@ -76,25 +76,25 @@
                     | -
                 td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
                 td = link_to pr.user.company_remove_kabu, "/products?company_id=#{pr.user_id}"
-                td = params[:result].blank? ? pr.remaining_time : I18n.l(pr.dulation_end, format: :full_date)
+                td.price = params[:result].blank? ? pr.remaining_time : I18n.l(pr.dulation_end, format: :full_date)
 
-                td
+                td.watch
                   = link_to "/myauction/contacts/#{pr.id}", method: :get, class: "btn btn-success" do
                     span.glyphicon.glyphicon-comment
                     span.btn-content 問合せ
 
-                td
+                td.watch
                   - unless pr.finished?
                     = link_to "/myauction/bids/new?id=#{pr.id}&bid%5Bamount%5D=", class: "btn btn-warning" do
                       span.glyphicon.glyphicon-pencil
                       span.btn-content 入札
 
-                td
+                td.watch
                   - unless pr.finished?
                     = watch(pr, "mya_hst_lst")
                 td
                   - ca.each do |c|
-                    . = c
+                    . = I18n.l(c, format: :full_date)
                 - ca = []
 
           thead
@@ -105,10 +105,10 @@
               th.price 即売価格
               th.num 入札数
               th 出品会社
-              th 残り時間
-              th 問合せ
-              th 入札
-              th ウォッチ
+              th.price 残り時間
+              th.watch 問合せ
+              th.watch 入札
+              th.watch ウォッチ
               th 閲覧日時
 
       . = paginate @pproducts

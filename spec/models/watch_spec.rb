@@ -5,6 +5,7 @@
 #  id                :bigint           not null, primary key
 #  host              :string
 #  ip                :string
+#  nonlogin          :boolean          default(FALSE)
 #  r                 :string
 #  referer           :string
 #  soft_destroyed_at :datetime
@@ -13,7 +14,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  product_id        :bigint           not null
-#  user_id           :bigint           not null
+#  user_id           :integer
 #
 # Indexes
 #

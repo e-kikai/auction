@@ -228,6 +228,7 @@ label.required:after {
     width: 100px;
     height: 75px;
     text-align: center;
+    padding: 1px 0;
 
     img {
       max-width: 100px;
@@ -254,8 +255,9 @@ table.form-table {
 
 table {
   td.price {
-    width: 94px;
+    // width: 120px;
     text-align: right;
+    white-space: nowrap;
 
     .max_price,
     .prompt_dicision_price {
@@ -268,8 +270,9 @@ table {
   }
 
   th.price {
-    width: 94px;
+    // width: 120px;
     text-align: right;
+    white-space: nowrap;
   }
 
   td.total_price {
@@ -304,12 +307,18 @@ table {
     line-break: anywhere;
   }
 
+  th.watch,
+  td.watch {
+    width: 100px;
+    text-align: center;
+  }
+
   .lower-label {
     color: #999;
     font-size: 80%;
     font-weight: normal;
     white-space: nowrap;
-    position: absolute;
+    // position: absolute;
   }
 
   td.sns {
@@ -382,6 +391,10 @@ table {
 
 .check-icon {
   color: #000080;
+}
+
+.bid-pencil {
+  color: darkorange;
 }
 
 .new-icon {
@@ -855,7 +868,8 @@ label.top-search {
   border-radius: 12px;
   padding: 12px;
   padding-bottom: 2px;
-  box-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  box-shadow: 2px 2px 3px rgba(0,0,0,0.4);
+  border: 1px solid #ccc;
 
   &.mine {
     background: #CFC;
@@ -883,23 +897,48 @@ label.top-search {
   display: block;
   width: 0;
   height: 0;
-  left: 15px;
-  top: 32px;
-  border-right: 12px solid #cff;
+  left: 8px;
+  top: 35px;
+  border-right: 20px solid #CCC;
   border-top: 8px solid transparent;
   border-bottom: 8px solid transparent;
 }
 
-
-.trade.other::before{
+.trade.res::after{
   content: '';
   position: absolute;
   display: block;
   width: 0;
   height: 0;
-  left: 15px;
-  top: 32px;
-  border-right: 12px solid #ededec;
+  left: 10px;
+  top: 35px;
+  border-right: 20px solid #CFF;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+
+.trade.other::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  right: 8px;
+  top: 35px;
+  border-right: 20px solid #CCC;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+
+.trade.other::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  right: 10px;
+  top: 35px;
+  border-right: 20px solid #ededec;
   border-top: 8px solid transparent;
   border-bottom: 8px solid transparent;
 }
@@ -910,13 +949,25 @@ label.top-search {
   display: block;
   width: 0;
   height: 0;
-  right: 15px;
-  top: 32px;
-  border-left: 12px solid #CFC;
+  right: 8px;
+  top: 35px;
+  border-left: 20px solid #CCC;
   border-top: 8px solid transparent;
   border-bottom: 8px solid transparent;
 }
 
+.trade.mine::after{
+  content: '';
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  right: 10px;
+  top: 35px;
+  border-left: 20px solid #CFC;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
 
 .detail-company-area {
   div {
@@ -1846,6 +1897,7 @@ footer {
   .glyphicon, i.fas, i.fab, i.far {
     color: #258a01;
     top: 4px;
+    text-shadow: 1px 1px 1px #333;
   }
 }
 
@@ -2705,10 +2757,87 @@ footer {
  .badge.watch-badge {
     position: absolute;
     bottom: 18px;
-    right: 0;
+    right: 4px;
  }
 }
 
 .inline-block {
   display: inline-block;
+}
+
+.tooltip .tooltip-inner {
+  background-color: #fcf4d9;
+  border: 3px solid #ff9a03;
+  color: black;
+  box-shadow: 1px 2px 4px #000;
+}
+
+.tooltip.left .tooltip-arrow {
+  border-left-color: #ff9a03;
+}
+
+.watch-alert {
+  position: relative;
+  width: 320px;
+  margin: 8px auto;
+  padding: 6px 8px;
+  text-align: center;
+  background-color: #fcf4d9;
+  border: 3px solid #ff9a03;
+  color: black;
+  box-shadow: 1px 2px 4px #000;
+
+  .watch-allow {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    left: 100px;
+    top: -14px;
+    border-bottom: 11px solid #ff9a03;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+  }
+}
+
+@media (min-width: 768px) {
+  .watch-alert {
+    position: absolute;
+
+    top: 35px;
+    right: 52px;
+
+    .watch-allow {
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      left: 100px;
+      top: 35px;
+      border-top: 11px solid #ff9a03;
+      border-bottom: none;
+      border-right: 8px solid transparent;
+      border-left: 8px solid transparent;
+    }
+  }
+}
+
+.remaining_24h {
+  font-size: 18px;
+  color: #C30;
+  font-weight: normal;
+}
+
+@media (max-width: 767px) {
+  .table-responsive {
+    margin-left: -29px;
+    margin-right: -29px;
+    width: initial;
+  }
+
+  .panel.panel-default {
+    margin-left: -29px;
+    margin-right: -29px;
+    width: initial;
+  }
 }

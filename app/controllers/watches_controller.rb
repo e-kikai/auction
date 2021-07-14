@@ -1,7 +1,8 @@
-class Myauction::WatchesController <  Myauction::ApplicationController
+class WatchesController < ApplicationController
   def index
-    @search    = current_user.watch_products.search(params[:q])
+    redirect_to "/myauction/watches" if user_signed_in?
 
+    @search    = @watch_products.search(params[:q])
     @products  = @search.result
 
     @products = if params[:result].present?
@@ -15,29 +16,16 @@ class Myauction::WatchesController <  Myauction::ApplicationController
     @popular_products = Product.related_products(@products).populars.limit(Product::NEW_MAX_COUNT)
   end
 
-  def create
-    @watch = current_user.watches.new(product_id: params[:id])
-    if @watch.save
-      redirect_to "/myauction/watches", notice: "ウォッチリストに登録しました"
-    else
-      redirect_to "/myauction/watches", alert: "既にウォッチリストに登録されています"
-    end
-  end
-
-  def destroy
-    @watch = current_user.watches.find_by(product_id: params[:id])
-    @watch.soft_destroy!
-    redirect_to "/myauction/watches/", notice: "ウォッチリストから商品を削除しました"
-  end
-
   ### ウォッチ切替 ###
   def toggle
     @product_id = params[:id]
-    @watch      = current_user.watches.find_by(product_id: @product_id)
+    @watch      = @watches.find_by(product_id: @product_id)
 
     @res = if @watch.blank? # 登録
-      @watch = current_user.watches.create(
+      @watch = Watch.create(
         product_id: @product_id,
+        user_id:    user_signed_in? ? current_user.id : nil,
+
         r:          params[:r],
         # referer:    params[:referer],
         referer:    request.referer,
@@ -53,5 +41,7 @@ class Myauction::WatchesController <  Myauction::ApplicationController
       @watch.soft_destroy!
       :off
     end
+
+    @watch_count = @watches.length
   end
 end

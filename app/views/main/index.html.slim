@@ -74,21 +74,25 @@
               / span.glyphicon.glyphicon-user
               i.fas.fa-house-user.glyphicon
               span.btn-content マイ・オク - トップ
-            = link_to "/myauction/watches", class: "list-group-item" do
+            = link_to "/detail_logs", class: "list-group-item" do
+              / span.glyphicon.glyphicon-th-list.check-icon
+              i.fas.fa-history.check-icon
+              span.btn-content 閲覧履歴一覧
+            / = link_to "/myauction/watches", class: "list-group-item" do
+            = link_to "/watches", class: "list-group-item" do
               span.glyphicon.glyphicon-star.watch-star
               span.btn-content ウォッチリスト
-              / span.badge.watch-badge = 13
+              - if @watch_pids.length > 0
+                .badge.watch-badge = @watch_pids.length
+              - else
+                .badge.watch-badge.hidden
             = link_to "/myauction/bids", class: "list-group-item" do
-              span.glyphicon.glyphicon-pencil.color-black
+              span.glyphicon.glyphicon-pencil.bid-pencil
               span.btn-content 入札中
               / span.badge.watch-badge = 3
             = link_to "/myauction/bids?cond=2", class: "list-group-item" do
               span.glyphicon.glyphicon-transfer.text-success
               span.btn-content 落札分(取引)
-            = link_to "/detail_logs", class: "list-group-item" do
-              / span.glyphicon.glyphicon-th-list.check-icon
-              i.fas.fa-history.check-icon
-              span.btn-content 閲覧履歴一覧
             - if current_user.try(:seller?)
               = link_to "/myauction/products", class: "list-group-item" do
                 span.glyphicon.glyphicon-gift
@@ -301,7 +305,7 @@
         - if @bid_osusume.present?
           .toppage-news-area
             label.topppage-category-title
-              span.glyphicon.glyphicon-pencil style="color:darkorange;"
+              span.glyphicon.glyphicon-pencil.bid-pencil
               span.btn-content 入札履歴に基づくオススメ
             .top-category-news
               / - @bid_osusume.each do |pr|

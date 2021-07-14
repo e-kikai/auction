@@ -7,6 +7,8 @@
       span.glyphicon.glyphicon-th-list
       span.btn-content = "閲覧履歴一覧"
 
+    p 過去に閲覧した商品の履歴を 新しい順に一覧表示しています。
+
     - if @pproducts.length == 0
       p
       .alert.alert-info
@@ -14,7 +16,6 @@
         span.btn-content  閲覧履歴はまだありません。
 
     - else
-      p 過去に閲覧した商品の履歴を 新しい順に一覧表示しています。
       / .row
       /   .alert.alert-warning.col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
       /     p
@@ -40,10 +41,10 @@
             th.price 即売価格
             th.num 入札数
             th 出品会社
-            th 残り時間
+            th.price 残り時間
             / th 問合せ
             / th 入札
-            th ウォッチ
+            th.watch ウォッチ
             th 閲覧日時
 
         - ca = []
@@ -90,7 +91,12 @@
                   | -
               td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
               td = link_to pr.user.company_remove_kabu, "/products?company_id=#{pr.user_id}"
-              td = params[:result].blank? ? pr.remaining_time : I18n.l(pr.dulation_end, format: :full_date)
+              td.price
+                - if params[:result].blank?
+                  span class="#{pr.remaining_24h ? 'remaining_24h' : ''}"
+                    = pr.remaining_time
+                - else
+                  = I18n.l(pr.dulation_end, format: :full_date)
 
               / td
               /   = link_to "/myauction/contacts/#{pr.id}", method: :get, class: "btn btn-success" do
@@ -103,7 +109,7 @@
               /       span.glyphicon.glyphicon-pencil
               /       span.btn-content 入札
 
-              td
+              td.watch
                 - unless pr.success?
                   = watch(pr, "hst_lst")
               / td = I18n.l(pr.ca, format: :full_date)
@@ -120,10 +126,10 @@
             th.price 即売価格
             th.num 入札数
             th 出品会社
-            th 残り時間
+            th.price 残り時間
             / th 問合せ
             / th 入札
-            th ウォッチ
+            th.watch ウォッチ
             th 閲覧日時
 
       . = paginate @pproducts

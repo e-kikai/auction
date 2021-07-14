@@ -131,7 +131,7 @@ crumb :myauction_bids_trade do |pr|
 end
 
 crumb :myauction_bids_star do |pr|
-  link   "#{pr.name} 受取確認・評価", "/myauction/star/#{pr.id}"
+  link   "受取確認・評価 #{pr.name} / #{pr.user&.company_remove_kabu}", "/myauction/star/#{pr.id}"
   parent :myauction_bids_end
 end
 

@@ -5,6 +5,7 @@
 #  id                :bigint           not null, primary key
 #  host              :string
 #  ip                :string
+#  nonlogin          :boolean          default(FALSE)
 #  r                 :string
 #  referer           :string
 #  soft_destroyed_at :datetime
@@ -13,7 +14,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  product_id        :bigint           not null
-#  user_id           :bigint           not null
+#  user_id           :integer
 #
 # Indexes
 #
@@ -26,11 +27,11 @@ class Watch < ApplicationRecord
   soft_deletable
   default_scope { without_soft_destroyed }
 
-  belongs_to :user
+  belongs_to :user, required: false
   belongs_to :product
   counter_culture :product
 
-  validates :user_id,    presence: true
+  # validates :user_id,    presence: true
   validates :product_id, presence: true
 
   validates :product_id, uniqueness: { message: "は、既にウォッチリストに登録されています。", scope: [:user_id, :soft_destroyed_at] }

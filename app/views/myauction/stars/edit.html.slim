@@ -1,11 +1,15 @@
-- set_meta_tags title: "受取確認・評価 #{@product.name}"
+- set_meta_tags title: "受取確認・評価  #{@product.name} / #{@product.user&.company_remove_kabu}"
 - breadcrumb    :myauction_bids_star, @product
+
+h1.product-title
+  i.fas.fa-sun
+  span.btn-content 受取確認・評価
 
 .col-md-offset-4.col-md-4
   .panel.panel-default
     .panel-heading
-      . = @product.name
-      . 受取確認・評価を選択してください
+      h4 = "#{@product.name} / #{@product.user&.company_remove_kabu}"
+      . 評価を選択して「評価する」をクリックしてください。<br />商品の評価が受取確認になります。
     .panel-body
       = form_for @product, url: "/myauction/stars/#{@product.id}", html: { method: :patch } do |f|
         - if f.object.errors.full_messages.present?
@@ -35,5 +39,6 @@
         . 悪い
 
         = f.button :button, data: { "disable-with" => "保存中..." }, class: "btn btn-default btn-square btn-submit center-block" do
-          span.glyphicon.glyphicon-save
+          / span.glyphicon.glyphicon-save
+          i.fas.fa-check
           span.btn-content 評価する

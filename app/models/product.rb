@@ -452,17 +452,29 @@ class Product < ApplicationRecord
 
   def remaining_time
     second = remaining_second
-    if second >= (60 * 60 * 24)
-      "#{(second / (60 * 60 * 24)).round}日"
-    elsif second >= (60 * 60)
-      "#{(second / (60 * 60)).round}時間"
-    elsif second >= 60
-      "#{(second / 60).round}分"
-    elsif second > 0
-      "#{second}秒"
-    else
-      "入札終了"
+    # if second >= (60 * 60 * 24)
+    #   "#{(second / (60 * 60 * 24)).round}日"
+    # elsif second >= (60 * 60)
+    #   "#{(second / (60 * 60)).round}時間"
+    # elsif second >= 60
+    #   "#{(second / 60).round}分"
+    # elsif second > 0
+    #   "#{second}秒"
+    # else
+    #   "入札終了"
+    # end
+
+    case second
+    when 1.day..Float::INFINITY; "#{(second / 1.day).round}日"
+    when 1.hour..1.day;          "#{(second / 1.hour).round}時間"
+    when 1.minute..1.hour;       "#{(second / 1.minute).round}分"
+    when 0..1.minute;            "#{(second / 1.second).round}秒"
+    else;                        "入札終了"
     end
+  end
+
+  def remaining_24h
+    remaining_second.between?(0, 1.day)
   end
 
   ### 現在金額の入札単位を取得 ###

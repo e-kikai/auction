@@ -45,6 +45,12 @@ Rails.application.routes.draw do
   resources :search_logs,  only: [:create]
   resources :toppage_logs, only: [:create]
 
+  resources :watches,      only: [:index] do
+    collection do
+      post "toggle"
+    end
+  end
+
   ### マイ・オークション ###
   namespace :myauction do
 

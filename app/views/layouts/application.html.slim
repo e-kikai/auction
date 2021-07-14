@@ -100,18 +100,15 @@ html
               / span.glyphicon.glyphicon-user
               i.fas.fa-user-circle
               span.btn-content マイ・オク
-            = link_to "/myauction/watches", data: { toggle: :popover, content: "24時間以内に終了するオークションがあります", placement: :bottom, trigger: :hover} do
-              - if @watches.blank?
-                / span.glyphicon.glyphicon-star
-                / span.btn-content ウォッチリスト
-
+            = link_to "/watches", class: "header-watch", data: { toggle: :popover, content: "24時間以内に終了するオークションがあります", placement: :bottom, trigger: :hover} do
+              - if @watch_pids.length > 0
                 span.glyphicon.glyphicon-star.watch-star
                 span.btn-content ウォッチリスト
-                / .badge.watch-badge = 13
+                .badge.watch-badge = @watch_pids.length
               - else
-                span.glyphicon.glyphicon-star.watch-star
+                span.glyphicon.glyphicon-star
                 span.btn-content ウォッチリスト
-                / .badge.watch-badge = @watches.length
+                .badge.watch-badge.hidden
             - if user_signed_in?
               - if current_user.seller?
                 = link_to "/myauction/products/new", target: "_blank" do
@@ -145,6 +142,13 @@ html
             /   = link_to "/users/sign_up", class: "bg-success" do
             /     span.glyphicon.glyphicon-thumbs-up
             /     span.btn-content 初めての方はこちら
+
+          /// ウォッチアラート ///
+          - if @watch_products.minimum(:dulation_end) - Time.now < 1.day
+            .watch-alert
+              i.fas.fa-exclamation.text-danger
+              span.btn-content 24時間以内に終了する商品があります
+              .watch-allow
 
       /// パンくずリスト ///
       / = raw breadcrumbs style: :bootstrap, semantic: true

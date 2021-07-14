@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_11_004115) do
+ActiveRecord::Schema.define(version: 2021_07_13_043541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 2021_06_11_004115) do
     t.string "referer"
     t.string "r", default: "", null: false
     t.string "utag"
+    t.boolean "nonlogin", default: true
     t.index ["product_id"], name: "index_detail_logs_on_product_id"
     t.index ["user_id"], name: "index_detail_logs_on_user_id"
   end
@@ -294,6 +295,7 @@ ActiveRecord::Schema.define(version: 2021_06_11_004115) do
     t.string "path", default: "", null: false
     t.integer "page", default: 1, null: false
     t.string "utag"
+    t.boolean "nonlogin", default: true
     t.index ["category_id"], name: "index_search_logs_on_category_id"
     t.index ["search_id"], name: "index_search_logs_on_search_id"
     t.index ["user_id"], name: "index_search_logs_on_user_id"
@@ -357,6 +359,7 @@ ActiveRecord::Schema.define(version: 2021_06_11_004115) do
     t.datetime "updated_at", null: false
     t.string "r", default: "", null: false
     t.string "utag"
+    t.boolean "nonlogin", default: true
     t.index ["user_id"], name: "index_toppage_logs_on_user_id"
   end
 
@@ -421,7 +424,7 @@ ActiveRecord::Schema.define(version: 2021_06_11_004115) do
   end
 
   create_table "watches", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.integer "user_id"
     t.bigint "product_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -432,6 +435,7 @@ ActiveRecord::Schema.define(version: 2021_06_11_004115) do
     t.string "host"
     t.string "ua"
     t.string "utag"
+    t.boolean "nonlogin", default: false
     t.index ["product_id"], name: "index_watches_on_product_id"
     t.index ["soft_destroyed_at"], name: "index_watches_on_soft_destroyed_at"
     t.index ["user_id"], name: "index_watches_on_user_id"

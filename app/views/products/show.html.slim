@@ -158,7 +158,7 @@ article
               - unless @product.prompt_dicision?
                 span.glyphicon.glyphicon-time
                 span.btn-content 残り時間
-                .
+                . class="#{@product.remaining_24h ? 'remaining_24h' : ''}"
                   span.h3> #{@product.remaining_time.gsub(/[^0-9,]*/, "")}
                   | #{@product.remaining_time.gsub(/[0-9,]*/, "")}
             .col-md-4.col-sm-4.col-xs-4.col-md-offset-0.col-sm-offset-0.col-xs-offset-0.text-center style="padding: 0;;border-left: 1px dotted #CCC;"
