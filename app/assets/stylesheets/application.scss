@@ -2371,9 +2371,9 @@ select.form-control.sort_select {
     height: 42px;
 }
 .row:last-child {
-    width: 100%;
-    margin: 2em 0 0 0;
-    padding: 0;
+    // width: 100%;
+    // margin: 2em 0 0 0;
+    // padding: 0;
 }
 .col-md-5.trade-left {
     width: 100%;
@@ -2830,14 +2830,14 @@ footer {
 
 @media (max-width: 767px) {
   .table-responsive {
-    margin-left: -29px;
-    margin-right: -29px;
+    margin-left: -14px;
+    margin-right: -14px;
     width: initial;
   }
 
-  .panel.panel-default {
-    margin-left: -29px;
-    margin-right: -29px;
-    width: initial;
-  }
+  // .panel.panel-default {
+  //   margin-left: -14px;
+  //   margin-right: -14px;
+  //   width: initial;
+  // }
 }

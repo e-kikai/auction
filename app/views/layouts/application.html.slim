@@ -100,7 +100,7 @@ html
               / span.glyphicon.glyphicon-user
               i.fas.fa-user-circle
               span.btn-content マイ・オク
-            = link_to "/watches", class: "header-watch", data: { toggle: :popover, content: "24時間以内に終了するオークションがあります", placement: :bottom, trigger: :hover} do
+            = link_to "/watches", class: "header-watch" do
               - if @watch_pids.length > 0
                 span.glyphicon.glyphicon-star.watch-star
                 span.btn-content ウォッチリスト

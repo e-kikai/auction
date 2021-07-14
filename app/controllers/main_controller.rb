@@ -30,8 +30,9 @@ class MainController < ApplicationController
       @fol_products  = prs.osusume("follows",dl_where).limit(Product::NEW_MAX_COUNT) # フォロー新着
 
     else # 非ログイン
-      # @dl_osusume  = Product.osusume("dl_osusume", {ip: ip}).limit(Product::NEWS_LIMIT)    # 閲覧履歴に基づくオススメ
-      @dl_osusume  = prs.osusume("dl_osusume", {utag: session[:utag]}) # 閲覧履歴に基づくオススメ
+      dl_where = {utag: session[:utag]}
+      @dl_osusume    = prs.osusume("dl_osusume", dl_where)    # 閲覧履歴に基づくオススメ
+      @watch_osusume = prs.osusume("watch_osusume", dl_where) # ウォッチオススメ
     end
 
     ### ユーザ共通 : 現在出品中の商品からのみ取得 ###

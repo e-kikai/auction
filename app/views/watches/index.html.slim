@@ -38,7 +38,7 @@
               th.num = sort_link(@search, :bids_count, default_order: :desc)
               th 出品者
               th = params[:result].blank? ? "最高入札者" : "落札者"
-              th = sort_link(@search, :dulation_end, (params[:result].blank? ? "残り時間" : "終了日時"))
+              th.price  = sort_link(@search, :dulation_end, (params[:result].blank? ? "残り時間" : "終了日時"))
               / th 問合せ
               / - if params[:result].blank?
               /   th 入札
@@ -113,7 +113,7 @@
               th.num = sort_link(@search, :bids_count, default_order: :desc)
               th 出品者
               th = params[:result].blank? ? "最高入札者" : "落札者"
-              th = sort_link(@search, :dulation_end, (params[:result].blank? ? "残り時間" : "終了日時"))
+              th.price = sort_link(@search, :dulation_end, (params[:result].blank? ? "残り時間" : "終了日時"))
               / th 問合せ
               / - if params[:result].blank?
               /   th 入札
@@ -122,16 +122,14 @@
 
       . = paginate @pproducts
 
-      - if @popular_products.present?
-        .
-          label
-            span.glyphicon.glyphicon-thumbs-up.check-icon
-            span.btn-content あなたへのおすすめ人気商品
-          .panel.panel-default
-            .panel-body.toppage-contents
-              .toppage-scroll
-                / - @popular_products.each do |pr|
-                /   = render "/main/product_panel", product: pr, r: :wtc_oss
-                = render partial: "/main/product_panel", collection: @popular_products, as: "product", locals: { r: :wtc_oss }
+    - if @watch_osusume.present?
+      .
+        label
+          span.glyphicon.glyphicon-star.watch-star
+          span.btn-content ウォッチリストに基づくオススメ
+        .panel.panel-default
+          .panel-body.toppage-contents
+            .toppage-scroll
+              = render partial: "/main/product_panel", collection: @watch_osusume, as: "product", locals: { r: :wtc_waos }
 
 = render "/main/ads_frames", okw: "工具"

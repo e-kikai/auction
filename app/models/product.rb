@@ -253,32 +253,15 @@ class Product < ApplicationRecord
       prs.joins(:detail_logs).group(:id).where(detail_logs: dl_where).reorder("max(detail_logs.id) DESC")
 
     when "dl_osusume" #閲覧履歴に基づくオススメ
-      dl_prs   = joins(:detail_logs).group(:id).where(detail_logs: dl_where)
-      # dl_names = dl_prs.reorder("max(detail_logs.id) DESC").limit(10)
-      #   .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
-
-      # s_prs.where("name ~ ?", dl_names).where.not(id: dl_prs).reorder("random()")
-
-      names = dl_prs.reorder("max(detail_logs.id) DESC").limit(10).pluck(:name)
+      dl_prs = joins(:detail_logs).group(:id).where(detail_logs: dl_where)
+      names  = dl_prs.reorder("max(detail_logs.id) DESC").limit(10).pluck(:name)
       s_prs.like_names(names).where.not(id: dl_prs)
 
     ### ログインユーザ ###
     when "watch_osusume" # ウォッチおすすめ
-      # watch_names = watch_prs.reorder("max(watches.id) DESC").limit(10)
-      #   .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
-
-      # s_prs.where("products.name ~ ?", watch_names)
-      #   .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
-
       names = watch_prs.reorder("max(watches.id) DESC").limit(10).pluck(:name)
       s_prs.like_names(names).where.not(id: bid_prs)
     when "bid_osusume" # 入札履歴に基づくオススメ
-      # bid_names = bid_prs.reorder("max(bids.id) DESC").limit(10)
-      #   .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
-
-      # s_prs.where("products.name ~ ?", bid_names)
-      #   .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
-
       names = bid_prs.reorder("max(bids.id) DESC").limit(10).pluck(:name)
       s_prs.like_names(names).where.not(id: bid_prs)
     when "cart" # 入札してみませんか？
@@ -287,13 +270,6 @@ class Product < ApplicationRecord
 
       s_prs.where(id: watch_prs).or(s_prs.where(id: cat_pids)).where.not(id: bid_prs).reorder(dulation_end: :asc)
     when "next" # こちらもいかがでしょう？
-      # next_name = Product.where(id: watch_prs).or(Product.where(id: bid_prs))
-      #   .finished.where.not(max_bid_id: Bid.where(user_id: dl_where[:user_id]))
-      #   .pluck(:name).map(&:split).flatten.uniq.push('__blank__').join("|")
-
-      # s_prs.where("products.name ~ ?", next_name)
-      #   .where.not(id: watch_prs).where.not(id: bid_prs).reorder("random()")
-
       names = Product.where(id: watch_prs).or(Product.where(id: bid_prs))
         .finished.where.not(max_bid_id: Bid.where(user_id: dl_where[:user_id])).pluck(:name)
       s_prs.like_names(names).where.not(id: watch_prs).where.not(id: bid_prs)
@@ -307,7 +283,6 @@ class Product < ApplicationRecord
 
     when "pops" # 売れ筋商品
       temp = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")
-      # s_prs.joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name = pr2.name")
       s_prs.joins("INNER JOIN (#{temp.to_sql}) as pr2 ON products.name LIKE pr2.name || '%'")
         .reorder("pr2.count DESC, products.start_price, products.dulation_end ASC")
     else

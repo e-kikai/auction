@@ -13,7 +13,10 @@ class WatchesController < ApplicationController
 
     @pproducts = @products.page(params[:page]).per(10).preload(:user, :category, :product_images, max_bid: :user)
 
-    @popular_products = Product.related_products(@products).populars.limit(Product::NEW_MAX_COUNT)
+    # @popular_products = Product.related_products(@products).populars.limit(Product::NEW_MAX_COUNT)
+
+    ### ウォッチオススメ ###
+    @watch_osusume = Product.limit(Product::NEWS_LIMIT).osusume("watch_osusume", {utag: session[:utag]})
   end
 
   ### ウォッチ切替 ###
