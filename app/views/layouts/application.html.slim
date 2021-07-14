@@ -144,7 +144,7 @@ html
             /     span.btn-content 初めての方はこちら
 
           /// ウォッチアラート ///
-          - if (@watch_products.minimum(:dulation_end) || 0) - Time.now < 1.day
+          - if @watch_products.minimum(:dulation_end).present? &&  @watch_products.minimum(:dulation_end) < Time.now + 1.day
             .watch-alert
               i.fas.fa-exclamation.text-danger
               span.btn-content 24時間以内に終了する商品があります
