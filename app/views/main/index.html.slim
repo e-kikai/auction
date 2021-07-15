@@ -279,7 +279,7 @@
           span.btn-content 最近チェックした商品
           = link_to "/detail_logs", class: "btn btn-more_02 btn-primary" do
             i.fas.fa-history
-            span.btn-content 閲覧履歴一覧を見る
+            span.btn-content 履歴一覧を見る
 
         .panel.panel-default
           .panel-body.toppage-contents
@@ -288,19 +288,19 @@
               /   = render "product_panel", product: pr, r: :top_chk
               = render partial: "product_panel", collection: @dl_products, as: "product", locals: { r: :top_chk }
 
+      /// ウォッチリストに基づくオススメ ///
+      - if @watch_osusume.present?
+        .toppage-news-area
+          label.topppage-category-title
+            span.glyphicon.glyphicon-star.watch-star
+            span.btn-content ウォッチリストに基づくオススメ
+          .top-category-news
+            / - @watch_osusume.each do |pr|
+            /   = render "products/product_panel_02", product: pr, r: :top_waos
+            = render partial: "products/product_panel_02", collection: @watch_osusume, as: "product", locals: { r: :top_waos }
+
       /// ログインユーザ ///
       - if user_signed_in?
-        /// ウォッチリストに基づくオススメ ///
-        - if @watch_osusume.present?
-          .toppage-news-area
-            label.topppage-category-title
-              span.glyphicon.glyphicon-star.watch-star
-              span.btn-content ウォッチリストに基づくオススメ
-            .top-category-news
-              / - @watch_osusume.each do |pr|
-              /   = render "products/product_panel_02", product: pr, r: :top_waos
-              = render partial: "products/product_panel_02", collection: @watch_osusume, as: "product", locals: { r: :top_waos }
-
         /// 入札履歴に基づくオススメ ///
         - if @bid_osusume.present?
           .toppage-news-area

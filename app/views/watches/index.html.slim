@@ -8,14 +8,25 @@
       span.btn-content = "ウォッチリスト"
 
     p
-      | ウォッチリストに登録した商品情報一覧です。
-      | 24時間以内に終了する商品は、ヘッダメニュー↑の<span class="watch-star">★</span>でお知らせします。
+      i.fas.fa-info-circle
+      span.btn-content  24時間以内に終了する商品は、ヘッダメニュー↑の<span class="watch-star">★</span>でお知らせします。
+    p
+      i.fas.fa-info-circle
+      span.btn-content = "入札を行うには、 [ "
+      = link_to "/users/sign_up" do
+        i.fas.fa-user-plus
+        span.btn-content ユーザ登録
+      span.btn-content = " ] をして、 [ "
+      = link_to "/users/sign_in" do
+        i.fas.fa-sign-in-alt
+        span.btn-content マイ・オークションにログイン
+      span.btn-content = " ] していただくと、だれでも入札を行うことができます。"
 
     .btn-group role="group"
       = link_to "出品中の商品", "/watches/",           class: "btn btn-default #{:active if params[:result].blank?}"
       = link_to "終了した商品", "/watches/?result=1",  class: "btn btn-default #{:active if params[:result].present?}"
 
-    - if @pproducts.length == 0
+    - if @pwatches.length == 0
       p
       .alert.alert-info
         span.glyphicon.glyphicon-info-sign
@@ -25,26 +36,29 @@
       / - if params[:result].blank?
       /   p 入札終了15分前になると、リマインドメールを送信します。
 
-      . = paginate @pproducts
+      . = paginate @pwatches
 
       .table-responsive
         table.table.table-hover.table-condensed.table-striped.product-table
           thead
             tr
               th.img_mini
-              th = sort_link(@search, :name)
-              th.price = sort_link(@search, :max_price, params[:result].blank? ? "現在価格" : "落札価格")
-              th.price = sort_link(@search, :prompt_dicision_price)
-              th.num = sort_link(@search, :bids_count, default_order: :desc)
+              th = sort_link(@search, :product_name)
+              th.price = sort_link(@search, :product_max_price, params[:result].blank? ? "現在価格" : "落札価格")
+              th.price = sort_link(@search, :product_prompt_dicision_price)
+              th.num = sort_link(@search, :product_bids_count, default_order: :desc)
               th 出品者
               th = params[:result].blank? ? "最高入札者" : "落札者"
-              th.price  = sort_link(@search, :dulation_end, (params[:result].blank? ? "残り時間" : "終了日時"))
+              th.price  = sort_link(@search, :product_dulation_end, (params[:result].blank? ? "残り時間" : "終了日時"))
               / th 問合せ
               / - if params[:result].blank?
               /   th 入札
-              / th 似たもの<br />サーチ
               th.watch ウォッチ
-          - @pproducts.each do |pr|
+              th = sort_link(@search, :created_at, "登録日時", default_order: :desc)
+
+          - @pwatches.each do |wa|
+            - pr = wa&.product
+
             tr
               td.img_mini = link_to image_tag(pr.thumb_url), "/products/#{pr.id}?r=wtc_lst"
               td = link_to "/products/#{pr.id}?r=wtc_lst" do
@@ -70,12 +84,10 @@
               td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
               td = link_to pr.user.company_remove_kabu, "/products?company_id=#{pr.user_id}"
               td
-                - if pr.max_bid.blank?
+                - if pr&.max_bid.blank?
                   = "-"
-                - elsif pr.max_bid.user_id == current_user.id
-                  = params[:result].blank? ? "★あなたが最高入札者です" : "★あなたが落札しました"
                 - else
-                  . = pr.max_bid.user.account
+                  . = pr&.max_bid.user&.account
 
               td.price
                 - if params[:result].blank?
@@ -103,24 +115,25 @@
               td.watch
                 - unless params[:finished]
                   = watch(pr, "wtc_lst")
+              td = I18n.l(wa.created_at, format: :full_date)
 
           thead
             tr
               th.img_mini
-              th = sort_link(@search, :name)
-              th.price = sort_link(@search, :max_price, params[:result].blank? ? "現在価格" : "落札価格")
-              th.price = sort_link(@search, :prompt_dicision_price)
-              th.num = sort_link(@search, :bids_count, default_order: :desc)
+              th = sort_link(@search, :product_name)
+              th.price = sort_link(@search, :product_max_price, params[:result].blank? ? "現在価格" : "落札価格")
+              th.price = sort_link(@search, :product_prompt_dicision_price)
+              th.num = sort_link(@search, :product_bids_count, default_order: :desc)
               th 出品者
               th = params[:result].blank? ? "最高入札者" : "落札者"
-              th.price = sort_link(@search, :dulation_end, (params[:result].blank? ? "残り時間" : "終了日時"))
+              th.price  = sort_link(@search, :product_dulation_end, (params[:result].blank? ? "残り時間" : "終了日時"))
               / th 問合せ
               / - if params[:result].blank?
               /   th 入札
-              / th 似たものサーチ
               th.watch ウォッチ
+              th = sort_link(@search, :created_at, "登録日時", default_order: :desc)
 
-      . = paginate @pproducts
+      . = paginate @pwatches
 
     - if @watch_osusume.present?
       .

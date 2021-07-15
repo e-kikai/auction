@@ -4,17 +4,14 @@ class DetailLogsController < ApplicationController
   def index
     redirect_to "/myauction/detail_logs" if user_signed_in?
 
-    @products = Product.includes(:product_images).joins(:detail_logs)
-      .select("products.*, detail_logs.created_at as ca")
-      .reorder("detail_logs.id DESC")
-      .where.not(detail_logs: {r: ["reload", "back"]})
-      .where(detail_logs: {utag: session[:utag]})
-      # .where(detail_logs: {ip: ip})
+    @detail_logs = DetailLog.joins(:product).includes(product: [:user, :product_images])
+      .where.not(r: ["reload", "back"]).where(products: {template: false})
+      .where(utag: session[:utag]).reorder(id: :desc)
 
-    # @dl_osusume  = Product.osusume("dl_osusume", {ip: ip}).limit(Product::NEWS_LIMIT) # 閲覧履歴に基づくオススメ
-    @dl_osusume  = Product.osusume("dl_osusume", {utag: session[:utag]}).limit(Product::NEWS_LIMIT) # 閲覧履歴に基づくオススメ
+    @pdetail_logs = @detail_logs.page(params[:page]).per(50)
 
-    @pproducts = @products.page(params[:page]).per(50)
+    ### 閲覧履歴に基づくオススメ###
+    @dl_osusume  = Product.osusume("dl_osusume", {utag: session[:utag]}).limit(Product::NEW_MAX_COUNT)
   end
 
   def create

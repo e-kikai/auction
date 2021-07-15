@@ -2,21 +2,21 @@ class WatchesController < ApplicationController
   def index
     redirect_to "/myauction/watches" if user_signed_in?
 
-    @search    = @watch_products.search(params[:q])
-    @products  = @search.result
+    @search   = @watches.joins(:product).includes(product: [:user, :category, :product_images, max_bid: [:user]])
+      .where(products: {template: false})
+      .search(params[:q])
+    @lwatches = @search.result
 
-    @products = if params[:result].present?
-      @products.where("dulation_end <= ?", Time.now).order(dulation_end: :desc)
+    @lwatches = if params[:result].present?
+      @lwatches.where("products.dulation_end <= ?", Time.now).order("products.dulation_end DESC")
     else
-      @products.where("dulation_end > ?", Time.now).order(:dulation_end)
+      @lwatches.where("products.dulation_end > ?", Time.now).order("products.dulation_end")
     end
 
-    @pproducts = @products.page(params[:page]).per(10).preload(:user, :category, :product_images, max_bid: :user)
-
-    # @popular_products = Product.related_products(@products).populars.limit(Product::NEW_MAX_COUNT)
+    @pwatches = @lwatches.page(params[:page])
 
     ### ウォッチオススメ ###
-    @watch_osusume = Product.limit(Product::NEWS_LIMIT).osusume("watch_osusume", {utag: session[:utag]})
+    @watch_osusume = Product.limit(Product::NEW_MAX_COUNT).osusume("watch_osusume", {utag: session[:utag]})
   end
 
   ### ウォッチ切替 ###

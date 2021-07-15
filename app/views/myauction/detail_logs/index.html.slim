@@ -7,14 +7,16 @@
       span.glyphicon.glyphicon-th-list
       span.btn-content = "閲覧履歴一覧"
 
-    - if @pproducts.length == 0
+    - if @pdetail_logs.length == 0
       p
       .alert.alert-info
         span.glyphicon.glyphicon-info-sign
         span.btn-content  閲覧履歴はまだありません。
 
     - else
-      p 過去に閲覧した商品の履歴を 新しい順に一覧表示しています。
+      p あなたが過去に閲覧した商品の履歴です。
+
+      . = paginate @pdetail_logs
 
       .table-responsive
         table.table.table-hover.table-condensed.table-striped.product-table
@@ -32,10 +34,13 @@
               th.watch ウォッチ
               th 閲覧日時
 
-          - ca = []
-          - @pproducts.each_with_index do |pr, i|
-            - ca << pr.ca
-            - if pr.id != @pproducts[i+1]&.id
+          - cas = []
+          - @pdetail_logs.each_with_index do |dl, i|
+            - cas << I18n.l(dl.created_at, format: :full_date)
+
+            - if dl.product_id != @pdetail_logs[i+1]&.product_id
+              - pr = dl&.product
+
               tr
                 td.img_mini = link_to image_tag(pr.thumb_url, alt: "#{pr.name}"), "/products/#{pr.id}?r=mya_hst_lst", target: "_blank"
                 td.absolute
@@ -93,9 +98,9 @@
                   - unless pr.finished?
                     = watch(pr, "mya_hst_lst")
                 td
-                  - ca.each do |c|
-                    . = I18n.l(c, format: :full_date)
-                - ca = []
+                  - cas.uniq.each do |ca|
+                    . = ca
+                  - cas = []
 
           thead
             tr
@@ -111,7 +116,7 @@
               th.watch ウォッチ
               th 閲覧日時
 
-      . = paginate @pproducts
+      . = paginate @pdetail_logs
 
     - if @dl_osusume.present?
       .

@@ -1,14 +1,13 @@
 class Myauction::DetailLogsController < Myauction::ApplicationController
   def index
-    @products = Product.includes(:product_images).joins(:detail_logs)
-      .select("products.*, detail_logs.created_at as ca")
-      .reorder("detail_logs.id DESC")
-      .where.not(detail_logs: {r: ["reload", "back"]})
-      .where(detail_logs: {user_id: current_user.id})
+    @detail_logs = DetailLog.joins(:product).includes(product: [:user, :product_images])
+      .where.not(r: ["reload", "back"]).where(products: {template: false})
+      .merge(DetailLog.where(user_id: current_user&.id).or(DetailLog.where(utag: session[:utag])))
+      .reorder(id: :desc)
 
-      @dl_osusume  = Product.osusume("dl_osusume", {user_id: current_user.id})
-        .limit(Product::NEWS_LIMIT) # 閲覧履歴に基づくオススメ
+    @pdetail_logs = @detail_logs.page(params[:page]).per(50)
 
-    @pproducts = @products.page(params[:page]).per(50)
+    ###  閲覧履歴に基づくオススメ ###
+    @dl_osusume  = Product.osusume("dl_osusume", {user_id: current_user&.id}).limit(Product::NEW_MAX_COUNT)
   end
 end

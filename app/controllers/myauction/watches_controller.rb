@@ -1,18 +1,22 @@
 class Myauction::WatchesController <  Myauction::ApplicationController
   def index
-    @search    = current_user.watch_products.search(params[:q])
+    @search   = @watches.joins(:product).includes(product: [:user, :category, :product_images, max_bid: [:user]])
+      .where(products: {template: false})
+      .search(params[:q])
+    @lwatches = @search.result
 
-    @products  = @search.result
-
-    @products = if params[:result].present?
-      @products.where("dulation_end <= ?", Time.now).order(dulation_end: :desc)
+    @lwatches = if params[:result].present?
+      @lwatches.where("products.dulation_end <= ?", Time.now).order("products.dulation_end DESC")
     else
-      @products.where("dulation_end > ?", Time.now).order(:dulation_end)
+      @lwatches.where("products.dulation_end > ?", Time.now).order("products.dulation_end")
     end
 
-    @pproducts = @products.page(params[:page]).per(10).preload(:user, :category, :product_images, max_bid: :user)
+    @pwatches = @lwatches.page(params[:page])
 
-    @popular_products = Product.related_products(@products).populars.limit(Product::NEW_MAX_COUNT)
+    # @popular_products = Product.related_products(@products).populars.limit(Product::NEW_MAX_COUNT)
+
+    ### ウォッチオススメ ###
+    @watch_osusume = Product.limit(Product::NEW_MAX_COUNT).osusume("watch_osusume", {id: current_user&.id})
   end
 
   def create
