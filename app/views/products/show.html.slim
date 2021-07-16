@@ -259,11 +259,11 @@ article
                 =< number_with_delimiter @product.user.count_star_bad
                 | )
             .
-              span.glyphicon.glyphicon-map-marker
+              i.fas.fa-map-marked-alt
               span.btn-content = "出品地域 : #{@product.user.addr_1} #{@product.user.addr_2}"
             .
               / span.glyphicon.glyphicon-file
-              i.fas.fa-id-badge
+              i.fas.fa-id-card
               span.btn-content = "免許情報 : #{@product.user.license}"
 
           .trade-button-area

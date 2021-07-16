@@ -1,38 +1,39 @@
-- if controller_name != 'sessions'
-  .button-center
-    = link_to new_session_path(resource_name), class: "btn btn-default" do
-      / span.glyphicon.glyphicon-log-in
-      i.fas.fa-sign-in-alt
-      span.btn-content = t('.sign_in', default: 'Sign in')
-
-- if devise_mapping.registerable? && controller_name != 'registrations'
-  .button-center
-    = link_to new_registration_path(resource_name), class: "btn btn-default" do
-      / span.glyphicon.glyphicon-thumbs-up
-      i.fas.fa-user-plus
-      span.btn-content = t('.sign_up', default: 'Sign up')
-
-- if devise_mapping.recoverable? && controller_name != 'passwords'
-  .button-center
-    = link_to new_password_path(resource_name), class: "btn btn-default" do
-      span.glyphicon.glyphicon-question-sign
-      span.btn-content = t('.forgot_your_password', default: 'Forgot your password?')
-
-- if devise_mapping.confirmable? && controller_name != 'confirmations'
-  .button-center
-    = link_to new_confirmation_path(resource_name), class: "btn btn-default" do
-      span.glyphicon.glyphicon-info-sign
-      span.btn-content = t('.didn_t_receive_confirmation_instructions', default: "Didn't receive confirmation instructions?")
-
-- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks'
-  .button-center
-    = link_to new_unlock_path(resource_name), class: "btn btn-default" do
-      span.glyphicon.glyphicon-info-sign
-      span.btn-content = t('.didn_t_receive_unlock_instructions', default: "Didn't receive unlock instructions?")
-
-- if devise_mapping.omniauthable?
-  - resource_class.omniauth_providers.each do |provider|
+.login_menu
+  - if controller_name != 'sessions'
     .button-center
-      = link_to omniauth_authorize_path(resource_name), class: "btn btn-default" do
+      = link_to new_session_path(resource_name), class: "btn btn-default" do
+        / span.glyphicon.glyphicon-log-in
+        i.fas.fa-sign-in-alt
+        span.btn-content = t('.sign_in', default: 'Sign in')
+
+  - if devise_mapping.registerable? && controller_name != 'registrations'
+    .button-center
+      = link_to new_registration_path(resource_name), class: "btn btn-default" do
+        / span.glyphicon.glyphicon-thumbs-up
+        i.fas.fa-user-plus
+        span.btn-content = t('.sign_up', default: 'Sign up')
+
+  - if devise_mapping.recoverable? && controller_name != 'passwords'
+    .button-center
+      = link_to new_password_path(resource_name), class: "btn btn-default" do
+        span.glyphicon.glyphicon-question-sign
+        span.btn-content = t('.forgot_your_password', default: 'Forgot your password?')
+
+  - if devise_mapping.confirmable? && controller_name != 'confirmations'
+    .button-center
+      = link_to new_confirmation_path(resource_name), class: "btn btn-default" do
         span.glyphicon.glyphicon-info-sign
-        span.btn-content = t('.sign_in_with_provider', provider: provider.to_s.titleize, default: "Sign in with #{provider.to_s.titleize}")
+        span.btn-content = t('.didn_t_receive_confirmation_instructions', default: "Didn't receive confirmation instructions?")
+
+  - if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks'
+    .button-center
+      = link_to new_unlock_path(resource_name), class: "btn btn-default" do
+        span.glyphicon.glyphicon-info-sign
+        span.btn-content = t('.didn_t_receive_unlock_instructions', default: "Didn't receive unlock instructions?")
+
+  - if devise_mapping.omniauthable?
+    - resource_class.omniauth_providers.each do |provider|
+      .button-center
+        = link_to omniauth_authorize_path(resource_name), class: "btn btn-default" do
+          span.glyphicon.glyphicon-info-sign
+          span.btn-content = t('.sign_in_with_provider', provider: provider.to_s.titleize, default: "Sign in with #{provider.to_s.titleize}")

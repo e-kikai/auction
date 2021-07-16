@@ -10,7 +10,7 @@
     span.btn-content 検索
 
   = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
-    span.glyphicon.glyphicon-download-alt
+    i.fas.fa-file-csv
     span.btn-content CSV出力
 
 = paginate @pdetail_logs
@@ -21,7 +21,9 @@
         th アクセス日時
         th IP/ホスト名
         th utag
-        th.name.sepa ユーザID/<br/>会社・ユーザ名
+        th.num ユーザID
+        th.name 会社・ユーザ名
+        th.icon.sepa 未<br />ロ
         th.num 商品ID
         th 商品名
         th.price 最高金額
@@ -34,15 +36,16 @@
           . = lo.ip
           . = lo.host
         td = lo&.utag
-        td.name.sepa
-          / . = "#{lo.user&.id)} #{lo.user&.account)}"
-          . = lo.user&.id
-          . = "#{lo.user&.company} #{lo.user&.name}".strip
+        td.num = lo.user&.id
+        td.name
+          .ib = lo.user&.company
+          .ib = lo.user&.name
+        td.icon.sepa. = lo.nonlogin? ? "◯" : ""
         td.num = lo.product_id
         - if lo.product
           td
-            . = link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank"
-            . = lo.product.user.company_remove_kabu
+            = link_to lo.product.name, "/products/#{lo.product_id}", target: "_blank", class: :ib
+            .ib = lo.product.user.company_remove_kabu
           / td.price = number_to_currency(lo.product.max_price)
           td.price = number_to_currency(lo.product.max_price_with_tax)
           td.num = lo.product.bids_count > 0 ? lo.product.bids_count : ""
@@ -59,7 +62,9 @@
         th アクセス日時
         th IP/ホスト名
         th utag
-        th.name.sepa ユーザID/<br/>会社・ユーザ名
+        th.num ユーザ<br />ID
+        th.name 会社・ユーザ名
+        th.icon.sepa 未<br />ロ
         th.num 商品ID
         th 商品名
         th.price 最高金額

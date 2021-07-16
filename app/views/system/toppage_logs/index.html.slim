@@ -7,19 +7,22 @@
     span.glyphicon.glyphicon-search
     span.btn-content 検索
   = button_tag :submit, name: :format, value: :csv, data: { "disable-with" => "出力中..." }, class: "btn btn-default btn-square" do
-    span.glyphicon.glyphicon-download-alt
+    i.fas.fa-file-csv
     span.btn-content CSV出力
 
 = paginate @ptoppage_logs
 .table-responsive
-  table.table.table-hover.table-condensed.table-striped
-    tr
-      th アクセス日時
-      th IP/ホスト名
-      th utag
-      th.name.sepa アカウント/会社・ユーザ名
-      th.name リンク元
-      th style="line-break: anywhere;" リファラ
+  table.table.table-hover.table-condensed.table-striped.product-table
+    thead
+      tr
+        th アクセス日時
+        th IP/ホスト名
+        th utag
+        th.num ユーザID
+        th.name 会社・ユーザ名
+        th.icon.sepa 未<br />ロ
+        th.name リンク元
+        th style="line-break: anywhere;" リファラ
     - @ptoppage_logs.each do |lo|
       tr
         td = lo.created_at
@@ -27,9 +30,11 @@
           . = lo.ip
           . = lo.host
         td = lo&.utag
-        td.name.sepa
-          . = lo.user&.account
-          . = "#{lo.user&.company} #{lo.user&.name}".strip
+        td.num = lo.user&.id
+        td.name
+          .ib = lo.user&.company
+          .ib = lo.user&.name
+        td.icon.sepa = lo.nonlogin? ? "◯" : ""
 
         / td.name title="#{URI.unescape(lo.referer)}" = URI.unescape(lo.link_source)
         td.name title="#{URI.unescape(lo.referer.to_s)}" = URI.unescape(lo.link_source.to_s)
@@ -37,3 +42,16 @@
         td style="line-break: anywhere;"
           - if lo.referer.present?
             = link_to URI.unescape(lo.referer.to_s), lo.referer, target: "_blank"
+
+    thead
+      tr
+        th アクセス日時
+        th IP/ホスト名
+        th utag
+        th.num ユーザ<br />ID
+        th.name 会社・ユーザ名
+        th.icon.sepa 未<br />ロ
+        th.name リンク元
+        th style="line-break: anywhere;" リファラ
+
+= paginate @ptoppage_logs

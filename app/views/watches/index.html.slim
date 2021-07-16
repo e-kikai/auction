@@ -9,18 +9,18 @@
 
     p
       i.fas.fa-info-circle
-      span.btn-content  24時間以内に終了する商品は、ヘッダメニュー↑の<span class="watch-star">★</span>でお知らせします。
+      span.btn-content  24時間以内に終了する商品は、↑ ヘッダメニュー ↑の<span class="watch-star">★</span>でお知らせします。
     p
       i.fas.fa-info-circle
-      span.btn-content = "入札を行うには、 [ "
+      span.btn-content = " 入札を行うには [ "
       = link_to "/users/sign_up" do
         i.fas.fa-user-plus
         span.btn-content ユーザ登録
-      span.btn-content = " ] をして、 [ "
+      span.btn-content = " ] をして [ "
       = link_to "/users/sign_in" do
         i.fas.fa-sign-in-alt
         span.btn-content マイ・オークションにログイン
-      span.btn-content = " ] していただくと、だれでも入札を行うことができます。"
+      span.btn-content = " ] していただくと、だれでも入札にご参加いただけます。"
 
     .btn-group role="group"
       = link_to "出品中の商品", "/watches/",           class: "btn btn-default #{:active if params[:result].blank?}"

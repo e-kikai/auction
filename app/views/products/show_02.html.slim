@@ -232,13 +232,13 @@ article
         .panel-body
           section.detail-company-area
             .
-              span.glyphicon.glyphicon-home
+              i.fas.fa-building
               span.btn-content = "出品会社 : "
               span.h4 = @product.user.company
 
             .company-button-area
               = link_to "/companies/#{@product.user_id}", class: "btn btn-default" do
-                span.glyphicon.glyphicon-home
+                i.fas.fa-building
                 span.btn-content 会社情報
               = link_to "/products/?company_id=#{@product.user_id}", class: "btn btn-default"  do
                 span.glyphicon.glyphicon-list
@@ -256,7 +256,7 @@ article
                 =< number_with_delimiter @product.user.count_star_bad
                 | )
             .
-              span.glyphicon.glyphicon-map-marker
+              i.fas.fa-map-marked-alt
               span.btn-content = "出品地域 : #{@product.user.addr_1} #{@product.user.addr_2}"
             .
               span.glyphicon.glyphicon-file

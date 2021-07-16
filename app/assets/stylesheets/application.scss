@@ -307,6 +307,10 @@ table {
     line-break: anywhere;
   }
 
+  td .ib:not(:last-child) {
+    margin-right: 8px;
+  }
+
   th.watch,
   td.watch {
     width: 100px;
@@ -319,6 +323,11 @@ table {
     font-weight: normal;
     white-space: nowrap;
     // position: absolute;
+  }
+
+  th.icon, td.icon {
+    text-align: center;
+    width: 25px;
   }
 
   td.sns {
@@ -1406,6 +1415,10 @@ a.accordion-toggle {
   &.text-left {
     text-align: left;
   }
+}
+
+.login_menu .button-center .btn {
+  width: 400px;
 }
 
 .watches_count {
@@ -2767,7 +2780,7 @@ footer {
  }
 }
 
-.inline-block {
+.inline-block, .ib {
   display: inline-block;
 }
 

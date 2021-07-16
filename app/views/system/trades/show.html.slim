@@ -50,7 +50,7 @@
 
     .panel.panel-default
       = link_to "#collapse_company", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
-        span.glyphicon.glyphicon-home
+        i.fas.fa-building
         span.btn-content 出品会社情報
         span.glyphicon.glyphicon-chevron-down
 
@@ -60,7 +60,7 @@
           dd = @product.user&.company
           .company-button-area
             = link_to "/companies/#{@product.user_id}", class: "btn btn-default" do
-              span.glyphicon.glyphicon-home
+              i.fas.fa-building
               span.btn-content 会社情報
             = link_to "/products/?company_id=#{@product.user_id}", class: "btn btn-default"  do
               span.glyphicon.glyphicon-list
@@ -100,7 +100,7 @@
 
     .panel.panel-default
       = link_to "#collapse_user", class: "panel-heading accordion-toggle", data:{toggle: "collapse"} do
-        span.glyphicon.glyphicon-user
+        i.fas.fa-user-circle
         span.btn-content 問い合わせユーザ情報
         span.glyphicon.glyphicon-chevron-down
 

@@ -37,7 +37,7 @@
         td = @company.zip
       tr
         th
-          span.glyphicon.glyphicon-map-marker
+          i.fas.fa-map-marked-alt
           span.btn-content 住所
         td = "#{@company.addr_1} #{@company.addr_2} #{@company.addr_3}"
 
@@ -62,7 +62,7 @@
 
       tr
         th
-          span.glyphicon.glyphicon-user
+          i.fas.fa-id-card-alt
           span.btn-content 担当者
         td = @company.charge
 
@@ -75,7 +75,7 @@
       tr
         th
           / span.glyphicon.glyphicon-file
-          i.fas.fa-id-badge
+          i.fas.fa-id-card
           span.btn-content 免許情報
         td = @company.license
       tr
