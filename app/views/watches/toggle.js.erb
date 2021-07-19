@@ -5,9 +5,9 @@ $_watch = $('.watch_02[data-pid=<%= @product_id %>]');
   $_watch.addClass("active").attr("data-original-title", "ウォッチリストから削除");
 <% end %>
 
-<% if @watch_count > 0 %>
+<% if @watch_pids.length  > 0 %>
   $(".header-watch span.glyphicon.glyphicon-star").addClass("watch-star");
-  $(".badge.watch-badge").show().text("<%= @watch_count %>");
+  $(".badge.watch-badge").show().text("<%= @watch_pids.length  %>");
 <% else %>
   $(".header-watch span.glyphicon.glyphicon-star").removeClass("watch-star");
   $(".badge.watch-badge").hide();

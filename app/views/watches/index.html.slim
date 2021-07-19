@@ -10,6 +10,7 @@
     p
       i.fas.fa-info-circle
       span.btn-content  24時間以内に終了する商品は、↑ ヘッダメニュー ↑の<span class="watch-star">★</span>でお知らせします。
+
     p
       i.fas.fa-info-circle
       span.btn-content = " 入札を行うには [ "
@@ -25,6 +26,12 @@
     .btn-group role="group"
       = link_to "出品中の商品", "/watches/",           class: "btn btn-default #{:active if params[:result].blank?}"
       = link_to "終了した商品", "/watches/?result=1",  class: "btn btn-default #{:active if params[:result].present?}"
+
+    = link_to "/helps/watch", class: "btn btn-primary pull-right"
+      i.fas.fa-question-circle
+      span.btn-content ウォッチリストについて
+
+    br style="clear:both;"
 
     - if @pwatches.length == 0
       p

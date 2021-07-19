@@ -44,7 +44,5 @@ class WatchesController < ApplicationController
       @watch.soft_destroy!
       :off
     end
-
-    @watch_count = @watches.length
   end
 end

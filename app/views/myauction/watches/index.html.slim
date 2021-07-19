@@ -11,6 +11,11 @@
       = link_to "開催中の商品", "/myauction/watches/",           class: "btn btn-default #{:active if params[:result].blank?}"
       = link_to "終了した商品", "/myauction/watches/?result=1",  class: "btn btn-default #{:active if params[:result].present?}"
 
+    = link_to "/helps/watch", class: "btn btn-primary pull-right"
+      i.fas.fa-question-circle
+      span.btn-content ウォッチリストについて
+
+    br style="clear:both;"
 
     - if @pwatches.length == 0
       p
