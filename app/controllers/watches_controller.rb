@@ -24,6 +24,8 @@ class WatchesController < ApplicationController
     @product_id = params[:id]
     @watch      = @watches.find_by(product_id: @product_id)
 
+    @watch_length = @watch_pids.length
+
     @res = if @watch.blank? # 登録
       @watch = Watch.create(
         product_id: @product_id,
@@ -39,10 +41,16 @@ class WatchesController < ApplicationController
         utag:       session[:utag],
         nonlogin:   user_signed_in? ? false : true,
       )
+      @watch_length += 1
+
       :on
     else
       @watch.soft_destroy!
+      @watch_length -= 1
+
       :off
     end
+
+
   end
 end
