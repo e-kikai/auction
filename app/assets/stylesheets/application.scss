@@ -406,6 +406,12 @@ table {
   color: darkorange;
 }
 
+.kome {
+  color: #C33;
+  margin-right: 8px;
+  font-weight: bold;
+}
+
 .new-icon {
   color: #333;
   font-size: 12px;
@@ -1648,6 +1654,12 @@ tr.bronze {
 
 .watch-star {
   color: #FF0;
+  -webkit-text-stroke: #333 1px;
+  text-shadow: #ff0 0px 0px 8px;
+}
+
+.blank-star {
+  color: #CCC;
   -webkit-text-stroke: #333 1px;
 }
 
