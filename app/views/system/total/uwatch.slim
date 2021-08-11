@@ -10,7 +10,7 @@
         thead
           tr
             th.num.sepa
-            th.sepa colspan="2" Mailchimp
+            th.sepa colspan="2" Mailchimp ウォッチ案内
             th.sepa colspan="3" ウォッチ人数
             th.sepa colspan="3" ウォッチ件数
             th ユーザ
@@ -57,7 +57,7 @@
         thead
           tr
             th.num.sepa
-            th.sepa colspan="2" Mailchimp
+            th.sepa colspan="2" Mailchimp ウォッチ案内
             th.sepa colspan="3" ウォッチ人数
             th.sepa colspan="3" ウォッチ件数
             th.sepa ユーザ
@@ -78,8 +78,10 @@
             th.num.sepa 合計
             td.num = number_with_delimiter(@m001_ucounts.sum { |k, v| v.to_i })
             td.num.sepa = number_with_delimiter(@m001_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@watch_ucounts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@n_watch_ucounts.sum { |k, v| v.to_i })
             td.num.sepa = number_with_delimiter(@l_watch_ucounts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@watch_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@n_watch_counts.sum { |k, v| v.to_i })
             td.num.sepa = number_with_delimiter(@l_watch_counts.sum { |k, v| v.to_i })
             td.num = number_with_delimiter(@user_counts.sum { |k, v| v.to_i })
