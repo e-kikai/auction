@@ -11,15 +11,17 @@
           tr
             th.num.sepa
             th.sepa colspan="2" Mailchimp
-            th.sepa colspan="2" ウォッチ人数
-            th.sepa colspan="2" ウォッチ件数
+            th.sepa colspan="3" ウォッチ人数
+            th.sepa colspan="3" ウォッチ件数
             th ユーザ
           tr
             th.num.sepa 日付
             th.num 人数
             th.num.sepa アクセス
+            th.num 総数
             th.num 未ログイン
             th.num.sepa ログイン
+            th.num 総数
             th.num 未ログイン
             th.num.sepa ログイン
             th.num 新規
@@ -27,9 +29,11 @@
         - @rows.each do |day|
 
           - dow = case
-          - when day == Date.today;         "success"
-          - when day.strftime('%w') == '0'; 'danger'
-          - when day.strftime('%w') == '6'; 'info'
+          - when params[:range] == "monthly" && day == Time.now.strftime("%Y/%m"); "success"
+          - when params[:range] == "monthly"; ""
+          - when day == Date.today;           "success"
+          - when day.strftime('%w') == '0';   'danger'
+          - when day.strftime('%w') == '6';   'info'
 
           tr class=dow
             td.num.sepa
@@ -42,26 +46,29 @@
 
             td.num = number_with_delimiter(@m001_ucounts[day])
             td.num.sepa = number_with_delimiter(@m001_counts[day])
+            td.num = number_with_delimiter(@watch_ucounts[day])
             td.num = number_with_delimiter(@n_watch_ucounts[day])
             td.num.sepa = number_with_delimiter(@l_watch_ucounts[day])
+            td.num = number_with_delimiter(@watch_counts[day])
             td.num = number_with_delimiter(@n_watch_counts[day])
             td.num.sepa = number_with_delimiter(@l_watch_counts[day])
             td.num = number_with_delimiter(@user_counts[day])
-
 
         thead
           tr
             th.num.sepa
             th.sepa colspan="2" Mailchimp
-            th.sepa colspan="2" ウォッチ人数
-            th.sepa colspan="2" ウォッチ件数
+            th.sepa colspan="3" ウォッチ人数
+            th.sepa colspan="3" ウォッチ件数
             th.sepa ユーザ
           tr
             th.num.sepa 日付
             th.num 人数
             th.num.sepa アクセス
+            th.num 総数
             th.num 未ログイン
             th.num.sepa ログイン
+            th.num 総数
             th.num 未ログイン
             th.num.sepa ログイン
             th.num 新規

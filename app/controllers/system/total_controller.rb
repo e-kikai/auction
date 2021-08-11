@@ -193,15 +193,18 @@ class System::TotalController < System::ApplicationController
 
   ### 未ログインウォッチ集計 ###
   def uwatch
-    m001_toppage_logs = ToppageLog.where(@where_cr).group(@group)
+    m001_toppage_logs = ToppageLog.where(@where_cr).where("r LIKE '%m-001%'").group(@group)
     watchs            = Watch.where(@where_cr).group(@group)
 
     @m001_counts     = m001_toppage_logs.count
     @m001_ucounts    = m001_toppage_logs.distinct.count(:utag)
     @n_watch_counts  = watchs.where(nonlogin: true).count
     @n_watch_ucounts = watchs.where(nonlogin: true).distinct.count(:utag)
-    @l_watch_counts  = watchs.where(nonlogin: false).count
-    @l_watch_ucounts = watchs.where(nonlogin: false).distinct.count(:utag)
+    @watch_ucounts   = watchs.distinct.count(:utag)
+    @l_watch_counts  = watchs.where.not(nonlogin: true).count
+    @l_watch_ucounts = watchs.where.not(nonlogin: true).distinct.count(:user_id)
+    @watch_counts    = watchs.distinct.count
+    @watch_ucounts   = watchs.distinct.count(:utag)
     @user_counts     = User.where(@where_cr).group(@group).count
 
     respond_to do |format|
