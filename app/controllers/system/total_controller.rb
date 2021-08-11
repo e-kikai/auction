@@ -191,6 +191,25 @@ class System::TotalController < System::ApplicationController
     }
   end
 
+  ### 未ログインウォッチ集計 ###
+  def uwatch
+    m001_toppage_logs = ToppageLog.where(@where_cr).group(@group)
+    watchs            = Watch.where(@where_cr).group(@group)
+
+    @m001_counts     = m001_toppage_logs.count
+    @m001_ucounts    = m001_toppage_logs.distinct.count(:utag)
+    @n_watch_counts  = watchs.where(nonlogin: true).count
+    @n_watch_ucounts = watchs.where(nonlogin: true).distinct.count(:utag)
+    @l_watch_counts  = watchs.where(nonlogin: false).count
+    @l_watch_ucounts = watchs.where(nonlogin: false).distinct.count(:utag)
+    @user_counts     = User.where(@where_cr).group(@group).count
+
+    respond_to do |format|
+      format.html
+      format.csv { export_csv "uwatch_total_#{params[:range]}_#{Time.now.strftime('%Y%m%d')}.csv" }
+    end
+  end
+
   def nitamono
     ### 詳細リンク集計 ###
     detail_logs         = DetailLog.where(@where_cr)
