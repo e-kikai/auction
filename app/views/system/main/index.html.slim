@@ -68,12 +68,16 @@
 
     .panel.panel-default
       .panel-heading
-        span.glyphicon.glyphicon-camera
-        span.btn-content VBPR管理
+        span.glyphicon.glyphicon-calendar
+        span.btn-content 新機能集計
       ul.nav.nav-pills.nav-stacked
         li = link_to "/system/total/osusume" do
-          span.glyphicon.glyphicon-calendar
+          span.glyphicon.glyphicon-usd
           span.btn-content VBPR・オススメ履歴集計
+        li = link_to "/system/total/uwatch" do
+          span.glyphicon.glyphicon-star
+          span.btn-content 未ログインウォッチ・案内メール集計
+
 
         / li = link_to "/system/products/all_process_vector", method: :patch do
         /   span.text-danger.glyphicon.glyphicon-fire

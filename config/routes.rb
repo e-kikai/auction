@@ -176,6 +176,7 @@ Rails.application.routes.draw do
         get 'categories'
         get 'nitamono'
         get 'osusume'
+        get 'uwatch'
       end
     end
 
@@ -219,6 +220,7 @@ Rails.application.routes.draw do
           get 'all_process_vector'
           get 'process_vector'
           get "csv"
+          get "vectors_csv"
         end
       end
     end

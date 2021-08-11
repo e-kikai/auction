@@ -32,7 +32,8 @@ class DetailLog < ApplicationRecord
 
   before_save :check_robot
 
-  ROBOTS = /(google|yahoo|naver|ahrefs|msnbot|bot|crawl|amazonaws)/
+  ROBOTS = /(goo|google|yahoo|naver|ahrefs|msnbot|bot|crawl|amazonaws|rate-limited-proxy)/i
+
   KWDS   = {
     "mail" => "メール", "top" => "トップページ", "dtl" => "詳細", "src" => "検索結果", "wtc" => "ウォッチリスト",
     "bid" => "入札",  "bds" => "入札一覧", "fin" => "落札一覧", "fls" => "フォローリスト",
@@ -70,6 +71,8 @@ class DetailLog < ApplicationRecord
 
     "pops" => "売れ筋", "upop" => "商品の売れ筋", "posp" => "売れ筋特集",
     "hst" => "閲覧履歴", "mya" => "マイ・オークション",
+
+    "azen" => "配信先::全機連会員", "amlc" => "配信先::マシンライフ問合せ",  "amnu" => "配信先::ものオクユーザ",
   }
 
   VBPR_BIAS      = {detail: 1, watch: 4, bid: 10}
@@ -149,9 +152,14 @@ class DetailLog < ApplicationRecord
     Product.none
   end
 
+  def self.check_robot(host, ip)
+    host !~ ROBOTS && ip.present?
+  end
+
   private
 
   def check_robot
-    host !~ ROBOTS && ip.present?
+    # host !~ ROBOTS && ip.present?
+    throw(:abort) unless DetailLog.check_robot(host, ip)
   end
 end

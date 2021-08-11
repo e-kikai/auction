@@ -1,0 +1,78 @@
+- set_meta_tags title: "未ログインウォッチ・案内メール集計"
+- breadcrumb :system_something, "未ログインウォッチ・案内メール集計"
+
+= render("/system/total/month_selector_form", path: "/system/total/uwatch", range: params[:range], date: @date)
+
+.row
+  .col-lg-12.col-md-12.col-sm-12
+    .table-responsive
+      table.table.table-hover.table-condensed.table-striped.product-table
+        thead
+          tr
+            th.num.sepa
+            th.sepa colspan="2" Mailchimp
+            th.sepa colspan="2" ウォッチ人数
+            th.sepa colspan="2" ウォッチ件数
+            th ユーザ
+          tr
+            th.num.sepa 日付
+            th.num 人数
+            th.num.sepa アクセス
+            th.num 未ログイン
+            th.num.sepa ログイン
+            th.num 未ログイン
+            th.num.sepa ログイン
+            th.num 新規
+
+        - @rows.each do |day|
+
+          - dow = case
+          - when day == Date.today;         "success"
+          - when day.strftime('%w') == '0'; 'danger'
+          - when day.strftime('%w') == '6'; 'info'
+
+          tr class=dow
+            td.num.sepa
+              - if params[:range] == "all"
+                = I18n.l(day, format: "%Y/%m/%d (%a)")
+              - elsif params[:range] == "monthly"
+                = link_to day, "/system/total/nitamono?date[year]=#{day.gsub(/(\/.*)/, "")}&date[month]=#{day.gsub(/(.*\/)/, "")}&date[day]=1"
+              - else
+                = I18n.l(day, format: "%e (%a)")
+
+            td.num = number_with_delimiter(@m001_ucounts[day])
+            td.num.sepa = number_with_delimiter(@m001_counts[day])
+            td.num = number_with_delimiter(@n_watch_ucounts[day])
+            td.num.sepa = number_with_delimiter(@l_watch_ucounts[day])
+            td.num = number_with_delimiter(@n_watch_counts[day])
+            td.num.sepa = number_with_delimiter(@l_watch_counts[day])
+            td.num = number_with_delimiter(@user_counts[day])
+
+
+        thead
+          tr
+            th.num.sepa
+            th.sepa colspan="2" Mailchimp
+            th.sepa colspan="2" ウォッチ人数
+            th.sepa colspan="2" ウォッチ件数
+            th.sepa ユーザ
+          tr
+            th.num.sepa 日付
+            th.num 人数
+            th.num.sepa アクセス
+            th.num 未ログイン
+            th.num.sepa ログイン
+            th.num 未ログイン
+            th.num.sepa ログイン
+            th.num 新規
+
+        tfoot
+          tr
+            th.num.sepa 合計
+            td.num = number_with_delimiter(@m001_ucounts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@m001_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@n_watch_ucounts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@l_watch_ucounts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@n_watch_counts.sum { |k, v| v.to_i })
+            td.num.sepa = number_with_delimiter(@l_watch_counts.sum { |k, v| v.to_i })
+            td.num = number_with_delimiter(@user_counts.sum { |k, v| v.to_i })

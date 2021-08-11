@@ -44,6 +44,7 @@ class SearchLog < ApplicationRecord
   private
 
   def check_robot
-    host =~ DetailLog::ROBOTS || ip.blank? ? false : true
+    # host =~ DetailLog::ROBOTS || ip.blank? ? false : true
+    throw(:abort) unless DetailLog.check_robot(host, ip)
   end
 end
