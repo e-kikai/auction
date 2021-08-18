@@ -23,12 +23,20 @@ class System::Playground02Controller < ApplicationController
           @products.vector_search_02("vector", @target.get_vector_02("vector"), 16)
         end
 
-        @products_02 = Rails.cache.fetch("vector_search_vol00_#{@target.id}_16", expires_in: 1.minutes) do
-          @products.vector_search_02("vol00", @target.get_vector_02("vol00"), 16)
+        # @products_02 = Rails.cache.fetch("vector_search_vol00_#{@target.id}_16", expires_in: 1.minutes) do
+        #   @products.vector_search_02("vol00", @target.get_vector_02("vol00"), 16)
+        # end
+
+        # @products_03 = Rails.cache.fetch("vector_search_vol01_20210706_#{@target.id}_16", expires_in: 1.minutes) do
+        #   @products.vector_search_02("vol01_20210706", @target.get_vector_02("vol01_20210706"), 16)
+        # end
+
+        @products_02 = Rails.cache.fetch("vector_search_vol01_20210706_#{@target.id}_16", expires_in: 1.minutes) do
+          @products.vector_search_02("vol01_20210706", @target.get_vector_02("vol01_20210706"), 16)
         end
 
-        @products_03 = Rails.cache.fetch("vector_search_vol01_20210706_#{@target.id}_16", expires_in: 1.minutes) do
-          @products.vector_search_02("vol01_20210706", @target.get_vector_02("vol01_20210706"), 16)
+        @products_03 = Rails.cache.fetch("vector_search_vol02_20210817_#{@target.id}_16", expires_in: 1.minutes) do
+          @products.vector_search_02("vol02_20210817", @target.get_vector_02("vol02_20210817"), 16)
         end
       end
     else
@@ -86,5 +94,12 @@ class System::Playground02Controller < ApplicationController
       format.html
       format.csv { export_csv "populars.csv" }
     end
+  end
+
+  def vectors_csv
+    @products = Product.status(Product::STATUS[:start]).includes(:product_images, :category).order(id: :asc)
+
+
+
   end
 end
