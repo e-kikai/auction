@@ -73,6 +73,7 @@ class Product < ApplicationRecord
   require "open3"
 
   include ImageVector # 画像特徴ベクトル関係
+  include LocalFeature # 局所特徴関係
 
   soft_deletable
   default_scope { without_soft_destroyed }

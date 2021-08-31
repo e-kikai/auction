@@ -221,6 +221,8 @@ Rails.application.routes.draw do
           get 'process_vector'
           get "csv"
           get "vectors_csv"
+          get 'all_process_feature'
+          get 'process_feature'
         end
       end
     end

@@ -83,6 +83,24 @@ class System::Playground02Controller < ApplicationController
     redirect_to "/system/playground_02/search_02", notice: "すべての画像特徴ベクトル変換処理を行いました"
   end
 
+  ### 局所特徴変換 ###
+  def process_feature
+    @product = Product.find(params[:id])
+    @product.feature_process(params[:version])
+
+    redirect_to "/system/playground_02/search_02?nitamono=#{params[:id]}", notice: "局所特徴変換処理を行いました"
+  end
+
+  ### 画像局所特徴一括変換 ###
+  def all_process_feature
+    # @products = Product.includes(:product_images).where(template: false).order(id: :desc).each do |pr|
+    Product.includes(:product_images).status(Product::STATUS[:start]).order(id: :desc).each do |pr|
+      pr.feature_process(params[:version])
+    end
+
+    redirect_to "/system/playground_02/search_02", notice: "すべての局所特徴変換処理を行いました"
+  end
+
   def csv
     # @populars = Product.osusume("pops")
     temp = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")
