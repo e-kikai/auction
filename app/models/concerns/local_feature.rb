@@ -22,7 +22,7 @@ module LocalFeature
 
     lib_path    = self.class.feature_lib_path(version)
     image_path  = "#{lib_path}/../image/#{filename}"
-    feature_path = "#{lib_path}/../image_feature/#{filename}.delg_local"
+    feature_path = "#{lib_path}/../local_feature/#{filename}.delg_local"
 
     # logger.debug image_path
     # logger.debug feature_path
