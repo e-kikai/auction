@@ -4,7 +4,7 @@ module LocalFeature
   YOSHIDA_LIB_PATH = "/var/www/yoshida_lib"
   ZERO_NARRAY_02   =  Numo::SFloat.zeros(1)
 
-  ### 画像特徴ベクトルを抽出(バージョン対応) ###
+  ### 局所特徴を抽出(バージョン対応) ###
   def feature_process(version)
     bucket = Product.s3_bucket # S3バケット取得
 
@@ -29,7 +29,7 @@ module LocalFeature
 
     bucket.object(image_key).download_file(image_path) # S3より画像ファイルの取得
 
-    ### 画像特徴ベクトル処理実行 ###
+    ### 局所特徴処理実行 ###
     # cmd = "cd #{lib_path} && python3 process_images.py --output_folder=\"../\" \"#{image_path}\";"
     cmd = "cd #{lib_path} && sh run_extract_delg_features.sh;"
     # logger.debug cmd
@@ -70,7 +70,8 @@ module LocalFeature
   end
 
   class_methods do
-    ### 画像特徴ベクトル検索処理(バージョン対応) ###
+    ### 局所特徴の比較 ###
+    ### 局所特徴検索処理(バージョン対応) ###
     def feature_search(version, target, limit=nil, page=1, mine=false)
 
       logger.debug "# feature_search #"
@@ -130,7 +131,7 @@ module LocalFeature
 
     end
 
-    ### 画像特徴ベクトルライブラリパス ###
+    ### 局所特徴ライブラリパス ###
     def feature_lib_path(version)
       "#{YOSHIDA_LIB_PATH}/local_feature/#{version}"
     end
@@ -142,7 +143,7 @@ module LocalFeature
 
     ### S3ベクトル格納キー生成 ###
     def feature_s3_key(version, product_id)
-      "#{self.feature_s3_path(version)}/#{version}_#{product_id}.npy"
+      "#{self.feature_s3_path(version)}/#{version}_#{product_id}.delg_local"
     end
 
     ### ベクトルキャッシュ名 ###
