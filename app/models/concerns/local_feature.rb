@@ -137,7 +137,7 @@ module LocalFeature
 
     ### S3ベクトル格納パス ###
     def feature_s3_path(version)
-      "#{version.pluralize}"
+      "features/#{version.pluralize}"
     end
 
     ### S3ベクトル格納キー生成 ###
