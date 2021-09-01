@@ -101,6 +101,12 @@ class System::Playground02Controller < ApplicationController
     redirect_to "/system/playground_02/search_02", notice: "すべての局所特徴変換処理を行いました"
   end
 
+  def feature_test
+    res = Product::feature_test(params[:version], params[:query_id], params[:target_id])
+
+    render text: "result :: #{res}"
+  end
+
   def csv
     # @populars = Product.osusume("pops")
     temp = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")

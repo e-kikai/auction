@@ -72,11 +72,11 @@ module LocalFeature
   class_methods do
     ### 局所特徴の比較 ###
 
-    def feature_test(query_id, target_id)
+    def feature_test(version, query_id, target_id)
       bucket      = Product.s3_bucket # S3バケット取得
 
-      query = bucket.object(self.feature_s3_key(version, target_pid)).get.body.read
-      target = bucket.object(self.feature_s3_key(version, target_pid)).get.body.read
+      query  = bucket.object(self.feature_s3_key(version, query_id)).get.body.read
+      target = bucket.object(self.feature_s3_key(version, target_id)).get.body.read
 
       ### 局所特徴の比較 ###
       lib_path = "#{YOSHIDA_LIB_PATH}/views"
