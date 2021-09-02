@@ -87,7 +87,7 @@ module LocalFeature
       ### 局所特徴の比較 ###
       lib_path = "#{YOSHIDA_LIB_PATH}/local_feature/views"
       # cmd = "cd #{lib_path} && python3 test_02.py  \"#{query}\" \"#{target};\""
-      cmd = "cd #{lib_path} && python3 test_02.py  \"#{query_file}\" \"#{target_file};\""
+      cmd = "cd #{lib_path} && python3 test_02.py  \"#{query_file}\" \"#{target_file}\""
       logger.debug cmd
       o, e, s = Open3.capture3(cmd)
 
