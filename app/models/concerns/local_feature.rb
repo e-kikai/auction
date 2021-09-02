@@ -106,13 +106,21 @@ module LocalFeature
 
       logger.debug csv_file
 
-      CSV.open(csv_file, "wb") do |csv|
+
+      CSV.open(csv_file, "a+") do |csv|
+        ### すでに取得しているものを取得 ###
+        data_list = csv.read
+
         pids.each do |query_id|
           query_file  = "/tmp/#{version}_#{query_id}.delg_local"
           bucket.object(self.feature_s3_key(version, query_id)).download_file(query_file) unless File.exist? query_file
 
           pids.each do |target_id|
             next if target_id <= query_id
+            if data_list.find { |v| v[0] == query_id && v[1] == target_id }
+              logger.debug "SKIP :: #{version} : #{query_id}_#{target_id}"
+              next
+            end
 
             target_file = "/tmp/#{version}_#{target_id}.delg_local"
             unless File.exist? target_file
