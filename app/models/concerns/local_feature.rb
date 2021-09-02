@@ -123,8 +123,13 @@ module LocalFeature
             # logger.debug cmd
             o, e, s = Open3.capture3(cmd)
 
-            csv << [query_id, target_id, o]
-            logger.debug "#{version} : #{query_id}_#{target_id} - #{o}"
+            score = o.to_f
+
+            csv << [query_id, target_id, score]
+            csv << [target_id, query_id, score]
+            csv.flush
+
+            logger.debug "#{version} : #{query_id}_#{target_id} - #{score}"
           rescue => e
             logger.debug "ERROR :: #{version} : #{query_id}_#{target_id}"
             logger.debug e.message
