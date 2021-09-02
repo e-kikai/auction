@@ -101,7 +101,7 @@ module LocalFeature
     def feature_csv(version)
       bucket   = Product.s3_bucket # S3バケット取得
       pids     = pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
-      csv_file = "#{Rails.root.to_s}/tmp/local_feature/score.csv"
+      csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
 
       logger.debug csv_file
 
