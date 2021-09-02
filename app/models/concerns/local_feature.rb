@@ -81,11 +81,11 @@ module LocalFeature
       # query  = bucket.object(self.feature_s3_key(version, query_id)).get.body.read
       # target = bucket.object(self.feature_s3_key(version, target_id)).get.body.read
 
-      bucket.object(self.feature_s3_key(version, query_id)).download_file(query_file)
-      bucket.object(self.feature_s3_key(version, target_id)).download_file(target_file)
+      bucket.object(self.feature_s3_key(version, query_id)).download_file(query_file)   unless File.exist? query_file
+      bucket.object(self.feature_s3_key(version, target_id)).download_file(target_file) unless File.exist? target_file
 
       ### 局所特徴の比較 ###
-      lib_path = "#{YOSHIDA_LIB_PATH}/views"
+      lib_path = "#{YOSHIDA_LIB_PATH}/local_feature/views"
       # cmd = "cd #{lib_path} && python3 test_02.py  \"#{query}\" \"#{target};\""
       cmd = "cd #{lib_path} && python3 test_02.py  \"#{query_file}\" \"#{target_file};\""
       logger.debug cmd
