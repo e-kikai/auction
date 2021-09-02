@@ -95,12 +95,12 @@ module LocalFeature
       logger.debug e
       logger.debug s
 
-      o
+      o.to_f
     end
 
     def feature_csv(version)
       bucket   = Product.s3_bucket # S3バケット取得
-      pids     = status(Product::STATUS[:start]).where(' id < 4000').pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
+      pids     = status(Product::STATUS[:start]).pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
       csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
       lib_path = "#{YOSHIDA_LIB_PATH}/local_feature/views"
 
@@ -110,10 +110,6 @@ module LocalFeature
       CSV.open(csv_file, "a+") do |csv|
         ### すでに取得しているものを取得 ###
         data_list = csv.read
-
-        data_list.each do |v|
-          logger.debug v.to_s
-        end
 
         pids.each do |query_id|
           query_file  = "/tmp/#{version}_#{query_id}.delg_local"
