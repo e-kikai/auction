@@ -118,17 +118,19 @@ module LocalFeature
               bucket.object(self.feature_s3_key(version, target_id)).download_file(target_file)
             end
 
-            logger.debug "#{version} : #{query_id}_#{target_id}"
             cmd = "cd #{lib_path} && python3 test_02.py  \"#{query_file}\" \"#{target_file}\""
             # logger.debug cmd
             o, e, s = Open3.capture3(cmd)
 
             csv << [query_id, target_id, o]
+            logger.debug "#{version} : #{query_id}_#{target_id} - #{o}"
           rescue
+            logger.debug "ERROR :: #{version} : #{query_id}_#{target_id}"
             next
           end
 
         rescue
+          logger.debug "ERROR :: #{version} : #{query_id}"
           next
         end
       end
