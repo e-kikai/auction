@@ -111,6 +111,10 @@ module LocalFeature
         ### すでに取得しているものを取得 ###
         data_list = csv.read
 
+        data_list.each do |v|
+          logger.debug v.to_s
+        end
+
         pids.each do |query_id|
           query_file  = "/tmp/#{version}_#{query_id}.delg_local"
           bucket.object(self.feature_s3_key(version, query_id)).download_file(query_file) unless File.exist? query_file
