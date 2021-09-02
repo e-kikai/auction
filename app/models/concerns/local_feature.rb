@@ -124,13 +124,15 @@ module LocalFeature
 
             csv << [query_id, target_id, o]
             logger.debug "#{version} : #{query_id}_#{target_id} - #{o}"
-          rescue
+          rescue => e
             logger.debug "ERROR :: #{version} : #{query_id}_#{target_id}"
+            logger.debug e.message
             next
           end
 
-        rescue
+        rescue => e
           logger.debug "ERROR :: #{version} : #{query_id}"
+          logger.debug e.message
           next
         end
       end
