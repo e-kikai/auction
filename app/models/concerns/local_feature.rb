@@ -102,6 +102,7 @@ module LocalFeature
       bucket   = Product.s3_bucket # S3バケット取得
       pids     = status(Product::STATUS[:start]).where(' id < 4000').pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
       csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
+      lib_path = "#{YOSHIDA_LIB_PATH}/local_feature/views"
 
       logger.debug csv_file
 
