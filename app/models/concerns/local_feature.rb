@@ -105,7 +105,7 @@ module LocalFeature
 
       logger.debug csv_file
 
-      CSV.open(csv_file) do |csv|
+      CSV.open(csv_file, "wb") do |csv|
         pids.each do |query_id|
           query_file  = "/tmp/#{version}_#{query_id}.delg_local"
           bucket.object(self.feature_s3_key(version, query_id)).download_file(query_file) unless File.exist? query_file
