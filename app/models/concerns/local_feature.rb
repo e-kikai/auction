@@ -98,6 +98,42 @@ module LocalFeature
       o
     end
 
+    def feature_csv(version)
+      bucket   = Product.s3_bucket # S3バケット取得
+      pids     = pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
+      csv_file = "#{Rails.root.to_s}/tmp/local_feature/score.csv"
+
+      logger.debug csv_file
+
+      CSV.open(csv_file) do |csv|
+        pids.each do |query_id|
+          query_file  = "/tmp/#{version}_#{query_id}.delg_local"
+          bucket.object(self.feature_s3_key(version, query_id)).download_file(query_file) unless File.exist? query_file
+
+          pids.each do |target_id|
+            next if target_id <= query_id
+
+            target_file = "/tmp/#{version}_#{target_id}.delg_local"
+            unless File.exist? target_file
+              bucket.object(self.feature_s3_key(version, target_id)).download_file(target_file)
+            end
+
+            logger.debug "#{version} : #{query_id}_#{target_id}"
+            cmd = "cd #{lib_path} && python3 test_02.py  \"#{query_file}\" \"#{target_file}\""
+            # logger.debug cmd
+            o, e, s = Open3.capture3(cmd)
+
+            csv << [query_id, target_id, o]
+          rescue
+            next
+          end
+
+        rescue
+          next
+        end
+      end
+    end
+
     # def feature_csv
     #   features    = Rails.cache.read(self.feature_cache(version)) || {} # キャッシュからベクトル群を取得
     #   bucket      = Product.s3_bucket # S3バケット取得

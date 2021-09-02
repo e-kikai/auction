@@ -104,7 +104,13 @@ class System::Playground02Controller < ApplicationController
   def feature_test
     res = Product::feature_test(params[:version], params[:query_id], params[:target_id])
 
-    render text: "result :: #{res}"
+    render plain: "result :: #{res}"
+  end
+
+  def feature_csv
+    res = Product::feature_csv(params[:version])
+
+    render plain: "result :: success"
   end
 
   def csv
