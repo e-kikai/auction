@@ -75,12 +75,19 @@ module LocalFeature
     def feature_test(version, query_id, target_id)
       bucket      = Product.s3_bucket # S3バケット取得
 
-      query  = bucket.object(self.feature_s3_key(version, query_id)).get.body.read
-      target = bucket.object(self.feature_s3_key(version, target_id)).get.body.read
+      query_file  = "/tmp/#{version}_#{query_id}.delg_local"
+      target_file = "/tmp/#{version}_#{target_id}.delg_local"
+
+      # query  = bucket.object(self.feature_s3_key(version, query_id)).get.body.read
+      # target = bucket.object(self.feature_s3_key(version, target_id)).get.body.read
+
+      bucket.object(self.feature_s3_key(version, query_id)).download_file(query_file)
+      bucket.object(self.feature_s3_key(version, target_id)).download_file(target_file)
 
       ### 局所特徴の比較 ###
       lib_path = "#{YOSHIDA_LIB_PATH}/views"
-      cmd = "cd #{lib_path} && python3 test_02.py  \"#{query}\" \"#{target};\""
+      # cmd = "cd #{lib_path} && python3 test_02.py  \"#{query}\" \"#{target};\""
+      cmd = "cd #{lib_path} && python3 test_02.py  \"#{query_file}\" \"#{target_file};\""
       logger.debug cmd
       o, e, s = Open3.capture3(cmd)
 
