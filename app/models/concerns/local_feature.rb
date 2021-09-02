@@ -121,7 +121,7 @@ module LocalFeature
 
           pids.each do |target_id|
             next if target_id <= query_id
-            if data_list.find { |v| v[0] == query_id && v[1] == target_id }
+            if data_list.find { |v| v[0] == query_id.to_s && v[1] == target_id.to_s  }
               logger.debug "SKIP :: #{version} : #{query_id}_#{target_id}"
               next
             end
