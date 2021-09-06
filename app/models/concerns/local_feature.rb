@@ -98,6 +98,16 @@ module LocalFeature
       o.to_f
     end
 
+    def feature_csv_test(version)
+      pids = status(Product::STATUS[:start]).pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
+
+      cmd = "cd #{lib_path} && python3 test_03.py  \"#{version}\" #{pids.join(' ')}"
+      # logger.debug cmd
+      o, e, s = Open3.capture3(cmd)
+
+      score = o.to_f
+    end
+
     def feature_csv(version)
       bucket   = Product.s3_bucket # S3バケット取得
       pids     = status(Product::STATUS[:start]).pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
@@ -151,57 +161,6 @@ module LocalFeature
         end
       end
     end
-
-    # def feature_csv
-    #   features    = Rails.cache.read(self.feature_cache(version)) || {} # キャッシュからベクトル群を取得
-    #   bucket      = Product.s3_bucket # S3バケット取得
-    #   update_flag = false
-
-    #   ### 各ベクトル比較 ###
-    #   pids = pluck(:id).uniq # 検索対象(出品中)の商品ID取得
-    #   pids.each do |target_pid|
-    #     ### ターゲット局所特徴の取得 ###
-    #     target_feature = if features[target_pid].present? # 既存
-    #       features[target_pid]
-    #     else # 新規(ファイルからベクトル取得して追加)
-    #       update_flag = true
-    #       features[target_pid] = if bucket.object(self.feature_s3_key(version, target_pid)).exists?
-    #         str = bucket.object(self.feature_s3_key(version, target_pid)).get.body.read
-    #       else
-    #         # logger.debug "ZERO"
-    #         ''
-    #       end
-
-    #       features[pid]
-    #     end
-
-    #     pids.each do |pid|
-    #       ### 比較する局所特徴の取得 ###
-    #       index_feature = if features[pid].present? # 既存
-    #         features[pid]
-    #       else # 新規(ファイルからベクトル取得して追加)
-    #         update_flag = true
-    #         features[pid] = if bucket.object(self.feature_s3_key(version, pid)).exists?
-    #           str = bucket.object(self.feature_s3_key(version, pid)).get.body.read
-    #         else
-    #           # logger.debug "ZERO"
-    #           ''
-    #         end
-
-    #         features[pid]
-    #       end
-
-    #       ### 局所特徴の比較 ###
-    #       target_feature index_feature
-    #       cmd = "cd #{lib_path} && python3 test_00.py  #{target_feature} #{index_feature};"
-    #       # logger.debug cmd
-    #       o, e, s = Open3.capture3(cmd)
-
-    #     end
-    #   end
-
-
-    # end
 
     ### 局所特徴検索処理(バージョン対応) ###
     def feature_search(version, target, limit=nil, page=1, mine=false)

@@ -113,6 +113,12 @@ class System::Playground02Controller < ApplicationController
     render plain: "result :: success"
   end
 
+  def feature_csv_test
+    res = Product::feature_csv_test(params[:version])
+
+    render plain: "result :: success"
+  end
+
   def csv
     # @populars = Product.osusume("pops")
     temp = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")

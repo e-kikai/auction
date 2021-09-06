@@ -225,6 +225,7 @@ Rails.application.routes.draw do
           get 'process_feature'
           get 'feature_test'
           get 'feature_csv'
+          get 'feature_csv_test'
         end
       end
     end
