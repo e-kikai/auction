@@ -99,10 +99,11 @@ module LocalFeature
     end
 
     def feature_csv_test(version)
-      pids = status(Product::STATUS[:start]).pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
+      pids     = status(Product::STATUS[:start]).pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
+      lib_path = "#{YOSHIDA_LIB_PATH}/local_feature/views"
 
       cmd = "cd #{lib_path} && python3 test_03.py  \"#{version}\" #{pids.join(' ')}"
-      # logger.debug cmd
+      logger.debug cmd
       o, e, s = Open3.capture3(cmd)
 
       score = o.to_f
