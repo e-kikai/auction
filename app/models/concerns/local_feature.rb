@@ -148,7 +148,7 @@ module LocalFeature
 
       products.each do |pr|
         ### 局所特徴の抽出(新規) ###
-        pr.feature_process
+        pr.feature_process(version)
 
         ### ファイルをキャッシュ ###
         query_file  = "/tmp/#{version}_#{pr.id}.delg_local"
