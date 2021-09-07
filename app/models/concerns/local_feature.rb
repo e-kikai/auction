@@ -154,6 +154,8 @@ module LocalFeature
         query_file  = "/tmp/#{version}_#{pr.id}.delg_local"
         logger.debug query_file
         bucket.object(self.feature_s3_key(version, pr.id)).download_file(query_file) unless File.exist? query_file
+      rescue => e
+        logger.debug e.message
       end
 
       res = {
