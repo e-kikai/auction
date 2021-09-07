@@ -226,6 +226,7 @@ Rails.application.routes.draw do
           get 'feature_test'
           get 'feature_csv'
           get 'feature_csv_test'
+          get 'feature_csv_json'
         end
       end
     end

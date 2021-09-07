@@ -45,33 +45,8 @@ module LocalFeature
   #   return
   end
 
-  ### この商品のベクトルを取得(バージョン対応) ###
-  def get_feature(version)
-    return nil unless top_image? # 画像の有無チェック
-
-    features = Rails.cache.read(self.class.feature_cache(version)) || {} # キャッシュからベクトル群を取得
-    bucket  = Product.s3_bucket # S3バケット取得
-    logger.debug self.class.feature_s3_key(version, id)
-
-    ### ターゲットベクトル取得 ###
-    if features[id].present? # キャッシュからベクトル取得
-      logger.debug "get by cache :: #{id}"
-      features[id]
-    elsif bucket.object(self.class.feature_s3_key(version, id)).exists? # アップロードファイルからベクトル取得
-      logger.debug "get by bucket :: #{id}"
-
-      str = bucket.object(self.class.feature_s3_key(version, id)).get.body.read
-      Npy.load_string(str)
-    else # ない場合
-      logger.debug "!!!!!! nil !!!!!! :: #{id}"
-
-      nil
-    end
-  end
-
   class_methods do
     ### 局所特徴の比較 ###
-
     def feature_test(version, query_id, target_id)
       bucket      = Product.s3_bucket # S3バケット取得
 
@@ -99,10 +74,12 @@ module LocalFeature
     end
 
     def feature_csv_test(version)
+      bucket   = Product.s3_bucket # S3バケット取得
       pids     = status(Product::STATUS[:start]).pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
+      csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
       lib_path = "#{YOSHIDA_LIB_PATH}/local_feature/views"
 
-      cmd = "cd #{lib_path} && python3 test_03.py  \"#{version}\" #{pids.join(' ')}"
+      cmd = "cd #{lib_path} && python3 test_03.py  \"#{version}\" \"#{csv_file}\" #{pids.join(' ')}"
       logger.debug cmd
       o, e, s = Open3.capture3(cmd)
 
@@ -163,6 +140,27 @@ module LocalFeature
       end
     end
 
+    def feature_csv_json(version)
+      bucket   = Product.s3_bucket # S3バケット取得
+      products = status(Product::STATUS[:start])
+      csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
+      lib_path = "#{YOSHIDA_LIB_PATH}/local_feature/views"
+
+      products.each do |pr|
+        ### 局所特徴の抽出(新規) ###
+        pr.feature_process
+
+        ### ファイルをキャッシュ ###
+        query_file  = "/tmp/#{version}_#{pr.id}.delg_local"
+        bucket.object(self.feature_s3_key(version, pr.id)).download_file(query_file) unless File.exist? query_file
+      end
+
+      res = {
+        pids: products.pluck(:id).uniq.sort,
+        csv_file: csv_file,
+      }.to_json
+    end
+
     ### 局所特徴検索処理(バージョン対応) ###
     def feature_search(version, target, limit=nil, page=1, mine=false)
 
@@ -220,7 +218,6 @@ module LocalFeature
 
       ### 結果を返す ###
       where(id: sorts.keys).sort_by { |pr| sorts[pr.id] }
-
     end
 
     ### 局所特徴ライブラリパス ###

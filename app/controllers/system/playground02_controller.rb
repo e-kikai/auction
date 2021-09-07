@@ -119,6 +119,12 @@ class System::Playground02Controller < ApplicationController
     render plain: "result :: success"
   end
 
+  def feature_csv_json
+    respond_to do |format|
+      format.json { render plain: Product::feature_csv_json }
+    end
+  end
+
   def csv
     # @populars = Product.osusume("pops")
     temp = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")
