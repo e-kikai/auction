@@ -121,7 +121,7 @@ class System::Playground02Controller < ApplicationController
 
   def feature_csv_json
     respond_to do |format|
-      format.json { render plain: Product::feature_csv_json }
+      format.json { render plain: Product::feature_csv_json(params[:version]) }
     end
   end
 
