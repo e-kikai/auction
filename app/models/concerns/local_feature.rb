@@ -142,7 +142,7 @@ module LocalFeature
 
     def feature_csv_json(version)
       bucket   = Product.s3_bucket # S3バケット取得
-      products = status(Product::STATUS[:start])
+      products = includes(:product_images).status(Product::STATUS[:start])
       csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
       lib_path = "#{YOSHIDA_LIB_PATH}/local_feature/views"
 
@@ -152,6 +152,7 @@ module LocalFeature
 
         ### ファイルをキャッシュ ###
         query_file  = "/tmp/#{version}_#{pr.id}.delg_local"
+        logger.debug query_file
         bucket.object(self.feature_s3_key(version, pr.id)).download_file(query_file) unless File.exist? query_file
       end
 
