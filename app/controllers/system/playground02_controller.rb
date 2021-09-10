@@ -125,6 +125,27 @@ class System::Playground02Controller < ApplicationController
     end
   end
 
+  def plot_json
+    products = Product.includes(:product_images).status(Product::STATUS[:start])
+
+    res = products.map do |pr|
+      next unless pr.top_image?
+
+      {
+        id:    pr.id,
+        name:  pr.name,
+        thumb: pr&.product_images&.first&.image&.thumb&.url
+      }
+    rescue => e
+      logger.debug e.message
+      nil
+    end.compact
+
+    respond_to do |format|
+      format.json { render plain: res.to_json }
+    end
+  end
+
   def csv
     # @populars = Product.osusume("pops")
     temp = Product.unscoped.joins(:watches).group(:name).select("name, count(watches.id) as count")
