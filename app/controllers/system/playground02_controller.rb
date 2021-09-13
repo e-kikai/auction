@@ -125,6 +125,17 @@ class System::Playground02Controller < ApplicationController
     end
   end
 
+  def vector_search_json
+    products = Product.status(Product::STATUS[:start]).order(id: :desc)
+    pr       = Product.find(params[:id])
+
+    res = products.vector_search_02(params[:version], pr.get_vector_02(params[:version]), params[:num]).pluck(:id)
+
+    respond_to do |format|
+      format.json { render plain: res.to_json }
+    end
+  end
+
   def plot_json
     products = Product.includes(:product_images).status(Product::STATUS[:start])
 
