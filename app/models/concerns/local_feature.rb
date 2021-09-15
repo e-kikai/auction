@@ -186,10 +186,11 @@ module LocalFeature
 
     ### IDとスコアのペアから商品取得 ###
     def search_by_pairs(pairs, limit=nil, page=1, mine=false)
-      pairs = feature_search_pairs(version, query_id, limit).sort_by{ |pa| pa[1].to_f }.reverse
+      pairs = pairs.sort_by{ |pa| pa[1].to_i }.reverse
 
       ### データ取得とソートおよびlimit ###
       product_ids = pairs.map { |pa| pa[0] }
+      logger.debug product_ids
       Product.includes(:product_images).where(id: product_ids).sort_by{ |pr| product_ids.index(pr.id) }.take(limit)
     rescue
       Product.none
