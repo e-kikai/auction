@@ -41,7 +41,7 @@ class System::Playground02Controller < ApplicationController
 
         ### 局所特徴 ###
         @features_pairs_01   = @products.feature_search_pairs("f00", @target.id)
-        @features_product_01 = @products.search_by_pairs("f00", @features_pairs_01, 16)
+        @features_product_01 = @products.search_by_pairs(@features_pairs_01, 16)
       end
     else
       ### 通常サーチ ###
