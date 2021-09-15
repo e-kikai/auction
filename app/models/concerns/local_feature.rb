@@ -180,7 +180,7 @@ module LocalFeature
         ids << [row[1].to_i, row[2].to_i ] if row[0].to_i == query_id.to_i
       end.sort_by{ |pa| pa[1] }.reverse
 
-      pairs.take(limit) if limit.present?
+      limit.present? ? pairs.take(limit) : pairs
     rescue => e
       logger.debug e.message
       []
