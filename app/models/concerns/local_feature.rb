@@ -145,7 +145,8 @@ module LocalFeature
     def feature_csv_json(version)
       bucket   = Product.s3_bucket # S3バケット取得
       products = includes(:product_images).status(Product::STATUS[:start])
-      csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
+      # csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
+      csv_file = feature_csv_file(version)
       lib_path = "#{YOSHIDA_LIB_PATH}/local_feature/views"
 
       products.each do |pr|
@@ -168,8 +169,8 @@ module LocalFeature
 
     ### 局所特徴検索処理(バージョン対応) ###
     def feature_search_pairs(version, query_id, limit=nil)
-      # csv_file = feature_csv_file(version)
-      csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
+      csv_file = feature_csv_file(version)
+      # csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
 
       ### CSVから局所特徴検索結果を取得 ###
       pairs = CSV.foreach(csv_file, headers: false).with_object([]) do |row, ids|
