@@ -4,6 +4,8 @@ module LocalFeature
   YOSHIDA_LIB_PATH = "/var/www/yoshida_lib"
   ZERO_NARRAY_02   =  Numo::SFloat.zeros(1)
 
+  FEATURES_CSV_PATH = "#{Rails.root.to_s}/tmp/vbpr"
+
   ### 局所特徴を抽出(バージョン対応) ###
   def feature_process(version)
     bucket = Product.s3_bucket # S3バケット取得
@@ -76,7 +78,7 @@ module LocalFeature
     def feature_csv_test(version)
       bucket   = Product.s3_bucket # S3バケット取得
       pids     = status(Product::STATUS[:start]).pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
-      csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
+      csv_file = "#{FEATURES_CSV_PATH}/feature_score.csv"
       lib_path = "#{YOSHIDA_LIB_PATH}/local_feature/views"
 
       cmd = "cd #{lib_path} && python3 test_03.py  \"#{version}\" \"#{csv_file}\" #{pids.join(' ')}"
@@ -86,59 +88,59 @@ module LocalFeature
       score = o.to_f
     end
 
-    def feature_csv(version)
-      bucket   = Product.s3_bucket # S3バケット取得
-      pids     = status(Product::STATUS[:start]).pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
-      csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
-      lib_path = "#{YOSHIDA_LIB_PATH}/local_feature/views"
+    # def feature_csv(version)
+    #   bucket   = Product.s3_bucket # S3バケット取得
+    #   pids     = status(Product::STATUS[:start]).pluck(:id).uniq.sort # 検索対象(出品中)の商品ID取得
+    #   csv_file = "#{FEATURES_CSV_PATH}/feature_score.csv"
+    #   lib_path = "#{YOSHIDA_LIB_PATH}/local_feature/views"
 
-      logger.debug csv_file
+    #   logger.debug csv_file
 
 
-      CSV.open(csv_file, "a+") do |csv|
-        ### すでに取得しているものを取得 ###
-        data_list = csv.read
+    #   CSV.open(csv_file, "a+") do |csv|
+    #     ### すでに取得しているものを取得 ###
+    #     data_list = csv.read
 
-        pids.each do |query_id|
-          query_file  = "/tmp/#{version}_#{query_id}.delg_local"
-          bucket.object(self.feature_s3_key(version, query_id)).download_file(query_file) unless File.exist? query_file
+    #     pids.each do |query_id|
+    #       query_file  = "/tmp/#{version}_#{query_id}.delg_local"
+    #       bucket.object(self.feature_s3_key(version, query_id)).download_file(query_file) unless File.exist? query_file
 
-          pids.each do |target_id|
-            next if target_id <= query_id
-            if data_list.find { |v| v[0] == query_id.to_s && v[1] == target_id.to_s  }
-              logger.debug "SKIP :: #{version} : #{query_id}_#{target_id}"
-              next
-            end
+    #       pids.each do |target_id|
+    #         next if target_id <= query_id
+    #         if data_list.find { |v| v[0] == query_id.to_s && v[1] == target_id.to_s  }
+    #           logger.debug "SKIP :: #{version} : #{query_id}_#{target_id}"
+    #           next
+    #         end
 
-            target_file = "/tmp/#{version}_#{target_id}.delg_local"
-            unless File.exist? target_file
-              bucket.object(self.feature_s3_key(version, target_id)).download_file(target_file)
-            end
+    #         target_file = "/tmp/#{version}_#{target_id}.delg_local"
+    #         unless File.exist? target_file
+    #           bucket.object(self.feature_s3_key(version, target_id)).download_file(target_file)
+    #         end
 
-            cmd = "cd #{lib_path} && python3 test_02.py  \"#{query_file}\" \"#{target_file}\""
-            # logger.debug cmd
-            o, e, s = Open3.capture3(cmd)
+    #         cmd = "cd #{lib_path} && python3 test_02.py  \"#{query_file}\" \"#{target_file}\""
+    #         # logger.debug cmd
+    #         o, e, s = Open3.capture3(cmd)
 
-            score = o.to_f
+    #         score = o.to_f
 
-            csv << [query_id, target_id, score]
-            csv << [target_id, query_id, score]
-            csv.flush
+    #         csv << [query_id, target_id, score]
+    #         csv << [target_id, query_id, score]
+    #         csv.flush
 
-            logger.debug "#{version} : #{query_id}_#{target_id} - #{score}"
-          rescue => e
-            logger.debug "ERROR :: #{version} : #{query_id}_#{target_id}"
-            logger.debug e.message
-            next
-          end
+    #         logger.debug "#{version} : #{query_id}_#{target_id} - #{score}"
+    #       rescue => e
+    #         logger.debug "ERROR :: #{version} : #{query_id}_#{target_id}"
+    #         logger.debug e.message
+    #         next
+    #       end
 
-        rescue => e
-          logger.debug "ERROR :: #{version} : #{query_id}"
-          logger.debug e.message
-          next
-        end
-      end
-    end
+    #     rescue => e
+    #       logger.debug "ERROR :: #{version} : #{query_id}"
+    #       logger.debug e.message
+    #       next
+    #     end
+    #   end
+    # end
 
     def feature_csv_json(version)
       bucket   = Product.s3_bucket # S3バケット取得
@@ -165,63 +167,31 @@ module LocalFeature
     end
 
     ### 局所特徴検索処理(バージョン対応) ###
-    def feature_search(version, target, limit=nil, page=1, mine=false)
+    def feature_search_pairs(version, query_id, limit=nil)
+      # csv_file = feature_csv_file(version)
+      csv_file = "#{Rails.root.to_s}/tmp/vbpr/feature_score.csv"
 
-      logger.debug "# feature_search #"
+      ### CSVから局所特徴検索結果を取得 ###
+      pairs = CSV.foreach(csv_file, headers: false).with_object([]) do |row, ids|
+        ids << row.slick(1, 2) if row[0].to_i == query_id.to_i
+      end.sort_by{ |pa| pa[1].to_f }.reverse
 
-      return Product.none if target.nil?
-
-      features    = Rails.cache.read(self.feature_cache(version)) || {} # キャッシュからベクトル群を取得
-      bucket      = Product.s3_bucket # S3バケット取得
-      update_flag = false
-
-      ### 各ベクトル比較 ###
-      pids = pluck(:id).uniq # 検索対象(出品中)の商品ID取得
-
-      sorts = pids.map do |pid|
-        # logger.debug pid
-
-        ### ベクトルの取得 ###
-        pr_narray = if features[pid].present? && features[pid] != ZERO_NARRAY_02 # 既存
-          features[pid]
-        else # 新規(ファイルからベクトル取得して追加)
-          update_flag = true
-          features[pid] = if bucket.object(self.feature_s3_key(version, pid)).exists?
-
-            str = bucket.object(self.feature_s3_key(version, pid)).get.body.read
-            Npy.load_string(str) rescue ZERO_NARRAY_02
-          else
-            # logger.debug "ZERO"
-            ZERO_NARRAY_02
-          end
-
-          features[pid]
-        end
-
-        ### ベクトル比較 ###
-        if pr_narray == ZERO_NARRAY_02 || pr_narray.nil? # ベクトルなし
-          nil
-        else
-          sub = pr_narray - target
-          res = (sub * sub).sum
-
-          (res > 0 || mine == true) ? [pid, res]  : nil
-        end
-      end.compact.sort_by { |v| v[1] }
-
-      ### 件数フィルタリング ###
-      limit = limit.to_i
-      page  = page.to_i < 1 ? 1 : page.to_i
-
-      sorts = sorts.slice(limit * (page - 1), limit) if limit > 0
-      sorts = sorts.to_h
-
-      # ベクトルキャシュ更新
-      Rails.cache.write(self.feature_cache(version), features) if update_flag == true
-
-      ### 結果を返す ###
-      where(id: sorts.keys).sort_by { |pr| sorts[pr.id] }
+      pairs.take(limit) if limit.present?
+    rescue
+      []
     end
+
+    ### IDとスコアのペアから商品取得 ###
+    def search_by_pairs(pairs, limit=nil, page=1, mine=false)
+      pairs = feature_search_pairs(version, query_id, limit).sort_by{ |pa| pa[1].to_f }.reverse
+
+      ### データ取得とソートおよびlimit ###
+      product_ids = pairs.map { |pa| pa[0] }
+      Product.includes(:product_images).where(id: product_ids).sort_by{ |pr| product_ids.index(pr.id) }.take(limit)
+    rescue
+      Product.none
+    end
+
 
     ### 局所特徴ライブラリパス ###
     def feature_lib_path(version)
@@ -241,6 +211,11 @@ module LocalFeature
     ### ベクトルキャッシュ名 ###
     def feature_cache(version)
       "f_#{version}"
+    end
+
+    ### CSVファイルパス ###
+    def feature_csv_file(version)
+      "#{FEATURES_CSV_PATH}/feature_#{version}_score.csv"
     end
 
     ### S3リソース設定 ###

@@ -229,6 +229,7 @@ Rails.application.routes.draw do
           get 'feature_csv_json'
           get 'plot_json'
           get 'vector_search_json'
+          get 'feature_pair_test'
         end
       end
     end

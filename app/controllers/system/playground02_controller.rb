@@ -38,6 +38,10 @@ class System::Playground02Controller < ApplicationController
         @products_03 = Rails.cache.fetch("vector_search_vol02_20210829_#{@target.id}_16", expires_in: 1.minutes) do
           @products.vector_search_02("vol02_20210829", @target.get_vector_02("vol02_20210829"), 16)
         end
+
+        ### 局所特徴 ###
+        @features_pairs_01   = @products.feature_search_pairs("f00", @target.id)
+        @features_product_01 = @products.search_by_pairs("f00", @features_pairs_01, 16)
       end
     else
       ### 通常サーチ ###
@@ -130,6 +134,17 @@ class System::Playground02Controller < ApplicationController
     pr       = Product.find(params[:id])
 
     res = products.vector_search_02(params[:version], pr.get_vector_02(params[:version]), params[:num]).pluck(:id)
+
+    respond_to do |format|
+      format.json { render plain: res.to_json }
+    end
+  end
+
+  def feature_pair_test
+    products = Product.status(Product::STATUS[:start]).order(id: :desc)
+    pr       = Product.find(params[:id])
+
+    res = products.feature_search_pairs(params[:version], pr.id)
 
     respond_to do |format|
       format.json { render plain: res.to_json }
