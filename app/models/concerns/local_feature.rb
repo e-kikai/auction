@@ -175,8 +175,6 @@ module LocalFeature
       ### CSVから局所特徴検索結果を取得 ###
 
       pairs = CSV.foreach(csv_file, headers: false).with_object([]) do |row, ids|
-        logger.debug "#{row[0].to_i} = #{query_id.to_i}"
-
         ids << [row[1].to_i, row[2].to_i ] if row[0].to_i == query_id.to_i
       end.sort_by{ |pa| pa[1] }.reverse
 
