@@ -177,7 +177,8 @@ module LocalFeature
       end.sort_by{ |pa| pa[1].to_f }.reverse
 
       pairs.take(limit) if limit.present?
-    rescue
+    rescue => e
+      logger.debug e.message
       []
     end
 
