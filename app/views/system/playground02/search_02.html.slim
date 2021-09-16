@@ -76,8 +76,9 @@ css:
         h5 画像ベクトル > 局所特徴(f00)
         .products_area
           - @features_product_01.each do |pr|
-            = render "product_panel_05_img", product: pr, r: :src_pnl
-            . = (@features_pairs_01.find { |pa| pa[0] == pr.id })&.at(1)
+            . style="display:inline-block;"
+              = render "product_panel_05_img", product: pr, r: :src_pnl
+              .score = (@features_pairs_01.find { |pa| pa[0] == pr.id })&.at(1)
           / = render partial: "product_panel_05_img", collection: @features_product_01, as: "product", locals: { r: :src_pnl }
 
     / - else
