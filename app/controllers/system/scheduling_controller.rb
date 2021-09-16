@@ -1,6 +1,6 @@
 class System::SchedulingController < ApplicationController
   # before_action :check_ip
-  
+
   protect_from_forgery only: [:index]
 
   def index
@@ -90,6 +90,12 @@ class System::SchedulingController < ApplicationController
     us = User.find(19)
     BidMailer.news_week(us, date, product, count).deliver
     BidMailer.flyer(us).deliver
+
+    render plain: 'OK', status: 200
+  end
+
+  def session_sweep
+    Session.sweep
 
     render plain: 'OK', status: 200
   end

@@ -81,3 +81,7 @@ end
     command "/usr/bin/python3 #{Rails.root}/lib/python/vbpr/vbpr_csv.py --url #{url}"
   end
 # end
+
+every :day, at: '4:30 am' do
+  command "curl -s -X POST #{scheduling_url + '/session_sweep'}"
+end
