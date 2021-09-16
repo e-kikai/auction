@@ -25,18 +25,23 @@
   - set_meta_tags og:      { image: img.image.view.url }
 
 /// 新機能告知
-= hidden_field_tag(:news_modal_01, session[:news_modal_01])
+= hidden_field_tag(:news_modal_01, session[:nm_02])
 
-- if session[:news_modal_01].blank?
-  - session[:news_modal_01] = 1
+- if session[:nm_02].blank?
+  - session[:nm_02] = Time.now
 
-  javascript:
+/ - abtest = Abtest::start(:watch_modal_01, [:show , :hide])
+/ = hidden_field_tag(:news_modal_01, session[:news_modal_01])
 
-    $(document).on('turbolinks:load', function() {
-      if (!$("#news_modal_01").val()) {
-        $('#news-modal_01').modal("show");
-      }
-    });
+/ - if session[:news_modal_01].blank?
+/   - session[:news_modal_01] = 1
+
+javascript:
+  $(document).on('turbolinks:load', function() {
+    if (!$("#news_modal_01").val()) {
+      $('#news-modal_01').modal("show");
+    }
+  });
 
 /// パンくず ///
 - if @company.present?
@@ -47,7 +52,6 @@
   - breadcrumb :something, @title
 - else
   - breadcrumb :search
-
 
 - if @company.present?
   - if @company.header_image.url.present?
@@ -182,9 +186,12 @@
 
     = button_tag id: "news-btn_01", class: "btn btn-md pull-right btn-info", data: { toggle: :modal, target: "#news-modal_01"} do
       span.glyphicon.glyphicon-exclamation-sign
+      / span.btn-content = "新機能のお知らせ : "
+      / span.glyphicon.glyphicon-camera
+      / span.btn-content 似たものソート
       span.btn-content = "新機能のお知らせ : "
-      span.glyphicon.glyphicon-camera
-      span.btn-content 似たものソート
+      span.glyphicon.glyphicon-star.watch-star
+      span.btn-content ウォッチリスト
 
     br style="clear:both;"
 
@@ -399,3 +406,4 @@
     .close_modal data-dismiss="modal" ✕閉じる
     .modal-content
       = image_tag("news_modal_01.jpeg", alt: "新機能 : 似たものソート")
+      / = image_tag("news_modal_02.png", alt: "ウォッチリスト")

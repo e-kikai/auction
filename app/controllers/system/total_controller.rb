@@ -195,6 +195,7 @@ class System::TotalController < System::ApplicationController
   def uwatch
     m001_toppage_logs = ToppageLog.where(@where_cr).where("r LIKE '%m-001%'").group(@group)
     watchs            = Watch.where(@where_cr).group(@group)
+    abtests           = Abteset.where(label: :watch_modal_01).where(@where_cr).group(@group)
 
     @m001_counts     = m001_toppage_logs.count
     @m001_ucounts    = m001_toppage_logs.distinct.count(:utag)
@@ -206,6 +207,11 @@ class System::TotalController < System::ApplicationController
     @watch_counts    = watchs.distinct.count
     @watch_ucounts   = watchs.distinct.count(:utag)
     @user_counts     = User.where(@where_cr).group(@group).count
+
+    @abtest_start_0  = abtests.where(segment: 0, status: :start).count
+    @abtest_finish_1 = abtests.where(segment: 1, status: :start).count
+    @abtest_start_0  = abtests.where(segment: 0, status: :finish).count
+    @abtest_finish_1 = abtests.where(segment: 1, status: :finish).count
 
     respond_to do |format|
       format.html

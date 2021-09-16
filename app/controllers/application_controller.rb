@@ -23,6 +23,8 @@ class ApplicationController < ActionController::Base
 
   ### 未ログインユーザ追跡タグ生成 ###
   def make_utag
+    # request.session_options[:skip] = true unless DetailLog.check_robot(host, ip)
+
     session[:utag] = SecureRandom.alphanumeric(10) if session[:utag].blank?
   end
 
