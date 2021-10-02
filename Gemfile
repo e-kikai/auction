@@ -128,7 +128,8 @@ gem 'activerecord-session_store' # セッションDB保存
 # 画像ファイル保存・変換
 gem 'carrierwave'
 gem 'rmagick'
-gem 'fog'
+# gem 'fog'
+gem "fog-aws"
 
 # Google Analytics
 # gem 'google-analytics-rails'
