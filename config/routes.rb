@@ -241,5 +241,7 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :abtests, only: [:index]
+
   end
 end

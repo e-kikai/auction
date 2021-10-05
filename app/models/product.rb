@@ -29,7 +29,7 @@
 #  maker                 :string           default(""), not null
 #  max_price             :integer          default(0)
 #  model                 :string           default(""), not null
-#  name                  :string           default(""), not null
+#  name                  :string(255)      default(""), not null
 #  note                  :text
 #  packing               :text             default(""), not null
 #  prompt_dicision_price :integer
@@ -116,8 +116,9 @@ class Product < ApplicationRecord
   VECTORS_LIMIT   = 30
 
   SORT_SELECTOR = {
-    "出品 : 新着"   => "dulation_start asc",
-    "出品 : 古い"   => "dulation_start desc",
+    "出品 : 新着"   => "dulation_start desc",
+    "出品 : 古い"   => "dulation_start asc",
+    "商品名"        => "name asc",
     "価格 : 安い"   => "max_price asc",
     "価格 : 高い"   => "max_price desc",
     "即売 : 安い"   => "prompt_dicision_price asc",
@@ -128,7 +129,6 @@ class Product < ApplicationRecord
   }
 
   VIEW_SELECTOR = ["panel", "list"]
-
 
   ### relations ###
   belongs_to :user,     required: true

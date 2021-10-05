@@ -10,24 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_25_082105) do
+ActiveRecord::Schema.define(version: 2021_10_04_054132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "abtests", force: :cascade do |t|
-    t.bigint "user_id"
     t.string "utag", default: "", null: false
     t.string "label", null: false
-    t.integer "segment", null: false
-    t.integer "status", default: 0, null: false
+    t.string "segment", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "soft_destroyed_at"
-    t.string "ip"
-    t.string "host"
+    t.datetime "finished_at"
     t.index ["soft_destroyed_at"], name: "index_abtests_on_soft_destroyed_at"
-    t.index ["user_id"], name: "index_abtests_on_user_id"
+    t.index ["utag", "label"], name: "index_abtests_on_utag_and_label", unique: true
   end
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -220,7 +217,7 @@ ActiveRecord::Schema.define(version: 2021_08_25_082105) do
   create_table "products", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "category_id", null: false
-    t.string "name", default: "", null: false
+    t.string "name", limit: 255, default: "", null: false, collation: "ja_JP.utf8"
     t.text "description"
     t.datetime "dulation_start"
     t.datetime "dulation_end"
@@ -456,7 +453,6 @@ ActiveRecord::Schema.define(version: 2021_08_25_082105) do
     t.index ["user_id"], name: "index_watches_on_user_id"
   end
 
-  add_foreign_key "abtests", "users"
   add_foreign_key "company_chats", "company_chats", column: "res_id"
   add_foreign_key "industry_users", "industries"
   add_foreign_key "industry_users", "users"

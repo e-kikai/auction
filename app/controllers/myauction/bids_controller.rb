@@ -28,6 +28,8 @@ class Myauction::BidsController < Myauction::ApplicationController
     loser = @product.max_bid.try(:user)
 
     if @bid.save
+      Abtest::finish(session[:utag], :search_sort_01) # ABテスト
+
       if @product.max_bid.try(:user) == current_user
         # 入札成功
 

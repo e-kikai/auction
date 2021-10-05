@@ -38,6 +38,9 @@ class ProductsController < ApplicationController
     else;           Product::STATUS[:mix]
     end
 
+    ### ソートABテスト ###
+    @pms[:q][:s] ||= Abtest::start(session[:utag], :search_sort_01, "dulation_start", "name")
+
     # 初期検索クエリ作成
     @products = Product.status(cond).includes(:product_images, :category, :user)
       .with_keywords(@keywords).search(@pms[:q]).result

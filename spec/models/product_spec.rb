@@ -29,7 +29,7 @@
 #  maker                 :string           default(""), not null
 #  max_price             :integer          default(0)
 #  model                 :string           default(""), not null
-#  name                  :string           default(""), not null
+#  name                  :string(255)      default(""), not null
 #  note                  :text
 #  packing               :text             default(""), not null
 #  prompt_dicision_price :integer
