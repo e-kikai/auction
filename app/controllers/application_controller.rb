@@ -30,10 +30,9 @@ class ApplicationController < ActionController::Base
   ### 未ログインユーザ追跡タグ生成 ###
   def make_utag
     # botを排除
-    if DetailLog.check_robot(host, ip) && request.user_agent !~ /bot|crawl|spider|health/i
+    if request.user_agent !~ /bot|crawl|spider|health/i && DetailLog.check_robot(host, ip)
       session[:utag] = SecureRandom.alphanumeric(10) if session[:utag].blank?
-      logger.error "  #{session[:utag]} :: #{request.user_agent} :: #{host}"
-
+      # logger.error "  #{session[:utag]} :: #{request.user_agent} :: #{host}"
     else
       request.session_options[:skip] = true
     end
