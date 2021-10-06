@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  require 'resolv'
+
   protect_from_forgery with: :exception
 
   before_action :make_utag
@@ -19,11 +21,16 @@ class ApplicationController < ActionController::Base
     request.env["HTTP_X_FORWARDED_FOR"].split(",").first.strip || request.remote_ip
   end
 
+  def host
+    Resolv.getname(ip) rescue ""
+  end
+
   private
 
   ### 未ログインユーザ追跡タグ生成 ###
   def make_utag
-    # request.session_options[:skip] = true unless DetailLog.check_robot(host, ip)
+    # botを排除
+    request.session_options[:skip] = true unless DetailLog.check_robot(host, ip)
 
     session[:utag] = SecureRandom.alphanumeric(10) if session[:utag].blank?
   end

@@ -32,7 +32,7 @@ class DetailLog < ApplicationRecord
 
   before_save :check_robot
 
-  ROBOTS = /(goo|google|yahoo|naver|ahrefs|msnbot|bot|crawl|amazonaws|rate-limited-proxy)/i
+  ROBOTS = /(goo|google|yahoo|naver|ahrefs|msnbot|bot|crawl|amazonaws|rate-limited-proxy|spider)/i
 
   KWDS   = {
     "mail" => "メール", "top" => "トップページ", "dtl" => "詳細", "src" => "検索結果", "wtc" => "ウォッチリスト",
@@ -153,7 +153,7 @@ class DetailLog < ApplicationRecord
   end
 
   def self.check_robot(host, ip)
-    host !~ ROBOTS && ip.present?
+    ip.present? && host !~ ROBOTS
   end
 
   private
