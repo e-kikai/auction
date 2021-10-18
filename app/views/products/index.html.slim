@@ -61,7 +61,7 @@ javascript:
 .row
   / = @products.to_sql
   / = url_for @pms
-  / = @products.to_sql
+
   .col-md-2
     /// ログ用検索パラメータ
     = hidden_field_tag :search_company_id,   @pms[:company_id]

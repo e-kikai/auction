@@ -38,16 +38,18 @@ class ProductsController < ApplicationController
     else;           Product::STATUS[:mix]
     end
 
-    ### ソートABテスト ###
-    if @pms[:q][:s].blank?
-      @pms[:q][:s] = Abtest::start(session[:utag], :search_sort_01, "dulation_start", "name")
-
-      Abtest::checkpoint(session[:utag], :search_sort_01, :search)
-    end
 
     # 初期検索クエリ作成
     @products = Product.status(cond).includes(:product_images, :category, :user)
       .with_keywords(@keywords).ransack(@pms[:q]).result
+
+    ### ソートABテスト ###
+    if @pms[:q][:s].blank?
+      segment = Abtest::start(session[:utag], :search_sort_01, "dulation_start", "name")
+      @products = @products.reorder(segment) if segment != "dulation_start"
+
+      Abtest::checkpoint(session[:utag], :search_sort_01, :search)
+    end
 
     # 新着(週)
     if @pms[:news_week].present?
