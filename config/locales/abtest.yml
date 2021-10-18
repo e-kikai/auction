@@ -4,7 +4,7 @@ ja:
       search_sort_01: 検索結果デフォルトソート
       name: 名前順
       dulation_start: 開始順(従来)
-      search: 一覧表示回数
+      search: 検索表示回数
       detail: 詳細表示回数
       start:  検索表示
       goal:   入札
