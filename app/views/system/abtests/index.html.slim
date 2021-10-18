@@ -17,28 +17,46 @@
 /     span.glyphicon.glyphicon-download-alt
 /     span.btn-content CSV出力
 
-
 - @labels.each do |label, created_at|
   .
     .
-      span.h4 ◆ #{label}
+      span.h4
+        span = '◆ '
+        span = t("abtest.#{label}.#{label}")
       span = " 開始日時 : #{created_at}"
 
-    - segments = (@start.select { |k,v| k[0] == label }.map { |k, v| k[1] })
+    - segments       = (@start.select { |k,v| k[0] == label }.map { |k, v| k[1] })
+    - checkpoint_key = (@checkpoints.select { |k,v| k[0] == label }.map { |k, v| k[2] }).uniq
+
     . class="col-sm-#{(segments.length + 2)} col-md-#{(segments.length + 2)} col-lg-#{(segments.length + 2)} col-xs-12"
       table.table.table-hover.table-condensed.table-striped.product-table
         tr
           th.num.sepa
           - segments.each do |segment|
-            th.num = segment
+            th.num = t("abtest.#{label}.#{segment}")
         tr
-          th.num.sepa テストスタート
+          th.num.sepa
+            span = "スタート - "
+            span = t("abtest.#{label}.start")
           - segments.each do |segment|
             td.num = number_with_delimiter(@start[ [label, segment] ])
 
+        /// チェックポイント ///
+        - checkpoint_key.each do |key|
+          tr
+            th.num.sepa = t("abtest.#{label}.#{key}")
+            - segments.each do |segment|
+              td.num = number_with_delimiter(@checkpoints[ [label, segment, key] ])
+
         tr
-          th.num.sepa コンバージョン
+          th.num.sepa
+            span = "ゴール - "
+            span = t("abtest.#{label}.goal")
+
           - segments.each do |segment|
             td.num = number_with_delimiter(@finished[ [label, segment] ])
+
+
+
 
     br clear="both"

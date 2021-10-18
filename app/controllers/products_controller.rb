@@ -39,11 +39,15 @@ class ProductsController < ApplicationController
     end
 
     ### ソートABテスト ###
-    @pms[:q][:s] ||= Abtest::start(session[:utag], :search_sort_01, "dulation_start", "name")
+    if @pms[:q][:s].blank?
+      @pms[:q][:s] = Abtest::start(session[:utag], :search_sort_01, "dulation_start", "name")
+
+      Abtest::checkpoint(session[:utag], :search_sort_01, :search)
+    end
 
     # 初期検索クエリ作成
     @products = Product.status(cond).includes(:product_images, :category, :user)
-      .with_keywords(@keywords).search(@pms[:q]).result
+      .with_keywords(@keywords).ransack(@pms[:q]).result
 
     # 新着(週)
     if @pms[:news_week].present?
@@ -110,6 +114,12 @@ class ProductsController < ApplicationController
     @shipping_label = ShippingLabel.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no)
     if user_signed_in?
       @shipping_fee   = ShippingFee.find_by(user_id: @product.user_id, shipping_no: @product.shipping_no, addr_1: current_user.addr_1)
+    end
+
+    # ABテストチェックポイント
+    ref = request.referer
+    if ref&.include?(root_url) && ref =~ /\/products(\?|$)/ && !ref&.include?("q%5Bs%5D=")
+      Abtest::checkpoint(session[:utag], :search_sort_01, :detail, product_id: @product.id)
     end
   end
 

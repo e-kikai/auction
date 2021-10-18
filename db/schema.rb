@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_04_054132) do
+ActiveRecord::Schema.define(version: 2021_10_18_032556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "ab_checkpoints", force: :cascade do |t|
+    t.string "key", null: false
+    t.integer "value"
+    t.bigint "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "soft_destroyed_at"
+    t.bigint "abtest_id"
+    t.index ["abtest_id"], name: "index_ab_checkpoints_on_abtest_id"
+    t.index ["product_id"], name: "index_ab_checkpoints_on_product_id"
+    t.index ["soft_destroyed_at"], name: "index_ab_checkpoints_on_soft_destroyed_at"
+  end
 
   create_table "abtests", force: :cascade do |t|
     t.string "utag", default: "", null: false
@@ -453,6 +466,8 @@ ActiveRecord::Schema.define(version: 2021_10_04_054132) do
     t.index ["user_id"], name: "index_watches_on_user_id"
   end
 
+  add_foreign_key "ab_checkpoints", "abtests"
+  add_foreign_key "ab_checkpoints", "products"
   add_foreign_key "company_chats", "company_chats", column: "res_id"
   add_foreign_key "industry_users", "industries"
   add_foreign_key "industry_users", "users"

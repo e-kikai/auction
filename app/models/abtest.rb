@@ -18,6 +18,7 @@
 #
 class Abtest < ApplicationRecord
   # validates :utag, uniquness: { scope: [:label]  }
+  has_many   :ab_checkpoints
 
   ### テスト開始 ###
   def self.start(utag, label, *vars)
@@ -54,6 +55,27 @@ class Abtest < ApplicationRecord
 
     # 結果を保存
     abtest.update(finished_at: Time.now)
+  rescue => e
+    logger.debug e.message
+    false
+  end
+
+  ### チェックポイント ###
+  def self.checkpoint(utag, label, key, value: nil, product_id:nil)
+    ### テスト取得 ###
+    abtest = Abtest.find_by(utag: utag, label: label)
+
+    ### 未スタートの場合はスキップ ###
+    return false unless abtest
+
+    ### チェックポイント保存 ###
+    AbCheckpoint.create(
+      abtest_id:  abtest.id,
+      key:        key,
+      value:      value,
+      product_id: product_id,
+    )
+
   rescue => e
     logger.debug e.message
     false
