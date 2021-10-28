@@ -36,7 +36,7 @@ class System::Playground02Controller < ApplicationController
         end
 
         @products_03 = Rails.cache.fetch("vector_search_vol02_20210829_#{@target.id}_16", expires_in: 1.minutes) do
-          @products.vector_search_02("vol02_20210829", @target.get_vector_02("vol02_20210829"), 16)
+          @products.vector_search_02("vol02_20210829", @target.get_vector_02("vol02_20211026"), 16)
         end
 
         ### 局所特徴 ###
