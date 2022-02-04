@@ -48,6 +48,22 @@
         /     = link_to(image_tag("https://www.zenkiren.net/imgs/bids_35.png", alt: "マシンライフ 第35回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=35&r=bnr", target: "_blank")
 
 
+        - if (Time.parse('2022-03-18 00:00:00')..Time.parse('2022-03-31 23:59:59')).include? Time.now
+          .thumbnail.search-panel
+            = link_to(image_tag("https://www.zenkiren.net/imgs/bids_36.png", alt: "マシンライフ 第36回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=35&r=bnr", target: "_blank")
+
+        - if (Time.parse('2022-06-24 00:00:00')..Time.parse('2022-07-07 23:59:59')).include? Time.now
+          .thumbnail.search-panel
+            = link_to(image_tag("https://www.zenkiren.net/imgs/bids_37.png", alt: "マシンライフ 第37回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=36&r=bnr", target: "_blank")
+
+        - if (Time.parse('2022-09-23 00:00:00')..Time.parse('2022-10-06 23:59:59')).include? Time.now
+          .thumbnail.search-panel
+            = link_to(image_tag("https://www.zenkiren.net/imgs/bids_38.png", alt: "マシンライフ 第38回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=37&r=bnr", target: "_blank")
+
+        - if (Time.parse('2022-12-16 00:00:00')..Time.parse('2023-01-12 23:59:59')).include? Time.now
+          .thumbnail.search-panel
+            = link_to(image_tag("https://www.zenkiren.net/imgs/bids_39.png", alt: "マシンライフ 第39回 Web入札会"), "https://www.zenkiren.net/bid_door.php?o=38&r=bnr", target: "_blank")
+
         / - if (Time.parse('2021-05-21 00:00:00')..Time.parse('2021-06-11 23:59:59')).include? Time.now
         /   .thumbnail.search-panel
         /     = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_195.jpg", alt: "大阪機械卸業団地協同組合 第195回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
