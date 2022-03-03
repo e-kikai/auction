@@ -1,0 +1,12 @@
+{
+  "name": "dsl-generated-dependencies",
+  "dependencies": {
+    "jquery-ujs": "latest",
+    "bootstrap-sass": "3.4.0",
+    "fontawesome": "latest",
+    "jquery-lazyload": "latest",
+    "bootstrap-select": "latest",
+    "bootstrap-fileinput": "latest",
+    "moment": "latest"
+  }
+}
