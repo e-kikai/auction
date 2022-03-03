@@ -2,7 +2,7 @@
   "name": "dsl-generated-dependencies",
   "dependencies": {
     "jquery-ujs": "latest",
-    "bootstrap-sass": "3.3.6",
+    "bootstrap-sass": "latest",
     "fontawesome": "latest",
     "jquery-lazyload": "latest",
     "bootstrap-select": "latest",
