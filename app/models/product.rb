@@ -211,12 +211,12 @@ class Product < ApplicationRecord
 
   scope :status, -> cond {
     case cond.to_i
-    when STATUS[:before];  where("dulation_start > ? ", Time.now).order(:dulation_start) # 開始前
+    when STATUS[:before];  where("dulation_start > current_timestamp ").order(:dulation_start) # 開始前
     when STATUS[:failure]; finished.where(max_bid_id: nil, cancel: nil) # 未落札
     when STATUS[:success]; finished.where(cancel: nil).where.not(max_bid_id: nil) # 落札済み
     when STATUS[:cancel];  finished.where.not(cancel: nil) # キャンセル
-    when STATUS[:mix];     where(cancel: nil, template: false).where("(dulation_start <= ? AND dulation_end > ?) OR (dulation_end < ? AND max_bid_id IS NOT NULL)", Time.now, Time.now, Time.now).order(dulation_start: :desc) # 出品中と落札済み
-    else;                  where(template: false).where("dulation_start <= ? AND dulation_end > ?", Time.now, Time.now).order(:dulation_end)  # 公開中
+    when STATUS[:mix];     where(cancel: nil, template: false).where("(dulation_start <= current_timestamp AND dulation_end > current_timestamp) OR ((dulation_end BETWEEN current_timestamp + '-2year' AND current_timestamp) AND max_bid_id IS NOT NULL)").order(dulation_start: :desc) # 出品中と落札済み
+    else;                  where(template: false).where("dulation_start <= current_timestamp AND dulation_end > current_timestamp").order(:dulation_end)  # 公開中
     end
   }
 
