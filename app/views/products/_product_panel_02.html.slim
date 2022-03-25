@@ -44,6 +44,6 @@
     / = render "products/nitamono", product: product
     / = render "products/nitamono_02", product: product
     / = render "products/watch_02", product: product, active: true
-    - if product.top_image? && @pms.present?
-      = nitamono_sort(product)
+    / - if product.top_image? && @pms.present?
+    /   = nitamono_sort(product)
     = watch(product, r)

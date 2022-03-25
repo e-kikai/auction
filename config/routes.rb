@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   resources :products,   only: [:index, :show] do
     member do
       get  'bids'
-      get  'nitamono'
+      # get  'nitamono'
       get 'process_vector'
     end
 
