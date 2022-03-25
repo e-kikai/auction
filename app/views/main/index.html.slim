@@ -76,9 +76,9 @@
         /   .thumbnail.search-panel
         /     = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_197.png", alt: "大阪機械卸業団地協同組合 第197回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
-        / - if (Time.parse('2022-02-18 00:00:00')..Time.parse('2022-03-04 23:59:59')).include? Time.now
-        /   .thumbnail.search-panel
-        /     = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_198.png", alt: "大阪機械卸業団地協同組合 第198回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
+        - if (Time.parse('2022-02-18 00:00:00')..Time.parse('2022-03-04 23:59:59')).include? Time.now
+          .thumbnail.search-panel
+            = link_to(image_tag("https://www.zenkiren.net/imgs/omdc_198.png", alt: "大阪機械卸業団地協同組合 第198回機械工具入札会"), "https://www.xn--4bswgw9cs82at4b485i.jp/", target: "_blank")
 
         - if (Time.parse('2022-05-20 00:00:00')..Time.parse('2022-06-03 23:59:59')).include? Time.now
           .thumbnail.search-panel
@@ -226,7 +226,7 @@
           span.btn-content 売れ筋商品
           = link_to "/pops", class: "btn btn-more_02 btn-primary" do
             span.glyphicon.glyphicon-arrow-right
-            span.btn-content 金額別の売れ筋をもっと見る
+            span.btn-content 売れ筋をもっと見る
 
         .top-category-news
           = render partial: "products/product_panel_02", collection: @populars, as: "product", locals: { r: :top_pops }
@@ -235,18 +235,18 @@
           /   = "#{pr.name} : #{pr.count}, "
 
 
-      / - if user_signed_in?
-      /   - if @vbpr_products.present?
-      /     /// VBPR ///
-      /     .toppage-news-area
-      /       label.topppage-category-title
-      /         span.glyphicon.glyphicon-camera style="color:mediumpurple;"
-      /         span.btn-content あなたへのオススメ
-      /         - if @vbpr_products.length >= Product::NEWS_LIMIT
-      /       .top-category-news
-      /         / - @vbpr_products.each do |pr|
-      /         /   = render "products/product_panel_02", product: pr, r: :top_vos
-      /         = render partial: "products/product_panel_02", collection: @vbpr_products, as: "product", locals: { r: :top_vos }
+      - if user_signed_in?
+        - if @vbpr_products.present?
+          /// VBPR ///
+          .toppage-news-area
+            label.topppage-category-title
+              span.glyphicon.glyphicon-camera style="color:mediumpurple;"
+              span.btn-content あなたへのオススメ
+              - if @vbpr_products.length >= Product::NEWS_LIMIT
+            .top-category-news
+              / - @vbpr_products.each do |pr|
+              /   = render "products/product_panel_02", product: pr, r: :top_vos
+              = render partial: "products/product_panel_02", collection: @vbpr_products, as: "product", locals: { r: :top_vos }
 
         / - if @bpr_products.present?
         /   /// BPR ///
@@ -258,17 +258,6 @@
         /       - @bpr_products.each do |pr|
         /         / = render "products/product_panel_02", product: pr, r: :top_tnw
         /         = render "product_panel_03_img", product: pr, r: :top_bpr
-
-        /// よく見る新着 ///
-        / .toppage-news-area
-        /   label.topppage-category-title
-        /     span.new-icon
-        /     span.btn-content 新着商品
-        /     = link_to "/news/#{Time.now.strftime("%Y-%m-%d")}", class: "btn btn-more_02 btn-primary" do
-        /       span.glyphicon.glyphicon-arrow-right
-        /       span.btn-content 新着商品をもっと見る
-        /   .top-category-news
-        /     = render partial: "products/product_panel_02", collection: @news, as: "product", locals: { r: :top_new }
 
         /// よく見る新着 ///
         - if @oft_products.present?
