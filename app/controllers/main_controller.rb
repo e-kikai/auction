@@ -18,7 +18,7 @@ class MainController < ApplicationController
     prs = Product.limit(Product::NEWS_LIMIT)
 
     if user_signed_in? # ログインユーザ
-      @vbpr_products = DetailLog.vbpr_get(current_user&.id, Product::NEWS_LIMIT) # VBPR結果
+      # @vbpr_products = DetailLog.vbpr_get(current_user&.id, Product::NEWS_LIMIT) # VBPR結果
       # @bpr_products  = DetailLog.vbpr_get(@user.id, Product::NEWS_LIMIT, true) #BPR結果
 
       dl_where = {user_id: current_user&.id}
@@ -43,6 +43,9 @@ class MainController < ApplicationController
 
     ### 売れ筋商品 ###
     @populars      = prs.osusume("pops")
+
+    ### シンプルな新着 ###
+    @news          = prs.news
   end
 
   def rss
