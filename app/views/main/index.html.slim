@@ -260,15 +260,15 @@
         /         = render "product_panel_03_img", product: pr, r: :top_bpr
 
         /// よく見る新着 ///
-        .toppage-news-area
-          label.topppage-category-title
-            span.new-icon
-            span.btn-content 新着商品
-            = link_to "/news/#{Time.now.strftime("%Y-%m-%d")}", class: "btn btn-more_02 btn-primary" do
-              span.glyphicon.glyphicon-arrow-right
-              span.btn-content 新着商品をもっと見る
-          .top-category-news
-            = render partial: "products/product_panel_02", collection: @news, as: "product", locals: { r: :top_new }
+        / .toppage-news-area
+        /   label.topppage-category-title
+        /     span.new-icon
+        /     span.btn-content 新着商品
+        /     = link_to "/news/#{Time.now.strftime("%Y-%m-%d")}", class: "btn btn-more_02 btn-primary" do
+        /       span.glyphicon.glyphicon-arrow-right
+        /       span.btn-content 新着商品をもっと見る
+        /   .top-category-news
+        /     = render partial: "products/product_panel_02", collection: @news, as: "product", locals: { r: :top_new }
 
         /// よく見る新着 ///
         - if @oft_products.present?
