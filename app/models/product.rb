@@ -295,7 +295,7 @@ class Product < ApplicationRecord
   scope :like_names, -> (names) {
     reg = names.map do |na|
       na.gsub("　", " ").gsub(/[\-\/\:\-\@\\\[\-\~\(\)]+/, "?").split
-    end.flatten.uniq.delete_if { |x| x =~ /^.{,1}$/ }.join("|")
+    end.flatten.uniq.delete_if { |x| x =~ /^.{,1}$/ }.delete_if { |x| x =~ /^\?/ }.join("|")
 
     reg.present? ? where("products.name ~ ?", reg).reorder("random()") : none
   }
