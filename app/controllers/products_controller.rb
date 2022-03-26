@@ -11,7 +11,7 @@ class ProductsController < ApplicationController
       company_id:  pms[:company_id].presence,
       search_id:   pms[:search_id].presence,
       success:     pms[:success].presence,
-      nitamono:    pms[:nitamono].presence,
+      # nitamono:    pms[:nitamono].presence,
 
       news_week:   pms[:news_week].presence,
       news_day:    pms[:news_day].presence,
@@ -81,17 +81,17 @@ class ProductsController < ApplicationController
 
     ### 似たもの・残り時間ソート ###
     if params[:nitamono].present?
-      nitamono_products = @products.nitamono_sort(params[:nitamono], params[:page])
+      # nitamono_products = @products.nitamono_sort(params[:nitamono], params[:page])
     elsif @pms[:q][:s] == "dulation_end asc"
       @products = @products.reorder(" CASE WHEN dulation_end <= CURRENT_TIMESTAMP THEN 2 ELSE 1 END, dulation_end ")
     end
 
     ### ページャ ###
-    if params[:nitamono].present?
-      @pproducts = Kaminari.paginate_array(nitamono_products, total_count: @products.count).page(params[:page]).per(30)
-    else
+    # if params[:nitamono].present?
+    #   @pproducts = Kaminari.paginate_array(nitamono_products, total_count: @products.count).page(params[:page]).per(30)
+    # else
       @pproducts = @products.page(params[:page]).per(30)
-    end
+    # end
 
     ### ウォッチリスト ###
     @watches = user_signed_in? ? current_user.watches.pluck(:product_id) : Watch.none
@@ -151,7 +151,7 @@ class ProductsController < ApplicationController
   end
 
   def nitamono
-    @products = @product.nitamono(Product::NEW_MAX_COUNT)
+    # @products = @product.nitamono(Product::NEW_MAX_COUNT)
   end
 
   def process_vector
@@ -179,9 +179,9 @@ class ProductsController < ApplicationController
 
     ### 似たものサーチ ###
     # @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
-    @nitamono_products = Rails.cache.fetch("nitamono_#{@product.id}_#{Product::NEW_MAX_COUNT}", expires_in: 1.day) do
-      @product.nitamono(Product::NEW_MAX_COUNT)
-    end
+    # @nitamono_products = Rails.cache.fetch("nitamono_#{@product.id}_#{Product::NEW_MAX_COUNT}", expires_in: 1.day) do
+    #   @product.nitamono(Product::NEW_MAX_COUNT)
+    # end
 
     ### 終了時オススメをランダム(0件でないもの)取得 ###
     key_array =  %w|dl_osusume|
