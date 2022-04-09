@@ -13,6 +13,7 @@
 #= require jquery
 #= require rails-ujs
 # require bootstrap-sass
+#= require bootstrap-sprockets
 # require bootstrap-fileinput
 #= require  bootstrap-fileinput/js/fileinput.min.js
 # require moment
