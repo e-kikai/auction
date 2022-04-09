@@ -386,10 +386,12 @@ javascript:
 
       br style="clear:both;"
 
+    = render "products/request_area"
+
     - if @dl_products.present?
       .row
         label
-          span.glyphicon.glyphicon-ok.check-icon
+          i.fa-solid.fa-check.check-icon
           span.btn-content 最近チェックした商品
         .panel.panel-default
           .panel-body.toppage-contents

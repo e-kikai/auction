@@ -10,17 +10,23 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require bootstrap-sass
+ * require bootstrap-sass
+ *= require bootstrap-sass/assets/stylesheets/_bootstrap.scss
+
  * require devise_bootstrap_views
- *= require bootstrap-fileinput
+ * require bootstrap-fileinput
+ *= require bootstrap-fileinput/css/fileinput.min.css
  * require_tree .
  *= require_self
  */
 // $icon-font-path: "bootstrap-sass/assets/fonts/bootstrap/";
-// @import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+// @import "bootstrap-fileinput/css/fileinput.min.css";
 
-@import 'font-awesome-sprockets';
+@import "bootstrap-sprockets";
+@import "bootstrap";
+// @import 'font-awesome-sprockets';
 @import 'font-awesome';
+
 
 i.fas, i.fab {
   position: relative;
@@ -153,7 +159,7 @@ footer {
       border-color: #ccc;
     }
 
-    span.glyphicon, i.fas, i.fab {
+    span.glyphicon, i.fas, i.fab, i.fa-solid {
       display: block;
       font-size: 28px;
       margin-bottom: 5px;
@@ -1131,8 +1137,8 @@ hr.detail-price-calc {
   color: #833c14;
   font-size: 120%;
   padding: 8px 20px;
-  max-width: 680px;
-  margin: 32px auto;
+  max-width: 880px;
+  margin: 32px auto 16px auto;
 
   .markdown-area {
     margin: 8px;
@@ -1316,6 +1322,15 @@ hr.detail-price-calc {
 //     text-align: right;
 //   }
 // }
+
+.form-message {
+  font-size: 16px;
+  border: 1px dotted #258a01;
+  background-color: #EFE;
+  padding: 8px;
+  margin-bottom: 32px;
+  border-radius: 16px;
+}
 
 .star-good {
   color: #fcbc01;
@@ -2871,4 +2886,15 @@ footer {
     margin-right: -14px;
     width: initial;
   }
+}
+
+.request-area {
+  text-align: center;
+  margin: 16px auto;
+  font-size: 16px;
+  border: 1px dotted #258a01;
+  padding: 8px;
+  background-color: #FFF;
+  border-width: 1px 0;
+  max-width: 780px;
 }

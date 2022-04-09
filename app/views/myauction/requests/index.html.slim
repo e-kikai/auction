@@ -1,0 +1,28 @@
+- set_meta_tags title: "出品リクエスト 送信履歴"
+- breadcrumb :system_something, "出品リクエスト利用 送信履歴"
+
+= render("/system/watches/month_selector_form", path: "/myauction/requests/", range: params[:range], date: @date)
+
+= paginate @prequests
+
+.table-responsive
+  table.table.table-hover.table-condensed.table-striped.product-table
+    thead
+      tr
+        th.sepa 送信日時
+        th.sepa 商品名
+        th 詳細
+
+    - @prequests.each do |re|
+      tr
+        td.sepa = re.created_at
+        td.sepa = re.name
+        td = re.detail
+
+    thead
+      tr
+        th.sepa 送信日時
+        th.sepa 商品名
+        th 詳細
+
+= paginate @prequests

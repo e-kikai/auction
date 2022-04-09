@@ -54,24 +54,24 @@
 
   - elsif @product.trade_success?(current_user)
     .alert.success_message
-      span.glyphicon.glyphicon-ok
+      i.fa-solid.fa-check
       span.btn-content おめでとうございます！あなたが落札しました。
       = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
         span.glyphicon.glyphicon-transfer
         span.btn-content 出品会社と取引する
   - elsif @product.success?
     .alert.success_message
-      span.glyphicon.glyphicon-ok
+      i.fa-solid.fa-check
       span.btn-content  このオークションは終了しました。たくさんの入札ありがとうございました。
 
 
   - elsif @product.lower_price.to_i > @product.max_price
     .alert.alert-danger
-      span.glyphicon.glyphicon-ok
+      i.fa-solid.fa-check
       span.btn-content  最低落札価格に達しなかったため、このオークションは未落札で終了しています。
   - else
     .alert.alert-danger
-      span.glyphicon.glyphicon-ok
+      i.fa-solid.fa-check
       span.btn-content  このオークションは終了しています。
 - elsif @product.before?
   .alert.alert-warning
@@ -264,7 +264,7 @@ article
                   span.btn-content 出品会社と取引する
               - else
                 = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
-                  span.glyphicon.glyphicon-comment
+                  i.fa-solid.fa-message
                   span.btn-content この商品について問合せする
 
       //// SNSボタン ///

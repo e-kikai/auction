@@ -117,6 +117,13 @@ Rails.application.routes.draw do
     end
 
     resources :detail_logs,  only: [:index]
+
+    resources :requests, only: [:index, :new, :create] do
+      collection do
+        get 'fin'
+      end
+    end
+
   end
 
   ### 管理者ページ ###
@@ -241,7 +248,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :abtests, only: [:index]
-
+    resources :abtests,  only: [:index]
+    resources :requests, only: [:index]
   end
 end

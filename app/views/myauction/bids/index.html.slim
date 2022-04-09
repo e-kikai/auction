@@ -56,7 +56,7 @@ h1.product-title
 
             - if pr.max_bid.user_id != pr.user_id
               td.watch = link_to("/myauction/contacts/#{pr.id}", class: "btn btn-success") do
-                span.glyphicon.glyphicon-comment
+                i.fa-solid.fa-message
                 span.btn-content 取引
 
               td.watch
@@ -87,7 +87,7 @@ h1.product-title
             td = pr.remaining_time
             td.watch
               = link_to "/myauction/contacts/#{pr.id}", method: :get, class: "btn btn-success" do
-                span.glyphicon.glyphicon-comment
+                i.fa-solid.fa-message
                 span.btn-content 問合せ
 
             / td = render "products/nitamono", product: pr

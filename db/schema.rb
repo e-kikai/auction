@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_18_032556) do
+ActiveRecord::Schema.define(version: 2022_04_08_040410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -290,6 +290,22 @@ ActiveRecord::Schema.define(version: 2021_10_18_032556) do
     t.index ["user_id"], name: "index_products_on_user_id"
   end
 
+  create_table "requests", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name", null: false
+    t.text "detail", default: ""
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "soft_destroyed_at"
+    t.string "ip"
+    t.string "host"
+    t.string "utag"
+    t.string "ua"
+    t.boolean "display", default: false
+    t.index ["soft_destroyed_at"], name: "index_requests_on_soft_destroyed_at"
+    t.index ["user_id"], name: "index_requests_on_user_id"
+  end
+
   create_table "result_logs", force: :cascade do |t|
     t.bigint "product_id"
     t.bigint "bid_id_id"
@@ -471,5 +487,6 @@ ActiveRecord::Schema.define(version: 2021_10_18_032556) do
   add_foreign_key "company_chats", "company_chats", column: "res_id"
   add_foreign_key "industry_users", "industries"
   add_foreign_key "industry_users", "users"
+  add_foreign_key "requests", "users"
   add_foreign_key "trades", "users", column: "owner_id"
 end

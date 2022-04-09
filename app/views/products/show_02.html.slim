@@ -77,23 +77,23 @@ article
 
     - elsif @product.trade_success?(current_user)
       .alert.success_message
-        span.glyphicon.glyphicon-ok
+        i.fa-solid.fa-check
         span.btn-content おめでとうございます！あなたが落札しました。
         = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
           span.glyphicon.glyphicon-transfer
           span.btn-content 出品会社と取引する
     - elsif @product.success?
       .alert.finish_message
-        span.glyphicon.glyphicon-ok
+        i.fa-solid.fa-check
         span.btn-content  このオークションは終了しました。沢山の入札ありがとうございました。
 
     - elsif @product.lower_price.to_i > @product.max_price
       .alert.alert-danger
-        span.glyphicon.glyphicon-ok
+        i.fa-solid.fa-check
         span.btn-content  最低落札価格に達しなかったため、このオークションは未落札で終了しています。
     - else
       .alert.alert-danger
-        span.glyphicon.glyphicon-ok
+        i.fa-solid.fa-check
         span.btn-content  このオークションは終了しています。
   - elsif @product.before?
     .alert.alert-warning
@@ -281,7 +281,7 @@ article
                   span.btn-content 出品会社と取引する
               - else
                 = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
-                  span.glyphicon.glyphicon-comment
+                  i.fa-solid.fa-message
                   span.btn-content この商品について問合せする
 
       //// SNSボタン ///
@@ -326,7 +326,7 @@ article
 
       - if @product.youtube.present?
         .youtube
-          iframe src="https://www.youtube.com/embed/#{@product.youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="true"
+          iframe src="https://www.youtube.com/embed/#{@product.youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="true" loading="lazy"
 
       .panel.panel-default
         section.panel-body

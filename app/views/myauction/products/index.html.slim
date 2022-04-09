@@ -115,7 +115,7 @@
 
             - if pr.max_bid.user_id != current_user.id
               td = link_to("/myauction/answers/#{pr.id}/#{pr.max_bid.user_id}", class: "btn btn-success") do
-                span.glyphicon.glyphicon-comment
+                i.fa-solid.fa-message
                 span.btn-content 取引
               td.num = pr.bids_count > 0 ? link_to(number_with_delimiter(pr.bids_count), "/products/#{pr.id}/bids") : "-"
               td.num = pr.detail_logs_count

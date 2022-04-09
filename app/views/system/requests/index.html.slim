@@ -1,0 +1,48 @@
+- set_meta_tags title: "出品リクエスト利用履歴"
+- breadcrumb :system_something, "出品リクエスト利用履歴"
+
+= render("/system/watches/month_selector_form", path: "/system/requests/", range: params[:range], date: @date)
+
+= paginate @prequests
+
+.table-responsive
+  table.table.table-hover.table-condensed.table-striped.product-table
+    thead
+      tr
+        th.num ID
+        th utag
+        th.num ユーザID
+        th 会社・ユーザ名
+        th アカウント
+        th.sepa 都道府県
+        th 商品名
+        th 詳細
+        th 送信日時
+
+    - @prequests.each do |re|
+      tr
+        td.num = re.id
+        td = re&.utag
+        td.num = re.user&.id
+        td.name
+          .ib = re.user&.company
+          .ib = re.user&.name
+        td = re.user&.account
+        td.sepa = re.user&.addr_1
+        td = re.name
+        td = re.detail
+        td = re.created_at
+
+    thead
+      tr
+        th.num ID
+        th utag
+        th.num ユーザID
+        th 会社・ユーザ名
+        th アカウント
+        th.sepa 都道府県
+        th 商品名
+        th 詳細
+        th 送信日時
+
+= paginate @prequests

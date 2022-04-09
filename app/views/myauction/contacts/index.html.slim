@@ -69,7 +69,7 @@
                 span.glyphicon.glyphicon-transfer
                 span.btn-content 取引 : #{@thread_counts[key]}
               - else
-                span.glyphicon.glyphicon-comment
+                i.fa-solid.fa-message
                 span.btn-content 問合せ : #{@thread_counts[key]}
             td = I18n.l(@thread_starts[key], format: :full_date)
             td = I18n.l(val, format: :full_date)

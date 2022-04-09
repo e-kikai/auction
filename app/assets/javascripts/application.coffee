@@ -12,10 +12,11 @@
 #
 #= require jquery
 #= require rails-ujs
-#= require bootstrap-sass
-#= require bootstrap-fileinput
-#= require moment
-#= require moment/locale/ja
+# require bootstrap-sass
+# require bootstrap-fileinput
+#= require  bootstrap-fileinput/js/fileinput.min.js
+# require moment
+# require moment/locale/ja
 #= require turbolinks
 # require_tree .
 

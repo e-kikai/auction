@@ -10,7 +10,7 @@ h1.product-title
 
 .button-center.text-left
   = link_to "/products/#{@bid.product.id}?r=bfn_bck", class: "btn btn-default" do
-    span.glyphicon.glyphicon-arrow-left
+    i.fa-solid.fa-backward
     span.btn-content 商品詳細ページに戻る
 
 .row
@@ -41,7 +41,7 @@ hr
 
 .button-center.text-left
   = link_to "/products/#{@bid.product.id}?r=bfn_bck", class: "btn btn-default" do
-    span.glyphicon.glyphicon-arrow-left
+    i.fa-solid.fa-backward
     span.btn-content 商品詳細ページに戻る
 
 - if @nitamono_products.present?
@@ -70,5 +70,5 @@ hr
 
 .button-center.text-left
   = link_to "/products/#{@bid.product.id}?r=bfn_bck", class: "btn btn-default" do
-    span.glyphicon.glyphicon-arrow-left
+    i.fa-solid.fa-backward
     span.btn-content 商品詳細ページに戻る

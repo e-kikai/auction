@@ -71,6 +71,7 @@ class User < ApplicationRecord
   has_many   :follow_users, through: :follows, source: :to_user
   has_many   :followers, foreign_key: :to_user_id, class_name: "Follow"
   has_many   :follower_users, through: :followers, source: :user
+  has_many   :requests
 
   has_many   :blacklists
   has_many   :blacklist_users, through: :blacklists, source: :to_user

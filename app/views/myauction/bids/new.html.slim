@@ -10,7 +10,7 @@ h1.product-title
 
 .button-center.text-left
   = link_to "/products/#{@product.id}?r=bid_bck", class: "btn btn-default" do
-    span.glyphicon.glyphicon-arrow-left
+    i.fa-solid.fa-backward
     span.btn-content 商品詳細ページに戻る
 
 .row
@@ -52,7 +52,7 @@ h1.product-title
 
         .row
           = f.button class: "btn btn-warning btn-lg center-block" do
-            span.glyphicon.glyphicon-ok
+            i.fa-solid.fa-check
             span.btn-content 規約に同意して入札する
 
         .bid-message
@@ -91,5 +91,5 @@ h1.product-title
 
 .button-center.text-left
   = link_to "/products/#{@product.id}?r=bid_bck", class: "btn btn-default" do
-    span.glyphicon.glyphicon-arrow-left
+    i.fa-solid.fa-backward
     span.btn-content 商品詳細ページに戻る

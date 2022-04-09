@@ -96,3 +96,7 @@ ja:
         target: 表示対象
         start_at: 表示開始日時
         uid: UID
+      request:
+        uid: UID
+        name: 商品名
+        detail: 詳細

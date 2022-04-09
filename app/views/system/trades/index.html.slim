@@ -57,7 +57,7 @@
               . = "#{th.owner_id} | #{th.owner&.account}"
               . = "#{th.owner&.company_remove_kabu} #{th.owner&.name}".strip
             td.num.sepa = link_to "/system/trades/#{th.product_id}/#{th.owner_id}", class: "btn btn-success btn-md" do
-              span.glyphicon.glyphicon-comment
+              i.fa-solid.fa-message
               span.btn-content = "#{@thread_counts_02[gro]}"
             td = @thread_starts_02[gro]
             td = th.created_at
@@ -119,7 +119,7 @@
     /           . = "#{owner_id} | #{owner.account}"
     /           . = "#{owner.try(:company_remove_kabu)} #{owner.try(:name)}".strip
     /         td.num.sepa = link_to "/system/trades/#{key[0]}/#{owner_id}", class: "btn btn-success btn-md" do
-    /           span.glyphicon.glyphicon-comment
+    /           i.fa-solid.fa-message
     /           span.btn-content = "#{@thread_counts[key]}"
     /         td = @thread_starts[key]
     /         td = val
@@ -180,7 +180,7 @@
 /             span.glyphicon.glyphicon-arrow-right.text-danger
 /         td
 /           - unless tr.user_id == tr.product.try(:user_id)
-/             span.glyphicon.glyphicon-arrow-left.text-info
+/             i.fa-solid.fa-backward.text-info
 /
 /         td.name.sepa
 /           .text-info = owner_id

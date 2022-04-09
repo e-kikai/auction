@@ -136,12 +136,12 @@
                 span.glyphicon.glyphicon-transfer
                 span.btn-content 出品終了 - 落札済
               = link_to "/myauction/answers", class: "list-group-item" do
-                span.glyphicon.glyphicon-comment.text-success
+                i.fa-solid.fa-message.text-success
                 span.btn-content ユーザからの問合せ・取引一覧
 
             - else
               = link_to "/myauction/contacts", class: "list-group-item" do
-                span.glyphicon.glyphicon-comment.text-success
+                i.fa-solid.fa-message.text-success
                 span.btn-content 商品問合せ・取引一覧
 
 
@@ -318,7 +318,7 @@
       /// 最近チェックした商品(共通) ///
       - if @dl_products.present?
         label
-          span.glyphicon.glyphicon-ok.check-icon
+          i.fa-solid.fa-check.check-icon
           span.btn-content 最近チェックした商品
           = link_to "/detail_logs", class: "btn btn-more_02 btn-primary" do
             i.fas.fa-history

@@ -1,0 +1,46 @@
+- set_meta_tags title: "出品リクエスト"
+- breadcrumb    :myauction_something, "出品リクエスト"
+
+h3.product-title itemprop="name"
+  i.fa-solid.fa-comments-dollar
+  span.btn-content 出品リクエスト
+
+.button-center.text-left
+  = link_to 'javascript:history.back()', class: 'btn btn-default'
+    i.fa-solid.fa-backward
+    span.btn-content 前のページに戻る
+
+.row
+  .col-md-6.col-md-offset-3
+    .form-message
+      h4
+        i.fa-solid.fa-comments-dollar.text-warning
+        span.btn-content おさがしの機械・工具はなんですか？
+      p
+        | 条件に合う商品が出品されていない。こんな商品はありませんか？などなど、<br />
+        | さがしている商品の名前、メーカーや必要な能力、希望などを書き込んで、<br />
+        | 出品会社の皆さんにリクエストを配信できます。<br /><br />
+        | 試しに一度書き込んでみませんか？？？
+
+    = form_for @request, url: "/myauction/requests/", method: :post, class: "form-inline" do |f|
+
+      table.table.table-hover.table-condensed.form-table
+        tr
+          th.col-xs-5 = f.label :name, "おさがしの商品名", class: :required
+          td.col-xs-7 = f.text_field :name, class: "form-control", required: "required"
+
+        tr
+          th.col-xs-5
+            = f.label :detail
+            . style="font-weight:normal;" メーカーや能力など、
+            . style="font-weight:normal;" ご希望がありましたらご記入ください。
+          td.col-xs-7 = f.text_area :detail, class: "form-control"
+
+      = f.button :button, data: { "disable-with" => "送信中..." }, class: "btn btn-default btn-square btn-submit center-block" do
+        i.fa-solid.fa-paper-plane
+        span.btn-content 送信する
+
+.button-center.text-left
+  = link_to 'javascript:history.back()', class: 'btn btn-default'
+    i.fa-solid.fa-backward
+    span.btn-content 前のページに戻る

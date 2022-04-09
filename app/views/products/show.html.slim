@@ -74,27 +74,32 @@ article
           span.glyphicon.glyphicon-remove
           span.btn-content このオークションは、以下の理由により出品キャンセルされました。
         . = markdown(@product.cancel.strip)
+      = render "products/request_area"
 
     - elsif @product.trade_success?(current_user)
       .alert.success_message
-        span.glyphicon.glyphicon-ok
+        i.fa-solid.fa-check
         span.btn-content おめでとうございます！あなたが落札しました。
         = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
           span.glyphicon.glyphicon-transfer
           span.btn-content 出品会社と取引する
     - elsif @product.success?
       .alert.finish_message
-        span.glyphicon.glyphicon-ok
-        span.btn-content  このオークションは終了しました。沢山の入札ありがとうございました。
+        i.fa-solid.fa-check
+        span.btn-content このオークションは終了しました。沢山の入札ありがとうございました。
+      = render "products/request_area"
 
     - elsif @product.lower_price.to_i > @product.max_price
       .alert.alert-danger
-        span.glyphicon.glyphicon-ok
+        i.fa-solid.fa-check
         span.btn-content  最低落札価格に達しなかったため、このオークションは未落札で終了しています。
+      = render "products/request_area"
+
     - else
       .alert.alert-danger
-        span.glyphicon.glyphicon-ok
+        i.fa-solid.fa-check
         span.btn-content  このオークションは終了しています。
+      = render "products/request_area"
   - elsif @product.before?
     .alert.alert-warning
         span.glyphicon.glyphicon-alert
@@ -286,7 +291,7 @@ article
                   span.btn-content 出品会社と取引する
               - else
                 = link_to("/myauction/contacts/#{@product.id}", class: "btn btn-success") do
-                  span.glyphicon.glyphicon-comment
+                  i.fa-solid.fa-message
                   span.btn-content この商品について問合せする
 
       //// SNSボタン ///
@@ -306,12 +311,15 @@ article
           span.btn-content = "LINEで送る"
 
       /// ハッシュダグ ///
-      h5
-        span.glyphicon.glyphicon-link
-        span.btn-content 関連キーワード
-      section.detail-hashtags
-        - @product.hashtags.split(/(?:\s|　)+/).each do |ta|
-          = link_to ta, "/products?keywords=#{ta}"
+      - if @product.hashtags.present?
+        h5
+          i.fa-solid.fa-hashtag
+          span.btn-content 関連キーワード
+        section.detail-hashtags
+          - @product.hashtags.split(/(?:\s|　)+/).each do |ta|
+            = link_to ta, "/products?keywords=#{ta}"
+
+      = render "products/request_area"
 
     /// 画像枠 ///
     .col-md-8.col-md-pull-4
@@ -320,9 +328,9 @@ article
           .carousel-inner
             - @product.product_images.each_with_index do |pi, i|
               - if i == 0
-                .item.active = image_tag pi.image.view.url, srcset: {pi.image.url => "x2"}, alt: "#{@product.name}_画像#{i+1}"
+                .item.active = image_tag pi.image.view.url, srcset: {pi.image.url => "x2"}, alt: "#{@product.name}_画像#{i+1}", loading: :lazy
               - else
-                .item = image_tag pi.image.view.url, srcset: {pi.image.url => "x2"}, alt: "#{@product.name}_画像#{i+1}"
+                .item = image_tag pi.image.view.url, srcset: {pi.image.url => "x2"}, alt: "#{@product.name}_画像#{i+1}", loading: :lazy
           a.left.carousel-control href="#product-carousel" data-slide="prev"
             span.glyphicon.glyphicon-chevron-left
           a.right.carousel-control href="#product-carousel" data-slide="next"
@@ -331,11 +339,11 @@ article
       div.carousel-select
         - @product.product_images.each_with_index do |pi, i|
           = link_to 'javascript:void(0);', onclick: "$('#product-carousel').carousel(#{i});" do
-            = image_tag pi.image.thumb.url, alt: "#{@product.name}_画像#{i+1}"
+            = image_tag pi.image.thumb.url, alt: "#{@product.name}_画像#{i+1}", loading: :lazy
 
       - if @product.youtube.present?
         .youtube
-          iframe src="https://www.youtube.com/embed/#{@product.youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="true"
+          iframe src="https://www.youtube.com/embed/#{@product.youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="true" loading="lazy"
 
       .panel.panel-default
         section.panel-body

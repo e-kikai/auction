@@ -96,10 +96,10 @@
           span.glyphicon.glyphicon-plus
           span.btn-content 出品商品履歴
         li = link_to "/system/products/finished?cond=2" do
-          span.glyphicon.glyphicon-ok
+          i.fa-solid.fa-check
           span.btn-content 落札商品履歴
         li = link_to "/system/products/finished_month?cond=2" do
-          span.glyphicon.glyphicon-ok
+          i.fa-solid.fa-check
           span.btn-content 月別 落札商品履歴
         li = link_to "/system/bids" do
           span.glyphicon.glyphicon-pencil
@@ -127,10 +127,13 @@
         li = link_to "/system/follows" do
           span.glyphicon.glyphicon-heart
           span.btn-content フォロー利用履歴
+        li = link_to "/system/requests" do
+          i.fa-solid.fa-comments-dollar
+          span.btn-content 出品リクエスト履歴
 
         hr
           li = link_to "/system/trades" do
-            span.glyphicon.glyphicon-comment.text-success
+            i.fa-solid.fa-message.text-success
             span.btn-content 問い合わせ履歴
 
 

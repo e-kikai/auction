@@ -172,3 +172,9 @@ gem 'aws-sdk-s3', '~> 1'
 gem "turnout"
 
 gem 'font-awesome-sass'
+# gem 'bootstrap', '~> 3.2.3'
+gem 'bootstrap-sass', '~> 3.4.1'
+gem 'sassc-rails', '>= 2.1.0'
+
+gem 'therubyracer'
+gem 'less-rails'

@@ -2,15 +2,16 @@
 # Check out https://github.com/42dev/bower-rails#ruby-dsl-configuration for more options
 
 asset 'jquery-ujs'
-asset 'bootstrap-sass', "3.4.0"
-asset 'fontawesome'
+# asset 'bootstrap-sass', "3.4.1"
 
-asset 'jquery-lazyload'
+# asset 'fontawesome'
 
-asset 'bootstrap-select'
+# asset 'jquery-lazyload'
+
+# asset 'bootstrap-select'
 asset 'bootstrap-fileinput'
 
-asset 'moment'
+# asset 'moment'
 
 # asset 'dropzone'
 

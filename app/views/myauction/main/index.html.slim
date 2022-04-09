@@ -38,23 +38,47 @@
     - if current_user.seller?
       .panel.panel-default
         .panel-heading
-          span.glyphicon.glyphicon-comment
+          i.fa-solid.fa-message
           span.btn-content 商品問い合せ
         ul.nav.nav-pills.nav-stacked
           li = link_to "/myauction/contacts" do
-            span.glyphicon.glyphicon-comment.text-success
+            i.fa-solid.fa-message.text-success
             span.btn-content 商品問合せ・取引一覧
+
+      .panel.panel-default
+        .panel-heading
+          i.fa-solid.fa-comments-dollar
+          span.btn-content 出品リクエスト
+        ul.nav.nav-pills.nav-stacked
+          li = link_to "/myauction/requests/new" do
+            i.fa-solid.fa-comments-dollar.text-warning
+            span.btn-content 出品会社に商品をリクエスト
+          li = link_to "/myauction/requests/" do
+            i.fa-solid.fa-list.text-warning
+            span.btn-content 出品リクエスト 送信履歴
 
   - unless current_user.seller?
     .col-md-3
       .panel.panel-default
         .panel-heading
-          span.glyphicon.glyphicon-comment
+          i.fa-solid.fa-message
           span.btn-content 商品問い合せ
         ul.nav.nav-pills.nav-stacked
           li = link_to "/myauction/contacts" do
-            span.glyphicon.glyphicon-comment.text-success
+            i.fa-solid.fa-message.text-success
             span.btn-content 商品問合せ・取引一覧
+
+      .panel.panel-default
+        .panel-heading
+          i.fa-solid.fa-comments-dollar
+          span.btn-content 出品リクエスト
+        ul.nav.nav-pills.nav-stacked
+          li = link_to "/myauction/requests/new" do
+            i.fa-solid.fa-comments-dollar.text-warning
+            span.btn-content 出品会社に商品をリクエスト
+          li = link_to "/myauction/requests/" do
+            i.fa-solid.fa-list.text-warning
+            span.btn-content 出品リクエスト 送信履歴
 
   - if current_user.seller?
     .col-md-3
@@ -97,11 +121,11 @@
     .col-md-3
       .panel.panel-default
         .panel-heading
-          span.glyphicon.glyphicon-comment
+          i.fa-solid.fa-message
           span.btn-content 問合せ・取引
         ul.nav.nav-pills.nav-stacked
           li = link_to "/myauction/answers" do
-            span.glyphicon.glyphicon-comment.text-success
+            i.fa-solid.fa-message.text-success
             span.btn-content ユーザからの問合せ・取引一覧
 
       .panel.panel-default
