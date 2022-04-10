@@ -19,7 +19,7 @@
   - if user_signed_in?
     .topsearch-area
       label.top-search
-        span.glyphicon.glyphicon-paperclip.search-pushpin
+        i.fa-solid.fa-paperclip.search-pushpin
         span.btn-content お気に入り検索
       - current_user.searches.each do |se|
         = link_to se.uri, class: "btn btn-default btn-sm" do
@@ -72,7 +72,7 @@
               span.glyphicon.glyphicon-user
               span.btn-content マイ・オークション
             = link_to "/myauction/watches", class: "list-group-item" do
-              span.glyphicon.glyphicon-star
+              i.fa-solid.fa-star
               span.btn-content ウォッチリスト
             = link_to "/myauction/bids", class: "list-group-item" do
               span.glyphicon.glyphicon-pencil
@@ -183,7 +183,7 @@
         /
         /     - if @follows_new_products.present?
         /       label
-        /         span.glyphicon.glyphicon-heart.follow-heart
+        /         i.fa-solid.fa-heart.follow-heart
         /         span.btn-content フォローした出品会社の新着商品
         /       .panel.panel-default
         /         .panel-body.toppage-contents
@@ -321,7 +321,7 @@
 
       - if @follows_new_products.present?
         label
-          span.glyphicon.glyphicon-heart.follow-heart
+          i.fa-solid.fa-heart.follow-heart
           span.btn-content フォローした出品会社の新着商品
         .panel.panel-default
           .panel-body.toppage-contents

@@ -32,7 +32,7 @@ h1.product-title
 hr
 .button-center
   = link_to "/myauction/watches?id=#{@bid.product.id}", method: :post, class: "btn btn-default" do
-    span.glyphicon.glyphicon-star.watch-star
+    i.fa-solid.fa-star.watch-star
     span.btn-content この商品をウォッチリストに登録する
 
   = link_to "/products/?company_id=#{@bid.product.user_id}", class: "btn btn-default" do

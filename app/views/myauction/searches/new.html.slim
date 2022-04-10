@@ -4,7 +4,7 @@
 .row
   .col-md-offset-3.col-md-6
     h4
-      span.glyphicon.glyphicon-paperclip.search-pushpin
+      i.fa-solid.fa-paperclip.search-pushpin
       span.btn-content 検索条件のお気に入り登録
 
     = form_for @search, url: "/myauction/searches/", html: { multipart: true, method: :post, class: 'form-horizontal' } do |f|

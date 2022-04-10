@@ -75,7 +75,7 @@
           span.glyphicon.glyphicon-usd
           span.btn-content VBPR・オススメ履歴集計
         li = link_to "/system/total/uwatch" do
-          span.glyphicon.glyphicon-star
+          i.fa-solid.fa-star
           span.btn-content 未ログインウォッチ・案内メール集計
 
 
@@ -116,19 +116,19 @@
 
         hr
         li = link_to "/system/watches" do
-          span.glyphicon.glyphicon-star
+          i.fa-solid.fa-star.watch-star
           span.btn-content ウォッチリスト利用履歴
         li = link_to "/system/searches" do
-          span.glyphicon.glyphicon-paperclip
+          i.fa-solid.fa-paperclip.search-pushpin
           span.btn-content お気に入り利用履歴
         li = link_to "/system/alerts" do
-          span.glyphicon.glyphicon-bell
+          i.fa-solid.fa-bell.alert-bell
           span.btn-content 新着メール通知利用履歴
         li = link_to "/system/follows" do
-          span.glyphicon.glyphicon-heart
+          i.fa-solid.fa-heart.follow-heart
           span.btn-content フォロー利用履歴
         li = link_to "/system/requests" do
-          i.fa-solid.fa-comments-dollar
+          i.fa-solid.fa-comments-dollar.text-warning
           span.btn-content 出品リクエスト履歴
 
         hr

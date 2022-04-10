@@ -4,7 +4,7 @@
 .row
   .col-md-12.col-sm-12.col-xs-12
     h1.product-title
-      span.glyphicon.glyphicon-star
+      i.fa-solid.fa-star
       span.btn-content = "ウォッチリスト"
 
     .btn-group role="group"
@@ -119,7 +119,7 @@
     - if @watch_osusume.present?
       .
         label
-          span.glyphicon.glyphicon-star.watch-star
+          i.fa-solid.fa-star.watch-star
           span.btn-content ウォッチリストに基づくオススメ
         .panel.panel-default
           .panel-body.toppage-contents

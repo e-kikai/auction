@@ -103,11 +103,11 @@ html
               span.btn-content マイ・オク
             = link_to "/watches", class: "header-watch" do
               - if @watch_pids.length > 0
-                span.glyphicon.glyphicon-star.watch-star
+                i.fa-solid.fa-star.watch-star
                 span.btn-content ウォッチリスト
                 .badge.watch-badge = @watch_pids.length
               - else
-                span.glyphicon.glyphicon-star
+                i.fa-solid.fa-star
                 span.btn-content ウォッチリスト
                 .badge.watch-badge.hidden
             - if user_signed_in?
@@ -130,7 +130,7 @@ html
             /     span.glyphicon.glyphicon-user
             /     span.btn-content マイ・オークション
             /   = link_to "/myauction/watches"  do
-            /     span.glyphicon.glyphicon-star
+            /     i.fa-solid.fa-star
             /     span.btn-content ウォッチリスト
             /   - if current_user.seller?
             /     = link_to "/myauction/products/new" , target: "_blank" do

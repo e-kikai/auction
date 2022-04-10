@@ -34,7 +34,8 @@ module ProductHelper
         method: :post, remote: true, class: "watch_02 #{ac}",
         data: { pid: product.id, toggle: :tooltip, container: :html, placement: :left, trigger: :hover },
         title: ti) do
-        tag.span class: "glyphicon glyphicon-star"
+        # tag.span class: "glyphicon glyphicon-star"
+        tag.i class: "fa-solid fa-star"
       end
     end
   end

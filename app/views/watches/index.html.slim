@@ -4,7 +4,7 @@
 .row
   .col-md-12.col-sm-12.col-xs-12
     h1.product-title
-      span.glyphicon.glyphicon-star
+      i.fa-solid.fa-star
       span.btn-content = "ウォッチリスト"
 
     p
@@ -114,7 +114,7 @@
               /       span.btn-content 入札
               / td
                 / = link_to "/myauction/alerts/new?alert[category_id]=#{pr.category_id}&alert[name]=★#{pr.category.name} 新着通知", method: :get, class: "btn btn-default" do
-                /   span.glyphicon.glyphicon-bell.alert-bell
+                /   i.fa-solid.fa-bell.alert-bell
                 /   span.btn-content 同カテゴリの新着を通知
 
                 / = render "products/nitamono", product: pr
@@ -145,7 +145,7 @@
     - if @watch_osusume.present?
       .
         label
-          span.glyphicon.glyphicon-star.watch-star
+          i.fa-solid.fa-star.watch-star
           span.btn-content ウォッチリストに基づくオススメ
         .panel.panel-default
           .panel-body.toppage-contents

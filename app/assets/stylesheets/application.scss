@@ -28,7 +28,7 @@
 @import 'font-awesome';
 
 
-i.fas, i.fab {
+i.fas, i.fab, i.fa-solid {
   position: relative;
   top: 1px;
   display: inline-block;
@@ -90,7 +90,7 @@ a:hover img {
     color: inherit;
   }
 
-  .glyphicon, i.fas, i.fab {
+  .glyphicon, i.fas, i.fab, i.fa-solid {
     font-size: 20px;
   }
 }
@@ -1034,7 +1034,7 @@ hr.detail-price-calc {
 
 .detail-hashtags a {
   display: inline-block;
-  background: #EEE;
+  background: #FFF;
   margin: 0 8px 8px 0;
   padding: 4px;
 }
@@ -1685,14 +1685,13 @@ tr.bronze {
   margin: auto;
   text-align: center;
 
-  .glyphicon-star {
+  .fa-star {
     font-size: 28px;
     color: #CCC;
     -webkit-text-stroke: #333 1px;
     // text-shadow: #FFF 1px 1px 1px;
   }
-
-  &.active .glyphicon-star {
+  &.active .fa-star {
     color: #FF0;
     text-shadow: #FF0 0px 0px 8px;
 
@@ -1934,7 +1933,7 @@ footer {
     padding-bottom: 10px;
     margin-bottom: 2rem;
 
-  .glyphicon, i.fas, i.fab, i.far {
+  .glyphicon, i.fas, i.fab, i.far, i.fa-solid {
     color: #258a01;
     top: 4px;
     text-shadow: 1px 1px 1px #333;
@@ -2133,7 +2132,7 @@ ui#footer_banners li img {
     font-size: 25px;
     border-bottom: 2px dotted #258a01;
 
-    .glyphicon, i.fas, i.fab {
+    .glyphicon, i.fas, i.fab, i.fa-solid {
       text-shadow: 1px 1px 1px #333;
     }
 }
@@ -2217,7 +2216,8 @@ a.btn.btn-more {
 .watch_area .glyphicon-camera:before {
     font-size: 70%;
 }
-.watch_area .glyphicon-star:before {
+
+.watch_area .fa-star:before {
     font-size: 70%;
 }
 .thumbnail.product-pannel_02 .nitamono {
@@ -2674,7 +2674,7 @@ ui#footer_banners li {
 }
 
 .special-area  label {
-  .glyphicon, i.fas, i.fab {
+  .glyphicon, i.fas, i.fab, i.fa-solid {
     text-shadow: 1px 1px 1px #333;
   }
 }
@@ -2747,7 +2747,7 @@ ui#footer_banners li {
     }
 
     .glyphicon,
-    .glyphicon:before, i.fas, i.fab {
+    .glyphicon:before, i.fas, i.fab, i.fa-solid {
       display: block;
       font-size: 28px;
       margin-bottom: 2px;

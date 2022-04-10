@@ -6,9 +6,9 @@ $_watch = $('.watch_02[data-pid=<%= @product_id %>]');
 <% end %>
 
 <% if @watch_length  > 0 %>
-  $(".header-watch span.glyphicon.glyphicon-star").addClass("watch-star");
+  $(".header-watch i.fa-solid.fa-star").addClass("watch-star");
   $(".badge.watch-badge").show().text("<%= @watch_length  %>");
 <% else %>
-  $(".header-watch span.glyphicon.glyphicon-star").removeClass("watch-star");
+  $(".header-watch i.fa-solid.fa-star").removeClass("watch-star");
   $(".badge.watch-badge").hide();
 <% end %>

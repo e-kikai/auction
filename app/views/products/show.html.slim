@@ -96,7 +96,7 @@ article
       = render "products/request_area"
 
     - else
-      .alert.alert-danger
+      .alert.finish_message
         i.fa-solid.fa-check
         span.btn-content  このオークションは終了しています。
       = render "products/request_area"
@@ -187,7 +187,7 @@ article
                 | 人がこの商品を見ています
           - if @product.watches.count > 0
             .watches-count-area
-              span.glyphicon.glyphicon-star.watch-star
+              i.fa-solid.fa-star.watch-star
               span.btn-content
                 | 現在
                 span.watches_count = number_with_delimiter(@product.watches.count)
@@ -230,7 +230,7 @@ article
 
           .trade-button-area
             = link_to "/myauction/alerts/new?alert[category_id]=#{@product.category_id}&alert[name]=◎#{@product.category.name} 新着通知", method: :get, class: "btn btn-default" do
-              span.glyphicon.glyphicon-bell.alert-bell
+              i.fa-solid.fa-bell.alert-bell
               span.btn-content おなじカテゴリの新着メール通知
 
         /// 出品会社 ///
@@ -252,7 +252,7 @@ article
                 span.btn-content 出品商品を見る
 
             .
-              span.glyphicon.glyphicon-star
+              i.fa-solid.fa-star
               span.btn-content 評価 :
               span.h4
                 =<> number_with_delimiter @product.user.count_star
@@ -273,10 +273,10 @@ article
 
           .trade-button-area
             = link_to "/myauction/alerts/new?alert[company_id]=#{@product.user_id}&alert[name]=◎#{@product.user.company} 新着通知", method: :get, class: "btn btn-default" do
-              span.glyphicon.glyphicon-bell.alert-bell
+              i.fa-solid.fa-bell.alert-bell
               span.btn-content この出品会社の新着メール通知
             = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
-              span.glyphicon.glyphicon-heart.follow-heart
+              i.fa-solid.fa-heart.follow-heart
               span.btn-content 出品会社をフォロー
 
             .contact-button-area

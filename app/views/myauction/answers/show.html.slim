@@ -111,11 +111,11 @@ javascript:
         /
         / .trade-button-area
         /   = link_to "/myauction/alerts/new?alert[company_id]=#{@product.user_id}&alert[name]=◆#{@product.user&.company} 新着通知", method: :get, class: "btn btn-default" do
-        /     span.glyphicon.glyphicon-bell.alert-bell
+        /     i.fa-solid.fa-bell.alert-bell
         /     span.btn-content この出品会社の新着メール通知
         /
         /   = link_to "/myauction/follows?id=#{@product.user_id}", method: :post, class: "btn btn-default" do
-        /     span.glyphicon.glyphicon-heart.follow-heart
+        /     i.fa-solid.fa-heart.follow-heart
         /     span.btn-content 出品会社をフォロー
 
     .panel.panel-default

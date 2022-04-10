@@ -21,7 +21,7 @@ h4 フォローリスト
              = link_to fo.to_user.company, "/products?q[company_id_eq]=#{fo.to_user_id}"
              .follow-button-area
                = link_to "/myauction/alerts/new?alert[company_id]=#{fo.to_user_id}&alert[name]=△#{fo.to_user.company} 新着通知", method: :get, class: "btn btn-default" do
-                 span.glyphicon.glyphicon-bell.alert-bell
+                 i.fa-solid.fa-bell.alert-bell
                  span.btn-content 出品会社の新着メール通知
           td.h4
             span.glyphicon.glyphicon-certificate.star-good
