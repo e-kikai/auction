@@ -1,4 +1,6 @@
 class System::DataController < ApplicationController
+  include Exports
+
   ### VBPR処理用データ出力 ###
   def vbpr
     ### ログのあるを取得 ###
