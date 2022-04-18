@@ -245,6 +245,7 @@ Rails.application.routes.draw do
       collection do
         get 'vbpr'
         get 'top_url_by_category'
+        get 'vectors'
       end
     end
 
