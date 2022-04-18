@@ -150,4 +150,13 @@ class System::DataController < ApplicationController
       format.json { render plain: res }
     end
   end
+
+  ### 画像ベクトル検索バッチ処理用 ###
+  def vectors
+    @products = Product.includes(:product_images).where(id: ProductImage.select(:product_id)) # 削除されたものを除外
+
+    respond_to do |format|
+      format.csv
+    end
+  end
 end
