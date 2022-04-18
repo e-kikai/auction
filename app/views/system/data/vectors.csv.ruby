@@ -5,6 +5,6 @@ CSV.generate do |row|
 
   @products.each do |pr|
     ### 整形 ###
-    row << [pr.id, (pr.start? ? 1 : nil), pr&.product_images&.first&.image&.path]
+    row << [pr.id, (pr.start? ? 1 : nil), pr&.product_images&.first&.image&.identifier]
   end
 end

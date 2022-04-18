@@ -158,7 +158,7 @@ class System::DataController < ApplicationController
     @products = Product.includes(:product_images).where(id: ProductImage.select(:product_id)) # 削除されたものを除外
 
     respond_to do |format|
-      format.csv
+      format.csv { export_csv "vectors_data.csv" }
     end
   end
 end

@@ -471,7 +471,7 @@ class Product < ApplicationRecord
   end
 
   def start?
-    dulation_end && dulation_start <= Time.now && dulation_end > Time.now
+    dulation_end && dulation_start <= Time.now && dulation_end > Time.now rescue false
   end
 
   ### 終了後か ###
