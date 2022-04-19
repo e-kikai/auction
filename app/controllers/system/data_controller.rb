@@ -155,7 +155,7 @@ class System::DataController < ApplicationController
 
   ### 画像ベクトル検索バッチ処理用 ###
   def vectors
-    @products = Product.includes(:product_images).where(id: ProductImage.select(:product_id)) # 削除されたものを除外
+    @products = Product.includes(:product_images).where(id: ProductImage.select(:product_id)).order(:id)
 
     respond_to do |format|
       format.csv { export_csv "vectors_data.csv" }
