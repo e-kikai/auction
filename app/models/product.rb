@@ -146,6 +146,8 @@ class Product < ApplicationRecord
   has_many   :trades
   has_many   :detail_logs
   has_many   :ab_checkpoints
+  has_many   :product_nitamonos
+  has_many   :nitamonos, -> { order("product_nitamonos.norm") }, through: :product_nitamonos
 
   ### enum ###
   enum shipping_user:  { "落札者" => 0, "出品者" => 100, "店頭引取り" => 500 }

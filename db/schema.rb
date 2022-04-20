@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_08_040410) do
+ActiveRecord::Schema.define(version: 2022_04_20_050121) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -225,6 +225,18 @@ ActiveRecord::Schema.define(version: 2022_04_08_040410) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["product_id"], name: "index_product_images_on_product_id"
+  end
+
+  create_table "product_nitamonos", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.integer "nitamono_id", null: false
+    t.float "norm", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "soft_destroyed_at"
+    t.index ["nitamono_id"], name: "index_product_nitamonos_on_nitamono_id"
+    t.index ["product_id"], name: "index_product_nitamonos_on_product_id"
+    t.index ["soft_destroyed_at"], name: "index_product_nitamonos_on_soft_destroyed_at"
   end
 
   create_table "products", force: :cascade do |t|
@@ -487,6 +499,7 @@ ActiveRecord::Schema.define(version: 2022_04_08_040410) do
   add_foreign_key "company_chats", "company_chats", column: "res_id"
   add_foreign_key "industry_users", "industries"
   add_foreign_key "industry_users", "users"
+  add_foreign_key "product_nitamonos", "products"
   add_foreign_key "requests", "users"
   add_foreign_key "trades", "users", column: "owner_id"
 end
