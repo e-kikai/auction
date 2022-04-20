@@ -155,10 +155,16 @@ class System::DataController < ApplicationController
 
   ### 画像ベクトル検索バッチ処理用 ###
   def vectors
-    @products = Product.includes(:product_images).where(id: ProductImage.select(:product_id)).order(:id)
+    @products = Product.includes(:product_images, :product_nitamonos)
+      .where(id: ProductImage.select(:product_id), template: false).order(:id)
 
     respond_to do |format|
       format.csv { export_csv "vectors_data.csv" }
     end
+  end
+
+  ### 画像ベクトル変換バッチ結果保存 ###
+  def vectors_insert
+
   end
 end
