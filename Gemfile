@@ -178,3 +178,5 @@ gem 'sassc-rails', '>= 2.1.0'
 
 gem 'therubyracer'
 gem 'less-rails'
+
+gem 'activerecord-import'

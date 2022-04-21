@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_20_050121) do
+ActiveRecord::Schema.define(version: 2022_04_21_074833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -235,6 +235,7 @@ ActiveRecord::Schema.define(version: 2022_04_20_050121) do
     t.datetime "updated_at", null: false
     t.datetime "soft_destroyed_at"
     t.index ["nitamono_id"], name: "index_product_nitamonos_on_nitamono_id"
+    t.index ["product_id", "nitamono_id"], name: "index_product_nitamonos_on_product_id_and_nitamono_id", unique: true
     t.index ["product_id"], name: "index_product_nitamonos_on_product_id"
     t.index ["soft_destroyed_at"], name: "index_product_nitamonos_on_soft_destroyed_at"
   end

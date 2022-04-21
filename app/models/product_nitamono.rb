@@ -12,9 +12,10 @@
 #
 # Indexes
 #
-#  index_product_nitamonos_on_nitamono_id        (nitamono_id)
-#  index_product_nitamonos_on_product_id         (product_id)
-#  index_product_nitamonos_on_soft_destroyed_at  (soft_destroyed_at)
+#  index_product_nitamonos_on_nitamono_id                 (nitamono_id)
+#  index_product_nitamonos_on_product_id                  (product_id)
+#  index_product_nitamonos_on_product_id_and_nitamono_id  (product_id,nitamono_id) UNIQUE
+#  index_product_nitamonos_on_soft_destroyed_at           (soft_destroyed_at)
 #
 # Foreign Keys
 #
@@ -23,4 +24,6 @@
 class ProductNitamono < ApplicationRecord
   belongs_to :product,                         required: true
   belongs_to :nitamono, class_name: "Product", required: true
+
+  validates :product_id, uniqueness: { scope: :nitamono_id }
 end
