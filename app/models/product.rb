@@ -878,8 +878,8 @@ class Product < ApplicationRecord
 
   ### 画像特徴ベクトル検索処理(バッチ版) ###
   def nitamono_02
-    # nitamonos.includes(:nitamonos, :product_nitamonos, :product_images).status(Product::STATUS[:start])
-    nitamonos.includes(:nitamonos, :product_nitamonos, :product_images)
+    # nitamonos.includes(:product_images).status(Product::STATUS[:start])
+    nitamonos.includes(:product_images)
   end
 
   private
