@@ -420,7 +420,8 @@ class System::PlaygroundController < ApplicationController
     @popular_products = Product.related_products(@product).populars.limit(Product::NEW_MAX_COUNT)
 
     ### 似たものサーチ ###
-    @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
+    # @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
+    @nitamono_products = @product.nitamono_02.limit(Product::NEW_MAX_COUNT)
 
     ### 終了時おすすめ ###
     key_array =  %w|dl_osusume|
