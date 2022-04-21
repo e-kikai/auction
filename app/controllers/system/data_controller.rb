@@ -164,7 +164,7 @@ class System::DataController < ApplicationController
   end
 
   ### 画像ベクトル変換バッチ結果保存 ###
-  def vectors_insert
+  def vectors_import
     ProductNitamono.import([:product_id, :nitamono_id, :norm], params[:data])
   end
 end
