@@ -1,5 +1,6 @@
 class System::DataController < ApplicationController
   include Exports
+  skip_before_action :verify_authenticity_token, only: [:vectors_import]
 
   ### VBPR処理用データ出力 ###
   def vbpr

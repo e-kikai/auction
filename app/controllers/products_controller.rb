@@ -179,9 +179,10 @@ class ProductsController < ApplicationController
 
     ### 似たものサーチ ###
     # @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
-    @nitamono_products = Rails.cache.fetch("nitamono_#{@product.id}_#{Product::NEW_MAX_COUNT}", expires_in: 1.day) do
-      @product.nitamono(Product::NEW_MAX_COUNT)
-    end
+    # @nitamono_products = Rails.cache.fetch("nitamono_#{@product.id}_#{Product::NEW_MAX_COUNT}", expires_in: 1.day) do
+    #   @product.nitamono(Product::NEW_MAX_COUNT)
+    # end
+    @nitamono_products = @product.nitamono_02.limit(Product::NEW_MAX_COUNT)
 
     ### 終了時オススメをランダム(0件でないもの)取得 ###
     key_array =  %w|dl_osusume|
