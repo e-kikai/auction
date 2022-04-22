@@ -33,11 +33,11 @@ hr
 .button-center
   = link_to "/myauction/watches?id=#{@bid.product.id}", method: :post, class: "btn btn-default" do
     i.fa-solid.fa-star.watch-star
-    span.btn-content この商品をウォッチリストに登録する
+    span.btn-content ウォッチリストに登録
 
   = link_to "/products/?company_id=#{@bid.product.user_id}", class: "btn btn-default" do
     span.glyphicon.glyphicon-list
-    span.btn-content この出品会社のほかの出品商品も見る
+    span.btn-content この会社のほかの出品も見る
 
 .button-center.text-left
   = link_to "/products/#{@bid.product.id}?r=bfn_bck", class: "btn btn-default" do
