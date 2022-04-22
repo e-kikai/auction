@@ -39,8 +39,7 @@ class Myauction::ContactsController < Myauction::ApplicationController
 
     ### 似たものサーチ ###
     # @nitamono_products = @product.nitamono(Product::NEW_MAX_COUNT)
-    @nitamono_products = @product.nitamono_02.limit(Product::NEW_MAX_COUNT)
-
+    @nitamono_products = @product.nitamono_02.limit(Product::NEW_MAX_COUNT).status(Product::STATUS[:start])
   end
 
   def create

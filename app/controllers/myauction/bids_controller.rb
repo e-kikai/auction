@@ -80,7 +80,7 @@ class Myauction::BidsController < Myauction::ApplicationController
     # @nitamono_products = Rails.cache.fetch("nitamono_#{@bid.product.id}_#{Product::NEW_MAX_COUNT}", expires_in: 1.day) do
     #   @bid.product.nitamono(Product::NEW_MAX_COUNT)
     # end
-    @nitamono_products = @bid.product.nitamono_02.limit(Product::NEW_MAX_COUNT)
+    @nitamono_products = @bid.product.nitamono_02.limit(Product::NEW_MAX_COUNT).status(Product::STATUS[:start])
 
   end
 
