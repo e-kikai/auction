@@ -26,7 +26,7 @@ class System::DetailLogsController < System::ApplicationController
     @detail_logs  = DetailLog.where(where_date).where(where_ref).group(group_by).count()
     @toppage_logs = ToppageLog.where(where_date).where(where_ref).group(group_by).count()
 
-    @columns_ekikai = %w|マシンライフ 全機連 e-kikai 電子入札システム DST| # e-kikaiサイト郡
+    @columns_ekikai = %w|マシンライフ 全機連 e-kikai 電子入札| # e-kikaiサイト郡
     @columns_ads    = %w|マシンライフ e-kikai| # 広告枠
     @columns_search = %w|Google Yahoo bing 百度 Twitter FB YouTube 広告 (不明)| # 検索・SNS
 

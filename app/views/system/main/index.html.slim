@@ -127,6 +127,9 @@
         li = link_to "/system/follows" do
           i.fa-solid.fa-heart.follow-heart
           span.btn-content フォロー利用履歴
+        li = link_to "/system/blacklists" do
+          i.fa-solid.fa-thumbs-down style="color:#111;"
+          span.btn-content ブラックリスト利用履歴
         li = link_to "/system/requests" do
           i.fa-solid.fa-comments-dollar.text-warning
           span.btn-content 出品リクエスト履歴

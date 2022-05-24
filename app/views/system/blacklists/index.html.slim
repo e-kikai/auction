@@ -1,0 +1,45 @@
+- set_meta_tags title: "ブラックリスト利用履歴"
+- breadcrumb :system_something, "ブラックリスト利用履歴"
+
+= render("/system/watches/month_selector_form", path: "/system/blacklists/", range: params[:range], date: @date)
+
+= paginate @pblacklists
+
+.table-responsive
+  table.table.table-hover.table-condensed.table-striped.product-table
+    thead
+      tr
+        th.num.sepa ID
+        th 会社ID
+        th.name.sepa 会社名
+        th.num ユーザID
+        th.name 会社・ユーザ名
+        th.sepa アカウント
+        th 保存日時
+        th 削除日時
+
+    - @pblacklists.each do |bl|
+      tr
+        td.num.sepa = bl.id
+        td = bl&.user_id
+        td.sepa.name = bl&.user&.company_remove_kabu
+        td.num = bl&.to_user&.id
+        td.name
+          .ib = bl&.to_user&.company
+          .ib = bl&.to_user&.name
+        td.sepa = bl&.to_user&.account
+        td = bl.created_at
+        td = bl.soft_destroyed_at
+
+    thead
+      tr
+        th.num.sepa ID
+        th 会社ID
+        th.name.sepa 会社名
+        th.num ユーザID
+        th.name 会社・ユーザ名
+        th.sepa アカウント
+        th 保存日時
+        th 削除日時
+
+= paginate @pblacklists

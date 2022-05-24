@@ -250,7 +250,8 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :abtests,  only: [:index]
-    resources :requests, only: [:index]
+    resources :abtests,    only: [:index]
+    resources :requests,   only: [:index]
+    resources :blacklists, only: [:index]
   end
 end
