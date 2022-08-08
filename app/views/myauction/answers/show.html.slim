@@ -3,7 +3,7 @@
 
 javascript:
   $(function() {
-    $('form').on('submit', function() {
+    $('form.form-comment').on('submit', function() {
       if (!$('#trade_comment').val().match(/[^\s]+/)) {
         alert('コメントを入力してください。');
         return false;
@@ -148,7 +148,7 @@ javascript:
         /// 出品会社のみ表示 ///
         br style="clear:both;"
 
-        - if current_user.blacklists.exists?(to_user_id: @owner_id)
+        - if current_user.blacklists.exists?(to_user_id: params[:owner_id])
           = link_to "※ このユーザはブラックリストに登録されています", "/myauction/blacklists"
         - else
           .trade-button-area
@@ -170,9 +170,9 @@ javascript:
           li 発送方法、送料、梱包などの確認は必ず行ってください。入金確認後に商品の発送します。
           li 商品到着後、左のボタンから受取確認・評価を行ってください。
 
-    = form_for @trade, url: "/myauction/answers/", html: { method: :post, class: 'form-horizontal' } do |f|
+    = form_for @trade, url: "/myauction/answers/", html: { method: :post, class: 'form-horizontal form-comment' } do |f|
       = hidden_field_tag :product_id, params[:product_id]
-      = hidden_field_tag :owner_id, params[:owner_id]
+      = hidden_field_tag :owner_id,   params[:owner_id]
 
       = f.label :comment, "このフォームにコメントを入力して「投稿する」をクリックしてください。"
       = f.text_area :comment, class: "form-control", style: "height: 200px;margin-bottom:4px;"
