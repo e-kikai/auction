@@ -1,11 +1,9 @@
 class ApplicationController < ActionController::Base
   require 'resolv'
 
+  protect_from_forgery with: :exception
+
   before_action :make_utag
-
-  # protect_from_forgery with: :exception
-  # protect_from_forgery with: :null_session
-
   before_action :get_watches
 
   layout 'layouts/application'
