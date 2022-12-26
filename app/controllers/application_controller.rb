@@ -3,7 +3,8 @@ class ApplicationController < ActionController::Base
 
   before_action :make_utag
 
-  protect_from_forgery with: :exception
+  # protect_from_forgery with: :exception
+  protect_from_forgery with: :null_session
 
   before_action :get_watches
 
