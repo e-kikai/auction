@@ -1,9 +1,10 @@
 class ApplicationController < ActionController::Base
   require 'resolv'
 
+  before_action :make_utag
+
   protect_from_forgery with: :exception
 
-  before_action :make_utag
   before_action :get_watches
 
   layout 'layouts/application'
@@ -34,8 +35,7 @@ class ApplicationController < ActionController::Base
       session[:utag] = SecureRandom.alphanumeric(10) if session[:utag].blank?
       # logger.error "  #{session[:utag]} :: #{request.user_agent} :: #{host}"
     else
-      # request.session_options[:skip] = true
-      Rails.application.config.session_store :disabled
+      request.session_options[:skip] = true
     end
   end
 
