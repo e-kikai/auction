@@ -38,9 +38,7 @@ Rails.application.routes.draw do
 
   # resources :searches,   only: [:show]
 
-  resources :categories, only: [:index, :show]
-  resources :companies,  only: [:show]
-  resources :companies,  only: [:show]
+  # resources :categories, only: [:index, :show]
   resources :companies,  only: [:show]
   resources :helps,      only: [:index, :show]
   resources :infos,      only: [:index, :show]

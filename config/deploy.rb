@@ -1,5 +1,5 @@
 # config valid for current version and patch releases of Capistrano
-lock '3.8.1'
+lock '3.17.0'
 
 set :rbenv_ruby, '2.6.0'
 
@@ -97,4 +97,4 @@ before 'deploy:compile_assets', 'bower:install'
 
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
-after 'deploy:restart', 'sitemap:refresh'
+# after 'deploy:restart', 'sitemap:refresh'

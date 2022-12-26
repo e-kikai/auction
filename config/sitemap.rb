@@ -16,14 +16,14 @@ SitemapGenerator::Sitemap.create do
   end
 
   ### 未落札 ###
-  Product.status(Product::STATUS[:failure]).pluck(:id).each do |id|
-    add "/products/#{id}", priority: 0.5, changefreq: 'daily'
-  end
+  # Product.status(Product::STATUS[:failure]).pluck(:id).each do |id|
+  #   add "/products/#{id}", priority: 0.5, changefreq: 'daily'
+  # end
 
   ### トップ特集 ###
-  Search.where(publish: true).each do |id|
-    add "/searches/#{id}", priority: 0.3, changefreq: 'daily'
-  end
+  # Search.where(publish: true).each do |id|
+  #   add "/searches/#{id}", priority: 0.3, changefreq: 'daily'
+  # end
 
   ### 新着商品 ###
   add "/news", priority: 0.7, changefreq: 'daily'

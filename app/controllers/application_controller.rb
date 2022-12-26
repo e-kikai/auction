@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
       session[:utag] = SecureRandom.alphanumeric(10) if session[:utag].blank?
       # logger.error "  #{session[:utag]} :: #{request.user_agent} :: #{host}"
     else
-      request.session_options[:skip] = true
+      # request.session_options[:skip] = true
     end
   end
 
