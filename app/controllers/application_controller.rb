@@ -35,6 +35,7 @@ class ApplicationController < ActionController::Base
       # logger.error "  #{session[:utag]} :: #{request.user_agent} :: #{host}"
     else
       # request.session_options[:skip] = true
+      Rails.application.config.session_store :disabled
     end
   end
 
