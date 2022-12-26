@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   before_action :get_product,  only: [:show, :bids, :nitamono, :process_vector]
   before_action :get_populars, only: [:show, :bids]
-  session :off,                only: [:ads]
+  # session :off,                only: [:ads]
 
   def index
     ### フィルタリング用パラメータ生成 ###
