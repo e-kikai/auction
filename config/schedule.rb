@@ -53,18 +53,18 @@ if rails_env.to_sym == :production
   every 6.hours do
     # rake 'twitter:new_product'
     # command "wget --spider #{scheduling_url + '/twitter_new_product'}"
-    command "curl -s -X POST #{scheduling_url + '/twitter_new_product'}"
+    # command "curl -s -X POST #{scheduling_url + '/twitter_new_product'}"
   end
 
   every :monday, at: '6:00 pm' do
     # rake 'twitter:toppage'
     # command "wget --spider #{scheduling_url + '/twitter_toppage'}"
-    command "curl -s -X POST #{scheduling_url + '/twitter_toppage'}"
+    # command "curl -s -X POST #{scheduling_url + '/twitter_toppage'}"
   end
 
   every :friday, at: '5:00 pm' do
     # command "wget --spider #{scheduling_url + '/twitter_news_week'}"
-    command "curl -s -X POST #{scheduling_url + '/twitter_news_week'}"
+    # command "curl -s -X POST #{scheduling_url + '/twitter_news_week'}"
   end
 
   # every :friday, at: '4:00 pm' do
