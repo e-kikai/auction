@@ -171,7 +171,8 @@ class User < ApplicationRecord
       if self.allow_mail
         mm.add_member(self, email)
       else
-        mm.remove_member(email) if mm.member?(email)
+        # mm.remove_member(email) if mm.member?(email)
+        mm.remove_member(email)
       end
     end
   rescue => e
