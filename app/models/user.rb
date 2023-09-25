@@ -161,7 +161,7 @@ class User < ApplicationRecord
       mm = MailMagazine.new
       mm.add_member(self, email)
     end
-  rescue => e
+  # rescue => e
   end
 
   def mailmagazine_update
@@ -175,6 +175,6 @@ class User < ApplicationRecord
         mm.remove_member(email)
       end
     end
-  rescue => e
+  # rescue => e
   end
 end

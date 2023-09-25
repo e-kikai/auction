@@ -62,10 +62,12 @@ class MailMagazine
     # Rails.logger.debug "########## add_member #{email}"
 
     ### 応急処置
-    # @mailchimp.lists.subscribe(@list_id, {email: email}, {"NAME" => user.name, "COMPANY" => user.company}, "html", false)
+    # @mailchimp.lists.subscribe(
+    #   # @list_id, {email: email}, {USER_ID: user.id, NAME: user.name, COMPANY: user.company}, "html", false)
+    #   @list_id, {email: email}, {USER_ID: user.id, NAME: user.name, COMPANY: user.company, SELLER: (user.seller? ? :company : :user)}, "html", false)
 
     ### 新処理 ###
-    query = {NAME: user.name, COMPANY: user.company}
+    query = {USER_ID: user.id, NAME: user.name, COMPANY: user.company, SELLER: (user.seller? ? :company : :user)}
 
     url = "#{MAILCHIMP_URL}/lists/#{@list_id}/members/#{Digest::MD5.hexdigest(email)}"
 
