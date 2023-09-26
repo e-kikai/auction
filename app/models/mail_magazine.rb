@@ -85,13 +85,12 @@ class MailMagazine
     req.basic_auth("anystring", Rails.application.secrets.mailchimp_api_key)
     req.body = data.to_json
 
-    Rails.logger.unknown "########## #{req.body}"
+    # Rails.logger.unknown "########## #{req.body}"
 
     res = @http_client.request(req)
 
-    json = JSON.parse(res.body)
-    Rails.logger.unknown "########## #{res.body}"
-
+    # json = JSON.parse(res.body)
+    # Rails.logger.unknown "########## #{res.body}"
   end
 
   # リストから削除

@@ -157,20 +157,17 @@ class User < ApplicationRecord
   end
 
   def mailmagazine_create
-    Rails.logger.unknown "########## mailmagazine_create #{email} : #{self.allow_mail}"
+    # Rails.logger.unknown "########## mailmagazine_create #{email} : #{self.allow_mail}"
 
-    # if self.allow_mail
-    #   mm = MailMagazine.new
-    #   mm.add_member(self, email)
-    # end
-
-    mm = MailMagazine.new
-    mm.add_member(self, email)
+    if self.allow_mail
+      mm = MailMagazine.new
+      mm.add_member(self, email)
+    end
   # rescue => e
   end
 
   def mailmagazine_update
-    Rails.logger.unknown "########## mailmagazine_update #{email} : #{self.allow_mail}"
+    # Rails.logger.unknown "########## mailmagazine_update #{email} : #{self.allow_mail}"
 
     if saved_change_to_allow_mail?
       mm = MailMagazine.new
