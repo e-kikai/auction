@@ -157,10 +157,13 @@ class User < ApplicationRecord
   end
 
   def mailmagazine_create
-    if self.allow_mail
-      mm = MailMagazine.new
-      mm.add_member(self, email)
-    end
+    # if self.allow_mail
+    #   mm = MailMagazine.new
+    #   mm.add_member(self, email)
+    # end
+
+    mm = MailMagazine.new
+    mm.add_member(self, email)
   # rescue => e
   end
 
