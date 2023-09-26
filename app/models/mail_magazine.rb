@@ -67,7 +67,7 @@ class MailMagazine
     #   @list_id, {email: email}, {USER_ID: user.id, NAME: user.name, COMPANY: user.company, SELLER: (user.seller? ? :company : :user)}, "html", false)
 
     ### 新処理 ###
-    query = {USER_ID: user.id, NAME: user.name, COMPANY: user.company, SELLER: (user.seller? ? :company : :user)}
+    query = {USER_ID: user.id, NAME: (user.name || ""), COMPANY: (user.company || ""), SELLER: (user.seller? ? :company : :user)}
 
     url = "#{MAILCHIMP_URL}/lists/#{@list_id}/members/#{Digest::MD5.hexdigest(email)}"
 
