@@ -68,12 +68,13 @@ class MailMagazine
 
     ### 新処理 ###
     query = {USER_ID: user.id, NAME: (user.name || ""), COMPANY: (user.company || ""), SELLER: (user.seller? ? :company : :user)}
+    # Rails.logger.unknown "########## #{query}"
 
     url = "#{MAILCHIMP_URL}/lists/#{@list_id}/members/#{Digest::MD5.hexdigest(email)}"
 
     # query ={NAME: "testtest", COMPANY: "テスト"}
     # email = "bata44883+d@gmail.com"
-    Rails.logger.unknown "########## #{query}"
+
 
     data = {
       email_address: email,
