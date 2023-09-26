@@ -55,7 +55,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable
+        :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   mount_uploader :header_image, HeaderImageUploader
 
@@ -157,6 +157,8 @@ class User < ApplicationRecord
   end
 
   def mailmagazine_create
+    Rails.logger.unknown "########## mailmagazine_create #{email} : #{self.allow_mail}"
+
     # if self.allow_mail
     #   mm = MailMagazine.new
     #   mm.add_member(self, email)
@@ -168,6 +170,8 @@ class User < ApplicationRecord
   end
 
   def mailmagazine_update
+    Rails.logger.unknown "########## mailmagazine_update #{email} : #{self.allow_mail}"
+
     if saved_change_to_allow_mail?
       mm = MailMagazine.new
 
