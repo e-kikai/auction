@@ -28,7 +28,7 @@ html
 
     /-- Google tag GA4 Turbo --/
     - if Rails.env.production?
-      script[async src="https://www.googletagmanager.com/gtag/js?id=G-9FCEEFBV1P"]
+      script[async src="https://www.googletagmanager.com/gtag/js?id=G-DQMVZWFTHL"]
       javascript:
         document.addEventListener('turbo:load', (event) => {
           window.dataLayer = window.dataLayer || [];
@@ -37,10 +37,10 @@ html
           }
 
           gtag('js', new Date());
-          gtag('config', 'G-9FCEEFBV1P', { page_location: event.detail.url });
+          gtag('config', 'G-DQMVZWFTHL', { page_location: event.detail.url });
           gtag('event', 'page_view', {
             page_location: event.detail.url,
-            send_to: 'G-9FCEEFBV1P',
+            send_to: 'G-DQMVZWFTHL',
           });
         });
 
