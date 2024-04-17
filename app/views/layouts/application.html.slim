@@ -30,7 +30,7 @@ html
     - if Rails.env.production?
       script[async src="https://www.googletagmanager.com/gtag/js?id=G-DQMVZWFTHL"]
       javascript:
-        document.addEventListener('turbo:load', (event) => {
+        document.addEventListener('turbolinks:load', (event) => {
           window.dataLayer = window.dataLayer || [];
           function gtag() {
             window.dataLayer.push(arguments);
