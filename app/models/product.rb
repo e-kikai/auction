@@ -79,10 +79,12 @@ class Product < ApplicationRecord
   default_scope { without_soft_destroyed }
 
   ### クラス定数 ###
-  STATUS                 = { before: -1, start: 0, failure: 1, success: 2, cancel: 3, mix: 4 }
-  MACHINELIFE_URL        = "https://www.zenkiren.net"
-  MACHINELIFE_CRAWL_URL  = "https://www.zenkiren.net/system/ajax/e-kikai_crawled_get.php"
-  MACHINELIFE_MEDIA_PASS = "https://s3-ap-northeast-1.amazonaws.com/machinelife/machine/public/media/machine/"
+  STATUS                 = { before: -1, start: 0, failure: 1, success: 2, cancel: 3, mix: 4 }.freeze
+  MACHINELIFE_URL        = "https://www.zenkiren.net".freeze
+  # MACHINELIFE_CRAWL_URL  = "https://www.zenkiren.net/system/ajax/e-kikai_crawled_get.php"
+  # MACHINELIFE_MEDIA_PASS = "https://s3-ap-northeast-1.amazonaws.com/machinelife/machine/public/media/machine/"
+  MACHINELIFE_CRAWL_URL  = "https://www.zenkiren.net/system/crawler/auction_show".freeze
+  MACHINELIFE_MEDIA_PASS = "".freeze
 
   CSV_MAX_COUNT          = 30
   NEW_MAX_COUNT          = 16 # 新着表示数
@@ -181,7 +183,6 @@ class Product < ApplicationRecord
 
   ### nest ###
   accepts_nested_attributes_for :product_images, allow_destroy: true
-
 
   ### SCOPE ###
   scope :with_keywords, -> keywords {
@@ -551,7 +552,6 @@ class Product < ApplicationRecord
     "★"  * star.to_i
   end
 
-
   ### CSVインポート確認 ###
   # def self.import_conf(file, category_id, template)
   def self.import_conf(file, user)
@@ -562,7 +562,7 @@ class Product < ApplicationRecord
       template = user.products.templates.find_by(id: row[12]) || user.products.new
       product  = template.dup_init
 
-      product.attributes =  {
+      product.attributes = {
         # category_id:           category_id,
         code:                  row[0],
         name:                  row[1],
@@ -611,9 +611,9 @@ class Product < ApplicationRecord
         Importlog.create(
           user_id: user.id,
           product: product,
-          code:    product.code,
+          code: product.code,
           message: e.message,
-          status:  "商品登録エラー",
+          status: "商品登録エラー",
         )
       end
 
@@ -627,10 +627,10 @@ class Product < ApplicationRecord
           Importlog.create(
             user_id: user.id,
             product: product,
-            code:    product.code,
-            url:     MACHINELIFE_MEDIA_PASS + img_url,
+            code: product.code,
+            url: MACHINELIFE_MEDIA_PASS + img_url,
             message: e.message,
-            status:  "画像登録エラー",
+            status: "画像登録エラー",
           )
         end
       end

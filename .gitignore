@@ -40,3 +40,7 @@ public/uploads
 
 # sitemap
 public/sitemap.xml.gz
+
+/.rubocop.yml
+/.slim-lint.yml
+/.solargraph.yml

@@ -33,7 +33,8 @@ hr
         th
       - @datas.each do |pr|
         tr
-          td = image_tag((pr["top_img"].present? ? "#{Product::MACHINELIFE_MEDIA_PASS}thumb_#{pr["top_img"] }" : ProductImage::NOIMAGE_THUMB), style: "max-width:120px;max-height:90px;")
+          / td = image_tag((pr["top_img"].present? ? "#{Product::MACHINELIFE_MEDIA_PASS}thumb_#{pr["top_img"] }" : ProductImage::NOIMAGE_THUMB), style: "max-width:120px;max-height:90px;")
+          td = image_tag(pr["top_img"], style: "max-width:120px;max-height:90px;")
           td = pr["no"]
           td #{pr["name"]}
           td = I18n.l(DateTime.parse(pr["created_at"]), format: :full_date)

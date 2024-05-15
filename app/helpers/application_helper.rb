@@ -31,8 +31,7 @@ module ApplicationHelper
     # logger.error e.message
     nil
   ensure
-     # render_to_string のバグ回避 https://github.com/rails/rails/issues/14173
+    # render_to_string のバグ回避 https://github.com/rails/rails/issues/14173
     lookup_context.rendered_format = nil
   end
-
 end
