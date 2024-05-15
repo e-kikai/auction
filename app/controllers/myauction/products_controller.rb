@@ -59,7 +59,7 @@ class Myauction::ProductsController < Myauction::ApplicationController
     # マシンライフから出品
     if params[:machinelife_id].present?
       begin
-        @url   = "#{Product::MACHINELIFE_CRAWL_URL}?t=auction_machine&id=#{params[:machinelife_id].to_i}"
+        @url   = "#{Product::MACHINELIFE_CRAWL_URL}?t=auction_machine&c=#{current_user.machinelife_company_id}&id=#{params[:machinelife_id].to_i}"
         json   = open(@url).read
         @data = ActiveSupport::JSON.decode json
 
