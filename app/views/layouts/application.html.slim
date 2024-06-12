@@ -37,9 +37,9 @@ html
           }
 
           gtag('js', new Date());
-          gtag('config', 'G-DQMVZWFTHL', { page_location: event.detail.url });
+          gtag('config', 'G-DQMVZWFTHL', { page_location: event.data.url });
           gtag('event', 'page_view', {
-            page_location: event.detail.url,
+            page_location: event.data.url,
             send_to: 'G-DQMVZWFTHL',
           });
         });
